@@ -11,6 +11,7 @@ import CardDetailContainer from './containers/CardDetailContainer';
 import MyRecordContainer from './containers/MyRecordContainer';
 import MapContainer from './containers/MapContainer';
 import SignUpContainer from './containers/SignUpContainer';
+import LoginContainer from './containers/LoginContainer';
 
 function Test() {
   return (
@@ -24,6 +25,7 @@ function Test() {
           <Route path="/myrecord" element={<MyRecordContainer />} />
           <Route path="/map" element={<MapContainer />} />
           <Route path="/sign-up" element={<SignUpContainer />} />
+          <Route path="/login" element={<LoginContainer />} />
         </Routes>
       </div>
       <Footer />
