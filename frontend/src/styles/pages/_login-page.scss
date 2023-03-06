@@ -41,9 +41,28 @@
     justify-content: left;
   }
 
+  .login-page__row__pwd__text {
+    width: 100%;
+    padding-right: 1%;
+    margin-top: 3%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    color: #72A9F2;
+    justify-content: right;
+  }
+
   .login-page__text {
     color: #999999;
     margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 18px;
+  }
+
+  .login-page__text__fast__login {
+    color: #999999;
+    margin-top: 35px;
     font-size: 18px;
     font-weight: bold;
     height: 18px;
@@ -75,4 +94,33 @@
       background: darken($color: color.$color-1, $amount: 10);
     }
   }
+
+  .login-page__naver__button {
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px 10px;
+    font-size: 20px;
+    background-color: #3FC754;
+    color: white;
+    border: none;
+    
+    .login-page__logo__image {
+      padding-right: 4%;
+    }
+  }
+
+  .login-page__kakao__button {
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px 0;
+    font-size: 20px;
+    background-color: #FEE500;
+    color: #392020;
+    border: none;
+
+    .login-page__logo__image {
+      padding-right: 4%;
+    }
+  }
+  
 }

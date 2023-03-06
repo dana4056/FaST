@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { SiNaver, SiKakaotalk } from 'react-icons/si';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -43,6 +44,23 @@ export default function LoginPage() {
         onClick={goLogin}
       >
         로그인
+      </button>
+
+      <div className="login-page__row">
+        <div className="login-page__row__pwd__text">
+          <Link to="/find-pwd" className="login-page__row__pwd__text">
+            비밀번호 찾기
+          </Link>
+        </div>
+      </div>
+      <text className="login-page__text__fast__login">간편 로그인</text>
+      <button type="button" className="card login-page__naver__button">
+        <SiNaver className="login-page__logo__image" />
+        네이버 로그인
+      </button>
+      <button type="button" className="card login-page__kakao__button">
+        <SiKakaotalk className="login-page__logo__image" />
+        카카오 로그인
       </button>
     </div>
   );
