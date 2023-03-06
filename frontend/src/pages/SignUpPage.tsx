@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from 'react-icons/bs';
 import { AiOutlineCheck } from 'react-icons/ai';
 
 export default function SignUpPage() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState([
     false,
@@ -117,7 +119,8 @@ export default function SignUpPage() {
 
   // 회원가입 api 통신
   const onClickComplete = () => {
-    console.log('회원가입 통신 처리하기 !!!');
+    console.log('완료 버튼 클릭 + 회원가입 통신 처리하기 !!!');
+    navigate('/login');
   };
 
   // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
