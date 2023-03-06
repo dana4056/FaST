@@ -52,6 +52,21 @@
     justify-content: right;
   }
 
+  .message {
+    font-size: 1.6rem;
+    line-height: 24px;
+    letter-spacing: -1px;
+    left: 0;
+
+    &.success {
+      color: #8f8c8b;
+    }
+    
+    &.error {
+      color: #ff2727;
+    }
+  }
+
   .login-page__text {
     color: #999999;
     margin-top: 20px;
@@ -107,6 +122,10 @@
     .login-page__logo__image {
       padding-right: 4%;
     }
+
+    &:active {
+      background: darken($color: #3FC754, $amount: 10);
+    }
   }
 
   .login-page__kakao__button {
@@ -118,8 +137,12 @@
     color: #392020;
     border: none;
 
-    .login-page__logo__image {
+    .login-page__kakao__logo__image {
       padding-right: 4%;
+    }
+
+    &:active {
+      background: darken($color: #FEE500, $amount: 10);
     }
   }
   

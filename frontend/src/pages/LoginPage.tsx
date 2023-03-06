@@ -24,7 +24,11 @@ export default function LoginPage() {
           <div className="login-page__row__text">
             <text className="login-page__text">이메일</text>
           </div>
-          <input className="card login-page__input" type="email" />
+          <input
+            placeholder="example@email.com"
+            className="card login-page__input"
+            type="email"
+          />
         </div>
         <div className="login-page__row">
           <div className="login-page__row__text">
@@ -59,7 +63,7 @@ export default function LoginPage() {
         네이버 로그인
       </button>
       <button type="button" className="card login-page__kakao__button">
-        <SiKakaotalk className="login-page__logo__image" />
+        <SiKakaotalk className="login-page__kakao__logo__image" />
         카카오 로그인
       </button>
     </div>
