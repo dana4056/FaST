@@ -1,11 +1,8 @@
 package a402.FaST.model.dto;
 
 import a402.FaST.model.entity.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
-import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.stream.Collectors;
 

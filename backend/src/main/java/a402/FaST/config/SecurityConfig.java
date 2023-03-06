@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,15 @@ public class SecurityConfig {
     }
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> {
+            web.ignoring()
+                    .antMatchers("/api-document/**", "/swagger-ui/**")
+                    .antMatchers("/swagger/**","/v3/**","/swagger-resources/**");
+        };
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
@@ -58,12 +68,6 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                // enable h2-console
-//                .and()
-//                .headers()
-//                .frameOptions()
-//                .sameOrigin()
-
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .and()
                 .sessionManagement()
@@ -74,13 +78,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
 //                // Preflight 요청은 허용한다는 의미
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                // api/hello 요청은 접근 제한 X
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
+
+//                // 접근 제한 X
+//                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/signup").permitAll()
+                .antMatchers("/api/signup/**").permitAll()
 //                // 나머지는 필요
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
