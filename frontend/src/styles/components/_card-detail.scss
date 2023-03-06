@@ -1,0 +1,85 @@
+@use '../color';
+
+.card-detail {
+  margin: 20px 5%;
+  flex: none;
+  width: 90%;
+  .card-detail__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 0 10px;
+    .card-detail__profile-image {
+      display: flex;
+      align-items: center;
+      font-size: 48px;
+    }
+    .card-detail__profile-nickname {
+      padding: 0 10px;
+      font-size: 20px;
+    }
+    .card-detail__menu-button {
+      margin-left: auto;
+      color: color.$color-4;
+      font-size: 36px;
+    }
+    .card-detail__menu {
+      background-color: white;
+      position: absolute;
+      right: -10px;
+      top: 50px;
+      border-radius: 10px;
+      border: 0.5px solid color.$gray;
+      padding: 10px 0;
+      font-size: 20px;
+      z-index: 1;
+      .card-detail__modify {
+        padding: 0 20px;
+        color: color.$color-4;
+      }
+      .card-detail__remove {
+        padding: 0 20px;
+        color: red;
+      }
+    }
+  }
+
+  .card-detail__footer {
+    padding: 10px;
+    .card-detail__sns {
+      display: flex;
+      .card-detail__like {
+        display: flex;
+        align-items: center;
+        padding: 0 4px;
+        font-size: 24px;
+        svg {
+          width: 32px;
+          height: 32px;
+        }
+        span {
+          font-size: 16px;
+          font-weight: bold;
+          padding-left: 6px;
+        }
+      }
+      .card-detail__comment {
+        margin: 0 10px;
+        display: flex;
+        align-items: center;
+        font-size: 28px;
+        span {
+          font-size: 16px;
+          font-weight: bold;
+          padding-left: 6px;
+        }
+      }
+    }
+    .card-detail__info {
+      display: flex;
+      .card-detail__info-data {
+        padding: 6px 10px;
+      }
+    }
+  }
+}

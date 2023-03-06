@@ -1,0 +1,20 @@
+@use '../color';
+
+.move-map-btn {
+  width: 90%;
+  margin: 0px 20px;
+  height: 40px;
+  border-radius: 20px;
+  border: 0px;
+  background-color: color.$color-1;
+  color: white;
+  font-size: 30px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  .next-btn {
+    font-size: 30px;
+    text-align: right;
+    position: absolute;
+    right: 5%;
+    top: 18%;
+  }
+}

@@ -1,0 +1,221 @@
+@use '../color';
+
+.sign-up-wide-page {
+  overflow: hidden;
+  .sign-up-wide-page__wrapper {
+    width: 100%;
+    transition: 0.2s;
+    display: flex;
+  }
+}
+
+.sign-up-page {
+  display: flex;
+  flex: none;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+  // height: 100%;
+
+  .sign-up-page__wrapper {
+    width: 100%;
+    transition: 0.2s;
+    display: flex;
+  }
+
+  .sign-up-page__row {
+    width: 100%;
+    padding: 0 5%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sign-up-page__row__text {
+    width: 100%;
+    padding-left: 1%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: left;
+  }
+
+  .sign-up-page__image {
+    width: 93px;
+    height: 89px;
+    margin-top: 100px;
+  }
+
+  .sign-up-page__text {
+    margin-top: 20px;
+    font-size: 20px;
+    height: 20px;
+  }
+
+  .sign-up-page__input {
+    font-size: 16px;
+    margin-top: 3%;
+    width: 100%;
+    height: 35px;
+    padding: 1% 0;
+    padding-left: 3%;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background-color: color.$color-5;
+  }
+
+  .sign-up-page__auth__input {
+    font-size: 16px;
+    width: 70%;
+    height: 35px;
+    padding: 1% 0;
+    margin-top: 3%;
+    padding-left: 3%;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background-color: color.$color-5;
+  }
+
+  .sign-up-page__button {
+    width: 20%;
+    margin-top: 3%;
+    margin-left: 20px;
+    padding: 10px 0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    background-color: color.$color-1;
+    border-radius: 10px;
+
+    &:active {
+      background: darken($color: color.$color-1, $amount: 10);
+    }
+  }
+
+  .sign-up-page__next__button {
+    width: 20%;
+    margin-top: 5%;
+    margin-left: 20px;
+    padding: 10px 0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    background-color: color.$color-1;
+    border-radius: 10px;
+
+    &:active {
+      background: darken($color: color.$color-1, $amount: 10);
+    }
+  }
+
+  .sign-up-page__row__next {
+    width: 100%;
+    padding: 0 5%;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: right;
+  }
+}
+
+.sign-up-favorite-tag-page {
+  display: flex;
+  flex: none;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+
+  .sign-up-favorite-tag-page__row {
+    width: 100%;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sign-up-favorite-tag-page__title {
+    font-size: 35px;
+    margin-top: 130px;
+    color: color.$color-3;
+    font-weight: bold;
+  }
+}
+.sign-up-favorite-tag-page__container {
+  width: 90%;
+  height: 100%;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: left;
+  height: fit-content;
+
+  .sign-up-favorite-tag-page__tag__container {
+    padding: 0 3%;
+  }
+
+  .sign-up-favorite-tag-page__tag6 {
+    width: 80px;
+    height: 30px;
+    margin: 0 6px;
+    font-size: 16px;
+    border: none;
+    background-color: color.$color-6;
+    border-radius: 10px;
+    color: white;
+
+    &:active {
+      background: darken($color: color.$color-6, $amount: 10);
+    }
+  }
+
+  .sign-up-favorite-tag-page__tag7 {
+    width: 80px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0 6px;
+    border: none;
+    background-color: color.$color-7;
+    border-radius: 10px;
+    color: white;
+
+    &:active {
+      background: darken($color: color.$color-7, $amount: 10);
+    }
+  }
+
+  .sign-up-favorite-tag-page__tag8 {
+    width: 80px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0 6px;
+    border: none;
+    background-color: color.$color-8;
+    border-radius: 10px;
+    color: white;
+
+    &:active {
+      background: darken($color: color.$color-8, $amount: 10);
+    }
+  }
+
+  .sign-up-favorite-tag-page__tag9 {
+    width: 80px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0 6px;
+    border: none;
+    background-color: color.$color-9;
+    border-radius: 10px;
+    color: white;
+
+    &:active {
+      background: darken($color: color.$color-9, $amount: 10);
+    }
+  }
+}

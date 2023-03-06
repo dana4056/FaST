@@ -1,0 +1,117 @@
+@use '../color';
+
+.comment {
+  padding: 10px;
+  margin-bottom: 20px;
+  .comment__header {
+    display: flex;
+    align-items: center;
+    .comment__profile-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+    }
+    .comment__profile-nickname {
+      padding: 0 10px;
+      font-size: 18px;
+      max-width: 70%;
+    }
+    .comment__reg-time {
+      color: color.$gray;
+      font-size: 12px;
+    }
+  }
+  .comment__content {
+    display: flex;
+    .comment__comment {
+      width: 80%;
+    }
+    .comment__like {
+      width: 20%;
+      margin-left: auto;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      .comment__heart {
+        margin: 0 auto;
+        display: flex;
+        font-size: 28px;
+      }
+    }
+  }
+  .comment__form-reply {
+    transition: 0.2s;
+    margin: 4px;
+    border-radius: 10px;
+    border: 0.5px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    .comment__input-reply {
+      padding: 8px;
+      width: 70%;
+      border: none;
+    }
+    .comment__submit-reply {
+      background-color: color.$color-4;
+      border-radius: 10px;
+      width: 20%;
+      padding: 4px 0;
+      border: none;
+      color: white;
+    }
+  }
+  .comment__replies {
+    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+    overflow: hidden;
+    .comment__reply {
+      padding: 10px 0;
+      border-bottom: 0.5px solid color.$gray;
+      display: flex;
+      flex-wrap: wrap;
+      .comment__reply-header {
+        display: flex;
+        margin-left: auto;
+        width: 95%;
+        align-items: center;
+        .comment__reply-profile {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 24px;
+        }
+        .comment__reply-nickname {
+          margin: 0 10px;
+        }
+        .comment__reply-reg-time {
+          font-size: 12px;
+          color: color.$gray;
+        }
+      }
+      .comment__reply-content {
+        width: 95%;
+        margin-left: auto;
+        display: flex;
+        .comment__reply-reply {
+          width: 80%;
+        }
+        .comment__reply-like {
+          width: 20%;
+          .comment__reply-heart {
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+          }
+          .comment__reply-num-likes {
+            font-size: 12px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

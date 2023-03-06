@@ -1,0 +1,12 @@
+.comments {
+  flex: none;
+  width: 90%;
+  margin: 20px 5%;
+  .comments__header {
+    display: flex;
+    align-content: center;
+    .comments__back-button {
+      font-size: 28px;
+    }
+  }
+}

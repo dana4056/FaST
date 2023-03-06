@@ -1,0 +1,18 @@
+@use '../color';
+
+.logo {
+  width: 100%;
+  font-size: 36px;
+  .logo__f {
+    color: color.$color-1;
+  }
+  .logo__a {
+    color: color.$color-2;
+  }
+  .logo__s {
+    color: color.$color-3;
+  }
+  .logo__t {
+    color: color.$color-4;
+  }
+}

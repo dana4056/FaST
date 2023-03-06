@@ -1,0 +1,9 @@
+.card-list {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  .card-list__column {
+    width: 47.5%;
+  }
+}

@@ -1,0 +1,45 @@
+@use '../color';
+
+.input-photo {
+  margin: 10px auto;
+  width: 90%;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  .input-photo__label {
+    width: 90%;
+    .input-photo__file {
+      display: none;
+    }
+    .input-photo__content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
+
+      .input-photo__text {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 24px;
+      }
+    }
+  }
+  .input-photo__row {
+    padding: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+    .input-photo__button {
+      background-color: color.$color-4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+  }
+}

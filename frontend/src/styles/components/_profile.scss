@@ -1,0 +1,84 @@
+.profile__container {
+  padding: 8px;
+  display: grid;
+  width: 90%;
+  margin: 20px auto 10px auto;
+  grid-template-columns: 80px auto;
+  grid-template-rows: 80px minmax(30px, auto);
+  gap: 15px;
+  .profile__img {
+    font-size: 85px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .profile__card {
+    grid-column: 2;
+    grid-row: 1;
+    color: #80ddf2;
+    .profile__cnt {
+      height: 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 40px 40px;
+      text-align: center;
+      font-weight: bold;
+      align-items: center;
+      font-size: large;
+      padding: 5px;
+
+      .profile__follower {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .profile__following {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .profile__record {
+        grid-column: 3;
+        grid-row: 1;
+      }
+      .profile__follower__cnt {
+        grid-column: 1;
+        grid-row: 2;
+        color: #77b9f2;
+        font-size: 25px;
+      }
+      .profile__following__cnt {
+        grid-column: 2;
+        grid-row: 2;
+        color: #77b9f2;
+        font-size: 25px;
+      }
+      .profile__record__cnt {
+        grid-column: 3;
+        grid-row: 2;
+        color: #77b9f2;
+        font-size: 25px;
+      }
+    }
+  }
+  .profile__hashtags {
+    grid-row: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    .profile__tags {
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      width: 90%;
+      text-align: center;
+      .profile__tag {
+        width: max-content;
+        background-color: #80ddf2;
+        color: white;
+        border-radius: 15px;
+        padding: 2px 16px;
+        margin: 5px 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

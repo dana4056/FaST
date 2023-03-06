@@ -1,0 +1,6 @@
+@use '../color';
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px color.$gray;
+}

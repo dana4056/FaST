@@ -1,0 +1,14 @@
+@use '../color';
+
+$height: 64px;
+
+.header {
+  box-sizing: border-box;
+  width: 100%;
+  height: $height;
+  box-shadow: 0 0 5px 1px color.$gray;
+  line-height: $height;
+  .header__logo {
+    margin: 0 20px;
+  }
+}

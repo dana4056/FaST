@@ -1,0 +1,27 @@
+@use '../color';
+
+.image-slider {
+  display: flex;
+  align-items: center;
+  .image-slider__control {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: color.$color-4;
+    width: 10%;
+  }
+  .image-slider__container {
+    width: 80%;
+    overflow: hidden;
+    .image-slider__images {
+      display: flex;
+      transition: 0.2s;
+      .image-slider__image {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}

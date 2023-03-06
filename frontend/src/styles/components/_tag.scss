@@ -1,0 +1,41 @@
+@use '../color';
+
+.tag {
+  display: inline-block;
+  border-radius: 20px;
+  font-weight: bold;
+  color: white;
+  margin: 3px 4px;
+  box-shadow: 0 1px 4px color.$gray;
+  padding: 2px 4px;
+  .tag__content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    .tag__button {
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      color: white;
+      font-size: 20px;
+      padding: 0;
+    }
+  }
+}
+.tag-small {
+  font-size: 12px;
+}
+
+.tag-1 {
+  background-color: color.$color-1;
+}
+.tag-2 {
+  background-color: color.$color-2;
+}
+.tag-3 {
+  background-color: color.$color-3;
+}
+.tag-4 {
+  background-color: color.$color-4;
+}

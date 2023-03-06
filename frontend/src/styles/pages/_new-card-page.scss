@@ -1,0 +1,47 @@
+@use '../color';
+
+.new-card-page {
+  .new-card-page__form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    .new-card-page__tags {
+      min-height: 31px;
+      margin: 10px 0;
+      width: 90%;
+      padding: 10px 0;
+    }
+    .new-card-page__description {
+      width: 90%;
+      margin: 20px 0;
+      textarea {
+        display: block;
+        width: 90%;
+        resize: none;
+        margin: 10px auto;
+        height: 160px;
+        outline: none;
+        border: none;
+        font-size: 20px;
+        &::placeholder {
+          color: color.$color-1;
+          font-weight: bold;
+        }
+      }
+    }
+    .new-card-page__row {
+      width: 90%;
+      text-align: right;
+      .new-card-page__submit {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        background-color: color.$color-4;
+        border: none;
+        border-radius: 10px;
+        padding: 4px 10px;
+      }
+    }
+  }
+}

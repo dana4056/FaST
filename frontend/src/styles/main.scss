@@ -1,0 +1,38 @@
+// components
+@use './components/logo';
+@use './components/header';
+@use './components/footer';
+@use './components/card';
+@use './components/tag';
+@use './components/search-box';
+@use './components/input-photo';
+@use './components/card-detail';
+@use './components/transparent-button';
+@use './components/image-slider';
+@use './components/comments';
+@use './components/comment';
+@use './components/heart';
+@use './components/photo-card';
+@use './components/profile';
+@use './components/move_to_map';
+@use './components/map';
+@use './components/card-list';
+
+// pages
+@use './pages/new-card-page';
+@use './pages/intro-page';
+@use './pages/card-detail-page';
+@use './pages/sign-up-page';
+@use './pages/my-record-page.scss';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.contents {
+  overflow: auto;
+  height: calc(100% - footer.$height - header.$height);
+  background-color: #f5f5f5;
+}
