@@ -40,3 +40,5 @@ export interface CardDetailPageProps extends CardDetailProps {
 }
 
 export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
+
+export interface MapPageProps extends CardListProps {}
