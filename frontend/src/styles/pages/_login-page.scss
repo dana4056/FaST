@@ -1,0 +1,25 @@
+@use '../color';
+
+.login-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 100%;
+
+  .login-page__logo {
+    font-size: 60px;
+    margin-top: 25%;
+    .logo__f {
+      color: color.$color-1;
+    }
+    .logo__a {
+      color: color.$color-2;
+    }
+    .logo__s {
+      color: color.$color-3;
+    }
+    .logo__t {
+      color: color.$color-4;
+    }
+  }
+}
