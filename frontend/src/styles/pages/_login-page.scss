@@ -22,4 +22,57 @@
       color: color.$color-4;
     }
   }
+
+  .login-page__row {
+    width: 100%;
+    padding: 0 5%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+  }
+
+  .login-page__row__text {
+    width: 100%;
+    padding-left: 1%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: left;
+  }
+
+  .login-page__text {
+    color: #999999;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 18px;
+  }
+
+  .login-page__input {
+    font-size: 16px;
+    margin-top: 3%;
+    width: 100%;
+    height: 35px;
+    padding: 1% 0;
+    padding-left: 3%;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background-color: color.$color-5;
+  }
+
+  .login-page__button {
+    width: 90%;
+    margin-top: 35px;
+    padding: 10px 0;
+    color: white;
+    font-size: 20px;
+    border: none;
+    background-color: color.$color-1;
+
+    &:active {
+      background: darken($color: color.$color-1, $amount: 10);
+    }
+  }
 }
