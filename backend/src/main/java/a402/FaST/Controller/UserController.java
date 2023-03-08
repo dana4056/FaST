@@ -32,14 +32,18 @@ public class UserController {
 
     // 회원가입 메소드
     @PostMapping("/user")
-    @Operation(summary = "회원가입 API =>  json 형식 데이터 -> (email, nickname, password)", description = "json 형식 데이터 -> (email, nickname, password)")
+    @Operation(summary = "회원가입 API =>  유저 정보를 입력받아 회원가입하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : email, String : password, String : nickname) " +
+            " => 회원가입에 완료한 User 정보를 Return 해줍니다.")
     public ResponseEntity<UserResponseDto> signup(@Valid @RequestBody UserRequestDto requestDto) {
         return ResponseEntity.ok(userService.signup(requestDto));
     }
 
     // 로그인 메소드
     @PostMapping("/login")
-    @Operation(summary = "로그인 API =>  json 형식 데이터 -> (email, password, nickname)", description = "json 형식 데이터 -> (username, password, nickname)")
+    @Operation(summary = "로그인 API =>  아이디, 비밀번호 입력을 통해 로그인하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : email, String : password)" +
+            " => 로그인에 완료한 User 정보와 Token 정보를 Return 해줍니다.")
     private ResponseEntity<Map<String, Object>> login(@RequestBody UserRequestDto requestDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -59,6 +63,9 @@ public class UserController {
     }
 
     @PostMapping("/user/send-email")
+    @Operation(summary = "이메일 전송 API =>  이메일 입력을 통해 이메일을 전송하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : email)" +
+                    " => 이메일로 전송한 인증번호를 Return 해줍니다.")
     public String sendEmail(@Valid @RequestBody CertRequestDto requestDto) throws Exception {
 
         String confirm = certService.sendMessage(requestDto);
@@ -67,6 +74,9 @@ public class UserController {
     }
 
     @PostMapping("/user/check-code")
+    @Operation(summary = "인증번호 검증 API =>  이메일로 전송한 인증번호와 사용자 인증번호를 검증하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : code)" +
+                    " => 검증 결과에 따라 True or False 를 Return 해줍니다.")
     public ResponseEntity checkCode(@Valid @RequestBody CertRequestDto requestDto) throws Exception {
 
         boolean check = certService.checkMessage(requestDto);
@@ -75,6 +85,9 @@ public class UserController {
     }
 
     @PostMapping("/user/check-mail")
+    @Operation(summary = "이메일 중복검사 API =>  이메일 중복 검사하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : email)" +
+                    " => 검증 결과에 따라 True or False 를 Return 해줍니다.")
     public ResponseEntity checkMail(@Valid @RequestBody UserRequestDto requestDto) throws Exception {
 
         boolean check = userService.checkMail(requestDto);
