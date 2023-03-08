@@ -112,6 +112,25 @@
     }
   }
 
+  .message {
+    // margin-top: 1px;
+    // font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    // position: absolute;
+    // bottom: -10px;
+    left: 0;
+
+    &.success {
+      color: #8f8c8b;
+    }
+    
+    &.error {
+      color: #ff2727;
+    }
+  }
+
   .sign-up-page__row__next {
     width: 100%;
     padding: 0 5%;

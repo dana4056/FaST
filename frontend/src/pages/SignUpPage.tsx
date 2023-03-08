@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from 'react-icons/bs';
 import { AiOutlineCheck } from 'react-icons/ai';
@@ -112,6 +112,99 @@ export default function SignUpPage() {
     ],
   ];
   const [selectedTag, setSelectedTag] = useState([]);
+
+  // 이름, 이메일, 비밀번호, 비밀번호 확인
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+
+  // 오류메시지 상태저장
+  const [nameMessage, setNameMessage] = useState<string>('');
+  const [emailMessage, setEmailMessage] = useState<string>('');
+  const [passwordMessage, setPasswordMessage] = useState<string>('');
+  const [passwordConfirmMessage, setPasswordConfirmMessage] =
+    useState<string>('');
+
+  // 유효성 검사
+  const [isName, setIsName] = useState<boolean>(false);
+  const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
+  // const router = useRouter();
+  // 닉네임
+  const onChangeNickName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setName(e.target.value);
+      if (e.target.value.length <= 1 || e.target.value.length > 10) {
+        setNameMessage('1글자 이상 11글자 미만으로 입력해주세요.');
+        setIsName(false);
+      } else {
+        setNameMessage('올바른 이름 형식입니다 :)');
+        setIsName(true);
+      }
+    },
+    []
+  );
+
+  // 이메일
+  const onChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const emailRegex =
+        // eslint-disable-next-line max-len
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      const emailCurrent = e.target.value;
+      setEmail(emailCurrent);
+
+      if (!emailRegex.test(emailCurrent)) {
+        setEmailMessage('이메일 형식이 틀렸습니다! 다시 확인해주세요 ㅜ ㅜ');
+        setIsEmail(false);
+      } else {
+        setEmailMessage('올바른 이메일 형식이에요 : )');
+        setIsEmail(true);
+      }
+    },
+    []
+  );
+
+  // 비밀번호
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordRegex =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      const passwordCurrent = e.target.value;
+      setPassword(passwordCurrent);
+
+      if (!passwordRegex.test(passwordCurrent)) {
+        setPasswordMessage(
+          '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!'
+        );
+        setIsPassword(false);
+      } else {
+        setPasswordMessage('안전한 비밀번호에요 : )');
+        setIsPassword(true);
+      }
+    },
+    []
+  );
+
+  // 비밀번호 확인
+  const onChangePasswordConfirm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordConfirmCurrent = e.target.value;
+      setPasswordConfirm(passwordConfirmCurrent);
+
+      if (password === passwordConfirmCurrent) {
+        setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )');
+        setIsPasswordConfirm(true);
+      } else {
+        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ');
+        setIsPasswordConfirm(false);
+      }
+    },
+    [password]
+  );
+
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동
   const onClickNext = () => {
     setIsOpen(() => true);
@@ -148,7 +241,17 @@ export default function SignUpPage() {
               <div className="sign-up-page__row__text">
                 <text className="sign-up-page__text">이메일</text>
               </div>
-              <input className="card sign-up-page__input" type="email" />
+              <input
+                placeholder="example@email.com"
+                className="card sign-up-page__input"
+                type="email"
+                onChange={onChangeEmail}
+              />
+              {email.length > 0 && (
+                <span className={`message ${isEmail ? 'success' : 'error'}`}>
+                  {emailMessage}
+                </span>
+              )}
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
@@ -172,7 +275,13 @@ export default function SignUpPage() {
                 className="card sign-up-page__input"
                 type="text"
                 placeholder="중복 불가능, 1~10자리"
+                onChange={onChangeNickName}
               />
+              {name.length > 0 && (
+                <span className={`message ${isName ? 'success' : 'error'}`}>
+                  {nameMessage}
+                </span>
+              )}
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
@@ -182,7 +291,13 @@ export default function SignUpPage() {
                 className="card sign-up-page__input"
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
+                onChange={onChangePassword}
               />
+              {password.length > 0 && (
+                <span className={`message ${isPassword ? 'success' : 'error'}`}>
+                  {passwordMessage}
+                </span>
+              )}
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
@@ -192,7 +307,17 @@ export default function SignUpPage() {
                 className="card sign-up-page__input"
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
+                onChange={onChangePasswordConfirm}
               />
+              {passwordConfirm.length > 0 && (
+                <span
+                  className={`message ${
+                    isPasswordConfirm ? 'success' : 'error'
+                  }`}
+                >
+                  {passwordConfirmMessage}
+                </span>
+              )}
             </div>
             <div className="sign-up-page__row__next">
               <button
