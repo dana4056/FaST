@@ -1,5 +1,8 @@
 package a402.FaST.service;
 
-public interface EmailService {
-    String signUPMessage (String to)throws Exception;
+import a402.FaST.model.dto.CertRequestDto;
+
+public interface CertService {
+    String sendMessage(CertRequestDto requestDto) throws Exception;
+    Boolean checkMessage(CertRequestDto requestDto) throws Exception;
 }

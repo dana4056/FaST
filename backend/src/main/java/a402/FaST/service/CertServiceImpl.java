@@ -6,7 +6,9 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import a402.FaST.model.dto.CertDto;
+import a402.FaST.exception.NotFoundMemberException;
+import a402.FaST.model.dto.CertRequestDto;
+import a402.FaST.model.entity.Cert;
 import a402.FaST.repository.CertRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService{
+public class CertServiceImpl implements CertService {
 
     private final JavaMailSender emailSender;
     private final CertRepository certRepository;
@@ -76,19 +78,33 @@ public class EmailServiceImpl implements EmailService{
         return key.toString();
     }
     @Override
-    public String signUPMessage(String to)throws Exception {
+    public String sendMessage(CertRequestDto requestDto) throws Exception {
         // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
+        MimeMessage message = createMessage(requestDto.getEmail());
         try{//예외처리
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        CertDto certDto= new CertDto(ePw,ePw);
-        certRepository.findById(ePw);
-        certRepository.save(certDto);
+
+        Cert cert = new Cert(requestDto.getEmail(),ePw);
+        certRepository.save(cert);
 
         return ePw;
+    }
+
+    @Override
+    public Boolean checkMessage(CertRequestDto requestDto) throws Exception {
+        if (certRepository.findById(requestDto.getEmail()).get() == null){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }
+
+        Cert cert = certRepository.findById(requestDto.getEmail()).get();
+        if (cert.getCode().equals(requestDto.getCode())){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

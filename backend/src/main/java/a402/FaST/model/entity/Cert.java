@@ -8,11 +8,12 @@ import javax.persistence.*;
 @Table(name = "cert")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cert {
+
     @Id
     private String email;
     private String code;
+
 }
