@@ -1,0 +1,66 @@
+@use '../color';
+
+.input-profile {
+  // margin: 10px auto;
+  // width: 90%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  .input-profile__label {
+    // width: 90%;
+    .input-profile__file {
+      display: none;
+    }
+    .input-profile__content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      // width: 100%;
+      margin: 0 auto;
+    }
+  }
+  .input-profile__text {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: color.$color-4;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin: 2% 18%;
+  }
+  // .input-profile__img__container {
+  //   width: 150px;
+  //   height: 150px; 
+  //   border-radius: 70%;
+  //   overflow: hidden;
+  // }
+  .input-profile__img {
+    // width: 100%;
+    // height: 100%;
+    object-fit: cover;
+    height: 90px;
+    margin-top: 20px;
+    width: 90px;
+    border-radius: 50%;
+  }
+  .input-profile__row {
+    padding: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+    .input-profile__button {
+      background-color: color.$color-4;
+      color: white;
+      border: none;
+      margin-top: 15px;
+      padding: 8px 20px;
+      font-size: 15px;
+      border-radius: 10px;
+    }
+  }
+}

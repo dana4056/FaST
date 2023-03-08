@@ -43,9 +43,22 @@
   }
 
   .sign-up-page__image {
-    width: 93px;
-    height: 89px;
-    margin-top: 100px;
+    width: 90px;
+    height: 90px;
+    margin-top: 20px;
+  }
+
+  .sign-up-page__image__container {
+    position: relative;
+
+    .sign-up-page__camera__image {
+      width: 25px;
+      height: 25px;
+      margin-top: 160px;
+      position: absolute;
+      color: color.$color-2;
+      right: 1px;
+    }
   }
 
   .sign-up-page__text {
@@ -181,7 +194,7 @@
   .sign-up-favorite-tag-page__tag6 {
     width: 80px;
     height: 30px;
-    margin: 0 6px;
+    margin: 0 3%;
     font-size: 16px;
     border: none;
     background-color: color.$color-6;
@@ -197,7 +210,7 @@
     width: 80px;
     height: 30px;
     font-size: 16px;
-    margin: 0 6px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-7;
     border-radius: 10px;
@@ -212,7 +225,7 @@
     width: 80px;
     height: 30px;
     font-size: 16px;
-    margin: 0 6px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-8;
     border-radius: 10px;
@@ -227,7 +240,7 @@
     width: 80px;
     height: 30px;
     font-size: 16px;
-    margin: 0 6px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-9;
     border-radius: 10px;

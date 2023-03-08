@@ -1,9 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from 'react-icons/bs';
-import { AiOutlineCheck } from 'react-icons/ai';
+import { AiOutlineCheck, AiFillCamera } from 'react-icons/ai';
+import InputProfile from '../components/SignUp/InputProfile';
+import { InputProfileProps } from '../types/ComponentPropsType';
 
-export default function SignUpPage() {
+export default function SignUpPage({
+  imageUrl,
+  handleImageChange,
+  handleImageDelete,
+}: InputProfileProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState([
@@ -140,7 +146,7 @@ export default function SignUpPage() {
         setNameMessage('1글자 이상 11글자 미만으로 입력해주세요.');
         setIsName(false);
       } else {
-        setNameMessage('올바른 이름 형식입니다 :)');
+        setNameMessage('올바른 닉네임 형식입니다 :)');
         setIsName(true);
       }
     },
@@ -233,13 +239,21 @@ export default function SignUpPage() {
         style={isOpen ? { transform: 'translateX(-100%)' } : {}}
       >
         <div className="sign-up-page">
-          <div className="sign-up-page__row">
-            <BsPersonCircle className="sign-up-page__image" />
-          </div>
+          {/* <div className="sign-up-page__row"> */}
+          {/* <div className="sign-up-page__image__container"> */}
+          <InputProfile
+            imageUrl={imageUrl}
+            handleImageChange={handleImageChange}
+            handleImageDelete={handleImageDelete}
+          />
+          {/* <BsPersonCircle className="sign-up-page__image" />
+              <AiFillCamera className="sign-up-page__camera__image" /> */}
+          {/* </div> */}
+          {/* </div> */}
           <form className="sign-up-page">
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">이메일</text>
+                <span className="sign-up-page__text">이메일</span>
               </div>
               <input
                 placeholder="example@email.com"
@@ -255,7 +269,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">인증번호</text>
+                <span className="sign-up-page__text">인증번호</span>
               </div>
             </div>
             <div className="sign-up-page__row">
@@ -269,7 +283,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">닉네임</text>
+                <span className="sign-up-page__text">닉네임</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -285,7 +299,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">비밀번호</text>
+                <span className="sign-up-page__text">비밀번호</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -301,7 +315,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">비밀번호 확인</text>
+                <span className="sign-up-page__text">비밀번호 확인</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -333,7 +347,7 @@ export default function SignUpPage() {
         {/* ========= 관심 태그 ========= */}
         <div className="sign-up-favorite-tag-page">
           <div className="sign-up-favorite-tag-page__row">
-            <text className="sign-up-favorite-tag-page__title">관심 태그</text>
+            <span className="sign-up-favorite-tag-page__title">관심 태그</span>
             <div className="sign-up-favorite-tag-page__container">
               <div className="sign-up-favorite-tag-page__row">
                 {tag[0].map((item, i: number) => (
