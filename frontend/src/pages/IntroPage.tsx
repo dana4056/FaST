@@ -1,5 +1,8 @@
-import React from 'react';
+import { Canvas } from '@react-three/fiber';
+import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import Model from '../assets/blender/Logo';
 
 export default function IntroPage() {
   const navigate = useNavigate();
@@ -14,7 +17,16 @@ export default function IntroPage() {
 
   return (
     <div className="intro-page">
-      <div className="intro-page__logo">FaST</div>
+      <Canvas>
+        <ambientLight
+          // eslint-disable-next-line react/no-unknown-property
+          intensity={1.25}
+        />
+        <Suspense fallback={null}>
+          <Model />
+        </Suspense>
+      </Canvas>
+      {/* <div className="intro-page__logo">FaST</div> */}
       <button
         className="card intro-page__button"
         type="button"
