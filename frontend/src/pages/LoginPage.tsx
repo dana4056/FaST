@@ -22,7 +22,7 @@ export default function LoginPage() {
       <form className="login-page">
         <div className="login-page__row">
           <div className="login-page__row__text">
-            <text className="login-page__text">이메일</text>
+            <span className="login-page__text">이메일</span>
           </div>
           <input
             placeholder="example@email.com"
@@ -32,7 +32,7 @@ export default function LoginPage() {
         </div>
         <div className="login-page__row">
           <div className="login-page__row__text">
-            <text className="login-page__text">비밀번호</text>
+            <span className="login-page__text">비밀번호</span>
           </div>
           <input
             className="card login-page__input"
@@ -57,7 +57,7 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
-      <text className="login-page__text__fast__login">간편 로그인</text>
+      <span className="login-page__text__fast__login">간편 로그인</span>
       <button type="button" className="card login-page__naver__button">
         <SiNaver className="login-page__logo__image" />
         네이버 로그인

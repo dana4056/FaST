@@ -239,7 +239,7 @@ export default function SignUpPage() {
           <form className="sign-up-page">
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">이메일</text>
+                <span className="sign-up-page__text">이메일</span>
               </div>
               <input
                 placeholder="example@email.com"
@@ -255,7 +255,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">인증번호</text>
+                <span className="sign-up-page__text">인증번호</span>
               </div>
             </div>
             <div className="sign-up-page__row">
@@ -269,7 +269,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">닉네임</text>
+                <span className="sign-up-page__text">닉네임</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -285,7 +285,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">비밀번호</text>
+                <span className="sign-up-page__text">비밀번호</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -301,7 +301,7 @@ export default function SignUpPage() {
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
-                <text className="sign-up-page__text">비밀번호 확인</text>
+                <span className="sign-up-page__text">비밀번호 확인</span>
               </div>
               <input
                 className="card sign-up-page__input"
@@ -333,7 +333,7 @@ export default function SignUpPage() {
         {/* ========= 관심 태그 ========= */}
         <div className="sign-up-favorite-tag-page">
           <div className="sign-up-favorite-tag-page__row">
-            <text className="sign-up-favorite-tag-page__title">관심 태그</text>
+            <span className="sign-up-favorite-tag-page__title">관심 태그</span>
             <div className="sign-up-favorite-tag-page__container">
               <div className="sign-up-favorite-tag-page__row">
                 {tag[0].map((item, i: number) => (
