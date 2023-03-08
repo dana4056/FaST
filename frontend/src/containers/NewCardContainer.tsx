@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import NewCardPage from '../pages/NewCardPage';
 import { TagType } from '../types/TagType';
+import useViewModel from '../viewmodels/CardViewModel';
 
 function NewCardContainer() {
   // 미리보기 이미지 url 저장 배열
@@ -12,6 +13,8 @@ function NewCardContainer() {
   const [tags, setTags] = useState<Array<TagType>>([]);
   // 카드 내용
   const [description, setDescription] = useState<string>('');
+
+  const { uploadImages } = useViewModel();
 
   // 이미지 입력
   const handleImageChange = async (
@@ -58,10 +61,12 @@ function NewCardContainer() {
   };
 
   // 카드 생성 함수
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
+
+    await uploadImages(images);
   };
 
   return (

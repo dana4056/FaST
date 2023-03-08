@@ -1,11 +1,8 @@
 package a402.FaST.model.dto;
 
 import a402.FaST.model.entity.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 
-import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,23 +11,29 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserResponseDto {
 
-   private String username;
+   private String email;
 
-   private String password;
+//   private String password;
 
    private String nickname;
 
+   private String salt;
+
+   private String imgPath;
+
    private Set<AuthorityDto> authorityDtoSet;
 
-   public static UserDto from(User user) {
+   public static UserResponseDto from(User user) {
       if(user == null) return null;
 
-      return UserDto.builder()
-              .username(user.getUsername())
+      return UserResponseDto.builder()
+              .email(user.getEmail())
+//              .password(user.getPassword())
               .nickname(user.getNickname())
-              .password(user.getPassword())
+              .salt(user.getSalt())
+              .imgPath(user.getImg_path())
               .authorityDtoSet(user.getAuthorities().stream()
                       .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                       .collect(Collectors.toSet()))
