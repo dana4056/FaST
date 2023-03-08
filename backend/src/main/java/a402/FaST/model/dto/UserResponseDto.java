@@ -11,23 +11,29 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserResponseDto {
 
    private String email;
 
-   private String password;
+//   private String password;
 
    private String nickname;
 
+   private String salt;
+
+   private String imgPath;
+
    private Set<AuthorityDto> authorityDtoSet;
 
-   public static UserDto from(User user) {
+   public static UserResponseDto from(User user) {
       if(user == null) return null;
 
-      return UserDto.builder()
+      return UserResponseDto.builder()
               .email(user.getEmail())
-              .password(user.getPassword())
+//              .password(user.getPassword())
               .nickname(user.getNickname())
+              .salt(user.getSalt())
+              .imgPath(user.getImg_path())
               .authorityDtoSet(user.getAuthorities().stream()
                       .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                       .collect(Collectors.toSet()))
