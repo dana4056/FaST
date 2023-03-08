@@ -31,7 +31,7 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserDto signup(UserDto userDto) {
-        if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
+        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
@@ -42,7 +42,7 @@ public class UserService {
 
         // 만든 권한 정보 바탕으로 User정보를 만든다
         User user = User.builder()
-                .email(userDto.getEmail())
+                .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
@@ -53,8 +53,8 @@ public class UserService {
 
     // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
     @Transactional(readOnly = true)
-    public UserDto getUserWithAuthorities(String email) {
-        return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(email).orElse(null));
+    public UserDto getUserWithAuthorities(String username) {
+        return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
     }
 
     // 현재 SecurityContext에만 있는 User 객체와 권한 정보를 가져온다
@@ -62,19 +62,17 @@ public class UserService {
     public UserDto getMyUserWithAuthorities() {
         return UserDto.from(
                 SecurityUtil.getCurrentUsername()
-                        .flatMap(userRepository::findOneWithAuthoritiesByEmail)
+                        .flatMap(userRepository::findOneWithAuthoritiesByUsername)
                         .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
     }
 
     public TokenDto login(LoginDto loginDto) throws Exception {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
-
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
         // 객체를 SecurityContext에 저장한다
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // authentication 객체를 통해 JWT 토큰 생성

@@ -12,6 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,9 @@ import java.util.Map;
 @RequestMapping("/api")
 @Api(tags = "User Controller")
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private final UserService userService;
     private final EmailServiceImpl emailService;
 
@@ -45,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "로그인 API =>  json 형식 데이터 -> (username, password, nickname)", description = "json 형식 데이터 -> (username, password, nickname)")
+    @Operation(summary = "로그인 API =>  json 형식 데이터 -> (email, password, nickname)", description = "json 형식 데이터 -> (username, password, nickname)")
     private ResponseEntity<Map<String, Object>> login(@RequestBody LoginDto loginDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -54,6 +59,7 @@ public class UserController {
         LoginDto LoginResponseDto = null;
         try {
             TokenResponseDto = userService.login(loginDto);
+            System.out.println(TokenResponseDto);
 //            LoginResponseDto = userService.getLoginUser(userLoginRequestDto.getId());
             resultMap.put("token", TokenResponseDto);
             resultMap.put("user", LoginResponseDto);
@@ -73,13 +79,13 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities());
     }
 
     @GetMapping("/user/{username}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username));
     }

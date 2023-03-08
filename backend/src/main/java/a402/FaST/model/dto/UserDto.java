@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserDto {
 
-   private String email;
+   private String username;
 
    private String password;
 
@@ -25,9 +25,9 @@ public class UserDto {
       if(user == null) return null;
 
       return UserDto.builder()
-              .email(user.getEmail())
-              .nickname(user.getNickname())
+              .username(user.getUsername())
               .password(user.getPassword())
+              .nickname(user.getNickname())
               .authorityDtoSet(user.getAuthorities().stream()
                       .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                       .collect(Collectors.toSet()))
