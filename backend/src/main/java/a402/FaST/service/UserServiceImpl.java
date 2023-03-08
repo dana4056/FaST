@@ -2,13 +2,12 @@ package a402.FaST.service;
 
 import java.util.Collections;
 
-import a402.FaST.Util.SecurityUtil;
 import a402.FaST.exception.DuplicateMemberException;
-import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.LoginDto;
 import a402.FaST.model.dto.TokenDto;
-import a402.FaST.model.dto.UserDto;
+import a402.FaST.model.dto.UserResponseDto;
+import a402.FaST.model.dto.UserRequestDto;
 import a402.FaST.model.entity.Authority;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.UserRepository;
@@ -30,8 +29,8 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserDto signup(UserDto userDto) {
-        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
+    public UserResponseDto signup(UserRequestDto signUpDto) {
+        if (userRepository.findOneWithAuthoritiesByEmail(signUpDto.getEmail()).orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
@@ -42,34 +41,18 @@ public class UserService {
 
         // 만든 권한 정보 바탕으로 User정보를 만든다
         User user = User.builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
+                .email(signUpDto.getEmail())
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .nickname(signUpDto.getNickname())
                 .authorities(Collections.singleton(authority))
                 .build();
 
-        return UserDto.from(userRepository.save(user));
-    }
-
-    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
-    @Transactional(readOnly = true)
-    public UserDto getUserWithAuthorities(String username) {
-        return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
-    }
-
-    // 현재 SecurityContext에만 있는 User 객체와 권한 정보를 가져온다
-    @Transactional(readOnly = true)
-    public UserDto getMyUserWithAuthorities() {
-        return UserDto.from(
-                SecurityUtil.getCurrentUsername()
-                        .flatMap(userRepository::findOneWithAuthoritiesByUsername)
-                        .orElseThrow(() -> new NotFoundMemberException("Member not found"))
-        );
+        return UserResponseDto.from(userRepository.save(user));
     }
 
     public TokenDto login(LoginDto loginDto) throws Exception {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -94,5 +77,21 @@ public class UserService {
         // 5. 토큰 발급
         return new TokenDto(jwt);
     }
+
+//    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
+//    @Transactional(readOnly = true)
+//    public UserDto getUserWithAuthorities(String email) {
+//        return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(email).orElse(null));
+//    }
+//
+//    // 현재 SecurityContext에만 있는 User 객체와 권한 정보를 가져온다
+//    @Transactional(readOnly = true)
+//    public UserDto getMyUserWithAuthorities() {
+//        return UserDto.from(
+//                SecurityUtil.getCurrentUsername()
+//                        .flatMap(userRepository::findOneWithAuthoritiesByEmail)
+//                        .orElseThrow(() -> new NotFoundMemberException("Member not found"))
+//        );
+//    }
 
 }

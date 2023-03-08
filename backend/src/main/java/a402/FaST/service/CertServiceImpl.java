@@ -6,17 +6,21 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import a402.FaST.model.dto.CertDto;
+import a402.FaST.repository.CertRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
 
-    @Autowired
-    JavaMailSender emailSender;
-
+    private final JavaMailSender emailSender;
+    private final CertRepository certRepository;
     public static final String ePw = createKey();
 
     private MimeMessage createMessage(String to)throws Exception{
@@ -81,6 +85,10 @@ public class EmailServiceImpl implements EmailService{
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
+        CertDto certDto= new CertDto(ePw,ePw);
+        certRepository.findById(ePw);
+        certRepository.save(certDto);
+
         return ePw;
     }
 }
