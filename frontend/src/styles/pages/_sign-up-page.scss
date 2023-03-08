@@ -43,9 +43,22 @@
   }
 
   .sign-up-page__image {
-    width: 93px;
-    height: 89px;
-    margin-top: 100px;
+    width: 90px;
+    height: 90px;
+    margin-top: 20px;
+  }
+
+  .sign-up-page__image__container {
+    position: relative;
+
+    .sign-up-page__camera__image {
+      width: 25px;
+      height: 25px;
+      margin-top: 160px;
+      position: absolute;
+      color: color.$color-2;
+      right: 1px;
+    }
   }
 
   .sign-up-page__text {
