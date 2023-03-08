@@ -74,6 +74,14 @@ public class UserController {
         return ResponseEntity.ok(check);
     }
 
+    @PostMapping("/user/check-mail")
+    public ResponseEntity checkMail(@Valid @RequestBody UserRequestDto requestDto) throws Exception {
+
+        boolean check = userService.checkMail(requestDto);
+
+        return ResponseEntity.ok(check);
+    }
+
 //    @GetMapping("/user")
 ////    @PreAuthorize("hasAnyRole('USER','ADMIN')")
 //    public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
