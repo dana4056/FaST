@@ -2,6 +2,7 @@ package a402.FaST.service;
 
 import java.util.Collections;
 
+import a402.FaST.Controller.UserController;
 import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
@@ -12,6 +13,8 @@ import a402.FaST.model.entity.Authority;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,13 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserResponseDto signup(UserRequestDto requestDto) {
-        if (userRepository.findOneWithAuthoritiesByEmail(requestDto.getEmail()).orElse(null) != null) {
+        if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
@@ -82,14 +86,27 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponseDto getUser(UserRequestDto requestDto) {
-        if (userRepository.findByEmail(requestDto.getEmail()).get() == null){
+
+        UserResponseDto userResponseDto = null;
+        User user = userRepository.findByEmail(requestDto.getEmail()).get();
+        if (user != null){
+            userResponseDto = UserResponseDto.from(user);
+            return userResponseDto;
+        }else{
             throw new NotFoundMemberException("없는 유저입니다.");
         }
 
-        User user = userRepository.findByEmail(requestDto.getEmail()).get();
-        return UserResponseDto.from(user);
     }
 
+    @Override
+    public Boolean checkMail(UserRequestDto requestDto) {
+        if (!userRepository.existsByEmail(requestDto.getEmail())) {
+            throw new DuplicateMemberException("없는 유저입니다.");
+        }
+        return true;
+
+
+    }
 //    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
 //    @Transactional(readOnly = true)
 //    public UserDto getUserWithAuthorities(String email) {
