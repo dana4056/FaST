@@ -82,8 +82,7 @@ public class SecurityConfig {
 //                // 접근 제한 X
 //                .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/signup/**").permitAll()
+                .antMatchers("/api/user/**").permitAll()
 //                // 나머지는 필요
                 .anyRequest().authenticated()
 
