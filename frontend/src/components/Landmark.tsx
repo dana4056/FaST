@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { BlurShaderUtils } from 'three-stdlib';
 
 function Landmark({ Model, cameraPosition }: any) {
   return (
@@ -12,7 +13,7 @@ function Landmark({ Model, cameraPosition }: any) {
         >
           <ambientLight
             // eslint-disable-next-line react/no-unknown-property
-            intensity={1}
+            intensity={2}
           />
           <directionalLight
             // eslint-disable-next-line react/no-unknown-property
