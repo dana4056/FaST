@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from 'react-icons/bs';
 import { AiOutlineCheck, AiFillCheckCircle } from 'react-icons/ai';
+import { ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../utils/firebase';
 import InputProfile from '../components/SignUp/InputProfile';
 import { InputProfileProps } from '../types/ComponentPropsType';
 
@@ -119,6 +121,11 @@ export default function SignUpPage({
   ];
   const [selectedTag, setSelectedTag] = useState([]);
 
+  // 서버로 보낼 최종 데이터들 : 프로필 사진, 이메일, 닉네임, 비밃번호
+
+  // 인증번호 전송 및 인증하기 버튼 활성화
+  const [isSend, setIsSend] = useState(false);
+
   // 이름, 이메일, 비밀번호, 비밀번호 확인
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -135,6 +142,7 @@ export default function SignUpPage({
   // 유효성 검사
   const [isName, setIsName] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isCheckEmail, setIsCheckEmail] = useState<boolean>(false); // 인증번호 확인
   const [isPassword, setIsPassword] = useState<boolean>(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
   // const router = useRouter();
@@ -208,18 +216,47 @@ export default function SignUpPage({
     [password]
   );
 
+  // 사용자 이메일로 인증번호 전송
+  const onClickSend = () => {
+    console.log('사용자 이메일로 인증번호 전송!');
+    // 이메일 인증번호 전송 api 연결
+    setIsSend(true);
+    // eslint-disable-next-line no-alert
+    alert('이메일로 인증번호를 전송했습니다 :)');
+  };
+
+  // 인증번호 확인
+  const onClickCheckEmailCode = () => {
+    console.log('이메일 인증번호 확인!');
+
+    setIsCheckEmail(true);
+  };
+
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = () => {
     if (isEmail && isName && isPassword && isPasswordConfirm) {
-      setIsOpen(() => true);
+      console.log('회원가입 api 통신할 때 보낼 데이터 : ');
+      console.log(email);
+      console.log(name);
+      console.log(password);
+
+      // 파이어베이스에 사용자 프로필 사진 등록
+      const uploadImage = async (image: File) => {
+        const result = await uploadBytes(
+          ref(storage, `profiles/${email}`),
+          image
+        );
+        console.log(result);
+      };
+      // uploadImage();
+      // setIsOpen(() => true);
     }
     // eslint-disable-next-line no-alert
     else alert('다시 확인해 주세요 :)');
   };
 
-  // 회원가입 api 통신
   const onClickComplete = () => {
-    console.log('완료 버튼 클릭 + 회원가입 통신 처리하기 !!!');
+    console.log('완료 버튼 클릭!!!');
     navigate('/login');
   };
 
@@ -278,9 +315,23 @@ export default function SignUpPage({
                 className="card sign-up-page__auth__input"
                 type="password"
               />
-              <button className="card sign-up-page__button" type="button">
-                인증하기
-              </button>
+              {isSend === true ? (
+                <button
+                  className="card sign-up-page__button"
+                  type="button"
+                  onClick={onClickCheckEmailCode}
+                >
+                  인증하기
+                </button>
+              ) : (
+                <button
+                  className="card sign-up-page__button"
+                  type="button"
+                  onClick={onClickSend}
+                >
+                  전송
+                </button>
+              )}
             </div>
             <div className="sign-up-page__row">
               <div className="sign-up-page__row__text">
