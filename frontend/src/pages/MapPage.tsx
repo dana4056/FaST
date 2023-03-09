@@ -9,9 +9,6 @@ function MapPage({ cardsLeft, cardsRight }: MapPageProps) {
   return (
     <div>
       <div className="mappage__map__container card">
-        <div className="kakao__map">
-          <Kakaomap />
-        </div>
         <div className="whole__map">
           <Map />
         </div>
