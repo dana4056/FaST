@@ -9,4 +9,5 @@ public interface UserService {
     TokenDto getToken(UserRequestDto requestDto) throws Exception;
     UserResponseDto getUser(UserRequestDto requestDto);
     Boolean checkMail(UserRequestDto requestDto) ;
+    Boolean checkNickname(UserRequestDto requestDto) ;
 }
