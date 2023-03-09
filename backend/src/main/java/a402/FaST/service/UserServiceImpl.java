@@ -101,11 +101,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public Boolean checkMail(UserRequestDto requestDto) {
         if (!userRepository.existsByEmail(requestDto.getEmail())) {
-            throw new DuplicateMemberException("없는 유저입니다.");
+            throw new NotFoundMemberException("없는 유저입니다.");
         }
         return true;
+    }
 
-
+    @Override
+    public Boolean checkNickname(UserRequestDto requestDto) {
+        if (!userRepository.existsByNickname(requestDto.getNickname())) {
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }
+        return true;
     }
 //    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
 //    @Transactional(readOnly = true)
