@@ -62,7 +62,7 @@
   }
 
   .sign-up-page__text {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 20px;
     height: 20px;
   }
@@ -126,7 +126,6 @@
   }
 
   .message {
-    // margin-top: 1px;
     // font-weight: 500;
     font-size: 12px;
     line-height: 24px;
@@ -137,10 +136,12 @@
 
     &.success {
       color: #8f8c8b;
+      margin-top: 3px;
     }
     
     &.error {
       color: #ff2727;
+      margin-top: 3px;
     }
   }
 

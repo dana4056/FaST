@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from 'react-icons/bs';
-import { AiOutlineCheck, AiFillCamera } from 'react-icons/ai';
+import { AiOutlineCheck, AiFillCheckCircle } from 'react-icons/ai';
 import InputProfile from '../components/SignUp/InputProfile';
 import { InputProfileProps } from '../types/ComponentPropsType';
 
@@ -176,15 +176,12 @@ export default function SignUpPage({
   // 비밀번호
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const passwordRegex =
-        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
       const passwordCurrent = e.target.value;
       setPassword(passwordCurrent);
 
       if (!passwordRegex.test(passwordCurrent)) {
-        setPasswordMessage(
-          '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!'
-        );
+        setPasswordMessage('숫자+영문자 조합으로 8자리 이상 입력해주세요!');
         setIsPassword(false);
       } else {
         setPasswordMessage('안전한 비밀번호에요 : )');
@@ -211,9 +208,13 @@ export default function SignUpPage({
     [password]
   );
 
-  // 다음 버튼 클릭 시 관심 태그 설정하러 이동
+  // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = () => {
-    setIsOpen(() => true);
+    if (isEmail && isName && isPassword && isPasswordConfirm) {
+      setIsOpen(() => true);
+    }
+    // eslint-disable-next-line no-alert
+    else alert('다시 확인해 주세요 :)');
   };
 
   // 회원가입 api 통신
@@ -369,6 +370,7 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(item.index)}
                   >
+                    <AiFillCheckCircle />
                     {item.tagName}
                   </button>
                 ))}
