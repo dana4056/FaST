@@ -4,6 +4,7 @@ import Sungnyemun from '../assets/blender/Sungnyemun';
 import SeoulTower from '../assets/blender/SeoulTower';
 import Cheomseongdae from '../assets/blender/Cheomseongdae';
 import Gwangandaegyo from '../assets/blender/Gwangandaegyo';
+import ChinaTown from '../assets/blender/ChinaTown';
 
 function TestPage() {
   return (
@@ -12,6 +13,7 @@ function TestPage() {
       <Landmark Model={SeoulTower} cameraPosition={[0, 2, 9]} />
       <Landmark Model={Cheomseongdae} cameraPosition={[0, 2, 8]} />
       <Landmark Model={Gwangandaegyo} cameraPosition={[0, 2, 5]} />
+      <Landmark Model={ChinaTown} cameraPosition={[0, 2, 18]} />
     </div>
   );
 }
