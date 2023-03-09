@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserResponseDto {
 
-   private String email;
+   private int id;
 
-//   private String password;
+   private String email;
 
    private String nickname;
 
@@ -29,8 +29,8 @@ public class UserResponseDto {
       if(user == null) return null;
 
       return UserResponseDto.builder()
+              .id(user.getId())
               .email(user.getEmail())
-//              .password(user.getPassword())
               .nickname(user.getNickname())
               .salt(user.getSalt())
               .imgPath(user.getImg_path())
