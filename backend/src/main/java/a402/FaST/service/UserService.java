@@ -10,4 +10,7 @@ public interface UserService {
     UserResponseDto getUser(UserRequestDto requestDto);
     Boolean checkMail(UserRequestDto requestDto) ;
     Boolean checkNickname(UserRequestDto requestDto) ;
+    Boolean deleteUser(int id) ;
+    UserResponseDto modifyNickname (int id, UserRequestDto requestDto);
+    void tempPassword (UserRequestDto requestDto) throws Exception;
 }

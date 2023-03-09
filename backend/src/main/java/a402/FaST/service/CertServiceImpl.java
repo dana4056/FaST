@@ -79,8 +79,7 @@ public class CertServiceImpl implements CertService {
         return key.toString();
     }
     @Override
-    public String sendMessage(CertRequestDto requestDto) throws Exception {
-        // TODO Auto-generated method stub
+    public void sendMessage(CertRequestDto requestDto) throws Exception {
         MimeMessage message = createMessage(requestDto.getEmail());
         try{//예외처리
             emailSender.send(message);
@@ -91,8 +90,6 @@ public class CertServiceImpl implements CertService {
 
         Cert cert = new Cert(requestDto.getEmail(),ePw);
         certRepository.save(cert);
-
-        return ePw;
     }
 
     @Override
@@ -100,6 +97,13 @@ public class CertServiceImpl implements CertService {
         if (!certRepository.existsByEmail(requestDto.getEmail())) {
             throw new NotFoundMemberException("없는 유저입니다.");
         }
-        return true;
+
+        Cert cert = certRepository.findById(requestDto.getEmail()).get();
+        if (cert.getEmail().equals(requestDto.getEmail()) && cert.getCode().equals(requestDto.getCode())){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }
