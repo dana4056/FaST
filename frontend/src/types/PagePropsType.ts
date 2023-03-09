@@ -61,8 +61,10 @@ export interface SignUpPageProps extends InputProfileProps {
   isPassword: boolean;
   isPasswordConfirm: boolean;
   isSend: boolean;
+  isOpen: boolean;
 
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAuthNum: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;

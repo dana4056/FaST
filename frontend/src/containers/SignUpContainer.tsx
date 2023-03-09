@@ -3,9 +3,11 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignUpPage from '../pages/SignUpPage';
 import { storage } from '../utils/firebase';
+import api from '../api/signUp';
 
 function SignUpContainer() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   // 유효성 검사
   const [isName, setIsName] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
@@ -19,6 +21,7 @@ function SignUpContainer() {
   // 이름, 이메일, 비밀번호, 비밀번호 확인
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [auth, setAuth] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
@@ -62,18 +65,24 @@ function SignUpContainer() {
   };
 
   // 사용자 이메일로 인증번호 전송
-  const onClickSend = () => {
+  const onClickSend = async () => {
     console.log('사용자 이메일로 인증번호 전송!');
     // 이메일 인증번호 전송 api 연결
-    setIsSend(true);
-    // eslint-disable-next-line no-alert
-    alert('이메일로 인증번호를 전송했습니다 :)');
+    const status = await api.sendEmail(email);
+    if (status === 200) {
+      alert('이메일로 인증번호를 전송했습니다 :)');
+      setIsSend(true);
+    } else {
+      alert('이메일 주소를 다시 확인해 주세요 :)');
+    }
+    console.log(status);
   };
 
   // 인증번호 확인
-  const onClickCheckEmailCode = () => {
+  const onClickCheckEmailCode = async () => {
     console.log('이메일 인증번호 확인!');
-
+    const status = await api.checkEmail(email, auth);
+    console.log(status);
     setIsCheckEmail(true);
   };
   // 닉네임
@@ -107,6 +116,14 @@ function SignUpContainer() {
         setEmailMessage('올바른 이메일 형식이에요 : )');
         setIsEmail(true);
       }
+    },
+    []
+  );
+
+  // 인증번호
+  const onChangeAuthNum = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setAuth(e.target.value);
     },
     []
   );
@@ -191,10 +208,12 @@ function SignUpContainer() {
         isPassword={isPassword}
         isPasswordConfirm={isPasswordConfirm}
         isSend={isSend}
+        isOpen={isOpen}
         imageUrl={imageUrl}
         handleImageChange={handleImageChange}
         handleImageDelete={handleImageDelete}
         onChangeEmail={onChangeEmail}
+        onChangeAuthNum={onChangeAuthNum}
         onChangeNickName={onChangeNickName}
         onChangePassword={onChangePassword}
         onChangePasswordConfirm={onChangePasswordConfirm}
