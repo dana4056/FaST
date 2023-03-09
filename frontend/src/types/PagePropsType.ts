@@ -4,6 +4,7 @@ import {
   CardListProps,
   InputPhotoProps,
   SearchBoxProps,
+  InputProfileProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -42,3 +43,31 @@ export interface CardDetailPageProps extends CardDetailProps {
 export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
 
 export interface MapPageProps extends CardListProps {}
+
+// 회원가입 페이지 Props
+export interface SignUpPageProps extends InputProfileProps {
+  email: string;
+  name: string;
+  password: string;
+  passwordConfirm: string;
+
+  nameMessage: string;
+  emailMessage: string;
+  passwordMessage: string;
+  passwordConfirmMessage: string;
+
+  isEmail: boolean;
+  isName: boolean;
+  isPassword: boolean;
+  isPasswordConfirm: boolean;
+  isSend: boolean;
+
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickCheckEmailCode: () => void;
+  onClickSend: () => void;
+  onClickNext: () => void;
+  onClickComplete: () => void;
+}
