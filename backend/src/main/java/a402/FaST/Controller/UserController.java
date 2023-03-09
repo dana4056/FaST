@@ -106,6 +106,17 @@ public class UserController {
         return ResponseEntity.ok(check);
     }
 
+//    @DeleteMapping("/user/{id}")
+//    @Operation(summary = "닉네임 중복검사 API =>  닉네임 중복 검사하는 API 입니다.",
+//            description = "json 형식 데이터 -> (String : nickname)" +
+//                    " => 검증 결과에 따라 True or False 를 Return 해줍니다.")
+//    public ResponseEntity checkNickname(@Valid @RequestBody UserRequestDto requestDto) throws Exception {
+//
+//        boolean check = userService.checkNickname(requestDto);
+//
+//        return ResponseEntity.ok(check);
+//    }
+
 //    @GetMapping("/user")
 ////    @PreAuthorize("hasAnyRole('USER','ADMIN')")
 //    public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
