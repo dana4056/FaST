@@ -100,7 +100,15 @@ function Kakaomap() {
   }, []);
   return (
     <div>
-      <div id="map" style={{ width: '100%', height: '400px' }} />
+      <div
+        id="map"
+        style={{
+          width: '100%',
+          height: '400px',
+          margin: 'auto',
+          borderRadius: '10px',
+        }}
+      />
     </div>
   );
 }
