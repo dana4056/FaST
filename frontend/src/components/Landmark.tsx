@@ -8,6 +8,7 @@ function Landmark({ Model, cameraPosition }: any) {
       <div className="landmark__canvas">
         <Canvas
           camera={{
+            fov: 60,
             position: cameraPosition,
           }}
         >
