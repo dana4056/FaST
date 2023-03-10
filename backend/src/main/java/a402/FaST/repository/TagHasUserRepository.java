@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface TagHasUserRepository extends JpaRepository<TagHasUser, TagHasUserPK> {
+//public interface TagHasUserRepository extends JpaRepository<TagHasUser, Integer> {
 }
