@@ -31,15 +31,18 @@ public class TagController {
             " => 태그를 가지고 있는 사용자 정보를 Return 해줍니다.")
     public ResponseEntity<UserResponseDto> insertTag( @RequestBody TagRequestDto requestDto) {
         UserResponseDto responseDto = null;
-
-        List<String> list =  requestDto.getTags();
-        int id = requestDto.getId();
-        logger.info("id = {}",id);
-        logger.info("list = {}",list);
-
         responseDto = tagService.insertTag(requestDto);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("")
+    @Operation(summary = "태그 삭제 API =>  사용자가 가지고 있는 태그 삭제하는 API 입니다.",
+            description = "json 형식 데이터 -> (int : user_id, int : tag_id )" +
+                    " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
+    public ResponseEntity deleteTag(@Valid @RequestBody TagRequestDto requestDto) throws Exception {
+        boolean check = tagService.deleteTag(requestDto);
+        return ResponseEntity.ok(check);
     }
 
 

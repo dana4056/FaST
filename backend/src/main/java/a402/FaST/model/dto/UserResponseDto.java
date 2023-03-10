@@ -3,6 +3,7 @@ package a402.FaST.model.dto;
 import a402.FaST.model.entity.User;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,9 @@ public class UserResponseDto {
 
    private Set<AuthorityDto> authorityDtoSet;
 
+   private List<TagResponseDto> tags;
+
+
    public static UserResponseDto from(User user) {
       if(user == null) return null;
 
@@ -37,6 +41,9 @@ public class UserResponseDto {
               .authorityDtoSet(user.getAuthorities().stream()
                       .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                       .collect(Collectors.toSet()))
+              .tags(user.getTags().stream()
+                      .map((Tag -> TagResponseDto.builder().tagName(Tag.getTag().getName()).build()))
+                      .collect(Collectors.toList()))
               .build();
    }
 }
