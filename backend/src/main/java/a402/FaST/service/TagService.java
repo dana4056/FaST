@@ -6,4 +6,6 @@ import a402.FaST.model.dto.UserResponseDto;
 
 public interface TagService {
     UserResponseDto insertTag (TagRequestDto requestDto);
+
+    boolean deleteTag(TagRequestDto requestDto);
 }
