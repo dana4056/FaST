@@ -13,4 +13,6 @@ public interface UserService {
     Boolean deleteUser(int id) ;
     UserResponseDto modifyNickname (int id, UserRequestDto requestDto);
     void tempPassword (UserRequestDto requestDto) throws Exception;
+
+    UserResponseDto findUser(int id);
 }

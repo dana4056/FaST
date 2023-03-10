@@ -34,26 +34,36 @@ public class TagServiceImpl implements TagService{
     @Override
     public UserResponseDto insertTag(TagRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(!userRepository.existsById(requestDto.getId())){
+        if(!userRepository.existsById(requestDto.getUserId())){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             for (String tagName : requestDto.getTags()){
-                User user = userRepository.findById(requestDto.getId()).get();
+                User user = userRepository.findById(requestDto.getUserId()).get();
                 Tag tag = tagRepository.findByName(tagName).get();
-                logger.info(" User : {}", user.getId());
-                logger.info(" Tag : {}", tag.getName());
 
                 TagHasUser tagHasUser = TagHasUser.builder()
                         .user(user)
                         .tag(tag)
                         .build();
-                logger.info("시작");
                 tagHasUserRepository.save(tagHasUser);
-                logger.info("끝");
-
             }
         }
+        userResponseDto = UserResponseDto.from(userRepository.findById(requestDto.getUserId()).get());
 
-        return null;
+        return userResponseDto;
+    }
+
+    @Override
+    public boolean deleteTag(TagRequestDto requestDto) {
+        if(!userRepository.existsById(requestDto.getUserId())){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else if (!tagRepository.existsById(requestDto.getTagId())){
+            throw new NotFoundMemberException("없는 태그입니다");
+        }
+        else{
+            tagHasUserRepository.TagDelete(requestDto.getTagId(), requestDto.getUserId());
+        }
+        return true;
+
     }
 }

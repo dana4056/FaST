@@ -112,6 +112,16 @@ public class UserController {
         userService.tempPassword(requestDto);
     }
 
+    @GetMapping("/user/{id}")
+    @Operation(summary = "유저 조회 API =>  유저 ID로 특정 유저 조회하는 API 입니다.",
+            description = "PathVariable 형식 데이터 -> (int : id)" +
+                    " => UserResponseDto Return 해줍니다.")
+    public ResponseEntity<UserResponseDto> findUser(@Valid @PathVariable int id) throws Exception {
+        UserResponseDto userResponseDto = null;
+        userResponseDto = userService.findUser(id);
+        return ResponseEntity.ok(userResponseDto);
+    }
+
 //    만약 권한 쓰고 싶으면 이렇게 사용
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
 

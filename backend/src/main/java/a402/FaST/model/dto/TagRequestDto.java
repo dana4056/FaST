@@ -13,7 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 public class TagRequestDto {
 
-   private int id;
+   private int tagId;
+   private int userId;
+
    private List<String> tags;
 
 }
