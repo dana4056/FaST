@@ -2,10 +2,7 @@ package a402.FaST.model.entity;
 
 import a402.FaST.model.PK.TagHasUserPK;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Table(name = "tag_has_user")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @IdClass(TagHasUserPK.class)

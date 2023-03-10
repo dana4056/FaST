@@ -83,6 +83,7 @@ public class SecurityConfig {
 //                .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/tag/**").permitAll()
 //                // 나머지는 필요
                 .anyRequest().authenticated()
 
