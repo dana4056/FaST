@@ -181,9 +181,9 @@ function SignUpContainer() {
       console.log(`nickname : ${name}`); // 닉네임
       console.log(`password : ${password}`); // 비밀번호
       console.log(`암호화된 password : ${pwd}`); // 암호화된 password
-      const status = await api.signUp(email, imgPath, name, pwd, salt);
+      const res = await api.signUp(email, imgPath, name, pwd, salt);
 
-      if (status === 200) {
+      if (res.status === 200) {
         // 파이어베이스에 사용자 프로필 사진 등록
         const uploadImage = async (img: File | undefined) => {
           if (img === undefined) return;
@@ -203,7 +203,7 @@ function SignUpContainer() {
     else alert('다시 확인해 주세요 :)');
   };
 
-  const onClickComplete = () => {
+  const onClickComplete = async () => {
     console.log('완료 버튼 클릭!!!');
     navigate('/login');
   };
