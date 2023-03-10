@@ -34,23 +34,18 @@ public class TagServiceImpl implements TagService{
     @Override
     public UserResponseDto insertTag(TagRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(!userRepository.existsByEmail(requestDto.getEmail())){
+        if(!userRepository.existsById(requestDto.getId())){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             for (String tagName : requestDto.getTags()){
-                if (!tagRepository.existsByName(tagName)){
-                    Tag tag = Tag.builder().name(tagName).build();
-                    logger.info(" Tag : {}", tag.getName());
-                    tagRepository.save(tag);
-                }
-                User user = userRepository.findByEmail(requestDto.getEmail()).get();
-                Tag temp = tagRepository.findByName(tagName).get();
+                User user = userRepository.findById(requestDto.getId()).get();
+                Tag tag = tagRepository.findByName(tagName).get();
                 logger.info(" User : {}", user.getId());
-                logger.info(" Tag : {}", temp.getName());
+                logger.info(" Tag : {}", tag.getName());
 
                 TagHasUser tagHasUser = TagHasUser.builder()
-                        .user(userRepository.findByEmail(requestDto.getEmail()).get())
-                        .tag(tagRepository.findByName(tagName).get())
+                        .user(user)
+                        .tag(tag)
                         .build();
                 logger.info("시작");
                 tagHasUserRepository.save(tagHasUser);

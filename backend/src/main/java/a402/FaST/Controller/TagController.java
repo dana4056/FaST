@@ -33,9 +33,9 @@ public class TagController {
         UserResponseDto responseDto = null;
 
         List<String> list =  requestDto.getTags();
-        String email = requestDto.getEmail();
+        int id = requestDto.getId();
+        logger.info("id = {}",id);
         logger.info("list = {}",list);
-        logger.info("email = {}",email);
 
         responseDto = tagService.insertTag(requestDto);
 
