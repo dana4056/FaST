@@ -57,6 +57,7 @@ export interface SignUpPageProps extends InputProfileProps {
   passwordConfirmMessage: string;
 
   isEmail: boolean;
+  isCheckEmail: boolean;
   isName: boolean;
   isPassword: boolean;
   isPasswordConfirm: boolean;

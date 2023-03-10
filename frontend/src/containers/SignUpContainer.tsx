@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SignUpPage from '../pages/SignUpPage';
 import { storage } from '../utils/firebase';
 import api from '../api/signUp';
+import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 
 function SignUpContainer() {
   const navigate = useNavigate();
@@ -67,21 +68,27 @@ function SignUpContainer() {
   // 사용자 이메일로 인증번호 전송
   const onClickSend = async () => {
     console.log('사용자 이메일로 인증번호 전송!');
+    if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
+    setIsSend(true);
     // 이메일 인증번호 전송 api 연결
     const status = await api.sendEmail(email);
     if (status === 200) {
-      alert('이메일로 인증번호를 전송했습니다 :)');
-      setIsSend(true);
+      console.log('인증번호 전송 성공!');
     } else {
-      alert('이메일 주소를 다시 확인해 주세요 :)');
+      alert('인증번호 전송에 실패했습니다.');
     }
     console.log(status);
   };
 
   // 인증번호 확인
   const onClickCheckEmailCode = async () => {
-    console.log('이메일 인증번호 확인!');
+    console.log('이메일 인증번호 확인 중!');
     const status = await api.checkEmail(email, auth);
+    if (status === 200) {
+      alert('인증번호 확인이 완료됐습니다 :)');
+    } else {
+      alert('인증번호 확인에 실패했습니다.');
+    }
     console.log(status);
     setIsCheckEmail(true);
   };
@@ -164,30 +171,39 @@ function SignUpContainer() {
   );
 
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
-  const onClickNext = () => {
-    if (isEmail && isName && isPassword && isPasswordConfirm) {
+  const onClickNext = async () => {
+    if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
       console.log('회원가입 api 통신할 때 보낼 데이터 : ');
-      console.log(email);
-      console.log(name);
-      console.log(password);
+      const imgPath = `profiles/${email}`;
+      const salt = createSalt();
+      const pwd = createHashedPassword(password, salt);
+      console.log(`email : ${email}`); // 이메일
+      console.log(`nickname : ${name}`); // 닉네임
+      console.log(`password : ${password}`); // 비밀번호
+      console.log(`암호화된 password : ${pwd}`); // 암호화된 password
+      const res = await api.signUp(email, imgPath, name, pwd, salt);
 
-      // 파이어베이스에 사용자 프로필 사진 등록
-      const uploadImage = async (img: File | undefined) => {
-        if (img === undefined) return;
-        const result = await uploadBytes(
-          ref(storage, `profiles/${email}`),
-          img
-        );
-        console.log(result);
-      };
-      uploadImage(image);
-      // setIsOpen(() => true);
+      if (res.status === 200) {
+        // 파이어베이스에 사용자 프로필 사진 등록
+        const uploadImage = async (img: File | undefined) => {
+          if (img === undefined) return;
+          const result = await uploadBytes(
+            ref(storage, `profiles/${email}`),
+            img
+          );
+          console.log(result);
+        };
+        uploadImage(image);
+        setIsOpen(() => true);
+      } else {
+        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+      }
     }
     // eslint-disable-next-line no-alert
     else alert('다시 확인해 주세요 :)');
   };
 
-  const onClickComplete = () => {
+  const onClickComplete = async () => {
     console.log('완료 버튼 클릭!!!');
     navigate('/login');
   };
@@ -204,6 +220,7 @@ function SignUpContainer() {
         passwordMessage={passwordMessage}
         passwordConfirmMessage={passwordConfirmMessage}
         isEmail={isEmail}
+        isCheckEmail={isCheckEmail}
         isName={isName}
         isPassword={isPassword}
         isPasswordConfirm={isPasswordConfirm}

@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BsPersonCircle } from 'react-icons/bs';
 import { AiOutlineCheck, AiFillCheckCircle } from 'react-icons/ai';
-import { ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../utils/firebase';
 import InputProfile from '../components/SignUp/InputProfile';
-import { InputProfileProps } from '../types/ComponentPropsType';
 import { SignUpPageProps } from '../types/PagePropsType';
 
 export default function SignUpPage({
@@ -18,6 +13,7 @@ export default function SignUpPage({
   passwordMessage,
   passwordConfirmMessage,
   isEmail,
+  isCheckEmail,
   isName,
   isPassword,
   isPasswordConfirm,
@@ -142,17 +138,41 @@ export default function SignUpPage({
       },
     ],
   ];
-  const [selectedTag, setSelectedTag] = useState([]);
+  const [selectedTag, setSelectedTag] = useState<Array<string>>([]);
 
   // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
-  const onClickTag = (e: number) => {
+  const onClickTag = (e: number, row: number) => {
     console.log(`관심 태그 선택!!${e}`);
-    const idx = e;
+    const favoritTag = tag[row][e].tagName;
+    console.log(tag[row][e]);
+    const { index } = tag[row][e];
+    console.log(index);
+    console.log(isChecked[index]);
+
+    if (!isChecked[index]) {
+      // 태그가 선택되어 있지 않았다면
+      const newIsChecked = [...isChecked];
+      newIsChecked[index] = true;
+      setIsChecked(newIsChecked);
+
+      const newSelectTag = selectedTag.concat(favoritTag);
+      setSelectedTag(newSelectTag);
+    } else {
+      // 태그가 이미 선택되어 있다면 해당 태그 선택 해제
+      const newIsChecked = [...isChecked];
+      newIsChecked[index] = false;
+      setIsChecked(newIsChecked);
+
+      // 선택된 해당 태그 삭제 후 재할당
+      const idx = selectedTag.indexOf(favoritTag);
+      console.log(idx);
+      setSelectedTag(selectedTag.filter((t) => t !== favoritTag));
+    }
   };
 
   useEffect(() => {
-    console.log('changed!');
-  }, [isChecked]);
+    console.log(selectedTag);
+  }, [selectedTag]);
 
   return (
     <div className="sign-up-wide-page">
@@ -199,12 +219,14 @@ export default function SignUpPage({
                 onChange={onChangeAuthNum}
                 className="card sign-up-page__auth__input"
                 type="password"
+                disabled={!isEmail}
               />
               {isSend === true ? (
                 <button
                   className="card sign-up-page__button"
                   type="button"
                   onClick={onClickCheckEmailCode}
+                  disabled={isCheckEmail}
                 >
                   인증하기
                 </button>
@@ -213,6 +235,7 @@ export default function SignUpPage({
                   className="card sign-up-page__button"
                   type="button"
                   onClick={onClickSend}
+                  disabled={!isEmail}
                 >
                   전송
                 </button>
@@ -227,6 +250,7 @@ export default function SignUpPage({
                 type="text"
                 placeholder="중복 불가능, 1~10자리"
                 onChange={onChangeNickName}
+                disabled={!isCheckEmail}
               />
               {name.length > 0 && (
                 <span className={`message ${isName ? 'success' : 'error'}`}>
@@ -243,6 +267,7 @@ export default function SignUpPage({
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
                 onChange={onChangePassword}
+                disabled={!isName}
               />
               {password.length > 0 && (
                 <span className={`message ${isPassword ? 'success' : 'error'}`}>
@@ -259,6 +284,7 @@ export default function SignUpPage({
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
                 onChange={onChangePasswordConfirm}
+                disabled={!isPassword}
               />
               {passwordConfirm.length > 0 && (
                 <span
@@ -292,8 +318,9 @@ export default function SignUpPage({
                     key={item.tagName}
                     className={item.color}
                     type="button"
-                    onClick={() => onClickTag(item.index)}
+                    onClick={() => onClickTag(i, 0)}
                   >
+                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -304,9 +331,9 @@ export default function SignUpPage({
                     key={item.tagName}
                     className={item.color}
                     type="button"
-                    onClick={() => onClickTag(item.index)}
+                    onClick={() => onClickTag(i, 1)}
                   >
-                    <AiFillCheckCircle />
+                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -317,8 +344,9 @@ export default function SignUpPage({
                     key={item.tagName}
                     className={item.color}
                     type="button"
-                    onClick={() => onClickTag(item.index)}
+                    onClick={() => onClickTag(i, 2)}
                   >
+                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -329,8 +357,9 @@ export default function SignUpPage({
                     key={item.tagName}
                     className={item.color}
                     type="button"
-                    onClick={() => onClickTag(item.index)}
+                    onClick={() => onClickTag(i, 3)}
                   >
+                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -341,8 +370,9 @@ export default function SignUpPage({
                     key={item.tagName}
                     className={item.color}
                     type="button"
-                    onClick={() => onClickTag(item.index)}
+                    onClick={() => onClickTag(i, 4)}
                   >
+                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -351,7 +381,7 @@ export default function SignUpPage({
           </div>
           <div className="sign-up-page__row__next">
             <button
-              className="card sign-up-page__next__button"
+              className="card sign-up-favorite-tag-page__next__button"
               type="button"
               onClick={onClickComplete}
             >
