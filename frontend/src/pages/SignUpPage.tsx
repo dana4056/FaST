@@ -18,6 +18,7 @@ export default function SignUpPage({
   passwordMessage,
   passwordConfirmMessage,
   isEmail,
+  isCheckEmail,
   isName,
   isPassword,
   isPasswordConfirm,
@@ -199,12 +200,14 @@ export default function SignUpPage({
                 onChange={onChangeAuthNum}
                 className="card sign-up-page__auth__input"
                 type="password"
+                disabled={!isEmail}
               />
               {isSend === true ? (
                 <button
                   className="card sign-up-page__button"
                   type="button"
                   onClick={onClickCheckEmailCode}
+                  disabled={isCheckEmail}
                 >
                   인증하기
                 </button>
@@ -213,6 +216,7 @@ export default function SignUpPage({
                   className="card sign-up-page__button"
                   type="button"
                   onClick={onClickSend}
+                  disabled={!isEmail}
                 >
                   전송
                 </button>
@@ -227,6 +231,7 @@ export default function SignUpPage({
                 type="text"
                 placeholder="중복 불가능, 1~10자리"
                 onChange={onChangeNickName}
+                disabled={!isCheckEmail}
               />
               {name.length > 0 && (
                 <span className={`message ${isName ? 'success' : 'error'}`}>
@@ -243,6 +248,7 @@ export default function SignUpPage({
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
                 onChange={onChangePassword}
+                disabled={!isName}
               />
               {password.length > 0 && (
                 <span className={`message ${isPassword ? 'success' : 'error'}`}>
@@ -259,6 +265,7 @@ export default function SignUpPage({
                 type="password"
                 placeholder="영어, 숫자 8~15자리"
                 onChange={onChangePasswordConfirm}
+                disabled={!isPassword}
               />
               {passwordConfirm.length > 0 && (
                 <span
@@ -351,7 +358,7 @@ export default function SignUpPage({
           </div>
           <div className="sign-up-page__row__next">
             <button
-              className="card sign-up-page__next__button"
+              className="card sign-up-favorite-tag-page__next__button"
               type="button"
               onClick={onClickComplete}
             >
