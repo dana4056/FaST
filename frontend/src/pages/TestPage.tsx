@@ -7,6 +7,7 @@ import Gwangandaegyo from '../assets/blender/Gwangandaegyo';
 import ChinaTown from '../assets/blender/ChinaTown';
 import Yisunshin from '../assets/blender/Yisunshin';
 import LotteTower from '../assets/blender/LotteTower';
+import Building63 from '../assets/blender/Building63';
 
 function TestPage() {
   return (
@@ -18,6 +19,7 @@ function TestPage() {
       <Landmark Model={ChinaTown} cameraPosition={[0, 2, 18]} />
       <Landmark Model={Yisunshin} cameraPosition={[0, 2, 5.5]} />
       <Landmark Model={LotteTower} cameraPosition={[0, 2, 6]} />
+      <Landmark Model={Building63} cameraPosition={[0, 2, 7]} />
     </div>
   );
 }
