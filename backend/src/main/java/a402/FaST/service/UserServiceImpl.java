@@ -168,6 +168,18 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    @Override
+    public UserResponseDto findUser(int id) {
+        UserResponseDto userResponseDto = null;
+        if(!userRepository.existsById(id)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(id).get();
+            userResponseDto = UserResponseDto.from(user);
+        }
+        return userResponseDto;
+    }
+
     //    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
 //    @Transactional(readOnly = true)
 //    public UserDto getUserWithAuthorities(String email) {
