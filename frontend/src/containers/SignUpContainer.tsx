@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SignUpPage from '../pages/SignUpPage';
 import { storage } from '../utils/firebase';
 import api from '../api/signUp';
+import { createSalt } from '../utils/passwordEncryption';
 
 function SignUpContainer() {
   const navigate = useNavigate();
@@ -80,8 +81,13 @@ function SignUpContainer() {
 
   // 인증번호 확인
   const onClickCheckEmailCode = async () => {
-    console.log('이메일 인증번호 확인!');
+    console.log('이메일 인증번호 확인 중!');
     const status = await api.checkEmail(email, auth);
+    if (status === 200) {
+      alert('인증번호 확인이 완료됐습니다 :)');
+    } else {
+      alert('인증번호 확인에 실패했습니다.');
+    }
     console.log(status);
     setIsCheckEmail(true);
   };
@@ -164,13 +170,20 @@ function SignUpContainer() {
   );
 
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
-  const onClickNext = () => {
+  const onClickNext = async () => {
     if (isEmail && isName && isPassword && isPasswordConfirm) {
       console.log('회원가입 api 통신할 때 보낼 데이터 : ');
-      console.log(email);
-      console.log(name);
-      console.log(password);
-
+      const imgPath = `profiles/${email}`;
+      console.log(email); // 이메일
+      console.log(name); // 닉네임
+      console.log(password); // 비밀번호
+      const status = await api.signUp(
+        email,
+        imgPath,
+        name,
+        password,
+        createSalt()
+      );
       // 파이어베이스에 사용자 프로필 사진 등록
       const uploadImage = async (img: File | undefined) => {
         if (img === undefined) return;
