@@ -41,7 +41,7 @@ async function signUp(
   nickname: string,
   password: string,
   salt: string
-): Promise<AxiosResponse | AxiosError> {
+): Promise<AxiosResponse> {
   try {
     const res = await api.post<any>(`/api/user`, {
       email,
@@ -60,4 +60,18 @@ async function signUp(
   }
 }
 
-export default { sendEmail, checkEmail, signUp };
+async function registerTag(tags: Array<string>, userId: number) {
+  try {
+    const res = await api.post(`/tag`, {
+      tags,
+      userId,
+    });
+    console.log(res.status);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { sendEmail, checkEmail, signUp, registerTag };

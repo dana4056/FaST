@@ -44,7 +44,12 @@ export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
 
 export interface MapPageProps extends CardListProps {}
 
-// 회원가입 페이지 Props
+interface Tag {
+  tagName: string;
+  color: string;
+  index: number;
+}
+// 회원가입 페이지 Props=
 export interface SignUpPageProps extends InputProfileProps {
   email: string;
   name: string;
@@ -64,6 +69,10 @@ export interface SignUpPageProps extends InputProfileProps {
   isSend: boolean;
   isOpen: boolean;
 
+  tag: Array<Array<Tag>>;
+  selectedTag: Array<string>;
+  isChecked: Array<boolean>;
+
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAuthNum: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -73,4 +82,5 @@ export interface SignUpPageProps extends InputProfileProps {
   onClickSend: () => void;
   onClickNext: () => void;
   onClickComplete: () => void;
+  onClickTag: (e: number, row: number) => void;
 }
