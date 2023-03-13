@@ -9,6 +9,7 @@ import Yisunshin from '../assets/blender/Yisunshin';
 import LotteTower from '../assets/blender/LotteTower';
 import Building63 from '../assets/blender/Building63';
 import Seongsan from '../assets/blender/Seongsan';
+import DolHareubang from '../assets/blender/DolHareubang';
 
 function TestPage() {
   return (
@@ -22,6 +23,7 @@ function TestPage() {
       <Landmark Model={LotteTower} cameraPosition={[0, 2, 6]} />
       <Landmark Model={Building63} cameraPosition={[0, 2, 7]} />
       <Landmark Model={Seongsan} cameraPosition={[0, 2, 4]} />
+      <Landmark Model={DolHareubang} cameraPosition={[0, 2, 7]} />
     </div>
   );
 }
