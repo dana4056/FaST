@@ -1,11 +1,13 @@
 package a402.FaST.config;
 
 
+import a402.FaST.auth.userOAuth2Service;
+import a402.FaST.handler.OAuth2AuthenticationSuccessHandler;
 import a402.FaST.jwt.JwtAccessDeniedHandler;
 import a402.FaST.jwt.JwtAuthenticationEntryPoint;
 import a402.FaST.jwt.JwtSecurityConfig;
 import a402.FaST.jwt.TokenProvider;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,23 +25,15 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final userOAuth2Service userOAuth2Service;
 
-    public SecurityConfig(
-            TokenProvider tokenProvider,
-            CorsFilter corsFilter,
-            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-            JwtAccessDeniedHandler jwtAccessDeniedHandler
-    ) {
-        this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -87,8 +81,9 @@ public class SecurityConfig {
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/tag/**").permitAll()
                 .antMatchers("/oauth2/**").permitAll()
+                .antMatchers("/login**").permitAll()
 //                // 나머지는 필요
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
@@ -101,7 +96,11 @@ public class SecurityConfig {
 
                 // oauth2 를 이용한 소셜 로그인 설정 적용
                 .and()
-                .oauth2Login();
+                .oauth2Login()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .userInfoEndpoint()
+                .userService(userOAuth2Service);
+
 //                .defaultSuccessUrl("/login-success");
 //                .successHandler(oAuth2AuthenticationSuccessHandler)
 //                .userInfoEndpoint()
