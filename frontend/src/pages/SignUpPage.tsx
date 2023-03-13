@@ -320,7 +320,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 0)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -333,7 +335,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 1)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -346,7 +350,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 2)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -359,7 +365,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 3)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -372,7 +380,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 4)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
