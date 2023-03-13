@@ -122,6 +122,15 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
+    @PostMapping("/user/salt")
+    @Operation(summary = "salt 조회 API =>  유저 salt를 조회하는 API 입니다.",
+            description = "json 형식 데이터 -> (String : email)" +
+                    " => salt 값이나 error return 해줍니다.")
+    public ResponseEntity<String> findSalt(@Valid @RequestBody UserRequestDto requestDto) throws Exception {
+        String salt = userService.findSalt(requestDto);
+        return ResponseEntity.ok(salt);
+    }
+
 //    만약 권한 쓰고 싶으면 이렇게 사용
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
 
