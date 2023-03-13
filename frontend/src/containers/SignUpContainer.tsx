@@ -1,6 +1,7 @@
 import { ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 import SignUpPage from '../pages/SignUpPage';
 import { storage } from '../utils/firebase';
 import api from '../api/signUp';
@@ -8,6 +9,7 @@ import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 
 function SignUpContainer() {
   const navigate = useNavigate();
+  const [idPk, setIdPk] = useState(Number);
   const [isOpen, setIsOpen] = useState(false);
   // 유효성 검사
   const [isName, setIsName] = useState<boolean>(false);
@@ -37,6 +39,113 @@ function SignUpContainer() {
   const [imageUrl, setImageUrl] = useState<string>('');
   // 이미지 파일 저장 배열
   const [image, setImage] = useState<File>();
+
+  const [isChecked, setIsChecked] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const tag = [
+    [
+      {
+        tagName: '바다',
+        color: 'sign-up-favorite-tag-page__tag6',
+        index: 0,
+      },
+      {
+        tagName: '산',
+        color: 'sign-up-favorite-tag-page__tag7',
+        index: 1,
+      },
+      {
+        tagName: '액티비티',
+        color: 'sign-up-favorite-tag-page__tag8',
+        index: 2,
+      },
+    ],
+    [
+      {
+        tagName: '강',
+        color: 'sign-up-favorite-tag-page__tag8',
+        index: 3,
+      },
+      {
+        tagName: '유적지',
+        color: 'sign-up-favorite-tag-page__tag9',
+        index: 4,
+      },
+      {
+        tagName: '계곡',
+        color: 'sign-up-favorite-tag-page__tag6',
+        index: 5,
+      },
+    ],
+    [
+      {
+        tagName: '호캉스',
+        color: 'sign-up-favorite-tag-page__tag9',
+        index: 6,
+      },
+      {
+        tagName: '캠핑',
+        color: 'sign-up-favorite-tag-page__tag6',
+        index: 7,
+      },
+      {
+        tagName: '힐링',
+        color: 'sign-up-favorite-tag-page__tag7',
+        index: 8,
+      },
+    ],
+    [
+      {
+        tagName: '배낭여행',
+        color: 'sign-up-favorite-tag-page__tag7',
+        index: 9,
+      },
+      {
+        tagName: '박물관',
+        color: 'sign-up-favorite-tag-page__tag8',
+        index: 10,
+      },
+      {
+        tagName: '자전거',
+        color: 'sign-up-favorite-tag-page__tag6',
+        index: 11,
+      },
+    ],
+    [
+      {
+        tagName: '등산',
+        color: 'sign-up-favorite-tag-page__tag6',
+        index: 12,
+      },
+      {
+        tagName: '휴양지',
+        color: 'sign-up-favorite-tag-page__tag7',
+        index: 13,
+      },
+      {
+        tagName: '도심',
+        color: 'sign-up-favorite-tag-page__tag9',
+        index: 14,
+      },
+    ],
+  ];
+  const [selectedTag, setSelectedTag] = useState<Array<string>>([]);
 
   // 이미지 입력
   const handleImageChange = async (
@@ -170,6 +279,36 @@ function SignUpContainer() {
     [password]
   );
 
+  // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
+  const onClickTag = (e: number, row: number) => {
+    console.log(`관심 태그 선택!!${e}`);
+    const favoritTag = tag[row][e].tagName;
+    console.log(tag[row][e]);
+    const { index } = tag[row][e];
+    console.log(index);
+    console.log(isChecked[index]);
+
+    if (!isChecked[index]) {
+      // 태그가 선택되어 있지 않았다면
+      const newIsChecked = [...isChecked];
+      newIsChecked[index] = true;
+      setIsChecked(newIsChecked);
+
+      const newSelectTag = selectedTag.concat(favoritTag);
+      setSelectedTag(newSelectTag);
+    } else {
+      // 태그가 이미 선택되어 있다면 해당 태그 선택 해제
+      const newIsChecked = [...isChecked];
+      newIsChecked[index] = false;
+      setIsChecked(newIsChecked);
+
+      // 선택된 해당 태그 삭제 후 재할당
+      const idx = selectedTag.indexOf(favoritTag);
+      console.log(idx);
+      setSelectedTag(selectedTag.filter((t) => t !== favoritTag));
+    }
+  };
+
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
@@ -184,6 +323,8 @@ function SignUpContainer() {
       const res = await api.signUp(email, imgPath, name, pwd, salt);
 
       if (res.status === 200) {
+        // db에 있는 사용자 pk값 저장
+        setIdPk(res.data.id);
         // 파이어베이스에 사용자 프로필 사진 등록
         const uploadImage = async (img: File | undefined) => {
           if (img === undefined) return;
@@ -203,9 +344,15 @@ function SignUpContainer() {
     else alert('다시 확인해 주세요 :)');
   };
 
+  // 관심 태그 선택까지 모두 마쳤다면
   const onClickComplete = async () => {
     console.log('완료 버튼 클릭!!!');
-    navigate('/login');
+
+    const res = await api.registerTag(selectedTag, idPk);
+
+    if (res === 200) {
+      navigate('/login');
+    }
   };
 
   return (
@@ -226,6 +373,9 @@ function SignUpContainer() {
         isPasswordConfirm={isPasswordConfirm}
         isSend={isSend}
         isOpen={isOpen}
+        tag={tag}
+        selectedTag={selectedTag}
+        isChecked={isChecked}
         imageUrl={imageUrl}
         handleImageChange={handleImageChange}
         handleImageDelete={handleImageDelete}
@@ -238,6 +388,7 @@ function SignUpContainer() {
         onClickSend={onClickSend}
         onClickNext={onClickNext}
         onClickComplete={onClickComplete}
+        onClickTag={onClickTag}
       />
     </div>
   );
