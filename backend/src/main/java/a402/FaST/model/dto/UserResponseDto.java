@@ -31,19 +31,31 @@ public class UserResponseDto {
 
    public static UserResponseDto from(User user) {
       if(user == null) return null;
-
-      return UserResponseDto.builder()
-              .id(user.getId())
-              .email(user.getEmail())
-              .nickname(user.getNickname())
-              .salt(user.getSalt())
-              .imgPath(user.getImg_path())
-              .authorityDtoSet(user.getAuthorities().stream()
-                      .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-                      .collect(Collectors.toSet()))
-              .tags(user.getTags().stream()
-                      .map((Tag -> TagResponseDto.builder().tagName(Tag.getTag().getName()).build()))
-                      .collect(Collectors.toList()))
-              .build();
+      if(user.getTags() == null){
+         return UserResponseDto.builder()
+                 .id(user.getId())
+                 .email(user.getEmail())
+                 .nickname(user.getNickname())
+                 .salt(user.getSalt())
+                 .imgPath(user.getImg_path())
+                 .authorityDtoSet(user.getAuthorities().stream()
+                         .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
+                         .collect(Collectors.toSet()))
+                 .build();
+      }else{
+         return UserResponseDto.builder()
+                 .id(user.getId())
+                 .email(user.getEmail())
+                 .nickname(user.getNickname())
+                 .salt(user.getSalt())
+                 .imgPath(user.getImg_path())
+                 .authorityDtoSet(user.getAuthorities().stream()
+                         .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
+                         .collect(Collectors.toSet()))
+                 .tags(user.getTags().stream()
+                         .map((Tag -> TagResponseDto.builder().tagName(Tag.getTag().getName()).build()))
+                         .collect(Collectors.toList()))
+                 .build();
+      }
    }
 }
