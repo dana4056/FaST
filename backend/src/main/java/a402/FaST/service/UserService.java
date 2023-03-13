@@ -15,4 +15,6 @@ public interface UserService {
     void tempPassword (UserRequestDto requestDto) throws Exception;
 
     UserResponseDto findUser(int id);
+
+    String findSalt(UserRequestDto requestDto);
 }

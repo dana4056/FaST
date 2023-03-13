@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
         // 만든 권한 정보 바탕으로 User정보를 만든다
         User user = User.builder()
                 .email(requestDto.getEmail())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
+                .password(requestDto.getPassword())
                 .nickname(requestDto.getNickname())
                 .salt((requestDto.getSalt()))
                 .img_path(requestDto.getImgPath())
@@ -98,12 +98,18 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponseDto getUser(UserRequestDto requestDto) {
-
         UserResponseDto userResponseDto = null;
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
+        logger.info("pwd : {}",requestDto.getPassword());
+        logger.info("pwd : {}",user.getPassword());
+
         if (user != null){
-            userResponseDto = UserResponseDto.from(user);
-            return userResponseDto;
+            if (user.getPassword().equals(requestDto.getPassword())){
+                userResponseDto = UserResponseDto.from(user);
+                return userResponseDto;
+            }else{
+                throw new NotFoundMemberException("비밀번호 틀렸습니다");
+            }
         }else{
             throw new NotFoundMemberException("없는 유저입니다.");
         }
@@ -179,6 +185,20 @@ public class UserServiceImpl implements UserService{
         }
         return userResponseDto;
     }
+
+    @Override
+    public String findSalt(UserRequestDto requestDto) {
+        String salt = null;
+
+        if (!userRepository.existsByEmail(requestDto.getEmail())) {
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findByEmail(requestDto.getEmail()).get();
+            salt = user.getSalt();
+            return salt;
+        }
+    }
+
 
     //    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
 //    @Transactional(readOnly = true)

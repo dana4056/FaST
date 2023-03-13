@@ -1,5 +1,6 @@
 package a402.FaST.auth;
 
+import a402.FaST.model.entity.Authority;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,6 @@ public class userOAuth2Service extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        System.out.println("-----------------------");
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         // code를 통해 구성한 정보
@@ -39,34 +39,56 @@ public class userOAuth2Service extends DefaultOAuth2UserService {
         // token을 통해 응답받은 회원정보
         logger.info("oAuth2User : " + oAuth2User);
 
+        return processOAuth2User(userRequest, oAuth2User);
+
+    }
+
+    private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
+        OAuth2UserInfo oAuth2UserInfo = null;
+
+        if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+            logger.info("카카오톡 로그인 요청");
+//            oAuth2UserInfo = new KakaoUserInfo((Map)oAuth2User.getAttributes());
+        }
+//        else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
+//            logger.info("네이버 로그인 요청");
+//            oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
+//        }
+        else {
+            logger.info("지원하지 않는 로그인 요청입니다");
+        }
+
+
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
         String email = (String) kakao_account.get("email");
-        logger.info("email : " + email);
-
+            logger.info("email : " + email);
 
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         String nickname = (String) properties.get("nickname");
-        logger.info("nickname : " + nickname);
+            logger.info("nickname : " + nickname);
 
-        if (userRepository.existsByEmail(email)) {
+        Map<String, Object> imgs = (Map<String, Object>) attributes.get("properties");
+        String img = (String) imgs.get("profile_image");
+            logger.info("img : " + img);
+
+            if (userRepository.existsByEmail(email)) {
             logger.info("가입 한적 있음");
         } else {
+            Authority authority = Authority.builder()
+                    .authorityName("ROLE_USER")
+                    .build();
+
             User user = User.builder()
                     .email(email)
-//                    .password(passwordEncoder.encode(requestDto.getPassword()))
+    //                    .password(passwordEncoder.encode(requestDto.getPassword()))
                     .nickname(nickname)
-//                    .salt((requestDto.getSalt()))
-//                    .img_path(requestDto.getImgPath())
-//                    .authorities(Collections.singleton(authority))
+                    .img_path(img)
+                    .authorities(Collections.singleton(authority))
                     .build();
             userRepository.save(user);
         }
-
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
+    return null;
     }
-
-
-
 }
