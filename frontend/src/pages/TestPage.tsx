@@ -25,7 +25,7 @@ function TestPage() {
       <Landmark Model={Building63} cameraPosition={[0, 2, 7]} />
       <Landmark Model={Seongsan} cameraPosition={[0, 2, 4]} />
       <Landmark Model={DolHareubang} cameraPosition={[0, 2, 7]} />
-      <Landmark Model={OlympicPark} cameraPosition={[0, 2, 7]} />
+      <Landmark Model={OlympicPark} cameraPosition={[0, 2, 9]} />
     </div>
   );
 }
