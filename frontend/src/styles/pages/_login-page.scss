@@ -43,12 +43,13 @@
 
   .login-page__row__pwd__text {
     width: 100%;
+    margin-left: 40%;
     padding-right: 1%;
     margin-top: 3%;
     flex-wrap: wrap;
     height: fit-content;
     display: flex;
-    color: #72A9F2;
+    color: #72a9f2;
     justify-content: right;
   }
 
@@ -61,7 +62,7 @@
     &.success {
       color: #8f8c8b;
     }
-    
+
     &.error {
       color: #ff2727;
     }
@@ -78,6 +79,7 @@
   .login-page__text__fast__login {
     color: #999999;
     margin-top: 35px;
+    margin-bottom: 20px;
     font-size: 18px;
     font-weight: bold;
     height: 18px;
@@ -112,19 +114,18 @@
 
   .login-page__naver__button {
     width: 90%;
-    margin-top: 20px;
     padding: 10px 10px;
     font-size: 20px;
-    background-color: #3FC754;
+    background-color: #3fc754;
     color: white;
     border: none;
-    
+
     .login-page__logo__image {
       padding-right: 4%;
     }
 
     &:active {
-      background: darken($color: #3FC754, $amount: 10);
+      background: darken($color: #3fc754, $amount: 10);
     }
   }
 
@@ -133,7 +134,7 @@
     margin-top: 20px;
     padding: 10px 0;
     font-size: 20px;
-    background-color: #FEE500;
+    background-color: #fee500;
     color: #392020;
     border: none;
 
@@ -142,8 +143,7 @@
     }
 
     &:active {
-      background: darken($color: #FEE500, $amount: 10);
+      background: darken($color: #fee500, $amount: 10);
     }
   }
-  
 }

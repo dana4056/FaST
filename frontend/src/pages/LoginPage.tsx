@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SiNaver, SiKakaotalk } from 'react-icons/si';
+import { LoginPageProps } from '../types/PagePropsType';
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-
-  // 로그인 하러가기
-  const goLogin = () => {
-    navigate('/home');
-  };
-
+export default function LoginPage({
+  goLogin,
+  onChangeEmail,
+  onChangePassword,
+}: LoginPageProps) {
   return (
     <div className="login-page">
       <div className="login-page__logo">
@@ -28,6 +26,7 @@ export default function LoginPage() {
             placeholder="example@email.com"
             className="card login-page__input"
             type="email"
+            onChange={onChangeEmail}
           />
         </div>
         <div className="login-page__row">
@@ -38,6 +37,7 @@ export default function LoginPage() {
             className="card login-page__input"
             type="password"
             placeholder="영어, 숫자 8~15자리"
+            onChange={onChangePassword}
           />
         </div>
       </form>

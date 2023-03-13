@@ -187,6 +187,7 @@ export default function SignUpPage({
                     onClick={() => onClickTag(i, 0)}
                   >
                     {isChecked[item.index] ? (
+                      // eslint-disable-next-line max-len
                       <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
                     ) : null}
                     {item.tagName}
@@ -202,6 +203,7 @@ export default function SignUpPage({
                     onClick={() => onClickTag(i, 1)}
                   >
                     {isChecked[item.index] ? (
+                      // eslint-disable-next-line max-len
                       <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
                     ) : null}
                     {item.tagName}

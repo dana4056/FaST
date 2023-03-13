@@ -84,3 +84,9 @@ export interface SignUpPageProps extends InputProfileProps {
   onClickComplete: () => void;
   onClickTag: (e: number, row: number) => void;
 }
+
+export interface LoginPageProps {
+  goLogin: () => void;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
