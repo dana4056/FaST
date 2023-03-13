@@ -55,12 +55,14 @@ public class SecurityConfig {
         };
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
 
+                // 설정된 로그인 URL로 오는 요청을 감시하며, 유저인증을 처리합니다. 인증 실패 시, AuthenticationFailureHandler를 실행합니다.
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
                 // exception handling 할 때 우리가 만든 클래스를 추가
@@ -84,11 +86,26 @@ public class SecurityConfig {
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/tag/**").permitAll()
+                .antMatchers("/oauth2/**").permitAll()
 //                // 나머지는 필요
                 .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider))
+
+//                .and()
+//                .logout()
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+//                .logoutSuccessUrl("/")
+//                .invalidateHttpSession(true)
+
+                // oauth2 를 이용한 소셜 로그인 설정 적용
+                .and()
+                .oauth2Login();
+//                .defaultSuccessUrl("/login-success");
+//                .successHandler(oAuth2AuthenticationSuccessHandler)
+//                .userInfoEndpoint()
+//                .userService(userOAuth2Service);
 
         return http.build();
     }
