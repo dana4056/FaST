@@ -19,6 +19,9 @@ export default function SignUpPage({
   isPasswordConfirm,
   isSend,
   isOpen,
+  tag,
+  selectedTag,
+  isChecked,
   imageUrl,
   handleImageChange,
   handleImageDelete,
@@ -31,145 +34,8 @@ export default function SignUpPage({
   onClickSend,
   onClickNext,
   onClickComplete,
+  onClickTag,
 }: SignUpPageProps) {
-  // const navigate = useNavigate();
-  const [isChecked, setIsChecked] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const tag = [
-    [
-      {
-        tagName: '바다',
-        color: 'sign-up-favorite-tag-page__tag6',
-        index: 0,
-      },
-      {
-        tagName: '산',
-        color: 'sign-up-favorite-tag-page__tag7',
-        index: 1,
-      },
-      {
-        tagName: '액티비티',
-        color: 'sign-up-favorite-tag-page__tag8',
-        index: 2,
-      },
-    ],
-    [
-      {
-        tagName: '강',
-        color: 'sign-up-favorite-tag-page__tag8',
-        index: 3,
-      },
-      {
-        tagName: '유적지',
-        color: 'sign-up-favorite-tag-page__tag9',
-        index: 4,
-      },
-      {
-        tagName: '계곡',
-        color: 'sign-up-favorite-tag-page__tag6',
-        index: 5,
-      },
-    ],
-    [
-      {
-        tagName: '호캉스',
-        color: 'sign-up-favorite-tag-page__tag9',
-        index: 6,
-      },
-      {
-        tagName: '캠핑',
-        color: 'sign-up-favorite-tag-page__tag6',
-        index: 7,
-      },
-      {
-        tagName: '힐링',
-        color: 'sign-up-favorite-tag-page__tag7',
-        index: 8,
-      },
-    ],
-    [
-      {
-        tagName: '배낭여행',
-        color: 'sign-up-favorite-tag-page__tag7',
-        index: 9,
-      },
-      {
-        tagName: '박물관',
-        color: 'sign-up-favorite-tag-page__tag8',
-        index: 10,
-      },
-      {
-        tagName: '자전거',
-        color: 'sign-up-favorite-tag-page__tag6',
-        index: 11,
-      },
-    ],
-    [
-      {
-        tagName: '등산',
-        color: 'sign-up-favorite-tag-page__tag6',
-        index: 12,
-      },
-      {
-        tagName: '휴양지',
-        color: 'sign-up-favorite-tag-page__tag7',
-        index: 13,
-      },
-      {
-        tagName: '도심',
-        color: 'sign-up-favorite-tag-page__tag9',
-        index: 14,
-      },
-    ],
-  ];
-  const [selectedTag, setSelectedTag] = useState<Array<string>>([]);
-
-  // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
-  const onClickTag = (e: number, row: number) => {
-    console.log(`관심 태그 선택!!${e}`);
-    const favoritTag = tag[row][e].tagName;
-    console.log(tag[row][e]);
-    const { index } = tag[row][e];
-    console.log(index);
-    console.log(isChecked[index]);
-
-    if (!isChecked[index]) {
-      // 태그가 선택되어 있지 않았다면
-      const newIsChecked = [...isChecked];
-      newIsChecked[index] = true;
-      setIsChecked(newIsChecked);
-
-      const newSelectTag = selectedTag.concat(favoritTag);
-      setSelectedTag(newSelectTag);
-    } else {
-      // 태그가 이미 선택되어 있다면 해당 태그 선택 해제
-      const newIsChecked = [...isChecked];
-      newIsChecked[index] = false;
-      setIsChecked(newIsChecked);
-
-      // 선택된 해당 태그 삭제 후 재할당
-      const idx = selectedTag.indexOf(favoritTag);
-      console.log(idx);
-      setSelectedTag(selectedTag.filter((t) => t !== favoritTag));
-    }
-  };
-
   useEffect(() => {
     console.log(selectedTag);
   }, [selectedTag]);
@@ -313,14 +179,16 @@ export default function SignUpPage({
             <span className="sign-up-favorite-tag-page__title">관심 태그</span>
             <div className="sign-up-favorite-tag-page__container">
               <div className="sign-up-favorite-tag-page__row">
-                {tag[0].map((item, i: number) => (
+                {tag[0].map((item: any, i: number) => (
                   <button
                     key={item.tagName}
                     className={item.color}
                     type="button"
                     onClick={() => onClickTag(i, 0)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -333,7 +201,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 1)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -346,7 +216,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 2)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -359,7 +231,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 3)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}
@@ -372,7 +246,9 @@ export default function SignUpPage({
                     type="button"
                     onClick={() => onClickTag(i, 4)}
                   >
-                    {isChecked[item.index] ? <AiFillCheckCircle /> : null}
+                    {isChecked[item.index] ? (
+                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                    ) : null}
                     {item.tagName}
                   </button>
                 ))}

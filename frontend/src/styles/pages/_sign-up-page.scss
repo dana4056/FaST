@@ -209,10 +209,10 @@
   }
 
   .sign-up-favorite-tag-page__tag6 {
-    width: 80px;
-    height: 30px;
+    width: 92px;
+    height: 35px;
     margin: 0 3%;
-    font-size: 16px;
+    font-size: 15px;
     border: none;
     background-color: color.$color-6;
     border-radius: 10px;
@@ -224,9 +224,9 @@
   }
 
   .sign-up-favorite-tag-page__tag7 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
     margin: 0 3%;
     border: none;
     background-color: color.$color-7;
@@ -239,9 +239,9 @@
   }
 
   .sign-up-favorite-tag-page__tag8 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
     margin: 0 3%;
     border: none;
     background-color: color.$color-8;
@@ -254,9 +254,9 @@
   }
 
   .sign-up-favorite-tag-page__tag9 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
     margin: 0 3%;
     border: none;
     background-color: color.$color-9;
@@ -266,5 +266,9 @@
     &:active {
       background: darken($color: color.$color-9, $amount: 10);
     }
+  }
+
+  .sign-up-favorite-tag-page__check__icon {
+    margin-right: 3px;
   }
 }
