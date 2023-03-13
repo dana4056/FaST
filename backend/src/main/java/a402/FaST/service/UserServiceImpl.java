@@ -2,6 +2,7 @@ package a402.FaST.service;
 
 import java.util.Collections;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import a402.FaST.Controller.UserController;
 import a402.FaST.exception.DuplicateMemberException;
@@ -23,6 +24,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +39,14 @@ import static a402.FaST.service.CertServiceImpl.createKey;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JavaMailSender emailSender;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     public static final String ePw = createKey();
 
     public UserResponseDto signup(UserRequestDto requestDto) {
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService{
         // 만든 권한 정보 바탕으로 User정보를 만든다
         User user = User.builder()
                 .email(requestDto.getEmail())
-                .password(requestDto.getPassword())
+                .password(passwordEncoder.encode(requestDto.getPassword()))
                 .nickname(requestDto.getNickname())
                 .salt((requestDto.getSalt()))
                 .img_path(requestDto.getImgPath())
@@ -98,16 +102,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponseDto getUser(UserRequestDto requestDto) {
+
         UserResponseDto userResponseDto = null;
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
-        logger.info("pwd : {}",requestDto.getPassword());
-        logger.info("pwd : {}",user.getPassword());
-
         if (user != null){
-            if (user.getPassword().equals(requestDto.getPassword())){
+            if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())) {
+//            if (user.getPassword().equals(requestDto.getPassword())){
                 userResponseDto = UserResponseDto.from(user);
                 return userResponseDto;
-            }else{
+//            }
+            }
+        else{
                 throw new NotFoundMemberException("비밀번호 틀렸습니다");
             }
         }else{
@@ -215,6 +220,9 @@ public class UserServiceImpl implements UserService{
 //                        .orElseThrow(() -> new NotFoundMemberException("Member not found"))
 //        );
 //    }
+
+// -------------------------------메일 부분--------------------------------------------------
+
 
 // -------------------------------메일 부분--------------------------------------------------
     private MimeMessage createMessage(String to)throws Exception{
