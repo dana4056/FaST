@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-function Kakaomap() {
+function Kakaomap({ selectOption }: any) {
   const markerDatas = [
     {
       pointX: 37.566826,
@@ -36,12 +36,9 @@ function Kakaomap() {
   useEffect(() => {
     // 1. 지도 표시하기
     const container = document.getElementById('map');
-    const options = {
-      // 서울 클릭 시
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 9,
-    };
-    const map = new window.kakao.maps.Map(container, options);
+
+    // console.log('aaaaaaaaaaa', selectOption);
+    const map = new window.kakao.maps.Map(container, selectOption);
 
     // 2. 마커 찍기
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -80,24 +77,52 @@ function Kakaomap() {
 
       // 3. 마커 클릭 시 이미지 띄우기
       // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      const iwContent = `<img style="width:150px" src=${markerDatas[i].pointImg} alt='test' />`;
+      const iwContent =
+        '<div className="iwContentContainer">' +
+        `<img className="iwContentImg" style="width:150px" src=${markerDatas[i].pointImg} alt='test' />` +
+        '<div className="iwContentClose"  title="닫기" />' +
+        '</div>';
       // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
       const iwRemoveable = true;
       // removeable 속성을 true 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-      // 마커에 클릭이벤트를 등록합니다
-      window.kakao.maps.event.addListener(marker, 'click', function () {
-        // 인포윈도우를 생성합니다
-        const infowindow = new window.kakao.maps.InfoWindow({
-          content: iwContent,
-          removable: iwRemoveable,
-        });
+      // // 마커에 클릭이벤트를 등록합니다
+      // window.kakao.maps.event.addListener(marker, 'click', function () {
+      //   // 인포윈도우를 생성합니다
+      //   const infowindow = new window.kakao.maps.InfoWindow({
+      //     content: iwContent,
+      //     removable: iwRemoveable,
+      //   });
 
-        // 마커 위에 인포윈도우를 표시합니다
-        infowindow.open(map, marker);
+      //   // 마커 위에 인포윈도우를 표시합니다
+      //   infowindow.open(map, marker);
+      // });
+      // 커스텀 오버레이가 표시될 위치입니다
+      const position = new window.kakao.maps.LatLng(
+        `${markerDatas[i].pointX + 0.017}`,
+        `${markerDatas[i].pointY}`
+      );
+
+      // 커스텀 오버레이를 생성합니다
+      const customOverlay = new window.kakao.maps.CustomOverlay({
+        map,
+        position,
+        content: iwContent,
+        yAnchor: 1,
       });
+
+      // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+      customOverlay.setMap(null);
+      window.kakao.maps.event.addListener(marker, 'click', function () {
+        customOverlay.setMap(map);
+      });
+
+      // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+      const closeOverlay = function () {
+        customOverlay.setMap(null);
+      };
     }
-  }, []);
+  }, [selectOption]);
   return (
     <div>
       <div
