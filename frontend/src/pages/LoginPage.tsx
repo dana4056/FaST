@@ -60,7 +60,9 @@ export default function LoginPage({
       <span className="login-page__text__fast__login">간편 로그인</span>
       <button type="button" className="card login-page__naver__button">
         <SiNaver className="login-page__logo__image" />
-        네이버 로그인
+        <a href="http://localhost:8080/oauth2/authorization/naver">
+          네이버 로그인
+        </a>
       </button>
       <button type="button" className="card login-page__kakao__button">
         <SiKakaotalk className="login-page__kakao__logo__image" />
