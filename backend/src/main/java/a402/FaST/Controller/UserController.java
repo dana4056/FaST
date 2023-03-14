@@ -50,7 +50,7 @@ public class UserController {
     @Operation(summary = "로그인 API =>  아이디, 비밀번호 입력을 통해 로그인하는 API 입니다.",
             description = "json 형식 데이터 -> (String : email, String : password)" +
             " => 로그인에 완료한 User 정보와 Token 정보를 Return 해줍니다.")
-    private ResponseEntity<Map<String, Object>> login(@RequestBody UserRequestDto requestDto) {
+    private ResponseEntity<Map<String, Object>> login(@Valid @RequestBody UserRequestDto requestDto) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         TokenDto TokenResponseDto = null;
