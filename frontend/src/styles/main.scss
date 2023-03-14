@@ -16,7 +16,11 @@
 @use './components/profile';
 @use './components/move_to_map';
 @use './components/map';
+@use './components/korea-map';
 @use './components/card-list';
+@use './components/landmark';
+@use './components/input-profile';
+@use './components/kakao-map';
 
 // pages
 @use './pages/new-card-page';
@@ -24,6 +28,7 @@
 @use './pages/card-detail-page';
 @use './pages/sign-up-page';
 @use './pages/my-record-page.scss';
+@use './pages/map-page.scss';
 @use './pages//login-page';
 
 html,

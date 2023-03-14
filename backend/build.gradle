@@ -35,8 +35,13 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	//swagger2
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	//swagger3
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+	//mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// oauth2
+	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.6.3'
 }
 
 tasks.named('test') {

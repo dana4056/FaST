@@ -3,6 +3,8 @@ package a402.FaST.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,26 +17,26 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private int id;
 
-    @Column(name = "username", length = 50, unique = true)
-    private String username;
+    private String email;
 
-    @Column(name = "password", length = 100)
     private String password;
 
-    @Column(name = "nickname", length = 50)
     private String nickname;
 
-    @Column(name = "activated")
-    private boolean activated;
+    private String salt;
+
+    private String img_path;
 
     @ManyToMany
     @JoinTable(
             name = "user_authority",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<TagHasUser> tags = new ArrayList<>();
 }

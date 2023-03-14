@@ -33,6 +33,7 @@
         }
     },
     "rules": {
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
         "react/jsx-filename-extension": ["warn", {"extensions":[".tsx"]}],
         "import/extensions": [
             "error",

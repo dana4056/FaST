@@ -43,13 +43,26 @@
   }
 
   .sign-up-page__image {
-    width: 93px;
-    height: 89px;
-    margin-top: 100px;
+    width: 90px;
+    height: 90px;
+    margin-top: 20px;
+  }
+
+  .sign-up-page__image__container {
+    position: relative;
+
+    .sign-up-page__camera__image {
+      width: 25px;
+      height: 25px;
+      margin-top: 160px;
+      position: absolute;
+      color: color.$color-2;
+      right: 1px;
+    }
   }
 
   .sign-up-page__text {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 20px;
     height: 20px;
   }
@@ -112,6 +125,42 @@
     }
   }
 
+  .sign-up-favorite-tag-page__next__button {
+    width: 20%;
+    margin-top: 54%;
+    margin-left: 20px;
+    padding: 10px 0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    background-color: color.$color-1;
+    border-radius: 10px;
+
+    &:active {
+      background: darken($color: color.$color-1, $amount: 10);
+    }
+  }
+
+  .message {
+    // font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    // position: absolute;
+    // bottom: -10px;
+    left: 0;
+
+    &.success {
+      color: #8f8c8b;
+      margin-top: 3px;
+    }
+
+    &.error {
+      color: #ff2727;
+      margin-top: 3px;
+    }
+  }
+
   .sign-up-page__row__next {
     width: 100%;
     padding: 0 5%;
@@ -160,10 +209,10 @@
   }
 
   .sign-up-favorite-tag-page__tag6 {
-    width: 80px;
-    height: 30px;
-    margin: 0 6px;
-    font-size: 16px;
+    width: 92px;
+    height: 35px;
+    margin: 0 3%;
+    font-size: 15px;
     border: none;
     background-color: color.$color-6;
     border-radius: 10px;
@@ -175,10 +224,10 @@
   }
 
   .sign-up-favorite-tag-page__tag7 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
-    margin: 0 6px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-7;
     border-radius: 10px;
@@ -190,10 +239,10 @@
   }
 
   .sign-up-favorite-tag-page__tag8 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
-    margin: 0 6px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-8;
     border-radius: 10px;
@@ -205,10 +254,10 @@
   }
 
   .sign-up-favorite-tag-page__tag9 {
-    width: 80px;
-    height: 30px;
-    font-size: 16px;
-    margin: 0 6px;
+    width: 92px;
+    height: 35px;
+    font-size: 15px;
+    margin: 0 3%;
     border: none;
     background-color: color.$color-9;
     border-radius: 10px;
@@ -217,5 +266,9 @@
     &:active {
       background: darken($color: color.$color-9, $amount: 10);
     }
+  }
+
+  .sign-up-favorite-tag-page__check__icon {
+    margin-right: 3px;
   }
 }
