@@ -64,7 +64,9 @@ export default function LoginPage({
       </button>
       <button type="button" className="card login-page__kakao__button">
         <SiKakaotalk className="login-page__kakao__logo__image" />
-        카카오 로그인
+        <a href="http://localhost:8080/oauth2/authorization/kakao">
+          카카오 로그인
+        </a>
       </button>
     </div>
   );
