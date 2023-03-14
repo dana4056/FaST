@@ -13,6 +13,8 @@ import DolHareubang from '../assets/blender/DolHareubang';
 import OlympicPark from '../assets/blender/OlympicPark';
 import Gwanghwamun from '../assets/blender/Gwanghwamun';
 import Seokguram from '../assets/blender/Seokguram';
+import Cheongwadae from '../assets/blender/Cheongwadae';
+import KingSejong from '../assets/blender/KingSejong';
 
 function TestPage() {
   return (
@@ -30,6 +32,8 @@ function TestPage() {
       <Landmark Model={OlympicPark} cameraPosition={[0, 2, 9]} />
       <Landmark Model={Gwanghwamun} cameraPosition={[0, 2, 14]} />
       <Landmark Model={Seokguram} cameraPosition={[0, 2, 6]} />
+      <Landmark Model={Cheongwadae} cameraPosition={[0, 2, 20]} />
+      <Landmark Model={KingSejong} cameraPosition={[0, 2, 5.5]} />
     </div>
   );
 }
