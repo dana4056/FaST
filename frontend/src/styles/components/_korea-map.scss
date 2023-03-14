@@ -1,0 +1,98 @@
+@use '../color';
+
+@-webkit-keyframes slide-in-fwd-center {
+  0% {
+    -webkit-transform: translateZ(-1400px);
+    transform: translateZ(-1400px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-fwd-center {
+  0% {
+    -webkit-transform: translateZ(-1400px);
+    transform: translateZ(-1400px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.map_container {
+  margin: 25px;
+  .svg_container {
+    width: 100%;
+    stroke: white;
+    stroke-width: 1.2px;
+    transition-duration: 1s;
+  }
+}
+
+.color0 {
+  background-color: rgb(231, 231, 231);
+  height: 100%;
+}
+
+.color1 {
+  background-color: color.$color-1;
+  // background: radial-gradient(color.$color-1 40%, transparent);
+  height: 100%;
+}
+
+.color2 {
+  background-color: color.$color-2;
+  // background: radial-gradient(color.$color-2 35%, transparent);
+  height: 100%;
+}
+
+.color3 {
+  background-color: color.$color-3;
+  // background: radial-gradient(ellipse, color.$color-3 40%, transparent);
+  height: 100%;
+}
+
+.color4 {
+  background-color: color.$color-4;
+  // background: radial-gradient(color.$color-4 35%, transparent);
+  height: 100%;
+}
+
+.color5 {
+  background-color: color.$color-7;
+  // background: radial-gradient(color.$color-7 35%, transparent);
+  height: 100%;
+}
+
+.color6 {
+  background-color: color.$color-6;
+  // background: radial-gradient(color.$color-6 35%, transparent);
+  height: 100%;
+}
+
+.kakaomap_container {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  .map_backbtn {
+    color: color.$color-4;
+    position: absolute;
+    z-index: 2;
+    margin: 10px 0px 0px 10px;
+  }
+  .before_click {
+    display: none;
+  }
+  .after_click {
+    display: inline;
+    -webkit-animation: slide-in-fwd-center 1s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-in-fwd-center 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+}
