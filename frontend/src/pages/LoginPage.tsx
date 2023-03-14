@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SiNaver, SiKakaotalk } from 'react-icons/si';
+import { LoginPageProps } from '../types/PagePropsType';
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-
-  // 로그인 하러가기
-  const goLogin = () => {
-    navigate('/home');
-  };
-
+export default function LoginPage({
+  goLogin,
+  onChangeEmail,
+  onChangePassword,
+}: LoginPageProps) {
   return (
     <div className="login-page">
       <div className="login-page__logo">
@@ -22,22 +20,24 @@ export default function LoginPage() {
       <form className="login-page">
         <div className="login-page__row">
           <div className="login-page__row__text">
-            <text className="login-page__text">이메일</text>
+            <span className="login-page__text">이메일</span>
           </div>
           <input
             placeholder="example@email.com"
             className="card login-page__input"
             type="email"
+            onChange={onChangeEmail}
           />
         </div>
         <div className="login-page__row">
           <div className="login-page__row__text">
-            <text className="login-page__text">비밀번호</text>
+            <span className="login-page__text">비밀번호</span>
           </div>
           <input
             className="card login-page__input"
             type="password"
             placeholder="영어, 숫자 8~15자리"
+            onChange={onChangePassword}
           />
         </div>
       </form>
@@ -57,14 +57,18 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
-      <text className="login-page__text__fast__login">간편 로그인</text>
+      <span className="login-page__text__fast__login">간편 로그인</span>
       <button type="button" className="card login-page__naver__button">
         <SiNaver className="login-page__logo__image" />
-        네이버 로그인
+        <a href="http://localhost:8080/oauth2/authorization/naver">
+          네이버 로그인
+        </a>
       </button>
       <button type="button" className="card login-page__kakao__button">
         <SiKakaotalk className="login-page__kakao__logo__image" />
-        카카오 로그인
+        <a href="http://localhost:8080/oauth2/authorization/kakao">
+          카카오 로그인
+        </a>
       </button>
     </div>
   );

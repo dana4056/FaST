@@ -130,3 +130,13 @@ export interface CardListProps {
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
 }
+
+// 프로필 사진 입력 Props
+export interface InputProfileProps {
+  // 미리보기 이미지 url 배열
+  imageUrl: string;
+  // 이미지 입력 함수
+  handleImageChange: React.ChangeEventHandler<HTMLInputElement>;
+  // 입력한 이미지 삭제 함수
+  handleImageDelete: () => void;
+}

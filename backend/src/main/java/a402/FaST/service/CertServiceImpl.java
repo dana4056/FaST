@@ -6,6 +6,7 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.model.dto.CertRequestDto;
 import a402.FaST.model.entity.Cert;
@@ -78,8 +79,7 @@ public class CertServiceImpl implements CertService {
         return key.toString();
     }
     @Override
-    public String sendMessage(CertRequestDto requestDto) throws Exception {
-        // TODO Auto-generated method stub
+    public void sendMessage(CertRequestDto requestDto) throws Exception {
         MimeMessage message = createMessage(requestDto.getEmail());
         try{//예외처리
             emailSender.send(message);
@@ -90,21 +90,20 @@ public class CertServiceImpl implements CertService {
 
         Cert cert = new Cert(requestDto.getEmail(),ePw);
         certRepository.save(cert);
-
-        return ePw;
     }
 
     @Override
     public Boolean checkMessage(CertRequestDto requestDto) throws Exception {
-        if (certRepository.findById(requestDto.getEmail()).get() == null){
+        if (!certRepository.existsByEmail(requestDto.getEmail())) {
             throw new NotFoundMemberException("없는 유저입니다.");
         }
 
         Cert cert = certRepository.findById(requestDto.getEmail()).get();
-        if (cert.getCode().equals(requestDto.getCode())){
+        if (cert.getEmail().equals(requestDto.getEmail()) && cert.getCode().equals(requestDto.getCode())){
             return true;
         }else{
             return false;
         }
+
     }
 }

@@ -1,0 +1,19 @@
+.iwContentContainer {
+  width: 100px;
+  height: 100px;
+}
+
+.iwContentClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px !important;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+  z-index: 4;
+}
+
+.iwContentImg {
+  border-radius: 20px;
+}

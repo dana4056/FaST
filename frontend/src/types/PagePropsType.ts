@@ -4,6 +4,7 @@ import {
   CardListProps,
   InputPhotoProps,
   SearchBoxProps,
+  InputProfileProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -42,3 +43,50 @@ export interface CardDetailPageProps extends CardDetailProps {
 export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
 
 export interface MapPageProps extends CardListProps {}
+
+interface Tag {
+  tagName: string;
+  color: string;
+  index: number;
+}
+// 회원가입 페이지 Props=
+export interface SignUpPageProps extends InputProfileProps {
+  email: string;
+  name: string;
+  password: string;
+  passwordConfirm: string;
+
+  nameMessage: string;
+  emailMessage: string;
+  passwordMessage: string;
+  passwordConfirmMessage: string;
+
+  isEmail: boolean;
+  isCheckEmail: boolean;
+  isName: boolean;
+  isPassword: boolean;
+  isPasswordConfirm: boolean;
+  isSend: boolean;
+  isOpen: boolean;
+
+  tag: Array<Array<Tag>>;
+  selectedTag: Array<string>;
+  isChecked: Array<boolean>;
+
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAuthNum: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickCheckEmailCode: () => void;
+  onClickSend: () => void;
+  onClickNext: () => void;
+  onClickComplete: () => void;
+  onClickTag: (e: number, row: number) => void;
+}
+
+export interface LoginPageProps {
+  goLogin: () => void;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
