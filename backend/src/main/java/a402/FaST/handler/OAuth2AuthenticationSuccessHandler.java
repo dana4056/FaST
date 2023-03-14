@@ -32,7 +32,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
-        String targetUrl = "/";
+        String targetUrl = "http://localhost:3000/home";
 //        String targetUrl = "/oauth2/social/success";
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
