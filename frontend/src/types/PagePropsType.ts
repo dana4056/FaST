@@ -87,6 +87,8 @@ export interface SignUpPageProps extends InputProfileProps {
 
 export interface LoginPageProps {
   goLogin: () => void;
+  goKakaoLogin: () => void;
+  goNaverLogin: () => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
