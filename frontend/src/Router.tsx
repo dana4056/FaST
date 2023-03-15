@@ -12,6 +12,7 @@ import MyRecordContainer from './containers/MyRecordContainer';
 import MapContainer from './containers/MapContainer';
 import SignUpContainer from './containers/SignUpContainer';
 import LoginContainer from './containers/LoginContainer';
+import FollowContainer from './containers/FollowContainer';
 
 function Test() {
   return (
@@ -26,6 +27,7 @@ function Test() {
           <Route path="/map" element={<MapContainer />} />
           <Route path="/sign-up" element={<SignUpContainer />} />
           <Route path="/login" element={<LoginContainer />} />
+          <Route path="/follow" element={<FollowContainer />} />
         </Routes>
       </div>
       <Footer />
