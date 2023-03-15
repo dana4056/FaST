@@ -42,10 +42,22 @@ function LoginContainer() {
     }
   };
 
+  // 카카오 로그인 하러가기
+  const goKakaoLogin = () => {
+    navigate('/oauth2/authorization/kakao');
+  };
+
+  // 네이버 로그인 하러가기
+  const goNaverLogin = () => {
+    navigate('/oauth2/authorization/naver');
+  };
+
   return (
     <div>
       <LoginPage
         goLogin={goLogin}
+        goKakaoLogin={goKakaoLogin}
+        goNaverLogin={goNaverLogin}
         onChangeEmail={onChangeEmail}
         onChangePassword={onChangePassword}
       />
