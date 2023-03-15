@@ -1,7 +1,7 @@
 package a402.FaST.config;
 
 
-import a402.FaST.auth.userOAuth2Service;
+import a402.FaST.Oauth.CustomUserOAuth2Service;
 import a402.FaST.handler.OAuth2AuthenticationSuccessHandler;
 import a402.FaST.jwt.JwtAccessDeniedHandler;
 import a402.FaST.jwt.JwtAuthenticationEntryPoint;
@@ -32,7 +32,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final userOAuth2Service userOAuth2Service;
+    private final CustomUserOAuth2Service CustomUserOAuth2Service;
 
 
     @Bean
@@ -97,9 +97,11 @@ public class SecurityConfig {
                 // oauth2 를 이용한 소셜 로그인 설정 적용
                 .and()
                 .oauth2Login()
-                .successHandler(oAuth2AuthenticationSuccessHandler)
                 .userInfoEndpoint()
-                .userService(userOAuth2Service);
+                .userService(CustomUserOAuth2Service)
+
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler);
 
 //                .defaultSuccessUrl("/login-success");
 //                .successHandler(oAuth2AuthenticationSuccessHandler)

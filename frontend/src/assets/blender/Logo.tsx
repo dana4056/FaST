@@ -38,4 +38,4 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   );
 }
 
-useGLTF.preload('/logo.glb');
+useGLTF.preload('/models/logo.glb');

@@ -13,6 +13,7 @@ import MapContainer from './containers/MapContainer';
 import SignUpContainer from './containers/SignUpContainer';
 import LoginContainer from './containers/LoginContainer';
 import FollowContainer from './containers/FollowContainer';
+import TestPage from './pages/TestPage';
 
 function Test() {
   return (
@@ -28,6 +29,7 @@ function Test() {
           <Route path="/sign-up" element={<SignUpContainer />} />
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/follow" element={<FollowContainer />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </div>
       <Footer />
