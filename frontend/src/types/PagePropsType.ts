@@ -92,3 +92,12 @@ export interface LoginPageProps {
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+// 회원정보수정 페이지 props
+export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
+  // 태그 저장 배열
+  // tags: Array<TagType>;
+
+  email: string;
+  name: string;
+}

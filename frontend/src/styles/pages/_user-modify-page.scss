@@ -1,0 +1,56 @@
+@use '../color';
+
+.modify__container {
+  width: 90%;
+  margin: auto;
+  .modify__email__container {
+  }
+}
+
+.modify__input {
+  border: 0px;
+  width: 100%;
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.modify__buttons {
+  margin: auto;
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  .modify__button {
+    width: 100%;
+    border: 0px;
+    border-radius: 10px;
+    color: white;
+  }
+  .modify__password {
+    height: 35px;
+    background-color: color.$color-1;
+    font-size: 15px;
+    margin-top: 20px;
+    flex-grow: 2;
+  }
+  .modify__save {
+    background-color: color.$color-3;
+    height: 40px;
+    font-size: 20px;
+    flex-grow: 1;
+  }
+  .logout {
+    border: 0px;
+    background-color: transparent;
+    color: color.$color-3;
+    font-size: 17px;
+  }
+  .withdrawal {
+    border: 0px;
+    background-color: transparent;
+    color: color.$color-3;
+    font-size: 17px;
+  }
+}
