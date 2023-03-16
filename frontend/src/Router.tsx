@@ -15,7 +15,7 @@ import LoginContainer from './containers/LoginContainer';
 import FollowContainer from './containers/FollowContainer';
 import TestPage from './pages/TestPage';
 
-function Test() {
+function Router() {
   return (
     <>
       <Header />
@@ -37,4 +37,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default Router;
