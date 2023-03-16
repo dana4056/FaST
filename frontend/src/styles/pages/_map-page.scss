@@ -27,6 +27,18 @@
   }
 }
 
+.map-page {
+  .map-page__header {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 1rem;
+    font-size: 2rem;
+    line-height: 2rem;
+    a {
+      color: black;
+    }
+  }
+}
 .mappage__map__container {
   width: 90%;
   margin: auto;

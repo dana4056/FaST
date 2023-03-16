@@ -16,7 +16,7 @@ import FollowContainer from './containers/FollowContainer';
 import TestPage from './pages/TestPage';
 import UserModifyContainer from './containers/UserModifyContainer';
 
-function Test() {
+function Router() {
   return (
     <>
       <Header />
@@ -39,4 +39,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default Router;
