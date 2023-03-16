@@ -1,15 +1,20 @@
 import React from 'react';
-import { MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 function MoveToMap() {
   return (
-    <Link to="/map">
-      <button type="button" className="move-map-btn">
-        지도 보기
-        <MdNavigateNext className="next-btn" />
-      </button>
-    </Link>
+    <div className="move__btn__container">
+      <Link to="/test">
+        <button type="button" className="move-stamp-btn">
+          스탬프 보기
+        </button>
+      </Link>
+      <Link to="/map">
+        <button type="button" className="move-map-btn">
+          지도 보기
+        </button>
+      </Link>
+    </div>
   );
 }
 

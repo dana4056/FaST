@@ -36,7 +36,7 @@ function Footer() {
         </Link>
       </div>
       <div className="footer__icon">
-        <Link to="/home">
+        <Link to="/modify">
           <IoSettingsOutline />
         </Link>
       </div>
