@@ -17,7 +17,7 @@ export default function IntroPage() {
 
   return (
     <div className="intro-page">
-      <Canvas>
+      <Canvas className="intro-page__logo" camera={{ fov: 60 }}>
         <ambientLight
           // eslint-disable-next-line react/no-unknown-property
           intensity={1.25}
@@ -26,21 +26,22 @@ export default function IntroPage() {
           <Model />
         </Suspense>
       </Canvas>
-      {/* <div className="intro-page__logo">FaST</div> */}
-      <button
-        className="card intro-page__button"
-        type="button"
-        onClick={goSignUp}
-      >
-        회원가입
-      </button>
-      <button
-        className="card intro-page__button"
-        type="button"
-        onClick={goLogin}
-      >
-        로그인
-      </button>
+      <div className="intro-page__buttons">
+        <button
+          className="card intro-page__button"
+          type="button"
+          onClick={goSignUp}
+        >
+          회원가입
+        </button>
+        <button
+          className="card intro-page__button"
+          type="button"
+          onClick={goLogin}
+        >
+          로그인
+        </button>
+      </div>
     </div>
   );
 }
