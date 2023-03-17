@@ -32,34 +32,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
-        String targetUrl = "http://localhost:3000/home";
-//        String targetUrl = "/oauth2/social/success";
+        String targetUrl = "/";
 
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+        // 인증 정보를 기반으로 JWT 토큰 생성
         String jwt = tokenProvider.createToken(authentication);
-//        System.out.println(jwt);
-
-//        // 4. RefreshToken 저장
-//        RefreshToken refreshToken = RefreshToken.builder()
-//                .key(authentication.getName())
-//                .value(tokenDto.getRefreshToken())
-//                .build();
-//
-//        refreshTokenRepository.save(refreshToken);
-//
-//        int cookieMaxAge = tokenProvider.getExpiration().intValue() / 60;
-//
-//        CookieUtil.deleteCookie(request, response, "refreshToken");
-//        CookieUtil.addCookie(response, "refreshToken", tokenDto.getRefreshToken(), cookieMaxAge);
-//
-//        CookieUtil.deleteCookie(request, response, "grantType");
-//        CookieUtil.addCookie(response, "grantType", tokenDto.getGrantType(), cookieMaxAge);
-//
-//        CookieUtil.deleteCookie(request, response, "accessTokenExpiresIn");
-//        CookieUtil.addCookie(response, "accessTokenExpiresIn", Long.toString(tokenDto.getAccessTokenExpiresIn()), cookieMaxAge);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("accessToken", jwt)
+                .queryParam("jwt", jwt)
                 .build().toUriString();
     }
 
