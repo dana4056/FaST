@@ -1,6 +1,7 @@
 package a402.FaST.auth;
 
 import a402.FaST.model.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
     private Map<String, Object> attributes;
+    private String provider;
 
     public PrincipalDetails(User user) {
         this.user = user;

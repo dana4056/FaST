@@ -30,6 +30,8 @@ public class User {
 
     private String img_path;
 
+    private String provider;
+
     @ManyToMany
     @JoinTable(
             name = "user_authority",
