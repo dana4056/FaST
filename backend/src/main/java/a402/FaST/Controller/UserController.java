@@ -1,9 +1,12 @@
 package a402.FaST.Controller;
 
+import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.CertRequestDto;
 import a402.FaST.model.dto.TokenDto;
 import a402.FaST.model.dto.UserResponseDto;
 import a402.FaST.model.dto.UserRequestDto;
+import a402.FaST.model.entity.User;
+import a402.FaST.repository.UserRepository;
 import a402.FaST.service.CertServiceImpl;
 import a402.FaST.service.UserServiceImpl;
 import io.swagger.annotations.Api;
@@ -14,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,6 +33,8 @@ public class UserController {
 
     private final UserServiceImpl userService;
     private final CertServiceImpl certService;
+    private final TokenProvider tokenProvider;
+    private final UserRepository userRepository;
 
     // 회원가입 메소드
     @PostMapping("/user")
@@ -131,6 +135,26 @@ public class UserController {
         return ResponseEntity.ok(salt);
     }
 
+    @PostMapping("/user/token")
+    @Operation(summary = "소셜 로그인 조회 API =>  JWT 토큰으로 소셜 로그인한 정보를 가져옵니다",
+            description = "json 형식 데이터 -> (String : token)" +
+                    " => User 정보를 Return 해줍니다.")
+    public ResponseEntity<Map<String, Object>> tokenUser(@RequestBody TokenDto token) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
+        Map<String, Object> tempMap = userService.findByJwtUser(token);
+        String email = (String) tempMap.get("email");
+        String provider = (String) tempMap.get("provider");
+        logger.info("email : {}", email);
+        logger.info("provider : {}", provider);
+
+        UserResponseDto userResponseDto = null;
+        userResponseDto = userService.findJwtUser(email,provider);
+        resultMap.put("user", userResponseDto);
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 //    만약 권한 쓰고 싶으면 이렇게 사용
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
 

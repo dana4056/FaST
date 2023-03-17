@@ -1,6 +1,7 @@
 package a402.FaST.service;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -202,6 +203,24 @@ public class UserServiceImpl implements UserService {
             salt = user.getSalt();
             return salt;
         }
+    }
+
+    @Override
+    public Map<String, Object> findByJwtUser(TokenDto token) {
+        Map<String, Object> resultMap = tokenProvider.getUserIdFromJWT(token.getToken());
+        return resultMap;
+    }
+
+    @Override
+    public UserResponseDto findJwtUser(String email, String provider) {
+        UserResponseDto userResponseDto = null;
+        if(!userRepository.existsByEmailAndProvider(email,provider)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findByEmailAndProvider(email,provider).get();
+            userResponseDto = UserResponseDto.from(user);
+        }
+        return userResponseDto;
     }
 
 

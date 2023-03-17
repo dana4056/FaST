@@ -3,6 +3,9 @@ package a402.FaST.service;
 import a402.FaST.model.dto.TokenDto;
 import a402.FaST.model.dto.UserRequestDto;
 import a402.FaST.model.dto.UserResponseDto;
+import a402.FaST.model.entity.User;
+
+import java.util.Map;
 
 public interface UserService {
     UserResponseDto signup(UserRequestDto requestDto);
@@ -17,4 +20,8 @@ public interface UserService {
     UserResponseDto findUser(int id);
 
     String findSalt(UserRequestDto requestDto);
+
+    Map<String, Object> findByJwtUser(TokenDto token);
+
+    UserResponseDto findJwtUser(String email, String provider);
 }
