@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { BsPersonCircle } from 'react-icons/bs';
 import { TagType } from '../types/TagType';
@@ -16,14 +17,16 @@ function Profile() {
     <div className="profile__container">
       <BsPersonCircle className="profile__img" />
       <div className="profile__card card">
-        <div className="profile__cnt">
-          <div className="profile__follower">팔로워</div>
-          <div className="profile__following">팔로잉</div>
-          <div className="profile__record">기록수</div>
-          <div className="profile__follower__cnt">123</div>
-          <div className="profile__following__cnt">123</div>
-          <div className="profile__record__cnt">123</div>
-        </div>
+        <Link to="/follow">
+          <div className="profile__cnt">
+            <div className="profile__follower">팔로워</div>
+            <div className="profile__following">팔로잉</div>
+            <div className="profile__record">기록수</div>
+            <div className="profile__follower__cnt">123</div>
+            <div className="profile__following__cnt">123</div>
+            <div className="profile__record__cnt">123</div>
+          </div>
+        </Link>
       </div>
       <div className="profile__hashtags">
         <div className="profile__tags card">

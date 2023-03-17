@@ -1,3 +1,5 @@
+@use '../color';
+
 .profile__container {
   padding: 8px;
   display: grid;
@@ -15,6 +17,10 @@
     grid-column: 2;
     grid-row: 1;
     color: #80ddf2;
+    a {
+      text-decoration-line: none;
+      color: color.$color-2;
+    }
     .profile__cnt {
       height: 80px;
       display: grid;

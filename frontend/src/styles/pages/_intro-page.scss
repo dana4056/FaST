@@ -2,32 +2,33 @@
 
 .intro-page {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
-  align-content: flex-end;
+  align-content: center;
   height: 100%;
   background-image: url(../../assets/images/sky.png);
   background-size: 100% 100%;
 
   .intro-page__logo {
     font-size: 50px;
-    // text-align: center;
+    // max-height: 200px;
     color: color.$color-5;
-    margin-bottom: 390px;
-    // justify-content: space-between;
   }
-
-  .intro-page__button {
+  .intro-page__buttons {
     width: 90%;
-    margin-bottom: 20px;
-    padding: 10px 0;
-    color: white;
-    font-size: 20px;
-    border: none;
-    background-color: color.$color-4;
-
-    &:active {
-      background: darken($color: color.$color-4, $amount: 10);
+    margin: 0 auto;
+    margin-top: auto;
+    .intro-page__button {
+      width: 100%;
+      padding: 10px 0;
+      color: white;
+      font-size: 20px;
+      border: none;
+      background-color: color.$color-4;
+      margin-bottom: 20px;
+      &:active {
+        background: darken($color: color.$color-4, $amount: 10);
+      }
     }
   }
 }

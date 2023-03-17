@@ -1,0 +1,40 @@
+@use '../color';
+
+// .menuBar {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 50px;
+//   border-bottom: 1px solid #ddd;
+// }
+
+.submenufocused {
+  background-color: transparent;
+  border: 0px;
+  width: 50%;
+  color: color.$color-4;
+  height: 50px;
+  font-size: 17px;
+  font-weight: bold;
+  transition: font-size 0.3s ease-in-out, font-weight 0.3s ease-in-out;
+}
+
+.submenu {
+  background-color: transparent;
+  border: 0px;
+  width: 50%;
+  color: color.$color-4;
+  height: 50px;
+  font-size: 15px;
+  transition: font-size 0.3s ease-in-out, font-weight 0.3s ease-in-out;
+}
+
+.underline {
+  height: 4px;
+  width: 50%;
+  background-color: color.$color-4;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 0;
+  transition: transform 0.3s ease-in-out;
+}
