@@ -62,9 +62,8 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
         }
 
         User user;
-        if (userRepository.existsByEmail(oAuth2UserInfo.getEmail())) {
-            user = userRepository.findByEmail(oAuth2UserInfo.getEmail()).get();
-            userRepository.save(user);
+        if (userRepository.existsByEmailAndProvider(oAuth2UserInfo.getEmail(), provider)){
+            user = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail(),provider).get();
             logger.info("가입 한적 있음");
         } else {
             Authority authority = Authority.builder()
@@ -76,6 +75,7 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
                     //                    .password(passwordEncoder.encode(requestDto.getPassword()))
                     .nickname(oAuth2UserInfo.getName())
                     .img_path(oAuth2UserInfo.getProfile())
+                    .provider(provider)
                     .authorities(Collections.singleton(authority))
                     .build();
             userRepository.save(user);
