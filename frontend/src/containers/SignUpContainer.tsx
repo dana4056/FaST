@@ -321,7 +321,7 @@ function SignUpContainer() {
       console.log(`password : ${password}`); // 비밀번호
       console.log(`암호화된 password : ${pwd}`); // 암호화된 password
       const res = await api.signUp(email, imgPath, name, pwd, salt);
-
+      console.log(`signUpContainer res :${res}`);
       if (res.status === 200) {
         // db에 있는 사용자 pk값 저장
         setIdPk(res.data.id);
@@ -336,6 +336,8 @@ function SignUpContainer() {
         };
         uploadImage(image);
         setIsOpen(() => true);
+      } else if (res.status === 409) {
+        alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
       } else {
         alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
       }

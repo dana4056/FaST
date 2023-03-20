@@ -1,5 +1,30 @@
 @use '../color';
 
+@-webkit-keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .follow_box {
   width: 90%;
   margin: auto;
@@ -31,30 +56,38 @@
     box-shadow: 4px 5px 0px color.$color-3;
   }
 }
-
-.form_text {
-  .input_box {
-    margin: auto;
-    width: 95%;
-    margin: 10px;
-    text-align: center;
-    .ui_text {
-      width: 80%;
-      border-radius: 30px;
-      padding-left: 20px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      margin: 7px;
-      margin-left: 40px;
-      font-size: 17px;
-      color: color.$color-4;
-      outline-color: color.$color-4;
-    }
-    .magnifier {
-      position: absolute;
-      left: 2%;
-      top: 25%;
-      font-size: 30px;
+.follow-list-container {
+  width: 100%;
+  .form_text {
+    .input_box {
+      margin: auto;
+      width: 95%;
+      margin: 10px;
+      text-align: center;
+      .ui_text {
+        width: 80%;
+        border-radius: 30px;
+        padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 7px;
+        margin-left: 40px;
+        font-size: 17px;
+        color: color.$color-4;
+        outline-color: color.$color-4;
+      }
+      .magnifier {
+        position: absolute;
+        left: 2%;
+        top: 25%;
+        font-size: 30px;
+      }
+      .input_delete_btn {
+        position: absolute;
+        font-size: 30px;
+        right: 5%;
+        top: 25%;
+      }
     }
   }
 }

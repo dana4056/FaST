@@ -15,6 +15,7 @@ import LoginContainer from './containers/LoginContainer';
 import FollowContainer from './containers/FollowContainer';
 import TestPage from './pages/TestPage';
 import UserModifyContainer from './containers/UserModifyContainer';
+import FindPwdContainer from './containers/FindPwdContainer';
 
 function Router() {
   return (
@@ -32,6 +33,7 @@ function Router() {
           <Route path="/follow" element={<FollowContainer />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/modify" element={<UserModifyContainer />} />
+          <Route path="/find-pwd" element={<FindPwdContainer />} />
         </Routes>
       </div>
       <Footer />
