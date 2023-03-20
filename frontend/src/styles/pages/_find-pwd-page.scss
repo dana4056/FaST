@@ -1,0 +1,28 @@
+@use '../color';
+
+.find-pwd-page {
+  margin-top: 20%;
+}
+
+.find-pwd-page__row {
+  width: 100%;
+  margin: 8% 0;
+  flex-wrap: wrap;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
+.find-pwd-page__change__button {
+  width: 90%;
+  padding: 12px 0;
+  color: white;
+  font-size: 16px;
+  border: none;
+  background-color: color.$color-1;
+  border-radius: 10px;
+
+  &:active {
+    background: darken($color: color.$color-1, $amount: 10);
+  }
+}

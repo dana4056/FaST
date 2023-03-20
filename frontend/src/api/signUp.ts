@@ -56,6 +56,8 @@ async function signUp(
     return res;
   } catch (error: any) {
     console.log(error);
+    // console.log(error.response.data.status);
+    // const { status } = error.response.data.status;
     return error;
   }
 }
