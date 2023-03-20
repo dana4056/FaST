@@ -30,11 +30,11 @@ function LoginContainer() {
   // 로그인 하러가기
   const goLogin = async () => {
     const saltRes = await api.getSalt(email);
-    console.log(saltRes);
+    // console.log(saltRes);
     if (saltRes.status === 200) {
       const pwd = createHashedPassword(password, saltRes.data);
-      console.log(saltRes.data);
-      console.log(pwd);
+      // console.log(saltRes.data);
+      // console.log(pwd);
       const res = await api.login(email, pwd);
       if (res === 200) {
         navigate('/home');
