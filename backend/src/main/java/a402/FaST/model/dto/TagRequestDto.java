@@ -15,7 +15,6 @@ public class TagRequestDto {
 
    private int tagId;
    private int userId;
-
    private List<String> tags;
 
 }

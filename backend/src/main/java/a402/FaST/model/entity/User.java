@@ -42,9 +42,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagHasUser> tags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "fromId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Follow> fromId = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "toId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Follow> toId = new ArrayList<>();
 }
