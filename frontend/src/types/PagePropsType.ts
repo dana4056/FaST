@@ -101,3 +101,27 @@ export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
   email: string;
   name: string;
 }
+
+export interface FindPwdProps {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+
+  emailMessage: string;
+  passwordMessage: string;
+  passwordConfirmMessage: string;
+
+  isEmail: boolean;
+  isCheckEmail: boolean;
+  isPassword: boolean;
+  isPasswordConfirm: boolean;
+  isSend: boolean;
+
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAuthNum: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickCheckEmailCode: () => void;
+  onClickSend: () => void;
+  onClickNext: () => void;
+}
