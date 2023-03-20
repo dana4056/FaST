@@ -1,3 +1,16 @@
+@keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .modal_container {
   width: 100%;
   height: 100%;
@@ -8,6 +21,9 @@
   justify-content: center;
   position: fixed;
   z-index: 9998;
+  -webkit-animation: slide-in-bottom 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55)
+    both;
+  animation: slide-in-bottom 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
 }
 
 .dialog_box {
@@ -26,8 +42,8 @@
 }
 
 .back_drop {
-  width: 100vw;
-  height: 100vh;
+  width: 200vw;
+  height: 200vh;
   position: fixed;
   top: 0;
   left: 0;

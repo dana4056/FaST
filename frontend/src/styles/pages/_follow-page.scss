@@ -38,3 +38,12 @@
   bottom: 0;
   transition: transform 0.3s ease-in-out;
 }
+
+.follow-page {
+  overflow: hidden;
+  .follow-page__user {
+    width: 200%;
+    transition: 0.5s;
+    display: flex;
+  }
+}

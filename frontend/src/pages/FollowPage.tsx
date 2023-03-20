@@ -25,7 +25,7 @@ function FollowPage() {
   };
 
   return (
-    <div>
+    <div className="follow-page">
       <div className="menuBar">
         <div>
           {tabList.map((tab) => {
@@ -46,7 +46,14 @@ function FollowPage() {
           />
         </div>
       </div>
-      <div className="contentArea">{tabList[currentTab].content}</div>
+
+      <div
+        className="follow-page__user"
+        style={currentTab === 1 ? { transform: 'translate(-50%)' } : {}}
+      >
+        {tabList[0].content}
+        {tabList[1].content}
+      </div>
     </div>
   );
 }
