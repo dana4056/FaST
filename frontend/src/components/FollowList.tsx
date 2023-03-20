@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
+import { TiDelete } from 'react-icons/ti';
 import Modal from './Modal';
 import cardimg from '../assets/images/photocardimg.jpeg';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
@@ -79,18 +80,6 @@ function FollowList() {
       profileImg: cardimg,
       searchCnt: 0,
     },
-    {
-      id: 3,
-      userId: 'bcde',
-      profileImg: sample1,
-      searchCnt: 0,
-    },
-    {
-      id: 4,
-      userId: 'bcde12',
-      profileImg: cardimg,
-      searchCnt: 0,
-    },
   ];
 
   const [userInput, setUserInput] = useState('');
@@ -102,8 +91,13 @@ function FollowList() {
     user.userId.toLowerCase().includes(userInput)
   );
 
+  const deleteInput = (e: React.MouseEvent<SVGAElement>) => {
+    setUserInput('');
+    console.log(userInput);
+  };
+
   return (
-    <div>
+    <div className="follow-list-container">
       <div className="form_text">
         <div className="input_box card">
           <input
@@ -111,8 +105,12 @@ function FollowList() {
             className="ui_text"
             placeholder="검색"
             onChange={getValue}
+            value={userInput}
           />
           <HiMagnifyingGlass className="magnifier" />
+          {userInput && (
+            <TiDelete className="input_delete_btn" onClick={deleteInput} />
+          )}
         </div>
         <div>
           {searched
