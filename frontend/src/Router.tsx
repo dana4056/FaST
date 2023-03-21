@@ -28,8 +28,6 @@ function Router() {
           <Route path="/card/:cardId" element={<CardDetailContainer />} />
           <Route path="/myrecord" element={<MyRecordContainer />} />
           <Route path="/map" element={<MapContainer />} />
-          <Route path="/sign-up" element={<SignUpContainer />} />
-          <Route path="/login" element={<LoginContainer />} />
           <Route path="/follow" element={<FollowContainer />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/modify" element={<UserModifyContainer />} />

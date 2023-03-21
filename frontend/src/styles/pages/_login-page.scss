@@ -2,34 +2,40 @@
 
 .login-page {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   height: 100%;
+  background-image: url(../../assets/images/sky.png);
+  background-size: 100% 100%;
 
   .login-page__logo {
-    font-size: 60px;
-    margin-top: 25%;
-    .logo__f {
-      color: color.$color-1;
-    }
-    .logo__a {
-      color: color.$color-2;
-    }
-    .logo__s {
-      color: color.$color-3;
-    }
-    .logo__t {
-      color: color.$color-4;
-    }
+    text-align: center;
+    color: white;
   }
 
-  .login-page__row {
-    width: 100%;
-    padding: 0 5%;
-    flex-wrap: wrap;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
+  .login-page__wrapper {
+    width: 90%;
+    margin: 0 auto;
+    .login-page__row {
+      width: 100%;
+      flex-wrap: wrap;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+    }
+    .login-page__button {
+      width: 100%;
+      margin-top: 35px;
+      padding: 10px 0;
+      color: white;
+      font-size: 20px;
+      border: none;
+      background-color: color.$color-4;
+
+      &:active {
+        background: darken($color: color.$color-1, $amount: 10);
+      }
+    }
   }
 
   .login-page__row__text {
@@ -69,7 +75,7 @@
   }
 
   .login-page__text {
-    color: #999999;
+    color: white;
     margin-top: 20px;
     font-size: 18px;
     font-weight: bold;
@@ -77,7 +83,7 @@
   }
 
   .login-page__text__fast__login {
-    color: #999999;
+    color: white;
     margin-top: 35px;
     margin-bottom: 20px;
     font-size: 18px;
@@ -98,52 +104,26 @@
     background-color: color.$color-5;
   }
 
-  .login-page__button {
-    width: 90%;
-    margin-top: 35px;
-    padding: 10px 0;
+  .login-page__social-button {
+    max-width: fit-content;
+    max-height: fit-content;
+    margin: 0 5px;
+    padding: 10px;
     color: white;
-    font-size: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
     border: none;
-    background-color: color.$color-1;
-
-    &:active {
-      background: darken($color: color.$color-1, $amount: 10);
-    }
-  }
-
-  .login-page__naver__button {
-    width: 90%;
-    padding: 10px 10px;
-    font-size: 20px;
-    background-color: #3fc754;
-    color: white;
-    border: none;
-
-    .login-page__logo__image {
-      padding-right: 4%;
-    }
-
-    &:active {
-      background: darken($color: #3fc754, $amount: 10);
-    }
-  }
-
-  .login-page__kakao__button {
-    width: 90%;
-    margin-top: 20px;
-    padding: 10px 0;
-    font-size: 20px;
-    background-color: #fee500;
-    color: #392020;
-    border: none;
-
-    .login-page__kakao__logo__image {
-      padding-right: 4%;
-    }
 
     &:active {
       background: darken($color: #fee500, $amount: 10);
     }
+  }
+  .login-page__social--naver {
+    background-color: #2db400;
+  }
+  .login-page__social--kakao {
+    background-color: #f7e600;
+    color: #3a1d1d;
   }
 }
