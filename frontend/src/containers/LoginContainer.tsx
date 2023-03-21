@@ -55,15 +55,13 @@ function LoginContainer() {
   };
 
   return (
-    <div>
-      <LoginPage
-        goLogin={goLogin}
-        goKakaoLogin={goKakaoLogin}
-        goNaverLogin={goNaverLogin}
-        onChangeEmail={onChangeEmail}
-        onChangePassword={onChangePassword}
-      />
-    </div>
+    <LoginPage
+      goLogin={goLogin}
+      goKakaoLogin={goKakaoLogin}
+      goNaverLogin={goNaverLogin}
+      onChangeEmail={onChangeEmail}
+      onChangePassword={onChangePassword}
+    />
   );
 }
 

@@ -1,274 +1,187 @@
 @use '../color';
 
-.sign-up-wide-page {
-  overflow: hidden;
-  .sign-up-wide-page__wrapper {
-    width: 100%;
-    transition: 0.2s;
-    display: flex;
-  }
-}
-
 .sign-up-page {
-  display: flex;
-  flex: none;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: center;
   overflow: hidden;
-  // height: 100%;
-
+  // background-color: #efefef;
+  background-image: url(../../assets/images/sky.png);
+  background-size: 100% 100%;
+  height: 100%;
   .sign-up-page__wrapper {
     width: 100%;
+    height: 100%;
     transition: 0.2s;
     display: flex;
-  }
+    .sign-up-page__form {
+      width: 100%;
+      height: 100%;
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .sign-up-page__row {
+        width: 90%;
+        padding: 0 5%;
+        flex-wrap: wrap;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+        .sign-up-page__message {
+          // font-weight: 500;
+          font-size: 12px;
+          line-height: 24px;
+          letter-spacing: -1px;
+          // position: absolute;
+          // bottom: -10px;
+          left: 0;
 
-  .sign-up-page__row {
-    width: 100%;
-    padding: 0 5%;
-    flex-wrap: wrap;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-  }
+          &.success {
+            color: #8f8c8b;
+            margin-top: 3px;
+          }
 
-  .sign-up-page__row__text {
-    width: 100%;
-    padding-left: 1%;
-    flex-wrap: wrap;
-    height: fit-content;
-    display: flex;
-    justify-content: left;
-  }
+          &.error {
+            color: #ff2727;
+            margin-top: 3px;
+          }
+        }
+        .sign-up-page__row__text {
+          width: 100%;
+          padding-left: 1%;
+          flex-wrap: wrap;
+          height: fit-content;
+          display: flex;
+          justify-content: left;
+          color: white;
+          .sign-up-page__text {
+            margin-top: 10px;
+            font-size: 20px;
+            height: 20px;
+          }
+        }
+        .sign-up-page__input {
+          font-size: 16px;
+          margin-top: 3%;
+          width: 100%;
+          height: 35px;
+          padding: 1% 0;
+          padding-left: 3%;
+          border: none;
+          border-radius: 10px;
+          outline: none;
+          background-color: color.$color-5;
+        }
+        .sign-up-page__input--auth {
+          font-size: 16px;
+          width: 70%;
+          height: 35px;
+          padding: 1% 0;
+          margin-top: 3%;
+          padding-left: 3%;
+          border: none;
+          border-radius: 10px;
+          outline: none;
+          background-color: color.$color-5;
+        }
+        .sign-up-page__button {
+          width: 20%;
+          margin-top: 3%;
+          margin-left: auto;
+          padding: 10px 0;
+          color: white;
+          font-size: 16px;
+          border: none;
+          background-color: color.$color-1;
+          border-radius: 10px;
 
-  .sign-up-page__image {
-    width: 90px;
-    height: 90px;
-    margin-top: 20px;
-  }
-
-  .sign-up-page__image__container {
-    position: relative;
-
-    .sign-up-page__camera__image {
-      width: 25px;
-      height: 25px;
-      margin-top: 160px;
-      position: absolute;
-      color: color.$color-2;
-      right: 1px;
+          &:active {
+            background: darken($color: color.$color-1, $amount: 10);
+          }
+        }
+      }
     }
-  }
+    .sign-up-page__tag-form {
+      display: flex;
+      flex: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .sign-up-page__row {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        .sign-up-page__button {
+          margin-left: auto;
+          background-color: color.$color-4;
+          width: 20%;
+          padding: 10px 0;
+          color: white;
+          font-size: 16px;
+          border: none;
+          border-radius: 10px;
 
-  .sign-up-page__text {
-    margin-top: 10px;
-    font-size: 20px;
-    height: 20px;
-  }
+          &:active {
+            background: darken($color: color.$color-1, $amount: 10);
+          }
+        }
+        .sign-up-page__title {
+          font-size: 35px;
+          color: white;
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+        .sign-up-page__tag-container {
+          width: 100%;
 
-  .sign-up-page__input {
-    font-size: 16px;
-    margin-top: 3%;
-    width: 100%;
-    height: 35px;
-    padding: 1% 0;
-    padding-left: 3%;
-    border: none;
-    border-radius: 10px;
-    outline: none;
-    background-color: color.$color-5;
-  }
-
-  .sign-up-page__auth__input {
-    font-size: 16px;
-    width: 70%;
-    height: 35px;
-    padding: 1% 0;
-    margin-top: 3%;
-    padding-left: 3%;
-    border: none;
-    border-radius: 10px;
-    outline: none;
-    background-color: color.$color-5;
-  }
-
-  .sign-up-page__button {
-    width: 20%;
-    margin-top: 3%;
-    margin-left: 20px;
-    padding: 10px 0;
-    color: white;
-    font-size: 16px;
-    border: none;
-    background-color: color.$color-1;
-    border-radius: 10px;
-
-    &:active {
-      background: darken($color: color.$color-1, $amount: 10);
+          .sign-up-page__tag-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            .sign-up-page__check {
+              margin: 0 4px;
+            }
+            .sign-up-page__tag--6 {
+              width: 30%;
+              background-color: color.$color-6;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 8px 0;
+            }
+            .sign-up-page__tag--7 {
+              width: 30%;
+              background-color: color.$color-7;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 4px 0;
+            }
+            .sign-up-page__tag--8 {
+              width: 30%;
+              background-color: color.$color-8;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 4px 0;
+            }
+            .sign-up-page__tag--9 {
+              width: 30%;
+              background-color: color.$color-9;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 4px 0;
+            }
+          }
+        }
+      }
     }
-  }
-
-  .sign-up-page__next__button {
-    width: 20%;
-    margin-top: 5%;
-    margin-left: 20px;
-    padding: 10px 0;
-    color: white;
-    font-size: 16px;
-    border: none;
-    background-color: color.$color-1;
-    border-radius: 10px;
-
-    &:active {
-      background: darken($color: color.$color-1, $amount: 10);
-    }
-  }
-
-  .sign-up-favorite-tag-page__next__button {
-    width: 20%;
-    margin-top: 54%;
-    margin-left: 20px;
-    padding: 10px 0;
-    color: white;
-    font-size: 16px;
-    border: none;
-    background-color: color.$color-1;
-    border-radius: 10px;
-
-    &:active {
-      background: darken($color: color.$color-1, $amount: 10);
-    }
-  }
-
-  .message {
-    // font-weight: 500;
-    font-size: 12px;
-    line-height: 24px;
-    letter-spacing: -1px;
-    // position: absolute;
-    // bottom: -10px;
-    left: 0;
-
-    &.success {
-      color: #8f8c8b;
-      margin-top: 3px;
-    }
-
-    &.error {
-      color: #ff2727;
-      margin-top: 3px;
-    }
-  }
-
-  .sign-up-page__row__next {
-    width: 100%;
-    padding: 0 5%;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    height: fit-content;
-    display: flex;
-    justify-content: right;
-  }
-}
-
-.sign-up-favorite-tag-page {
-  display: flex;
-  flex: none;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: center;
-  overflow: hidden;
-
-  .sign-up-favorite-tag-page__row {
-    width: 100%;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-  }
-
-  .sign-up-favorite-tag-page__title {
-    font-size: 35px;
-    margin-top: 130px;
-    color: color.$color-3;
-    font-weight: bold;
-  }
-}
-.sign-up-favorite-tag-page__container {
-  width: 90%;
-  height: 100%;
-  margin-top: 30px;
-  flex-wrap: wrap;
-  justify-content: left;
-  height: fit-content;
-
-  .sign-up-favorite-tag-page__tag__container {
-    padding: 0 3%;
-  }
-
-  .sign-up-favorite-tag-page__tag6 {
-    width: 92px;
-    height: 35px;
-    margin: 0 3%;
-    font-size: 15px;
-    border: none;
-    background-color: color.$color-6;
-    border-radius: 10px;
-    color: white;
-
-    &:active {
-      background: darken($color: color.$color-6, $amount: 10);
-    }
-  }
-
-  .sign-up-favorite-tag-page__tag7 {
-    width: 92px;
-    height: 35px;
-    font-size: 15px;
-    margin: 0 3%;
-    border: none;
-    background-color: color.$color-7;
-    border-radius: 10px;
-    color: white;
-
-    &:active {
-      background: darken($color: color.$color-7, $amount: 10);
-    }
-  }
-
-  .sign-up-favorite-tag-page__tag8 {
-    width: 92px;
-    height: 35px;
-    font-size: 15px;
-    margin: 0 3%;
-    border: none;
-    background-color: color.$color-8;
-    border-radius: 10px;
-    color: white;
-
-    &:active {
-      background: darken($color: color.$color-8, $amount: 10);
-    }
-  }
-
-  .sign-up-favorite-tag-page__tag9 {
-    width: 92px;
-    height: 35px;
-    font-size: 15px;
-    margin: 0 3%;
-    border: none;
-    background-color: color.$color-9;
-    border-radius: 10px;
-    color: white;
-
-    &:active {
-      background: darken($color: color.$color-9, $amount: 10);
-    }
-  }
-
-  .sign-up-favorite-tag-page__check__icon {
-    margin-right: 3px;
   }
 }
