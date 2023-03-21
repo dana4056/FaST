@@ -197,7 +197,7 @@ export default function SignUpPage({
                   >
                     {isChecked[item.index] ? (
                       // eslint-disable-next-line max-len
-                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                      <AiFillCheckCircle className="sign-up-page__check" />
                     ) : null}
                     {item.tagName}
                   </button>
@@ -213,7 +213,7 @@ export default function SignUpPage({
                   >
                     {isChecked[item.index] ? (
                       // eslint-disable-next-line max-len
-                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                      <AiFillCheckCircle className="sign-up-page__check" />
                     ) : null}
                     {item.tagName}
                   </button>
@@ -228,7 +228,7 @@ export default function SignUpPage({
                     onClick={() => onClickTag(i, 2)}
                   >
                     {isChecked[item.index] ? (
-                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                      <AiFillCheckCircle className="sign-up-page__check" />
                     ) : null}
                     {item.tagName}
                   </button>
@@ -243,7 +243,7 @@ export default function SignUpPage({
                     onClick={() => onClickTag(i, 3)}
                   >
                     {isChecked[item.index] ? (
-                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                      <AiFillCheckCircle className="sign-up-page__check" />
                     ) : null}
                     {item.tagName}
                   </button>
@@ -258,7 +258,7 @@ export default function SignUpPage({
                     onClick={() => onClickTag(i, 4)}
                   >
                     {isChecked[item.index] ? (
-                      <AiFillCheckCircle className="sign-up-favorite-tag-page__check__icon" />
+                      <AiFillCheckCircle className="sign-up-page__check" />
                     ) : null}
                     {item.tagName}
                   </button>

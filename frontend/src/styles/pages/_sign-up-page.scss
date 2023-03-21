@@ -139,28 +139,43 @@
             display: flex;
             justify-content: space-around;
             margin-bottom: 20px;
+            .sign-up-page__check {
+              margin: 0 4px;
+            }
             .sign-up-page__tag--6 {
               width: 30%;
               background-color: color.$color-6;
               border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               padding: 8px 0;
             }
             .sign-up-page__tag--7 {
               width: 30%;
               background-color: color.$color-7;
               border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               padding: 4px 0;
             }
             .sign-up-page__tag--8 {
               width: 30%;
               background-color: color.$color-8;
               border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               padding: 4px 0;
             }
             .sign-up-page__tag--9 {
               width: 30%;
               background-color: color.$color-9;
               border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               padding: 4px 0;
             }
           }
