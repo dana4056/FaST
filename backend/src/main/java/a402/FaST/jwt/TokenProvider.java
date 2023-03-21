@@ -68,6 +68,26 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
     }
+    // Authentication 객체의 권한 정보를 이용해서 Token을 생성하는 메소드
+    public String createTokenLocal(Authentication authentication) {
+        // 권한들 가져오기
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        // 만료시간 설정
+
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        // 토큰 생성
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+
 
     // Token에 담겨 있는 정보를 이용해서 Authentication 객체를 리턴하는 메소드
     public Authentication getAuthentication(String token) {
