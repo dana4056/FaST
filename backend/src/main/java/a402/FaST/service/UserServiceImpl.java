@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
         // 객체를 SecurityContext에 저장한다
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // authentication 객체를 통해 JWT 토큰 생성
-        String jwt = tokenProvider.createToken(authentication);
+        String jwt = tokenProvider.createTokenLocal(authentication);
 
 //        JWT Token을 ResponseHeader에도 넣어주고 TokenDto를 통해 ResponseBody에도 넣어서 리턴 해준다
 //        HttpHeaders httpHeaders = new HttpHeaders();
