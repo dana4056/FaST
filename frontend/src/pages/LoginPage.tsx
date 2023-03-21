@@ -54,10 +54,13 @@ export default function LoginPage({
           <button className="card login-page__button" type="submit">
             로그인
           </button>
-          <div className="login-page__row">
-            <div className="login-page__row__pwd__text">
+          <div className="login-page__links">
+            <span className="login-page__link">
+              <Link to="/sign-up">회원가입</Link>
+            </span>
+            <span className="login-page__link">
               <Link to="/find-pwd">비밀번호 찾기</Link>
-            </div>
+            </span>
           </div>
         </div>
       </form>

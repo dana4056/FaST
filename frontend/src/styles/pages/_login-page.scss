@@ -22,6 +22,17 @@
       height: fit-content;
       display: flex;
       justify-content: center;
+      .login-page__links {
+        margin-top: 10px;
+        margin-left: auto;
+        .login-page__link {
+          padding: 0 4px;
+          a {
+            text-decoration: none;
+            color: white;
+          }
+        }
+      }
     }
     .login-page__button {
       width: 100%;
@@ -48,7 +59,6 @@
   }
 
   .login-page__row__pwd__text {
-    width: 100%;
     margin-left: 40%;
     padding-right: 1%;
     margin-top: 3%;
