@@ -21,6 +21,11 @@ public interface FollowRepository extends JpaRepository<Follow, FollowPK> {
     @Query("delete from Follow f where f.fromId = :fromId and f.toId = :toId")
     void FollowDelete(@Param("fromId") User fromId, @Param("toId") User toId);
 
+    @Query(value = "select * " +
+            "from User u " +
+            "where u.id not in (select f.from_id from Follow f where f.to_id = :toId)", nativeQuery = true)
+    List<User> SearchNotFollower(@Param("toId") User toId);
+
 //    List<Follow> findByToIdNotContaining(User toId);
 
 

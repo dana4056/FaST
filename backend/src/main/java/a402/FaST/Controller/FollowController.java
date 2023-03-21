@@ -44,10 +44,10 @@ public class FollowController {
     @Operation(summary = "팔로우 조회 API =>  유저 ID로 해당 유저의 Follower, Following 유저 검색하는 API 입니다.",
             description = "json 형식 데이터 -> (int : id)" +
                     " => UserFollowResponseDto Return 해줍니다.")
-    public ResponseEntity<UserFollowResponseDto> findUser(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
-        UserFollowResponseDto userFollowResponseDto = null;
-        userFollowResponseDto = followService.getfollow(requestDto);
-        return ResponseEntity.ok(userFollowResponseDto);
+    public ResponseEntity<UserFromToFollowResponseDto> findUser(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
+        UserFromToFollowResponseDto userFromToFollowResponseDto = null;
+        userFromToFollowResponseDto = followService.getfollow(requestDto);
+        return ResponseEntity.ok(userFromToFollowResponseDto);
     }
 
     @GetMapping("/to")
@@ -69,13 +69,13 @@ public class FollowController {
     }
 
     @PostMapping("/search2")
-    @Operation(summary = "팔로우 조회 API =>  유저 ID로 해당 유저의 Follower, Following 유저 검색하는 API 입니다.",
+    @Operation(summary = "NOT 팔로워 조회 API =>  유저 ID로 해당 유저를 팔로워 하지 않는 유저 정보를 조회하는 API 입니다.",
             description = "json 형식 데이터 -> (int : id)" +
-                    " => UserFollowResponseDto Return 해줍니다.")
-    public ResponseEntity<UserFollowResponseDto> findUser2(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
-        UserFollowResponseDto userFollowResponseDto = null;
-        userFollowResponseDto = followService.getfollow2(requestDto);
-        return ResponseEntity.ok(userFollowResponseDto);
+                    " => UserFromFollowResponseDto Return 해줍니다.")
+    public ResponseEntity<UserFromFollowResponseDto> NotFollow(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
+        UserFromFollowResponseDto userFromFollowResponseDto = null;
+        userFromFollowResponseDto = followService.NotFollow(requestDto);
+        return ResponseEntity.ok(userFromFollowResponseDto);
     }
 
 }

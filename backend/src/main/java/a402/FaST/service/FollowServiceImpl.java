@@ -1,25 +1,31 @@
 package a402.FaST.service;
 
+import a402.FaST.Controller.FollowController;
 import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
-import a402.FaST.model.PK.FollowPK;
 import a402.FaST.model.dto.FollowRequestDto;
 import a402.FaST.model.dto.FollowSearchRequestDto;
-import a402.FaST.model.dto.UserFollowResponseDto;
-import a402.FaST.model.dto.UserResponseDto;
+import a402.FaST.model.dto.UserFromFollowResponseDto;
+import a402.FaST.model.dto.UserFromToFollowResponseDto;
 import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.FollowRepository;
 import a402.FaST.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FollowServiceImpl.class);
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
@@ -53,14 +59,14 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public UserFollowResponseDto getfollow(FollowSearchRequestDto requestDto) {
+    public UserFromToFollowResponseDto getfollow(FollowSearchRequestDto requestDto) {
         if(!userRepository.existsById(requestDto.getId())){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             User user = userRepository.findById(requestDto.getId()).get();
-            UserFollowResponseDto userFollowResponseDto = null;
-            userFollowResponseDto = UserFollowResponseDto.from(user);
-            return userFollowResponseDto;
+            UserFromToFollowResponseDto userFromToFollowResponseDto = null;
+            userFromToFollowResponseDto = UserFromToFollowResponseDto.from(user);
+            return userFromToFollowResponseDto;
         }
     }
 
@@ -87,20 +93,18 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public UserFollowResponseDto getfollow2(FollowSearchRequestDto requestDto) {
-        return null;
+    public UserFromFollowResponseDto NotFollow(FollowSearchRequestDto requestDto) {
+        if(!userRepository.existsById(requestDto.getId())){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(requestDto.getId()).get();
+//            List<User> users = followRepository.SearchNotFollower(user);
+            UserFromFollowResponseDto userFromFollowResponseDto = null;
+            logger.info("list {}", followRepository.SearchNotFollower(user));
+//            userFromFollowResponseDto = UserFromFollowResponseDto.from(user);
+            return userFromFollowResponseDto;
+        }
     }
 
-//    @Override
-//    public UserFollowResponseDto getfollow2(FollowSearchRequestDto requestDto) {
-//        if(!userRepository.existsById(requestDto.getId())){
-//            throw new NotFoundMemberException("없는 유저입니다.");
-//        }else{
-////            User user = userRepository.findByToIdNotContaining(requestDto.getId()).get();
-////            User user = userRepository.findByToIdNotContaining(requestDto.getId()).get();
-////            UserFollowResponseDto userFollowResponseDto = null;
-////            userFollowResponseDto = UserFollowResponseDto.from(user);
-//            return userFollowResponseDto;
-//        }
-//    }
+
 }
