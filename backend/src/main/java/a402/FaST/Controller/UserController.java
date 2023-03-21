@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,21 +55,21 @@ public class UserController {
     @Operation(summary = "로그인 API =>  아이디, 비밀번호 입력을 통해 로그인하는 API 입니다.",
             description = "json 형식 데이터 -> (String : email, String : password)" +
             " => 로그인에 완료한 User 정보와 Token 정보를 Return 해줍니다.")
-    private ResponseEntity<Map<String, Object>> login(@Valid @RequestBody UserRequestDto requestDto) {
-        Map<String, Object> resultMap = new HashMap<>();
+    private ResponseEntity<UserResponseDto> login(@Valid @RequestBody UserRequestDto requestDto) {
+        HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
         TokenDto TokenResponseDto = null;
         UserResponseDto userResponseDto = null;
+
         try {
             TokenResponseDto = userService.getToken(requestDto);
             userResponseDto = userService.getUser(requestDto);
-            resultMap.put("token", TokenResponseDto);
-            resultMap.put("user", userResponseDto);
+            String authorization = TokenResponseDto.getToken();
+            headers.set("Authorization", "Bearer"+" "+ authorization);
         } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<UserResponseDto>(userResponseDto, headers, status);
     }
 
     @PostMapping("/user/send-email")
