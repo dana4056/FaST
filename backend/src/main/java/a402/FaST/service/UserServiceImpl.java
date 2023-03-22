@@ -10,6 +10,7 @@ import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.TokenDto;
+import a402.FaST.model.dto.UserModifyPasswordRequestDto;
 import a402.FaST.model.dto.UserResponseDto;
 import a402.FaST.model.dto.UserRequestDto;
 import a402.FaST.model.entity.Authority;
@@ -84,19 +85,6 @@ public class UserServiceImpl implements UserService {
         // authentication 객체를 통해 JWT 토큰 생성
         String jwt = tokenProvider.createTokenLocal(authentication);
 
-//        JWT Token을 ResponseHeader에도 넣어주고 TokenDto를 통해 ResponseBody에도 넣어서 리턴 해준다
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
-
-        // 4. RefreshToken 저장
-//        RefreshToken refreshToken = RefreshToken.builder()
-//                .key(authentication.getName())
-//                .value(tokenDto.getRefreshToken())
-//                .build();
-//
-//        refreshTokenRepository.save(refreshToken);
-
         // 5. 토큰 발급
         return new TokenDto(jwt);
     }
@@ -108,10 +96,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
         if (user != null){
             if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())) {
-//            if (user.getPassword().equals(requestDto.getPassword())){
                 userResponseDto = UserResponseDto.from(user);
                 return userResponseDto;
-//            }
             }
         else{
                 throw new NotFoundMemberException("비밀번호 틀렸습니다");
@@ -193,13 +179,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String findSalt(UserRequestDto requestDto) {
+    public String findSalt(String email) {
         String salt = null;
 
-        if (!userRepository.existsByEmail(requestDto.getEmail())) {
+        if (!userRepository.existsByEmail(email)) {
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
-            User user = userRepository.findByEmail(requestDto.getEmail()).get();
+            User user = userRepository.findByEmail(email).get();
             salt = user.getSalt();
             return salt;
         }
@@ -223,27 +209,25 @@ public class UserServiceImpl implements UserService {
         return userResponseDto;
     }
 
+    @Override
+    public UserResponseDto modifyPassword(int id, UserModifyPasswordRequestDto requestDto) throws Exception {
+        UserResponseDto userResponseDto = null;
+        if(!userRepository.existsById(id)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(id).get();
+            if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())){
+                user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+                userResponseDto = UserResponseDto.from(user);
+            }else{
+                throw new Exception("비밀번호가 다릅니다");
+            }
+        }
+        return userResponseDto;
 
-    //    // email 정보를 바탕으로 User 객체와 권한 정보를 가져온다
-//    @Transactional(readOnly = true)
-//    public UserDto getUserWithAuthorities(String email) {
-//        return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(email).orElse(null));
-//    }
-//
-//    // 현재 SecurityContext에만 있는 User 객체와 권한 정보를 가져온다
-//    @Transactional(readOnly = true)
-//    public UserDto getMyUserWithAuthorities() {
-//        return UserDto.from(
-//                SecurityUtil.getCurrentUsername()
-//                        .flatMap(userRepository::findOneWithAuthoritiesByEmail)
-//                        .orElseThrow(() -> new NotFoundMemberException("Member not found"))
-//        );
-//    }
+    }
 
-// -------------------------------메일 부분--------------------------------------------------
-
-
-// -------------------------------메일 부분--------------------------------------------------
+    // -------------------------------메일 부분--------------------------------------------------
     private MimeMessage createMessage(String to)throws Exception{
         System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+ePw);
