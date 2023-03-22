@@ -32,10 +32,3 @@ public class UserFromToFollowResponseDto {
                  .build();
    }
 }
-
-//                 .from(user.getFromId().stream()
-//                         .map(follower->FollowerResponseDto.builder().fromId(follower.getFromId().getId()).build())
-//                         .collect(Collectors.toList()))
-//                 .to(user.getToId().stream()
-//                         .map(following->FollowingResponseDto.builder().toId(following.getToId().getId()).build())
-//                         .collect(Collectors.toList()))

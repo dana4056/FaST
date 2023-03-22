@@ -22,4 +22,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagHasUser> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ArticleHasTag> articles = new ArrayList<>();
 }
