@@ -35,23 +35,10 @@ public class ArticleController {
 
     @PostMapping
     @ApiOperation("게시글 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
-    public ResponseEntity<?> create(@Valid @RequestBody ArticleRequestDto requestDto) {
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        ArticleCommentResponseDto responseDto = null;
+    public ResponseEntity<ArticleResponseDto> create(@Valid @RequestBody ArticleRequestDto requestDto) {
+        ArticleResponseDto responseDto = null;
         responseDto = articleService.create(requestDto);
         return ResponseEntity.ok(responseDto);
-//        BoardResponseCommentDto boardResponseCommentDto = null;
-//
-//        try {
-//            boardResponseCommentDto = boardService.join(title, content, user.getUsername(), room_id, picture);
-//            resultMap.put("newBoard", boardResponseCommentDto);
-//        } catch (Exception e) {
-//            resultMap.put("error", e.getMessage());
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-
-
     }
 
 

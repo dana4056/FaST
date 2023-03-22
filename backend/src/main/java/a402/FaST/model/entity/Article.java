@@ -1,9 +1,6 @@
 package a402.FaST.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @Table(name = "article")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article {
@@ -24,7 +22,7 @@ public class Article {
     private int id;
     private String img_path;
     private String content;
-    private LocalDateTime createTime = LocalDateTime.now();  ;
+    private LocalDateTime createTime;  ;
     @ColumnDefault("0")
     private int like_count;
     @ColumnDefault("0")
