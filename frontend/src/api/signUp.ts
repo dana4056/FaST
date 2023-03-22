@@ -9,7 +9,7 @@ const api = axios.create({
 
 async function sendEmail(email: string) {
   try {
-    const res = await api.post(`/api/user/send-email`, {
+    const res = await api.post(`/user/send-email`, {
       email,
     });
 
@@ -23,7 +23,7 @@ async function sendEmail(email: string) {
 
 async function checkEmail(email: string, code: string) {
   try {
-    const res = await api.post(`/api/user/check-code`, {
+    const res = await api.post(`/user/check-code`, {
       code,
       email,
     });
@@ -43,7 +43,7 @@ async function signUp(
   salt: string
 ): Promise<AxiosResponse> {
   try {
-    const res = await api.post<any>(`/api/user`, {
+    const res = await api.post<any>(`/user/signup`, {
       email,
       imgPath,
       nickname,
