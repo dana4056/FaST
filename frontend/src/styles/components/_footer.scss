@@ -4,17 +4,130 @@ $height: 65px;
 
 .footer {
   width: 100%;
-  box-sizing: border-box;
-  border-top: 0.5px solid color.$gray;
-  display: flex;
-  background-color: white;
   height: $height;
-  .footer__icon {
+  box-sizing: border-box;
+  display: flex;
+  background-color: color.$color-4;
+  flex-wrap: wrap;
+
+  body {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  input {
+    display: none;
+  }
+  label.icons {
+    transition: transform ease 0.5s, color ease 0.5s;
+    font-size: 40px;
+    // position: absolute;
+    z-index: 3;
+    color: white;
+    // left: 50%;
+    top: 20%;
+    // transform: translate(-50%, -50%);
+    text-align: center;
+    width: 20%;
+  }
+
+  span.title {
+    transition: transform ease 0.5s, color ease 0.5s;
+    font-size: 13px;
+    z-index: 2;
+    color: color.$color-4;
+    top: 50%;
+    // transform: translate(-50%, -50%);
+    opacity: 0;
     width: 20%;
     text-align: center;
-    font-size: 48px;
-    a {
-      color: black;
-    }
+  }
+  #one:checked ~ label.home {
+    transform: translate(0px, -40px);
+    color: color.$color-4;
+  }
+  #two:checked ~ label.people {
+    transform: translate(0px, -40px);
+    color: color.$color-4;
+  }
+  #three:checked ~ label.plus {
+    transform: translate(0px, -40px);
+    color: color.$color-4;
+  }
+  #four:checked ~ label.myrecord {
+    transform: translate(0px, -40px);
+    color: color.$color-4;
+  }
+  #five:checked ~ label.mypage {
+    transform: translate(0px, -40px);
+    color: color.$color-4;
+  }
+
+  #one:checked ~ span.home {
+    color: white;
+    opacity: 1;
+    transform: translate(0px, -55px);
+  }
+  #two:checked ~ span.people {
+    color: white;
+    opacity: 1;
+    transform: translate(0px, -55px);
+  }
+  #three:checked ~ span.plus {
+    color: white;
+    opacity: 1;
+    transform: translate(0px, -55px);
+  }
+  #four:checked ~ span.myrecord {
+    color: white;
+    transform: translate(0px, -55px);
+    opacity: 1;
+  }
+  #five:checked ~ span.mypage {
+    color: white;
+    transform: translate(0px, -55px);
+    opacity: 1;
+  }
+  div.border {
+    z-index: 2;
+    border: 6px solid color.$color-4;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    transition: border 0.5s, transform 0.5s, border-radius 0.3s;
+  }
+  #one:checked ~ div.border {
+    transform: translate(2.5vw, -105px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  #two:checked ~ div.border {
+    transform: translate(22.5vw, -105px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  #three:checked ~ div.border {
+    transform: translate(42.5vw, -105px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  #four:checked ~ div.border {
+    transform: translate(62.5vw, -105px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  #five:checked ~ div.border {
+    transform: translate(82.5vw, -105px);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+
+  span {
+    cursor: pointer;
   }
 }
