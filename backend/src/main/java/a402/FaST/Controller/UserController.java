@@ -90,16 +90,6 @@ public class UserController {
         userService.tempPassword(requestDto);
     }
 
-
-    @PostMapping("/salt/{email}")
-    @Operation(summary = "salt 조회 API =>  유저 salt를 조회하는 API 입니다.",
-            description = "PathVariable 형식 데이터 -> (String : email)" +
-                    " => salt 값이나 error return 해줍니다.")
-    public ResponseEntity<String> findSalt(@Valid @PathVariable String email) throws Exception {
-        String salt = userService.findSalt(email);
-        return ResponseEntity.ok(salt);
-    }
-
     @PostMapping("/token")
     @Operation(summary = "소셜 로그인 조회 API =>  JWT 토큰으로 소셜 로그인한 정보를 가져옵니다",
             description = "json 형식 데이터 -> (String : token)" +
@@ -129,6 +119,15 @@ public class UserController {
         UserResponseDto userResponseDto = null;
         userResponseDto = userService.findUser(id);
         return ResponseEntity.ok(userResponseDto);
+    }
+
+    @GetMapping("/salt/{email}")
+    @Operation(summary = "salt 조회 API =>  유저 salt를 조회하는 API 입니다.",
+            description = "PathVariable 형식 데이터 -> (String : email)" +
+                    " => salt 값이나 error return 해줍니다.")
+    public ResponseEntity<String> findSalt(@Valid @PathVariable String email) throws Exception {
+        String salt = userService.findSalt(email);
+        return ResponseEntity.ok(salt);
     }
 
     @PutMapping("/{id}/nickname")
