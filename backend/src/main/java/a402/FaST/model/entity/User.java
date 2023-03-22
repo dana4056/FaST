@@ -47,4 +47,7 @@ public class User {
 
     @OneToMany(mappedBy = "toId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Follow> toId = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
 }
