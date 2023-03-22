@@ -12,35 +12,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "article")
+@Table(name = "comment")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String img_path;
     private String content;
     private LocalDateTime createTime = LocalDateTime.now();  ;
-    @ColumnDefault("0")
-    private int like_count;
-    @ColumnDefault("0")
-    private int comment_count;
-    private String let;
-    private String lng;
 
-    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<ArticleHasTag> tags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
+
+    @ManyToOne(targetEntity = Article.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="article_id")
+    private Article article;
 
 
 }
