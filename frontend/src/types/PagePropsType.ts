@@ -42,7 +42,7 @@ export interface CardDetailPageProps extends CardDetailProps {
 
 export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
 
-export interface MapPageProps extends CardListProps {}
+export type MapPageProps = CardListProps;
 
 interface Tag {
   tagName: string;
@@ -86,7 +86,7 @@ export interface SignUpPageProps extends InputProfileProps {
 }
 
 export interface LoginPageProps {
-  goLogin: () => void;
+  goLogin: (event: React.FormEvent<HTMLFormElement>) => void;
   goKakaoLogin: () => void;
   goNaverLogin: () => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
