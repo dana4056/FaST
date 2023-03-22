@@ -1,12 +1,8 @@
 package a402.FaST.service;
 
-import a402.FaST.Controller.FollowController;
 import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
-import a402.FaST.model.dto.FollowRequestDto;
-import a402.FaST.model.dto.FollowSearchRequestDto;
-import a402.FaST.model.dto.UserFromFollowResponseDto;
-import a402.FaST.model.dto.UserFromToFollowResponseDto;
+import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.FollowRepository;
@@ -18,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -93,16 +90,17 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public UserFromFollowResponseDto NotFollow(FollowSearchRequestDto requestDto) {
+    public List<UserNotFollowResponseDto> NotFollow(FollowSearchRequestDto requestDto) {
         if(!userRepository.existsById(requestDto.getId())){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
-            User user = userRepository.findById(requestDto.getId()).get();
-//            List<User> users = followRepository.SearchNotFollower(user);
-            UserFromFollowResponseDto userFromFollowResponseDto = null;
-            logger.info("list {}", followRepository.SearchNotFollower(user));
-//            userFromFollowResponseDto = UserFromFollowResponseDto.from(user);
-            return userFromFollowResponseDto;
+            List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
+            List<NotFollowList> list = followRepository.SearchNotFollower(requestDto.getId());
+
+            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId())
+                    .stream().map(x-> new UserNotFollowResponseDto(x.getnickName(),x.getImg_path()))
+                    .collect(Collectors.toList());
+            return userNotFollowResponseDtoList;
         }
     }
 

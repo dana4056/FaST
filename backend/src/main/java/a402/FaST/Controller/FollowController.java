@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -72,10 +73,10 @@ public class FollowController {
     @Operation(summary = "NOT 팔로워 조회 API =>  유저 ID로 해당 유저를 팔로워 하지 않는 유저 정보를 조회하는 API 입니다.",
             description = "json 형식 데이터 -> (int : id)" +
                     " => UserFromFollowResponseDto Return 해줍니다.")
-    public ResponseEntity<UserFromFollowResponseDto> NotFollow(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
-        UserFromFollowResponseDto userFromFollowResponseDto = null;
-        userFromFollowResponseDto = followService.NotFollow(requestDto);
-        return ResponseEntity.ok(userFromFollowResponseDto);
+    public ResponseEntity<List<UserNotFollowResponseDto>> NotFollow(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
+        List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
+        userNotFollowResponseDtoList = followService.NotFollow(requestDto);
+        return ResponseEntity.ok(userNotFollowResponseDtoList);
     }
 
 }
