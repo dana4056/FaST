@@ -14,7 +14,8 @@ public class CommentResponseDto {
    private int id;
    private String content;
    private LocalDateTime createTime = LocalDateTime.now();
-
+   private int articleId;
+   private int userId;
 
 
    public CommentResponseDto from(Comment comment) {
@@ -23,6 +24,8 @@ public class CommentResponseDto {
               .id(comment.getId())
               .content(comment.getContent())
               .createTime(comment.getCreateTime())
+              .articleId(comment.getArticle().getId())
+              .userId(comment.getUser().getId())
               .build();
    }
 }

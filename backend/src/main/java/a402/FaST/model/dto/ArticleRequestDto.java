@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ArticleRequestDto {
 
-   private int id;
+   private int userId;
    private String img_path;
    private String content;
 //   private LocalDateTime createTime;

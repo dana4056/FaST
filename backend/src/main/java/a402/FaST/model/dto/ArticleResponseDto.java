@@ -1,7 +1,6 @@
 package a402.FaST.model.dto;
 
 import a402.FaST.model.entity.Article;
-import a402.FaST.model.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,8 +12,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleCommentResponseDto {
-
+public class ArticleResponseDto {
    private int id;
    private String img_path;
    private String content;
@@ -23,12 +21,11 @@ public class ArticleCommentResponseDto {
    private int comment_count;
    private String let;
    private String lng;
-   private List<CommentResponseDto> commentList;
+   private int user;
 
-
-   public static ArticleCommentResponseDto from(Article article) {
+   public static ArticleResponseDto from(Article article) {
       if(article == null) return null;
-         return ArticleCommentResponseDto.builder()
+         return ArticleResponseDto.builder()
                  .id(article.getId())
                  .img_path(article.getImg_path())
                  .content(article.getContent())
@@ -37,11 +34,7 @@ public class ArticleCommentResponseDto {
                  .comment_count(article.getComment_count())
                  .let(article.getLet())
                  .lng(article.getLng())
-                 .commentList(article.getComments().stream()
-                         .map(x->CommentResponseDto.builder()
-                                 .id(x.getArticle().getId())
-                                 .content(x.getArticle().getContent())
-                                 .createTime(x.getArticle().getCreateTime()).build()).collect(Collectors.toList()))
+                 .user(article.getUser().getId())
                  .build();
    }
 }
