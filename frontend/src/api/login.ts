@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { encryptToken } from '../utils/passwordEncryption';
 
 const api = axios.create({
   baseURL: 'http://j8a402.p.ssafy.io:8080',
@@ -25,7 +26,10 @@ async function login(email: string, password: string) {
       email,
       password,
     });
-    localStorage.setItem('token', res.headers.authorization);
+    localStorage.setItem(
+      'token',
+      encryptToken(res.headers.authorization, email)
+    );
     console.log(res);
     console.log(res.headers.authorization);
     return res.status;
