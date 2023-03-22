@@ -30,18 +30,26 @@ import java.util.Map;
 public class ArticleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-
     private final ArticleServiceImpl articleService;
 
     @PostMapping
-    @ApiOperation("게시글 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
+    @Operation(summary = "게시글 생성 API =>  게시글 생성하는 API 입니다.",
+            description = "json 형식 데이터 -> (int : userId, String img_path, String content, String let, String lng)" +
+                    " => 검증 결과에 따라 ArticleResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<ArticleResponseDto> create(@Valid @RequestBody ArticleRequestDto requestDto) {
         ArticleResponseDto responseDto = null;
         responseDto = articleService.create(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
-
+    @DeleteMapping("{id}/{userId}")
+    @Operation(summary = "게시글 삭제 API =>  게시글 삭제하는 API 입니다.",
+            description = "PathVariable 형식 데이터 (int : id, int : userId)" +
+                    " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
+    public ResponseEntity delete(@Valid @PathVariable("id") int id, @PathVariable("userId") int userId) throws Exception {
+        boolean check = articleService.deleteArticle(id,userId);
+        return ResponseEntity.ok(check);
+    }
 
 
 }

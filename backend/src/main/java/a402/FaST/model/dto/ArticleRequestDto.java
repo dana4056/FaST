@@ -3,6 +3,7 @@ package a402.FaST.model.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,9 +15,7 @@ public class ArticleRequestDto {
    private int userId;
    private String img_path;
    private String content;
-//   private LocalDateTime createTime;
-//   private int like_count;
-//   private int comment_count;
    private String let;
    private String lng;
+   private List<String> tags;
 }
