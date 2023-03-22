@@ -8,16 +8,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDto {
-
-   private String email;
+public class UserModifyPasswordRequestDto {
 
    private String password;
+   private String newPassword;
 
-   private String nickname;
-
-   private String salt;
-
-   private String imgPath;
 
 }
