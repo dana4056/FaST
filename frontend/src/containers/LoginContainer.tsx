@@ -28,7 +28,8 @@ function LoginContainer() {
     []
   );
   // 로그인 하러가기
-  const goLogin = async () => {
+  const goLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const saltRes = await api.getSalt(email);
     // console.log(saltRes);
     if (saltRes.status === 200) {
