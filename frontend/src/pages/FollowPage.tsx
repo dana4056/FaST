@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 
 import FollowList from '../components/FollowList';
+import { FollowPageProps } from '../types/PagePropsType';
 
-function FollowPage() {
+function FollowPage({ followList }: any) {
+  // console.log('followPage', followList.follower);
   const tabList = [
     {
       id: 0,
       title: '팔로워',
-      content: <FollowList />,
     },
     {
       id: 1,
       title: '팔로잉',
-      content: <FollowList />,
     },
   ];
-
   const [currentTab, setCurrentTab] = useState(0);
   const [underlinePosition, setUnderlinePosition] = useState(0);
 
@@ -51,8 +50,8 @@ function FollowPage() {
         className="follow-page__user"
         style={currentTab === 1 ? { transform: 'translate(-50%)' } : {}}
       >
-        {tabList[0].content}
-        {tabList[1].content}
+        <FollowList follower={followList.follower} />
+        <FollowList follower={followList.follower} />
       </div>
     </div>
   );

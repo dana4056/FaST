@@ -8,6 +8,8 @@ import CardList from '../components/CardList';
 import { MyRecordPageProps } from '../types/PagePropsType';
 
 function MyRecordPage({
+  followerNum,
+  followingNum,
   tags,
   cardsLeft,
   cardsRight,
@@ -18,7 +20,7 @@ function MyRecordPage({
 }: MyRecordPageProps) {
   return (
     <div className="my-record-page">
-      <Profile />
+      <Profile followerNum={followerNum} followingNum={followingNum} />
       <MoveToMap />
       <SearchBox
         tags={tags}
