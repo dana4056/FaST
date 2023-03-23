@@ -101,7 +101,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<ArticleListResponseDto> listArticle(Pageable pageable) {
-        return null;
+//        Page<ArticleListResponseDto> myEntities = articleRepository.findAll(pageable);
+//        return myEntities.map(this::mapToDTO);
+        logger.info(" 여기까지옴");
+        logger.info(" data {}",articleRepository.findAll(pageable));
+        LocalDateTime createTime = LocalDateTime.now();
+        return articleRepository.findAllOrderByCreateTimeDesc(createTime,pageable)
+                .map(ArticleListResponseDto::new);
     }
 
     //    -----------------------------------------------------------------------------------
@@ -120,4 +126,10 @@ public class ArticleServiceImpl implements ArticleService {
             articleHasTagRepository.save(articleHasTag);
         }
     }
+
+//    public ArticleListResponseDto mapToDTO(ArticleListResponseDto myEntity) {
+//        ArticleListResponseDto myDTO = new ArticleListResponseDto();
+//        myDTO.setImgPath(myEntity.getImgPath());
+//            return myDTO;
+//    }
 }
