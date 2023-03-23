@@ -18,7 +18,7 @@ import KingSejong from '../assets/blender/KingSejong';
 
 function TestPage() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div>
       <Landmark Model={Sungnyemun} cameraPosition={[0, 2, 8]} />
       <Landmark Model={SeoulTower} cameraPosition={[0, 2, 9]} />
       <Landmark Model={Cheomseongdae} cameraPosition={[0, 2, 8]} />

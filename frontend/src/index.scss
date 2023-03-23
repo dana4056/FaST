@@ -79,3 +79,11 @@ input {
 textarea {
   font-family: 'Godo';
 }
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  overflow: hidden;
+}
