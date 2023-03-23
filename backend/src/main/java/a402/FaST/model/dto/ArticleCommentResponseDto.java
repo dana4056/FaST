@@ -38,10 +38,13 @@ public class ArticleCommentResponseDto {
                  .let(article.getLet())
                  .lng(article.getLng())
                  .commentList(article.getComments().stream()
-                         .map(x->CommentResponseDto.builder()
-                                 .id(x.getArticle().getId())
-                                 .content(x.getArticle().getContent())
-                                 .createTime(x.getArticle().getCreateTime()).build()).collect(Collectors.toList()))
+                         .map(x->new CommentResponseDto(x)).collect(Collectors.toList()))
                  .build();
    }
 }
+
+//                 .commentList(article.getComments().stream()
+//                         .map(x->CommentResponseDto.builder()
+//                                 .id(x.getArticle().getId())
+//                                 .content(x.getArticle().getContent())
+//                                 .createTime(x.getArticle().getCreateTime()).build()).collect(Collectors.toList()))

@@ -13,9 +13,17 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
    private int id;
    private String content;
-   private LocalDateTime createTime = LocalDateTime.now();
+   private LocalDateTime createTime;
    private int articleId;
    private int userId;
+
+   public CommentResponseDto(Comment comment) {
+      this.id = comment.getId();
+      this.content = comment.getContent();
+      this.createTime = comment.getCreateTime();
+      this.articleId = comment.getArticle().getId();
+      this.userId = comment.getUser().getId();
+   }
 
 
    public CommentResponseDto from(Comment comment) {

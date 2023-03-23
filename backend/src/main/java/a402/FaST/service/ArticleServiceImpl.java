@@ -1,6 +1,7 @@
 package a402.FaST.service;
 
 
+import a402.FaST.model.dto.ArticleCommentResponseDto;
 import a402.FaST.model.dto.ArticleModifyDto;
 import a402.FaST.model.dto.ArticleRequestDto;
 import a402.FaST.model.dto.ArticleResponseDto;
@@ -83,6 +84,16 @@ public class ArticleServiceImpl implements ArticleService {
         return responseDto;
     }
 
+    @Override
+    public ArticleCommentResponseDto detail(int id) {
+        Article article = articleRepository.findById(id).get();
+        ArticleCommentResponseDto responseDto = null;
+
+        responseDto = ArticleCommentResponseDto.from(article);
+        return responseDto;
+    }
+
+//    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
