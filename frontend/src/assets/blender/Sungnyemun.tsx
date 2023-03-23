@@ -28,16 +28,18 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF('/models/sungnyemun.glb') as GLTFResult;
-  const sungnyemunRef = useRef<Group>(null);
+  const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (sungnyemunRef.current !== null)
-      sungnyemunRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <group {...props} dispose={null} ref={sungnyemunRef}>
+    <group dispose={null} ref={modelRef} position={[0, -1, -1]}>
       <mesh
         geometry={nodes.Cube.geometry}
         material={materials['Material.018']}

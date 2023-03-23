@@ -138,14 +138,17 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF('/models/Gwanghwamun.glb') as GLTFResult;
   const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (modelRef.current !== null) modelRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
-    <group {...props} dispose={null} position={[0, -2, 0]} ref={modelRef}>
+    <group dispose={null} ref={modelRef} position={[0, -2, -4]}>
       <group position={[0, 4.12, 0.83]} rotation={[1.83, 0, 0]} scale={0.23}>
         <mesh geometry={nodes.Text_1.geometry} material={materials.black} />
         <mesh geometry={nodes.Text_2.geometry} material={materials.brown} />
@@ -199,7 +202,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
         position={[0, 2.63, 0.75]}
         scale={[0.03, 0.13, 0.01]}
       />
-      <group position={[2.51, 2.88, 0.78]} scale={[0.03, 0.1, 0.01]}>
+      <group position={[2.51, 2.88, 0.78]} scale={[0.025, 0.1, 0.01]}>
         <mesh
           geometry={nodes.Cube043_1.geometry}
           material={materials['Material.002']}
@@ -592,7 +595,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
       <group
         position={[-2.51, 2.88, -0.78]}
         rotation={[Math.PI, 0, Math.PI]}
-        scale={[0.03, 0.1, 0.01]}
+        scale={[0.025, 0.1, 0.01]}
       >
         <mesh
           geometry={nodes.Cube108.geometry}
@@ -661,7 +664,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
       <group
         position={[-2.51, 4.18, -0.78]}
         rotation={[Math.PI, 0, Math.PI]}
-        scale={[0.03, 0.1, 0.01]}
+        scale={[0.025, 0.1, 0.01]}
       >
         <mesh
           geometry={nodes.Cube119.geometry}

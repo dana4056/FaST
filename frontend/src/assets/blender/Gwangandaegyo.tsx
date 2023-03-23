@@ -26,16 +26,19 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF(
     '/models/Gwangandaegyo.glb'
   ) as GLTFResult;
   const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (modelRef.current !== null) modelRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
-    <group {...props} dispose={null} ref={modelRef}>
+    <group dispose={null} ref={modelRef} position={[0, -0.5, 2]}>
       <group position={[2, 0, 0]} scale={[0.32, 0.03, 0.32]}>
         <mesh
           geometry={nodes.Cube004_1.geometry}
@@ -53,9 +56,9 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
       <mesh
         geometry={nodes.NurbsPath018.geometry}
         material={materials['Material.001']}
-        position={[1.26, 0.54, -0.17]}
+        position={[1.26, 0.6, -0.17]}
         rotation={[0, 0, Math.PI / 2]}
-        scale={[0.07, 1, 1]}
+        scale={[0.087, 0.98, 1]}
       />
     </group>
   );

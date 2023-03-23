@@ -88,14 +88,22 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF('/models/Cheongwadae.glb') as GLTFResult;
   const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (modelRef.current !== null) modelRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
-    <group {...props} dispose={null} ref={modelRef}>
+    <group
+      dispose={null}
+      ref={modelRef}
+      position={[0, -1.2, -11]}
+      receiveShadow
+    >
       <mesh
         geometry={nodes.Cube.geometry}
         material={materials.Material}

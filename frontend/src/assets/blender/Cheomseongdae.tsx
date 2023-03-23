@@ -26,16 +26,19 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF(
     '/models/Cheomseongdae.glb'
   ) as GLTFResult;
   const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (modelRef.current !== null) modelRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
-    <group {...props} dispose={null} ref={modelRef} position={[0, -2, 0]}>
+    <group dispose={null} ref={modelRef} position={[0, -2, -1]} receiveShadow>
       <mesh
         geometry={nodes.Cylinder.geometry}
         material={materials['Material.012']}

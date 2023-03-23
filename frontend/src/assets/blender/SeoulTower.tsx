@@ -25,15 +25,17 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF('/models/SeoulTower.glb') as GLTFResult;
-  const seoulTowerRef = useRef<Group>(null);
+  const modelRef = useRef<Group>(null);
   useFrame(() => {
-    if (seoulTowerRef.current !== null)
-      seoulTowerRef.current.rotation.y += 0.01;
+    if (modelRef.current !== null && transX && transY) {
+      modelRef.current.rotation.y += transX / 3000;
+      modelRef.current.rotation.x += transY / 3000;
+    }
   });
   return (
-    <group {...props} dispose={null} ref={seoulTowerRef}>
+    <group dispose={null} ref={modelRef} position={[0, -1.5, -3]} receiveShadow>
       <group scale={[0.15, 1, 0.15]}>
         <mesh geometry={nodes.Cube001.geometry} material={materials.white} />
         <mesh
