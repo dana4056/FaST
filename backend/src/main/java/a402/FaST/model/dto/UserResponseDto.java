@@ -53,7 +53,10 @@ public class UserResponseDto {
                          .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                          .collect(Collectors.toSet()))
                  .tags(user.getTags().stream()
-                         .map((Tag -> TagResponseDto.builder().tagName(Tag.getTag().getName()).build()))
+                         .map((Tag -> TagResponseDto.builder()
+                                 .tagId(Tag.getTag().getId())
+                                 .tagName(Tag.getTag().getName())
+                                 .build()))
                          .collect(Collectors.toList()))
                  .build();
       }

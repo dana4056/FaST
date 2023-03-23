@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SiNaver, SiKakaotalk } from 'react-icons/si';
+import { Canvas } from '@react-three/fiber';
 import { LoginPageProps } from '../types/PagePropsType';
+import Header from '../components/Header';
+import Model from '../assets/blender/Logo';
 
 export default function LoginPage({
   goLogin,
@@ -13,13 +16,18 @@ export default function LoginPage({
   return (
     <div className="login-page">
       <div className="login-page__logo">
-        <span className="logo__f">F</span>
-        <span className="logo__a">a</span>
-        <span className="logo__s">S</span>
-        <span className="logo__t">T</span>
+        <Canvas camera={{ fov: 60, zoom: 4 }}>
+          <ambientLight
+            // eslint-disable-next-line react/no-unknown-property
+            intensity={1.25}
+          />
+          <Suspense fallback={null}>
+            <Model />
+          </Suspense>
+        </Canvas>
       </div>
 
-      <form className="login-page">
+      <form className="login-page__wrapper" onSubmit={goLogin}>
         <div className="login-page__row">
           <div className="login-page__row__text">
             <span className="login-page__text">이메일</span>
@@ -42,44 +50,46 @@ export default function LoginPage({
             onChange={onChangePassword}
           />
         </div>
+        <div className="login-page__row">
+          <button className="card login-page__button" type="submit">
+            로그인
+          </button>
+          <div className="login-page__links">
+            <span className="login-page__link">
+              <Link to="/sign-up">회원가입</Link>
+            </span>
+            <span className="login-page__link">
+              <Link to="/find-pwd">비밀번호 찾기</Link>
+            </span>
+          </div>
+        </div>
       </form>
 
-      <button
-        className="card login-page__button"
-        type="button"
-        onClick={goLogin}
-      >
-        로그인
-      </button>
-
-      <div className="login-page__row">
-        <div className="login-page__row__pwd__text">
-          <Link to="/find-pwd" className="login-page__row__pwd__text">
-            비밀번호 찾기
-          </Link>
+      <div className="login-page__wrapper">
+        <div className="login-page__row">
+          <span className="login-page__text__fast__login">간편 로그인</span>
+        </div>
+        <div className="login-page__row">
+          <button
+            type="button"
+            onClick={goNaverLogin}
+            className="card login-page__social-button login-page__social--naver"
+          >
+            <SiNaver className="login-page__social-logo" />
+            {/* <a href="http://localhost:8080/oauth2/authorization/naver"> */}
+            {/* </a> */}
+          </button>
+          <button
+            type="button"
+            onClick={goKakaoLogin}
+            className="card login-page__social-button login-page__social--kakao"
+          >
+            <SiKakaotalk className="login-page__social-logo" />
+            {/* <a href="http://localhost:8080/oauth2/authorization/kakao"> */}
+            {/* </a> */}
+          </button>
         </div>
       </div>
-      <span className="login-page__text__fast__login">간편 로그인</span>
-      <button
-        type="button"
-        onClick={goNaverLogin}
-        className="card login-page__naver__button"
-      >
-        <SiNaver className="login-page__logo__image" />
-        {/* <a href="http://localhost:8080/oauth2/authorization/naver"> */}
-        네이버 로그인
-        {/* </a> */}
-      </button>
-      <button
-        type="button"
-        onClick={goKakaoLogin}
-        className="card login-page__kakao__button"
-      >
-        <SiKakaotalk className="login-page__kakao__logo__image" />
-        {/* <a href="http://localhost:8080/oauth2/authorization/kakao"> */}
-        카카오 로그인
-        {/* </a> */}
-      </button>
     </div>
   );
 }

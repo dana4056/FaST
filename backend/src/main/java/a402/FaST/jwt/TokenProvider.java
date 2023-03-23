@@ -1,5 +1,6 @@
 package a402.FaST.jwt;
 
+import a402.FaST.auth.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,9 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // Token의 생성과 유효성 검증등을 위한 클래스
@@ -52,6 +51,32 @@ public class TokenProvider implements InitializingBean {
 
         long now = (new Date()).getTime();
         // 만료시간 설정
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+
+        String email = principalDetails.getUser().getEmail();
+        String provider = principalDetails.getUser().getProvider();
+        System.out.println(email);
+        System.out.println(provider);
+
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        // 토큰 생성
+        return Jwts.builder()
+                .setId(email)
+                .setSubject(provider)
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+    // Authentication 객체의 권한 정보를 이용해서 Token을 생성하는 메소드
+    public String createTokenLocal(Authentication authentication) {
+        // 권한들 가져오기
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        // 만료시간 설정
 
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
         // 토큰 생성
@@ -62,6 +87,7 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
     }
+
 
     // Token에 담겨 있는 정보를 이용해서 Authentication 객체를 리턴하는 메소드
     public Authentication getAuthentication(String token) {
@@ -100,5 +126,21 @@ public class TokenProvider implements InitializingBean {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+    public Map<String, Object> getUserIdFromJWT(String token) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        logger.info("email:"+claims.getId());
+        logger.info("provider:"+claims.getSubject());
+        resultMap.put("email", claims.getId());
+        resultMap.put("provider", claims.getSubject());
+        return resultMap;
     }
 }

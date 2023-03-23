@@ -20,15 +20,4 @@ public class UserRequestDto {
 
    private String imgPath;
 
-   public static UserRequestDto from(User user) {
-      if(user == null) return null;
-
-      return UserRequestDto.builder()
-              .email(user.getEmail())
-              .password(user.getPassword())
-              .nickname(user.getNickname())
-              .salt(user.getSalt())
-              .imgPath(user.getImg_path())
-              .build();
-   }
 }

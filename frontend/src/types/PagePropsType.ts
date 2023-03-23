@@ -5,6 +5,7 @@ import {
   InputPhotoProps,
   SearchBoxProps,
   InputProfileProps,
+  UserProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -40,9 +41,13 @@ export interface CardDetailPageProps extends CardDetailProps {
   isCommentOpen: boolean;
 }
 
-export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
+// 내 기록 페이지
+export interface MyRecordPageProps extends SearchBoxProps, CardListProps {
+  followerNum: number;
+  followingNum: number;
+}
 
-export interface MapPageProps extends CardListProps {}
+export type MapPageProps = CardListProps;
 
 interface Tag {
   tagName: string;
@@ -86,7 +91,7 @@ export interface SignUpPageProps extends InputProfileProps {
 }
 
 export interface LoginPageProps {
-  goLogin: () => void;
+  goLogin: (event: React.FormEvent<HTMLFormElement>) => void;
   goKakaoLogin: () => void;
   goNaverLogin: () => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -100,4 +105,34 @@ export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
 
   email: string;
   name: string;
+}
+
+export interface FindPwdProps {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+
+  emailMessage: string;
+  passwordMessage: string;
+  passwordConfirmMessage: string;
+
+  isEmail: boolean;
+  isCheckEmail: boolean;
+  isPassword: boolean;
+  isPasswordConfirm: boolean;
+  isSend: boolean;
+
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAuthNum: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickCheckEmailCode: () => void;
+  onClickSend: () => void;
+  onClickNext: () => void;
+}
+
+// FollowPage Props
+
+export interface FollowPageProps {
+  followList: UserProps;
 }

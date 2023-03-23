@@ -12,16 +12,24 @@ function InputProfile({
     <div className="input-profile">
       <label htmlFor="input-profile" className="input-profile__label">
         {imageUrl.length !== 0 ? (
-          <img
-            className="input-profile__img"
-            src={imageUrl}
-            alt="profile_img"
-          />
+          <div className="input-profile__content">
+            <img
+              className="input-profile__img"
+              src={imageUrl}
+              alt="profile_img"
+            />
+            <button
+              type="button"
+              onClick={handleImageDelete}
+              className="input-profile__text card"
+            >
+              초기화
+            </button>
+          </div>
         ) : (
           <div className="input-profile__content">
-            <BsPersonCircle className="sign-up-page__image" />
-            <div className="input-profile__text">프로필 사진 선택</div>
-            {/* <AiFillCamera className="sign-up-page__camera__image" /> */}
+            <BsPersonCircle />
+            <div className="input-profile__text card">프로필 사진 선택</div>
           </div>
         )}
         <input
@@ -32,17 +40,6 @@ function InputProfile({
           onChange={handleImageChange}
         />
       </label>
-      {imageUrl.length === 0 ? null : (
-        <div className="input-profile__row">
-          <button
-            type="button"
-            onClick={handleImageDelete}
-            className="input-profile__button"
-          >
-            초기화
-          </button>
-        </div>
-      )}
     </div>
   );
 }

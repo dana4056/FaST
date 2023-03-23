@@ -62,85 +62,85 @@ function SignUpContainer() {
     [
       {
         tagName: '바다',
-        color: 'sign-up-favorite-tag-page__tag6',
+        color: 'sign-up-page__tag--6',
         index: 0,
       },
       {
         tagName: '산',
-        color: 'sign-up-favorite-tag-page__tag7',
+        color: 'sign-up-page__tag--7',
         index: 1,
       },
       {
         tagName: '액티비티',
-        color: 'sign-up-favorite-tag-page__tag8',
+        color: 'sign-up-page__tag--8',
         index: 2,
       },
     ],
     [
       {
         tagName: '강',
-        color: 'sign-up-favorite-tag-page__tag8',
+        color: 'sign-up-page__tag--8',
         index: 3,
       },
       {
         tagName: '유적지',
-        color: 'sign-up-favorite-tag-page__tag9',
+        color: 'sign-up-page__tag--9',
         index: 4,
       },
       {
         tagName: '계곡',
-        color: 'sign-up-favorite-tag-page__tag6',
+        color: 'sign-up-page__tag--6',
         index: 5,
       },
     ],
     [
       {
         tagName: '호캉스',
-        color: 'sign-up-favorite-tag-page__tag9',
+        color: 'sign-up-page__tag--9',
         index: 6,
       },
       {
         tagName: '캠핑',
-        color: 'sign-up-favorite-tag-page__tag6',
+        color: 'sign-up-page__tag--6',
         index: 7,
       },
       {
         tagName: '힐링',
-        color: 'sign-up-favorite-tag-page__tag7',
+        color: 'sign-up-page__tag--7',
         index: 8,
       },
     ],
     [
       {
         tagName: '배낭여행',
-        color: 'sign-up-favorite-tag-page__tag7',
+        color: 'sign-up-page__tag--7',
         index: 9,
       },
       {
         tagName: '박물관',
-        color: 'sign-up-favorite-tag-page__tag8',
+        color: 'sign-up-page__tag--8',
         index: 10,
       },
       {
         tagName: '자전거',
-        color: 'sign-up-favorite-tag-page__tag6',
+        color: 'sign-up-page__tag--6',
         index: 11,
       },
     ],
     [
       {
         tagName: '등산',
-        color: 'sign-up-favorite-tag-page__tag6',
+        color: 'sign-up-page__tag--6',
         index: 12,
       },
       {
         tagName: '휴양지',
-        color: 'sign-up-favorite-tag-page__tag7',
+        color: 'sign-up-page__tag--7',
         index: 13,
       },
       {
         tagName: '도심',
-        color: 'sign-up-favorite-tag-page__tag9',
+        color: 'sign-up-page__tag--9',
         index: 14,
       },
     ],
@@ -321,7 +321,7 @@ function SignUpContainer() {
       console.log(`password : ${password}`); // 비밀번호
       console.log(`암호화된 password : ${pwd}`); // 암호화된 password
       const res = await api.signUp(email, imgPath, name, pwd, salt);
-
+      console.log(`signUpContainer res :${res}`);
       if (res.status === 200) {
         // db에 있는 사용자 pk값 저장
         setIdPk(res.data.id);
@@ -336,6 +336,8 @@ function SignUpContainer() {
         };
         uploadImage(image);
         setIsOpen(() => true);
+      } else if (res.status === 409) {
+        alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
       } else {
         alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -356,41 +358,39 @@ function SignUpContainer() {
   };
 
   return (
-    <div className="sign-up-page">
-      <SignUpPage
-        email={email}
-        name={name}
-        password={password}
-        passwordConfirm={passwordConfirm}
-        nameMessage={nameMessage}
-        emailMessage={emailMessage}
-        passwordMessage={passwordMessage}
-        passwordConfirmMessage={passwordConfirmMessage}
-        isEmail={isEmail}
-        isCheckEmail={isCheckEmail}
-        isName={isName}
-        isPassword={isPassword}
-        isPasswordConfirm={isPasswordConfirm}
-        isSend={isSend}
-        isOpen={isOpen}
-        tag={tag}
-        selectedTag={selectedTag}
-        isChecked={isChecked}
-        imageUrl={imageUrl}
-        handleImageChange={handleImageChange}
-        handleImageDelete={handleImageDelete}
-        onChangeEmail={onChangeEmail}
-        onChangeAuthNum={onChangeAuthNum}
-        onChangeNickName={onChangeNickName}
-        onChangePassword={onChangePassword}
-        onChangePasswordConfirm={onChangePasswordConfirm}
-        onClickCheckEmailCode={onClickCheckEmailCode}
-        onClickSend={onClickSend}
-        onClickNext={onClickNext}
-        onClickComplete={onClickComplete}
-        onClickTag={onClickTag}
-      />
-    </div>
+    <SignUpPage
+      email={email}
+      name={name}
+      password={password}
+      passwordConfirm={passwordConfirm}
+      nameMessage={nameMessage}
+      emailMessage={emailMessage}
+      passwordMessage={passwordMessage}
+      passwordConfirmMessage={passwordConfirmMessage}
+      isEmail={isEmail}
+      isCheckEmail={isCheckEmail}
+      isName={isName}
+      isPassword={isPassword}
+      isPasswordConfirm={isPasswordConfirm}
+      isSend={isSend}
+      isOpen={isOpen}
+      tag={tag}
+      selectedTag={selectedTag}
+      isChecked={isChecked}
+      imageUrl={imageUrl}
+      handleImageChange={handleImageChange}
+      handleImageDelete={handleImageDelete}
+      onChangeEmail={onChangeEmail}
+      onChangeAuthNum={onChangeAuthNum}
+      onChangeNickName={onChangeNickName}
+      onChangePassword={onChangePassword}
+      onChangePasswordConfirm={onChangePasswordConfirm}
+      onClickCheckEmailCode={onClickCheckEmailCode}
+      onClickSend={onClickSend}
+      onClickNext={onClickNext}
+      onClickComplete={onClickComplete}
+      onClickTag={onClickTag}
+    />
   );
 }
 

@@ -30,6 +30,8 @@ public class User {
 
     private String img_path;
 
+    private String provider;
+
     @ManyToMany
     @JoinTable(
             name = "user_authority",
@@ -39,4 +41,21 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagHasUser> tags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Follow> fromId = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Follow> toId = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+//    private List<Like> likes = new ArrayList<>();
+
+
 }

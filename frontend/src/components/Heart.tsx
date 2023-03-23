@@ -5,6 +5,7 @@ function Heart() {
 
   const handleClick = () => {
     setLiked(!liked);
+    console.log(liked);
   };
 
   return (
