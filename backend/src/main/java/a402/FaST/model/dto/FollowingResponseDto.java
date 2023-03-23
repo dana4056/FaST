@@ -10,9 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FollowingResponseDto {
-    private UserResponseDto toUser;
+    private FollowAllResponseDto toUser;
 
-    public FollowingResponseDto(Follow to) {
-        this.toUser = UserResponseDto.from(to.getToId());
+    public FollowingResponseDto(Follow follow) {
+        this.toUser = FollowAllResponseDto.builder()
+                .id(follow.getFromId().getId())
+                .imgPath(follow.getFromId().getImg_path())
+                .nickname(follow.getFromId().getNickname())
+                .build();
     }
 }

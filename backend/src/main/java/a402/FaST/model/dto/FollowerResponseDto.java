@@ -1,7 +1,6 @@
 package a402.FaST.model.dto;
 
 import a402.FaST.model.entity.Follow;
-import a402.FaST.model.entity.User;
 import lombok.*;
 
 @Getter
@@ -10,9 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FollowerResponseDto {
-    private UserResponseDto fromUser;
+    private FollowAllResponseDto fromUser;
 
-    public FollowerResponseDto(Follow from) {
-        this.fromUser = UserResponseDto.from(from.getFromId());
+    public FollowerResponseDto(Follow follow) {
+        this.fromUser = FollowAllResponseDto.builder()
+                .id(follow.getFromId().getId())
+                .imgPath(follow.getFromId().getImg_path())
+                .nickname(follow.getFromId().getNickname())
+                .build();
     }
 }
