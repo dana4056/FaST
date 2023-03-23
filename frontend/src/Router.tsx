@@ -30,7 +30,7 @@ function Router() {
           <Route path="/map" element={<MapContainer />} />
           <Route path="/follow" element={<FollowContainer />} />
           <Route path="/test" element={<TestPage />} />
-          <Route path="/modify" element={<UserModifyContainer />} />
+          <Route path="/mypage" element={<UserModifyContainer />} />
           <Route path="/find-pwd" element={<FindPwdContainer />} />
         </Routes>
       </div>

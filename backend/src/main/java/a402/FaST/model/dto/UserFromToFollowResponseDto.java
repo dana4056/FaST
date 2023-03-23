@@ -1,6 +1,5 @@
 package a402.FaST.model.dto;
 
-import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import lombok.*;
 
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserFollowResponseDto {
+public class UserFromToFollowResponseDto {
 
    private int id;
    private String email;
@@ -20,9 +19,9 @@ public class UserFollowResponseDto {
    private List<FollowerResponseDto> follower;
    private List<FollowingResponseDto> following;
 
-   public static UserFollowResponseDto from(User user) {
+   public static UserFromToFollowResponseDto from(User user) {
       if(user == null) return null;
-         return UserFollowResponseDto.builder()
+         return UserFromToFollowResponseDto.builder()
                  .id(user.getId())
                  .email(user.getEmail())
                  .nickname(user.getNickname())
@@ -33,10 +32,3 @@ public class UserFollowResponseDto {
                  .build();
    }
 }
-
-//                 .from(user.getFromId().stream()
-//                         .map(follower->FollowerResponseDto.builder().fromId(follower.getFromId().getId()).build())
-//                         .collect(Collectors.toList()))
-//                 .to(user.getToId().stream()
-//                         .map(following->FollowingResponseDto.builder().toId(following.getToId().getId()).build())
-//                         .collect(Collectors.toList()))
