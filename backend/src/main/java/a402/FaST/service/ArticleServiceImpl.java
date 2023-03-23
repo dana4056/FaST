@@ -6,10 +6,7 @@ import a402.FaST.model.dto.ArticleModifyDto;
 import a402.FaST.model.dto.ArticleRequestDto;
 import a402.FaST.model.dto.ArticleResponseDto;
 import a402.FaST.model.entity.*;
-import a402.FaST.repository.ArticleHasTagRepository;
-import a402.FaST.repository.ArticleRepository;
-import a402.FaST.repository.TagRepository;
-import a402.FaST.repository.UserRepository;
+import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +27,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ArticleHasTagRepository articleHasTagRepository;
+    private final LikesRepository likesRepository;
+    private final CommentRepository commentRepository;
 
 
     @Override
@@ -86,8 +85,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleCommentResponseDto detail(int id) {
-        Article article = articleRepository.findById(id).get();
         ArticleCommentResponseDto responseDto = null;
+
+        Article article = articleRepository.findById(id).get();
+        article.setLike_count(likesRepository.countByArticleId(id));
+        article.setComment_count(commentRepository.countByArticleId(id));
 
         responseDto = ArticleCommentResponseDto.from(article);
         return responseDto;
