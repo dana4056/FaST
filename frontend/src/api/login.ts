@@ -9,9 +9,7 @@ const api = axios.create({
 
 async function getSalt(email: string): Promise<AxiosResponse> {
   try {
-    const res = await api.post<any>(`/api/user/salt`, {
-      email,
-    });
+    const res = await api.get(`/user/salt/${email}`);
 
     console.log(res.status);
     return res;
@@ -23,12 +21,13 @@ async function getSalt(email: string): Promise<AxiosResponse> {
 
 async function login(email: string, password: string) {
   try {
-    const res = await api.post(`/api/login`, {
+    const res = await api.post(`/user/login`, {
       email,
       password,
     });
+    const { headers, data } = res;
+    console.log(headers);
 
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
