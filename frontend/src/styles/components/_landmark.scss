@@ -1,9 +1,10 @@
 @use '../color';
 
 .landmark {
-  width: 30%;
+  width: 100%;
+  height: 100%;
   .landmark__canvas {
-    width: 90%;
+    height: 100%;
     margin: 0 auto;
     background-color: color.$color-4;
   }
