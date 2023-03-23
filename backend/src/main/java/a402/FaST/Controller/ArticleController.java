@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,24 +65,25 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}/{userId}")
     @Operation(summary = "게시글 상세 조회 API =>  게시글 상세 조회하는 API 입니다.",
             description = "PathVariable 형식 데이터 (int : id)" +
                     " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
-    public ResponseEntity<ArticleCommentResponseDto> detail (@Valid @PathVariable("id") int id) throws Exception {
+    public ResponseEntity<ArticleCommentResponseDto> detail (@Valid @PathVariable("id") int id, @PathVariable("userId") int userId) throws Exception {
         ArticleCommentResponseDto responseDto = null;
-        responseDto = articleService.detail(id);
+        responseDto = articleService.detail(id, userId);
         return ResponseEntity.ok(responseDto);
     }
 
-//    @GetMapping("")
-//    @Operation(summary = "게시글 목록 조회 API =>  게시글 목록 조회하는 API 입니다.",
-//            description = "size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호" +
-//                    " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
-//    public Page<?> articleList () throws Exception {
-//        ArticleCommentResponseDto responseDto = null;
-//        responseDto = articleService.detail(id);
-//        return ResponseEntity.ok(responseDto);
-//    }
+    static final int page_num = 10;
+    @GetMapping("")
+    @Operation(summary = "게시글 목록 조회 API =>  게시글 목록 조회하는 API 입니다.",
+            description = "size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호" +
+                    " => ArticleListResponseDto 를 Return 해줍니다.")
+    public Page<ArticleListResponseDto> articleList (@PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) throws Exception {
+
+        Page <ArticleListResponseDto> page = articleService.listArticle(pageable);
+        return page;
+    }
 
 }

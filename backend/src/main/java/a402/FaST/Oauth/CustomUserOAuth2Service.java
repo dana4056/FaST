@@ -74,7 +74,7 @@ public class CustomUserOAuth2Service extends DefaultOAuth2UserService {
                     .email(oAuth2UserInfo.getEmail())
                     //                    .password(passwordEncoder.encode(requestDto.getPassword()))
                     .nickname(oAuth2UserInfo.getName())
-                    .img_path(oAuth2UserInfo.getProfile())
+                    .imgPath(oAuth2UserInfo.getProfile())
                     .provider(provider)
                     .authorities(Collections.singleton(authority))
                     .build();

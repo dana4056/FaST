@@ -20,13 +20,13 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String img_path;
+    private String imgPath;
     private String content;
     private LocalDateTime createTime;  ;
     @ColumnDefault("0")
-    private int like_count;
+    private int likeCount;
     @ColumnDefault("0")
-    private int comment_count;
+    private int commentCount;
     private String let;
     private String lng;
 

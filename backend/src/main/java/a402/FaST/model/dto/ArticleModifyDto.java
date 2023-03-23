@@ -13,7 +13,7 @@ public class ArticleModifyDto {
 
    private int userId;
    private int articleId;
-   private String img_path;
+   private String imgPath;
    private String content;
    private String let;
    private String lng;

@@ -28,7 +28,7 @@ public class User {
 
     private String salt;
 
-    private String img_path;
+    private String imgPath;
 
     private String provider;
 
