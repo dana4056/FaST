@@ -51,5 +51,15 @@ public class ArticleController {
         return ResponseEntity.ok(check);
     }
 
+    @PutMapping("/modify-article")
+    @Operation(summary = "게시글 수정 API =>  게시글 수정하는 API 입니다.",
+            description = "json 형식 데이터 -> (int : userId, String img_path, String content, String let, String lng)" +
+                    " => 검증 결과에 따라 ArticleResponseDto or error 를 Return 해줍니다.")
+    public ResponseEntity<ArticleResponseDto> modifyArticle(@Valid @RequestBody ArticleModifyDto modifyDto) throws Exception {
+        ArticleResponseDto responseDto = null;
+        responseDto = articleService.modify(modifyDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package a402.FaST.service;
 
 
+import a402.FaST.model.dto.ArticleModifyDto;
 import a402.FaST.model.dto.ArticleRequestDto;
 import a402.FaST.model.dto.ArticleResponseDto;
 import a402.FaST.model.entity.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -42,21 +44,9 @@ public class ArticleServiceImpl implements ArticleService {
                 .user(user)
                 .build();
 
-        for (String tagName : requestDto.getTags()) {
-            if (!tagRepository.existsByName(tagName)) {
-                Tag tag = Tag.builder().name(tagName).build();
-                logger.info(" Tag : {}", tag.getName());
-                tagRepository.save(tag);
-            }
-            Tag tag = tagRepository.findByName(tagName).get();
-            ArticleHasTag articleHasTag = ArticleHasTag.builder()
-                    .article(article)
-                    .tag(tag)
-                    .build();
-            articleHasTagRepository.save(articleHasTag);
-        }
-
         articleRepository.save(article);
+        TagAdd(article, requestDto.getTags());
+
         ArticleResponseDto responseDto = ArticleResponseDto.from(article);
         return responseDto;
     }
@@ -70,6 +60,42 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.deleteById(id);
             return true;
         }
+    }
 
+    @Override
+    public ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception {
+        Article article = articleRepository.findById(modifyDto.getArticleId()).get();
+        ArticleResponseDto responseDto;
+
+        if (article.getUser().getId() != modifyDto.getUserId()){
+            throw new Exception("작성자가 아닙니다!");
+        }else{
+            article.setImg_path(modifyDto.getImg_path());
+            article.setContent(modifyDto.getContent());
+            article.setLet(modifyDto.getLet());
+            article.setLng(modifyDto.getLng());
+
+            articleHasTagRepository.deleteAllByArticleId(modifyDto.getArticleId());
+            TagAdd(article, modifyDto.getTags());
+            responseDto = ArticleResponseDto.from(article);
+        }
+
+        return responseDto;
+    }
+
+    private void TagAdd(Article article, List<String> tags) {
+        for (String tagName : tags) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                logger.info(" Tag : {}", tag.getName());
+                tagRepository.save(tag);
+            }
+            Tag tag = tagRepository.findByName(tagName).get();
+            ArticleHasTag articleHasTag = ArticleHasTag.builder()
+                    .article(article)
+                    .tag(tag)
+                    .build();
+            articleHasTagRepository.save(articleHasTag);
+        }
     }
 }

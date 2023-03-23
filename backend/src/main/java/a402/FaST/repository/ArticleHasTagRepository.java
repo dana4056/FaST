@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleHasTagRepository extends JpaRepository<ArticleHasTag, ArticleHasTagPK> {
 
+    void deleteAllByArticleId(int articleId);
 }
