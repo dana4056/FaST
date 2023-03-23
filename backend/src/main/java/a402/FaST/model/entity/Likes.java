@@ -4,29 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "likes")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class Likes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String content;
-    private LocalDateTime createTime;  ;
-
-//    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//    private List<Like> likes = new ArrayList<>();
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -35,6 +26,10 @@ public class Comment {
     @ManyToOne(targetEntity = Article.class, fetch = FetchType.LAZY)
     @JoinColumn(name="article_id")
     private Article article;
+
+    @ManyToOne(targetEntity = Comment.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="comment_id")
+    private Comment comment;
 
 
 }
