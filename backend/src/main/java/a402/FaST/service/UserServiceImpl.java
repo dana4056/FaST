@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .nickname(requestDto.getNickname())
                 .salt((requestDto.getSalt()))
-                .img_path(requestDto.getImgPath())
+                .imgPath(requestDto.getImgPath())
                 .authorities(Collections.singleton(authority))
                 .build();
 
