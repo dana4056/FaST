@@ -19,7 +19,7 @@ function App() {
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/login" element={<LoginContainer />} />
         <Route path="/sign-up" element={<SignUpContainer />} />
-        <Route path="/model/:model" element={<ModelContainer />} />
+        <Route path="/stamp/:model" element={<ModelContainer />} />
         <Route path="/*" element={<Router />} />
       </Routes>
     </RecoilRoot>

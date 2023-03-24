@@ -2,39 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ModelPage from '../pages/ModelPage';
+import Gwangandaegyo from '../components/models/Gwangandaegyo';
+import Gwanghwamun from '../components/models/Gwanghwamun';
+import Dolhareubang from '../components/models/DolHareubang';
 
 function ModelContainer() {
-  const [startX, setStartX] = useState<number>(0);
-  const [startY, setStartY] = useState<number>(0);
-  const [transX, setTransX] = useState<number>(0);
-  const [transY, setTransY] = useState<number>(0);
   const params = useParams();
+  const [model, setModel] = useState<any>();
 
-  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    setStartX(event.touches[0].clientX);
-    setStartY(event.touches[0].clientY);
-  };
-  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    setTransX(event.touches[0].clientX - startX);
-    setTransY(event.touches[0].clientY - startY);
-  };
-  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
-    setStartX(0);
-    setStartY(0);
-    setTransX(0);
-    setTransY(0);
-  };
+  useEffect(() => {
+    switch (params.model) {
+      case 'gwangandaegyo':
+        setModel({
+          model: Gwangandaegyo,
+          cameraPosition: [0, 0, 5],
+        });
+        break;
+      case 'gwanghwamun':
+        setModel({
+          model: Gwanghwamun,
+          cameraPosition: [0, 0, 10],
+        });
+        break;
+      case 'dolhareubang':
+        setModel({
+          model: Dolhareubang,
+          cameraPosition: [0, 0, 5],
+        });
+        break;
+      default:
+        break;
+    }
+  }, []);
 
-  return (
-    <ModelPage
-      landmark={params.model}
-      handleTouchStart={handleTouchStart}
-      handleTouchMove={handleTouchMove}
-      handleTouchEnd={handleTouchEnd}
-      transX={transX}
-      transY={transY}
-    />
-  );
+  return <ModelPage model={model} />;
 }
 
 export default ModelContainer;
