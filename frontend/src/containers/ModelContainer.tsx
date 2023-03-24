@@ -7,6 +7,7 @@ import {
   DolHareubang,
   Gwangandaegyo,
   Gwanghwamun,
+  SeoulTower,
 } from '../components/models';
 
 function ModelContainer() {
@@ -25,6 +26,12 @@ function ModelContainer() {
         setModel({
           model: Gwanghwamun,
           cameraPosition: [0, 0, 10],
+        });
+        break;
+      case 'seoultower':
+        setModel({
+          model: SeoulTower,
+          cameraPosition: [0, 0, 9],
         });
         break;
       case 'dolhareubang':

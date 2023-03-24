@@ -6,6 +6,7 @@ import {
   Gwangandaegyo,
   Gwanghwamun,
   DolHareubang,
+  SeoulTower,
 } from '../components/models';
 
 function StampContainer() {
@@ -21,6 +22,12 @@ function StampContainer() {
       name: '광화문',
       link: 'gwanghwamun',
       cameraPosition: [0, 0, 10],
+    },
+    {
+      model: SeoulTower,
+      name: '남산타워',
+      link: 'seoultower',
+      cameraPosition: [0, 0, 9],
     },
     {
       model: DolHareubang,
