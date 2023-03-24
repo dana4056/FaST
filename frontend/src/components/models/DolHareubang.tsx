@@ -9,8 +9,6 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -21,28 +19,19 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model({ transX, transY }: any) {
-  const { nodes, materials } = useGLTF(
-    '/models/DolHareubang.glb'
-  ) as GLTFResult;
-  const modelRef = useRef<Group>(null);
-  useFrame(() => {
-    if (modelRef.current !== null && transX && transY) {
-      modelRef.current.rotation.y += transX / 3000;
-      modelRef.current.rotation.x += transY / 3000;
-    }
-  });
+export default function Model(props: JSX.IntrinsicElements['group']) {
+  const { nodes, materials } = useGLTF('/DolHareubang.glb') as GLTFResult;
   return (
-    <group dispose={null} ref={modelRef} position={[0, -2, -1]}>
+    <group {...props} dispose={null} receiveShadow>
       <mesh
         geometry={nodes.Sphere003.geometry}
         material={materials['Material.001']}
-        position={[0.82, 3.69, 0]}
-        rotation={[0, 0, 0.21]}
+        position={[0.07, 2.19, 0]}
+        rotation={[-0.21, -1.57, 0]}
         scale={[0.45, 0.75, 0.7]}
       />
     </group>
   );
 }
 
-useGLTF.preload('/models/DolHareubang.glb');
+useGLTF.preload('/DolHareubang.glb');
