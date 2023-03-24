@@ -45,16 +45,16 @@ function StampContainer() {
       cameraPosition: [0, 0, 6],
     },
     {
-      model: Seongsan,
-      name: '성산일출봉',
-      link: 'seongsan',
-      cameraPosition: [0, 0, 3],
-    },
-    {
       model: Seokguram,
       name: '석굴암',
       link: 'seokguram',
       cameraPosition: [0, 0, 5],
+    },
+    {
+      model: Seongsan,
+      name: '성산일출봉',
+      link: 'seongsan',
+      cameraPosition: [0, 0, 3],
     },
     {
       model: KingSejong,

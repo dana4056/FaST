@@ -49,16 +49,16 @@ function ModelContainer() {
           cameraPosition: [0, 0, 6],
         });
         break;
-      case 'seongsan':
-        setModel({
-          model: Seongsan,
-          cameraPosition: [0, 0, 3],
-        });
-        break;
       case 'seokguram':
         setModel({
           model: Seokguram,
           cameraPosition: [0, 0, 5],
+        });
+        break;
+      case 'seongsan':
+        setModel({
+          model: Seongsan,
+          cameraPosition: [0, 0, 3],
         });
         break;
       case 'kingsejong':
