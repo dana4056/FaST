@@ -16,5 +16,5 @@ public interface ArticleService {
 
     ArticleCommentResponseDto detail(int id, int userId);
 
-    List<ArticleListResponseDto> listArticle(int userId);
+    List<ArticleListResponseDto> listArticle(int userId, int size, int offset);
 }
