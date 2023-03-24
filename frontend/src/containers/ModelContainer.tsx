@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ModelPage from '../pages/ModelPage';
-import Gwangandaegyo from '../components/models/Gwangandaegyo';
-import Gwanghwamun from '../components/models/Gwanghwamun';
-import Dolhareubang from '../components/models/DolHareubang';
+import {
+  LotteTower,
+  DolHareubang,
+  Gwangandaegyo,
+  Gwanghwamun,
+} from '../components/models';
 
 function ModelContainer() {
   const params = useParams();
@@ -26,8 +29,14 @@ function ModelContainer() {
         break;
       case 'dolhareubang':
         setModel({
-          model: Dolhareubang,
+          model: DolHareubang,
           cameraPosition: [0, 0, 5],
+        });
+        break;
+      case 'lottetower':
+        setModel({
+          model: LotteTower,
+          cameraPosition: [0, 0, 6],
         });
         break;
       default:

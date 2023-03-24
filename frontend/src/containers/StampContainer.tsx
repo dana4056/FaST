@@ -28,6 +28,12 @@ function StampContainer() {
       link: 'dolhareubang',
       cameraPosition: [0, 0, 5],
     },
+    {
+      model: LotteTower,
+      name: '롯데타워',
+      link: 'lottetower',
+      cameraPosition: [0, 0, 6],
+    },
   ];
   return <StampPage models={models} />;
 }

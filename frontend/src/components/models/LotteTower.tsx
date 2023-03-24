@@ -9,42 +9,32 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Cylinder: THREE.Mesh;
-    Cylinder001: THREE.Mesh;
+    Cylinder001_1: THREE.Mesh;
+    Cylinder001_2: THREE.Mesh;
   };
   materials: {
-    ['Material.001']: THREE.MeshStandardMaterial;
     ['Material.002']: THREE.MeshStandardMaterial;
+    ['Material.001']: THREE.MeshStandardMaterial;
   };
 };
 
-export default function Model({ transX, transY }: any) {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/LotteTower.glb') as GLTFResult;
-  const modelRef = useRef<Group>(null);
-  useFrame(() => {
-    if (modelRef.current !== null && transX && transY) {
-      modelRef.current.rotation.y += transX / 3000;
-      modelRef.current.rotation.x += transY / 3000;
-    }
-  });
   return (
-    <group dispose={null} ref={modelRef} position={[0, -3, -2]} receiveShadow>
-      <mesh
-        geometry={nodes.Cylinder.geometry}
-        material={materials['Material.001']}
-        scale={[0.94, 2.81, 0.94]}
-      />
-      <mesh
-        geometry={nodes.Cylinder001.geometry}
-        material={materials['Material.002']}
-        position={[0.02, -0.09, 0]}
-        scale={[0.94, 2.81, 0.94]}
-      />
+    <group {...props} dispose={null} position={[0, -3, 0]} receiveShadow>
+      <group scale={[0.94, 2.81, 0.94]}>
+        <mesh
+          geometry={nodes.Cylinder001_1.geometry}
+          material={materials['Material.002']}
+        />
+        <mesh
+          geometry={nodes.Cylinder001_2.geometry}
+          material={materials['Material.001']}
+        />
+      </group>
     </group>
   );
 }

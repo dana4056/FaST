@@ -20,9 +20,11 @@ type GLTFResult = GLTF & {
 };
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/DolHareubang.glb') as GLTFResult;
+  const { nodes, materials } = useGLTF(
+    '/models/DolHareubang.glb'
+  ) as GLTFResult;
   return (
-    <group {...props} dispose={null} receiveShadow>
+    <group {...props} dispose={null} position={[0, -2, 0]} receiveShadow>
       <mesh
         geometry={nodes.Sphere003.geometry}
         material={materials['Material.001']}
@@ -34,4 +36,4 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   );
 }
 
-useGLTF.preload('/DolHareubang.glb');
+useGLTF.preload('/models/DolHareubang.glb');
