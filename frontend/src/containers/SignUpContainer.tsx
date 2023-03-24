@@ -17,7 +17,7 @@ function SignUpContainer() {
   const [isCheckEmail, setIsCheckEmail] = useState<boolean>(false); // 인증번호 확인
   const [isPassword, setIsPassword] = useState<boolean>(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
-
+  const [imgPath, setImgPath] = useState<string>('profiles/default.jpg');
   // 인증번호 전송 및 인증하기 버튼 활성화
   const [isSend, setIsSend] = useState(false);
 
@@ -163,7 +163,7 @@ function SignUpContainer() {
       }
       setImage(newImages[0]);
       setImageUrl(newImageUrls[0]);
-
+      setImgPath(`profiles/${email}`);
       // 입력 초기화
       event.target.value = ''; // eslint-disable-line no-param-reassign
     }
@@ -172,6 +172,7 @@ function SignUpContainer() {
   const handleImageDelete = () => {
     setImageUrl('');
     setImage(undefined);
+    setImgPath('profiles/default.jpg');
   };
 
   // 사용자 이메일로 인증번호 전송
@@ -313,7 +314,6 @@ function SignUpContainer() {
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
       console.log('회원가입 api 통신할 때 보낼 데이터 : ');
-      const imgPath = `profiles/${email}`;
       const salt = createSalt();
       const pwd = createHashedPassword(password, salt);
       console.log(`email : ${email}`); // 이메일
@@ -327,7 +327,9 @@ function SignUpContainer() {
         setIdPk(res.data.id);
         // 파이어베이스에 사용자 프로필 사진 등록
         const uploadImage = async (img: File | undefined) => {
-          if (img === undefined) return;
+          if (img === undefined) {
+            return;
+          }
           const result = await uploadBytes(
             ref(storage, `profiles/${email}`),
             img
