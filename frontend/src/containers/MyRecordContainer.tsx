@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
@@ -7,6 +7,8 @@ import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CardType } from '../types/CardType';
+
+import followApi from '../api/follow';
 
 function MyRecordContainer() {
   // 검색 키워드
@@ -148,8 +150,29 @@ function MyRecordContainer() {
       setTags([...newTags]);
     }
   };
+
+  // 팔로우 수 조회
+  const [toId, setToId] = useState<number>(2);
+  const [followerNum, setFollowerNum] = useState<number>(0);
+
+  const [fromId, setFromId] = useState<number>(2);
+  const [followingNum, setFollowingNum] = useState<number>(0);
+  useEffect(() => {
+    const getData = async () => {
+      const followTo: any = await followApi.followTo(toId);
+      setFollowerNum(followTo.data);
+
+      const followFrom: any = await followApi.followFrom(fromId);
+      setFollowingNum(followFrom.data);
+    };
+
+    getData();
+  }, []);
+
   return (
     <MyRecordPage
+      followerNum={followerNum}
+      followingNum={followingNum}
       tags={tags}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
