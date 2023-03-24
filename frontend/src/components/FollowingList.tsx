@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { TiDelete } from 'react-icons/ti';
 import { getDownloadURL, ref } from 'firebase/storage';
-import FollowItem from './FollowItem';
+import FollowingItem from './FollowingItem';
+import NotFollowingItem from './NotFollowingItem';
 import { storage } from '../utils/firebase';
 import Modal from './Modal';
 import cardimg from '../assets/images/photocardimg.jpeg';
@@ -12,30 +13,23 @@ import {
   UserItemProps,
   FollowProps,
 } from '../types/ComponentPropsType';
+import followApi from '../api/follow';
 
-function FollowList({ follower }: any) {
-  console.log(follower);
-  // const data: Array<UserProps> = [
-  //   {
-  //     id: 1,
-  //     userId: 'ㅁㅁㅁㅁ',
-  //     profileImg: sample1,
-  //   },
-  //   {
-  //     id: 2,
-  //     userId: 'abcd',
-  //     profileImg: cardimg,
-  //   },
-  // ];
-
+function FollowList({ following, notFollowing }: any) {
   const [userInput, setUserInput] = useState('');
   const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value.toLowerCase());
   };
 
-  const searched = follower
-    ? follower.filter((user: any) =>
-        user.fromUser.nickname.toLowerCase().includes(userInput)
+  const searchedFollowing = following
+    ? following.filter((user: any) =>
+        user.toUser.nickname.toLowerCase().includes(userInput)
+      )
+    : [];
+
+  const searchedNotFollowing = notFollowing
+    ? notFollowing.filter((user: any) =>
+        user.nickname.toLowerCase().includes(userInput)
       )
     : [];
 
@@ -60,22 +54,28 @@ function FollowList({ follower }: any) {
             <TiDelete className="input_delete_btn" onClick={deleteInput} />
           )}
         </div>
-        {/* <FollowItem follower={follower} /> */}
-        {/* {follower
-          ? follower.map((user: any) => (
-              <FollowItem key={user.fromUser.id} follower={user} />
-            ))
-          : null} */}
-
         <div>
-          {searched
-            ? searched.map((user: any) => (
-                <FollowItem key={user.fromUser.id} follower={user} />
+          {searchedFollowing
+            ? searchedFollowing.map((user: any) => (
+                <FollowingItem key={user.toUser.id} following={user} />
+                // <NotFollowingItem key={user.toUser.id} following={user} />
               ))
-            : follower.map((user: any) => (
-                <FollowItem key={user.fromUser.id} follower={user} />
+            : following.map((user: any) => (
+                <FollowingItem key={user.toUser.id} following={user} />
               ))}
         </div>
+        {userInput && (
+          <div>
+            <div className="not-following__title">새로운 사람</div>
+            {searchedNotFollowing ? (
+              searchedNotFollowing.map((user: any) => (
+                <NotFollowingItem key={user.id} notFollowing={user} />
+              ))
+            ) : (
+              <div>검색된 결과가 없습니다.</div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

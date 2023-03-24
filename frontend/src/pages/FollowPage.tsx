@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
 
-import FollowList from '../components/FollowList';
+import FollowerList from '../components/FollowerList';
+import FollowingList from '../components/FollowingList';
 import { FollowPageProps } from '../types/PagePropsType';
 
-function FollowPage({ followList }: any) {
-  // console.log('followPage', followList.follower);
-  const tabList = [
-    {
-      id: 0,
-      title: '팔로워',
-    },
-    {
-      id: 1,
-      title: '팔로잉',
-    },
-  ];
-  const [currentTab, setCurrentTab] = useState(0);
-  const [underlinePosition, setUnderlinePosition] = useState(0);
+const tabList = [
+  { id: 0, title: '팔로워' },
+  { id: 1, title: '팔로잉' },
+];
 
-  const selectTapHandler = (index: number) => {
+const followingTabIndex = tabList.findIndex((tab) => tab.title === '팔로잉');
+
+function FollowPage({ followList, notFollowingList }: any) {
+  const [currentTab, setCurrentTab] = useState(() => {
+    // Get the current tab index from localStorage, or default to 0 if not found
+    const savedTabIndex = localStorage.getItem('currentTab');
+    return savedTabIndex ? parseInt(savedTabIndex, 10) : 0;
+  });
+
+  const [underlinePosition, setUnderlinePosition] = useState(currentTab * 100);
+
+  const selectTabHandler = (index: number) => {
     setCurrentTab(index);
     setUnderlinePosition(index * 100);
+
+    // Save the current tab index to localStorage
+    localStorage.setItem('currentTab', index.toString());
   };
 
   return (
@@ -30,10 +35,10 @@ function FollowPage({ followList }: any) {
           {tabList.map((tab) => {
             return (
               <button
-                key={tab.id}
+                key={tab.title}
                 type="button"
                 className={currentTab === tab.id ? 'submenufocused' : 'submenu'}
-                onClick={() => selectTapHandler(tab.id)}
+                onClick={() => selectTabHandler(tab.id)}
               >
                 {tab.title}
               </button>
@@ -50,8 +55,11 @@ function FollowPage({ followList }: any) {
         className="follow-page__user"
         style={currentTab === 1 ? { transform: 'translate(-50%)' } : {}}
       >
-        <FollowList follower={followList.follower} />
-        <FollowList follower={followList.follower} />
+        <FollowerList follower={followList.follower} />
+        <FollowingList
+          following={followList.following}
+          notFollowing={notFollowingList}
+        />
       </div>
     </div>
   );

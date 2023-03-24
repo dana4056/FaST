@@ -41,11 +41,22 @@ async function followList(id: number) {
   }
 }
 
+// Not 팔로잉 목록 조회
+async function notFollowingList(id: number) {
+  try {
+    const res = await api.post<number>('/follow/search2', { id });
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
 // 팔로우 삭제
 async function followDelete(fromId: number, toId: number) {
   try {
     const res = await api.delete<number>('/follow', {
-      params: { fromId, toId },
+      data: { fromId, toId },
     });
     console.log(res);
     return res;
@@ -55,4 +66,23 @@ async function followDelete(fromId: number, toId: number) {
   }
 }
 
-export default { followTo, followFrom, followList, followDelete };
+// 팔로우 추가
+async function followAdd(fromId: number, toId: number) {
+  try {
+    const res = await api.post<number>('/follow', { fromId, toId });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default {
+  followTo,
+  followFrom,
+  followList,
+  notFollowingList,
+  followDelete,
+  followAdd,
+};
