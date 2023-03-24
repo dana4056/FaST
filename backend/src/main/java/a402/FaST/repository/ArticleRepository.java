@@ -15,13 +15,12 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-//    Page<Article> findAllOrderByCreateTimeDesc(LocalDateTime CreateTime, Pageable pageable);
 
-    @Query(value = "select a.id, a.img_path, a.create_time " +
-            "from Article a where id in (" +
+    @Query(value = "select a.img_path, a.create_time " +
+            "from article a where id in (" +
             "select distinct(ah.article_id) from article_has_tag ah where ah.tag_id in(" +
             "select tag_id from tag_has_user th where th.user_id = ?1))", nativeQuery = true)
-    Page<ArticleList> ArticleList(int userId, Pageable pageable);
+    List<ArticleList> ArticleList(int userId);
 
 
 }

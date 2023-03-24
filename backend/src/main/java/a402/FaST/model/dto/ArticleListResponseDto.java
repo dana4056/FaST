@@ -22,4 +22,11 @@ public class ArticleListResponseDto {
    private List<TagResponseDto> tags;
 
 
+   public ArticleListResponseDto(String getimgPath, LocalDateTime getcreateTime) {
+      this.nickName = "asd";
+      this.likeCheck = false;
+      this.likeCount = 0;
+      this.createTime = getcreateTime;
+      this.imgPath = getimgPath;
+   }
 }

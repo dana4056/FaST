@@ -1,6 +1,7 @@
 package a402.FaST.service;
 
 
+import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.*;
 import a402.FaST.repository.*;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -100,10 +102,27 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<ArticleListResponseDto> listArticle(int userId, Pageable pageable) {
-        logger.info("data {}", articleRepository.ArticleList(userId, pageable));
-        return null;
+    public List<ArticleListResponseDto> listArticle(int userId) {
+        List<ArticleListResponseDto> responseDto = null;
+        responseDto = articleRepository.ArticleList(userId)
+                .stream().map(x->ArticleListResponseDto.builder()
+
+                        .build()).collect(Collectors.toList());
+
+        return responseDto;
     }
+//        }else{
+//            List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
+//            List<NotFollowList> list = followRepository.SearchNotFollower(requestDto.getId());
+//
+//            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId())
+//                    .stream().map(x-> new UserNotFollowResponseDto(x.getnickName(),x.getImg_path()))
+//                    .collect(Collectors.toList());
+//            return userNotFollowResponseDtoList;
+//        }
+//    }
+
+
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
