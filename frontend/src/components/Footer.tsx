@@ -22,7 +22,7 @@ function Footer() {
   };
 
   return (
-    <body className="footer">
+    <div className="footer">
       <input type="radio" id="one" name="buttons" onClick={onClickHome} />
       <label htmlFor="one" className="icons home">
         {}
@@ -62,7 +62,7 @@ function Footer() {
       <span className="title myrecord">MyRecord</span>
       <span className="title mypage">MyPage</span>
       <div className="border" />
-    </body>
+    </div>
   );
 }
 

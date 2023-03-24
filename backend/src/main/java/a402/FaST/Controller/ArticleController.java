@@ -66,14 +66,13 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    static final int page_num = 10;
-    @GetMapping("{userId}")
+    @GetMapping("{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 API =>  게시글 목록 조회하는 API 입니다.",
             description = "size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleList (@PathVariable("userId") int userId) {
+    public List<ArticleListResponseDto> articleList (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
 
-        return articleService.listArticle(userId);
+        return articleService.listArticle(userId, size, offset);
     }
 
 }

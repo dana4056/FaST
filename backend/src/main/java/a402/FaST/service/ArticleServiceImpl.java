@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,27 +103,26 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticle(int userId) {
+    public List<ArticleListResponseDto> listArticle(int userId, int limit, int offset) {
+        Pageable pageable = PageRequest.of(offset, limit);
         List<ArticleListResponseDto> responseDto = null;
-        responseDto = articleRepository.ArticleList(userId)
+
+        responseDto = articleRepository.ArticleList(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
-
-                        .build()).collect(Collectors.toList());
-
+                        .imgPath(x.getImg_path())
+                        .createTime(x.getCreate_Time())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLike_Count())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
         return responseDto;
     }
-//        }else{
-//            List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
-//            List<NotFollowList> list = followRepository.SearchNotFollower(requestDto.getId());
-//
-//            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId())
-//                    .stream().map(x-> new UserNotFollowResponseDto(x.getnickName(),x.getImg_path()))
-//                    .collect(Collectors.toList());
-//            return userNotFollowResponseDtoList;
-//        }
-//    }
-
-
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
@@ -141,9 +141,4 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-//    public ArticleListResponseDto mapToDTO(ArticleListResponseDto myEntity) {
-//        ArticleListResponseDto myDTO = new ArticleListResponseDto();
-//        myDTO.setImgPath(myEntity.getImgPath());
-//            return myDTO;
-//    }
 }

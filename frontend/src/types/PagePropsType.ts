@@ -5,6 +5,7 @@ import {
   InputPhotoProps,
   SearchBoxProps,
   InputProfileProps,
+  UserProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -40,7 +41,11 @@ export interface CardDetailPageProps extends CardDetailProps {
   isCommentOpen: boolean;
 }
 
-export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
+// 내 기록 페이지
+export interface MyRecordPageProps extends SearchBoxProps, CardListProps {
+  followerNum: number;
+  followingNum: number;
+}
 
 export type MapPageProps = CardListProps;
 
@@ -124,4 +129,10 @@ export interface FindPwdProps {
   onClickCheckEmailCode: () => void;
   onClickSend: () => void;
   onClickNext: () => void;
+}
+
+// FollowPage Props
+
+export interface FollowPageProps {
+  followList: UserProps;
 }

@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { BsPersonCircle } from 'react-icons/bs';
+import { ProfileProps } from '../types/ComponentPropsType';
 import { TagType } from '../types/TagType';
 import Tag from './Tag';
 
-function Profile() {
+function Profile({ followerNum, followingNum }: ProfileProps) {
   const tags: TagType[] = [
     { value: 'tag1', className: 'profile__tag' },
     { value: 'tag2', className: 'profile__tag' },
@@ -13,6 +14,7 @@ function Profile() {
     { value: 'tag4', className: 'profile__tag' },
     { value: 'tag5', className: 'profile__tag' },
   ];
+
   return (
     <div className="profile__container">
       <BsPersonCircle className="profile__img" />
@@ -22,8 +24,8 @@ function Profile() {
             <div className="profile__follower">팔로워</div>
             <div className="profile__following">팔로잉</div>
             <div className="profile__record">기록수</div>
-            <div className="profile__follower__cnt">123</div>
-            <div className="profile__following__cnt">123</div>
+            <div className="profile__follower__cnt">{followerNum}</div>
+            <div className="profile__following__cnt">{followingNum}</div>
             <div className="profile__record__cnt">123</div>
           </div>
         </Link>
