@@ -9,6 +9,7 @@ import {
   Gwanghwamun,
   SeoulTower,
   Seongsan,
+  KingSejong,
 } from '../components/models';
 
 function ModelContainer() {
@@ -51,6 +52,12 @@ function ModelContainer() {
         setModel({
           model: Seongsan,
           cameraPosition: [0, 0, 3],
+        });
+        break;
+      case 'kingsejong':
+        setModel({
+          model: KingSejong,
+          cameraPosition: [0, 0, 5],
         });
         break;
       default:

@@ -8,6 +8,7 @@ import {
   DolHareubang,
   SeoulTower,
   Seongsan,
+  KingSejong,
 } from '../components/models';
 
 function StampContainer() {
@@ -47,6 +48,12 @@ function StampContainer() {
       name: '성산일출봉',
       link: 'seongsan',
       cameraPosition: [0, 0, 3],
+    },
+    {
+      model: KingSejong,
+      name: '세종대왕',
+      link: 'kingsejong',
+      cameraPosition: [0, 0, 5],
     },
   ];
   return <StampPage models={models} />;

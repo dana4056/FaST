@@ -9,15 +9,11 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Cube: THREE.Mesh;
-    Cube001: THREE.Mesh;
-    Sphere003: THREE.Mesh;
-    Plane001: THREE.Mesh;
+    Cube_1: THREE.Mesh;
+    Cube_2: THREE.Mesh;
   };
   materials: {
     Material: THREE.MeshStandardMaterial;
@@ -25,40 +21,17 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model({ transX, transY }: any) {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/KingSejong.glb') as GLTFResult;
-  const modelRef = useRef<Group>(null);
-  useFrame(() => {
-    if (modelRef.current !== null && transX && transY) {
-      modelRef.current.rotation.y += transX / 3000;
-      modelRef.current.rotation.x += transY / 3000;
-    }
-  });
   return (
-    <group dispose={null} ref={modelRef} position={[0, -1, 0]} receiveShadow>
-      <mesh
-        geometry={nodes.Cube.geometry}
-        material={materials.Material}
-        scale={[1.5, 0.65, 1]}
-      />
-      <mesh
-        geometry={nodes.Cube001.geometry}
-        material={materials.Material}
-        position={[0, 1.3, -0.05]}
-        scale={[0.8, 0.1, 0.6]}
-      />
-      <mesh
-        geometry={nodes.Sphere003.geometry}
-        material={materials['Material.001']}
-        position={[0, 2.26, -0.2]}
-        scale={[0.2, 0.1, 0.13]}
-      />
-      <mesh
-        geometry={nodes.Plane001.geometry}
-        material={materials['Material.001']}
-        position={[0, 2.15, -0.07]}
-        scale={[0.25, 1, 0.25]}
-      />
+    <group {...props} dispose={null} position={[0, -1.5, 0]} receiveShadow>
+      <group scale={[1.5, 0.65, 1]}>
+        <mesh geometry={nodes.Cube_1.geometry} material={materials.Material} />
+        <mesh
+          geometry={nodes.Cube_2.geometry}
+          material={materials['Material.001']}
+        />
+      </group>
     </group>
   );
 }
