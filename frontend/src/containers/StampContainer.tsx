@@ -7,6 +7,7 @@ import {
   Gwanghwamun,
   DolHareubang,
   SeoulTower,
+  Seongsan,
 } from '../components/models';
 
 function StampContainer() {
@@ -40,6 +41,12 @@ function StampContainer() {
       name: '롯데타워',
       link: 'lottetower',
       cameraPosition: [0, 0, 6],
+    },
+    {
+      model: Seongsan,
+      name: '성산일출봉',
+      link: 'seongsan',
+      cameraPosition: [0, 0, 3],
     },
   ];
   return <StampPage models={models} />;

@@ -8,6 +8,7 @@ import {
   Gwangandaegyo,
   Gwanghwamun,
   SeoulTower,
+  Seongsan,
 } from '../components/models';
 
 function ModelContainer() {
@@ -44,6 +45,12 @@ function ModelContainer() {
         setModel({
           model: LotteTower,
           cameraPosition: [0, 0, 6],
+        });
+        break;
+      case 'seongsan':
+        setModel({
+          model: Seongsan,
+          cameraPosition: [0, 0, 3],
         });
         break;
       default:
