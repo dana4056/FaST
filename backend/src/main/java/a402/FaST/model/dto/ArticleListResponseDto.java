@@ -7,22 +7,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Data
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ArticleListResponseDto {
-   public ArticleListResponseDto(Article article) {
-      this.imgPath = article.getImgPath();
-      this.nickName = article.getUser().getNickname();
-   }
 
    private String imgPath;
-//   private int likeCount;
-//   private boolean likeCheck;
+   private int likeCount;
+   private boolean likeCheck;
    private String nickName;
    private LocalDateTime createTime;
-//   private List<TagResponseDto> tags;
+   private List<TagResponseDto> tags;
 
 
 }

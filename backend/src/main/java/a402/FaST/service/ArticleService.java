@@ -14,5 +14,5 @@ public interface ArticleService {
 
     ArticleCommentResponseDto detail(int id, int userId);
 
-    Page<ArticleListResponseDto> listArticle(Pageable pageable);
+    Page<ArticleListResponseDto> listArticle(int userId, Pageable pageable);
 }

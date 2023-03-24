@@ -100,14 +100,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<ArticleListResponseDto> listArticle(Pageable pageable) {
-//        Page<ArticleListResponseDto> myEntities = articleRepository.findAll(pageable);
-//        return myEntities.map(this::mapToDTO);
-        logger.info(" 여기까지옴");
-        logger.info(" data {}",articleRepository.findAll(pageable));
-        LocalDateTime createTime = LocalDateTime.now();
-        return articleRepository.findAllOrderByCreateTimeDesc(createTime,pageable)
-                .map(ArticleListResponseDto::new);
+    public Page<ArticleListResponseDto> listArticle(int userId, Pageable pageable) {
+        logger.info("data {}", articleRepository.ArticleList(userId, pageable));
+        return null;
     }
 
     //    -----------------------------------------------------------------------------------
