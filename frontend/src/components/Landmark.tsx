@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
-function Landmark({ Model, cameraPosition, transX, transY }: any) {
+function Landmark({ Model, cameraPosition, isControllable }: any) {
   return (
     <div className="landmark">
       <div className="landmark__canvas">
@@ -22,8 +23,9 @@ function Landmark({ Model, cameraPosition, transX, transY }: any) {
             castShadow
           />
           <Suspense fallback={null}>
-            <Model transX={transX} transY={transY} />
+            <Model />
           </Suspense>
+          {isControllable ? <OrbitControls /> : null}
         </Canvas>
       </div>
     </div>
