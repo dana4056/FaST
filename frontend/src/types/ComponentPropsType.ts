@@ -140,3 +140,27 @@ export interface InputProfileProps {
   // 입력한 이미지 삭제 함수
   handleImageDelete: () => void;
 }
+
+// 프로필 박스
+export interface ProfileProps {
+  followerNum: number;
+  followingNum: number;
+}
+
+export interface FollowProps {
+  id: number;
+  userId: string;
+  imgPath: string;
+}
+
+export interface UserProps {
+  id: number;
+  userId: string;
+  searchText?: string;
+  follower?: FollowProps;
+  following?: FollowProps;
+}
+
+export interface UserItemProps {
+  user: UserProps;
+}
