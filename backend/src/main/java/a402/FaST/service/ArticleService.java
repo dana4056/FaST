@@ -2,10 +2,11 @@ package a402.FaST.service;
 
 
 
-import a402.FaST.model.dto.ArticleCommentResponseDto;
-import a402.FaST.model.dto.ArticleModifyDto;
-import a402.FaST.model.dto.ArticleRequestDto;
-import a402.FaST.model.dto.ArticleResponseDto;
+import a402.FaST.model.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface ArticleService {
     ArticleResponseDto create(ArticleRequestDto requestDto);
@@ -13,5 +14,7 @@ public interface ArticleService {
 
     ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception;
 
-    ArticleCommentResponseDto detail(int id);
+    ArticleCommentResponseDto detail(int id, int userId);
+
+    List<ArticleListResponseDto> listArticle(int userId);
 }

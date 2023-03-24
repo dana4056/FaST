@@ -11,11 +11,7 @@ import lombok.*;
 public class FollowAllResponseDto {
 
    private int id;
-
-
    private String nickname;
-
-
    private String imgPath;
 
 }

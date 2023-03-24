@@ -12,12 +12,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserNotFollowResponseDto {
-
+   private int id;
    private String nickname;
    private String img_path;
 
-   public static UserNotFollowResponseDto from(String nickname, String img_path) {
+   public static UserNotFollowResponseDto from(int id, String nickname, String img_path) {
       return UserNotFollowResponseDto.builder()
+              .id(id)
               .nickname(nickname)
               .img_path(img_path)
               .build();

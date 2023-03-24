@@ -13,7 +13,7 @@ import java.util.List;
 public class ArticleRequestDto {
 
    private int userId;
-   private String img_path;
+   private String imgPath;
    private String content;
    private String let;
    private String lng;
