@@ -3,6 +3,7 @@ package a402.FaST.model.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Getter
@@ -17,8 +18,7 @@ public class ArticleListResponseDto {
    private int likeCount;
    private boolean likeCheck;
    private String nickName;
-
-//   private List<TagResponseDto> tags;
+   private List<TagResponseDto> tags;
 
 
 }

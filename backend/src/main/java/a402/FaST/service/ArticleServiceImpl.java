@@ -107,21 +107,18 @@ public class ArticleServiceImpl implements ArticleService {
         Pageable pageable = PageRequest.of(offset, limit);
         List<ArticleListResponseDto> responseDto = null;
 
-//        List<ArticleList> list = articleRepository.ArticleList1(userId,pageable);
-//        for (ArticleList data : list){
-//            System.out.println(data.getImg_path());
-//            System.out.println(data.getId());
-//            System.out.println(data.getLike_Count());
-//            System.out.println(data.getCreate_Time());
-//        }
-
-        responseDto = articleRepository.ArticleList1(userId, pageable)
+        responseDto = articleRepository.ArticleList(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .imgPath(x.getImg_path())
                         .createTime(x.getCreate_Time())
                         .nickName(userRepository.nickName(userId))
                         .likeCount(x.getLike_Count())
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
         return responseDto;
