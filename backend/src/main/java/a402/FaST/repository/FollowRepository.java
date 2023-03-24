@@ -24,8 +24,8 @@ public interface FollowRepository extends JpaRepository<Follow, FollowPK> {
 
 
     @Query(value = "select u.nickname, u.img_path " +
-            "from User u " +
-            "where u.id not in (select f.from_id from Follow f where f.to_id = ?1)", nativeQuery = true)
+            "from user u " +
+            "where u.id not in (select f.from_id from follow f where f.to_id = ?1)", nativeQuery = true)
     List<NotFollowList> SearchNotFollower(int to_id);
 
 
