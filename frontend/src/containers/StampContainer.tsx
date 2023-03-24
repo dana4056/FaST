@@ -1,8 +1,12 @@
 import React from 'react';
 
 import StampPage from '../pages/StampPage';
-import Gwangandaegyo from '../components/models/Gwangandaegyo';
-import Gwanghwamun from '../components/models/Gwanghwamun';
+import {
+  LotteTower,
+  Gwangandaegyo,
+  Gwanghwamun,
+  DolHareubang,
+} from '../components/models';
 
 function StampContainer() {
   const models = [
@@ -17,6 +21,12 @@ function StampContainer() {
       name: '광화문',
       link: 'gwanghwamun',
       cameraPosition: [0, 0, 10],
+    },
+    {
+      model: DolHareubang,
+      name: '돌하르방',
+      link: 'dolhareubang',
+      cameraPosition: [0, 0, 5],
     },
   ];
   return <StampPage models={models} />;
