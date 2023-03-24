@@ -67,11 +67,10 @@ public class ArticleController {
     }
 
     @GetMapping("{userId}/{size}/{offset}")
-    @Operation(summary = "게시글 목록 조회 API =>  게시글 목록 조회하는 API 입니다.",
-            description = "size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호" +
+    @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
+            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleList (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
-
         return articleService.listArticle(userId, size, offset);
     }
 
