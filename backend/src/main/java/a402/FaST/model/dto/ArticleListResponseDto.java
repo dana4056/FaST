@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ArticleListResponseDto {
 
+   private int id;
    private String imgPath;
    private LocalDateTime createTime;
    private int likeCount;
