@@ -13,6 +13,7 @@ import {
   Seokguram,
   Sungnyemun,
   OlympicPark,
+  Building63,
 } from '../components/models';
 
 function ModelContainer() {
@@ -21,6 +22,12 @@ function ModelContainer() {
 
   useEffect(() => {
     switch (params.model) {
+      case 'building63':
+        setModel({
+          model: Building63,
+          cameraPosition: [0, 0, 7],
+        });
+        break;
       case 'gwangandaegyo':
         setModel({
           model: Gwangandaegyo,
@@ -81,6 +88,7 @@ function ModelContainer() {
           cameraPosition: [0, 0, 8],
         });
         break;
+
       default:
         break;
     }

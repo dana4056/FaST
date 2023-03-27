@@ -12,10 +12,17 @@ import {
   Seokguram,
   Sungnyemun,
   OlympicPark,
+  Building63,
 } from '../components/models';
 
 function StampContainer() {
   const models = [
+    {
+      model: Building63,
+      name: '63빌딩',
+      link: 'building63',
+      cameraPosition: [0, 0, 7],
+    },
     {
       model: Gwangandaegyo,
       name: '광안대교',
