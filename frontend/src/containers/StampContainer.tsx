@@ -15,6 +15,7 @@ import {
   Building63,
   Yisunshin,
   ChinaTown,
+  Cheongwadae,
 } from '../components/models';
 
 function StampContainer() {
@@ -95,6 +96,12 @@ function StampContainer() {
       model: ChinaTown,
       name: '차이나타운',
       link: 'chinatown',
+      cameraPosition: [0, 0, 15],
+    },
+    {
+      model: Cheongwadae,
+      name: '청와대',
+      link: 'cheongwadae',
       cameraPosition: [0, 0, 15],
     },
   ];

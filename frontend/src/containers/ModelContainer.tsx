@@ -16,6 +16,7 @@ import {
   Building63,
   Yisunshin,
   ChinaTown,
+  Cheongwadae,
 } from '../components/models';
 
 function ModelContainer() {
@@ -99,6 +100,12 @@ function ModelContainer() {
       case 'chinatown':
         setModel({
           model: ChinaTown,
+          cameraPosition: [0, 0, 15],
+        });
+        break;
+      case 'cheongwadae':
+        setModel({
+          model: Cheongwadae,
           cameraPosition: [0, 0, 15],
         });
         break;

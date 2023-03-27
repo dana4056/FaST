@@ -29,7 +29,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model({ transX, transY }: any) {
+export default function Model() {
   const { nodes, materials } = useGLTF('/models/ChinaTown.glb') as GLTFResult;
 
   return (
