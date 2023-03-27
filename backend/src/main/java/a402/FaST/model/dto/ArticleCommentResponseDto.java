@@ -24,7 +24,7 @@ public class ArticleCommentResponseDto {
    private String lng;
    private List<CommentResponseDto> commentList;
    private boolean likeCheck;
-//   private List<TagResponseDto> tags;
+   private List<TagResponseDto> tags;
 
 
    public static ArticleCommentResponseDto from(Article article) {
@@ -39,21 +39,19 @@ public class ArticleCommentResponseDto {
                  .let(article.getLet())
                  .lng(article.getLng())
                  .commentList(article.getComments().stream()
-                         .map(x->new CommentResponseDto(x)).collect(Collectors.toList()))
-
-//                 .tags(article.getTags().stream()
-//                         .map(x->new TagResponseDto(x)))
-//                 .tags(article.getId()).get().getTags().stream()
-//                         .map(Tag->TagResponseDto.builder()
-//                                 .tagId(Tag.getTag().getId())
-//                                 .tagName(Tag.getTag().getName())
-//                                 .build()).collect(Collectors.toList()))
+                         .map(comment->CommentResponseDto.builder()
+                                 .articleId(comment.getArticle().getId())
+                                 .content(comment.getContent())
+                                 .createTime(comment.getCreateTime())
+                                 .articleId(comment.getArticle().getId())
+                                 .userId(comment.getUser().getId())
+                                 .build()).collect(Collectors.toList()))
+                 .tags(article.getTags().stream()
+                         .map((Tag -> TagResponseDto.builder()
+                                 .tagId(Tag.getTag().getId())
+                                 .tagName(Tag.getTag().getName())
+                                 .build()))
+                         .collect(Collectors.toList()))
                  .build();
    }
 }
-
-//                 .commentList(article.getComments().stream()
-//                         .map(x->CommentResponseDto.builder()
-//                                 .id(x.getArticle().getId())
-//                                 .content(x.getArticle().getContent())
-//                                 .createTime(x.getArticle().getCreateTime()).build()).collect(Collectors.toList()))
