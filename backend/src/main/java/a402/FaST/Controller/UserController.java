@@ -150,6 +150,16 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
+    @PutMapping("/{id}/modify-img")
+    @Operation(summary = "유저 프로필 수정 API =>  유저 프로필 수정 API 입니다.",
+            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : imgPath)" +
+                    " => 검증 결과에 따라 userResponseDto or error 를 Return 해줍니다.")
+    public ResponseEntity<UserResponseDto> modifyImg(@Valid @PathVariable int id, @RequestBody UserModifyImgRequestDto requestDto) throws Exception {
+        UserResponseDto userResponseDto = null;
+        userResponseDto = userService.modifyImg(id,requestDto);
+        return ResponseEntity.ok(userResponseDto);
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "유저 탈퇴 API =>  유저 탈퇴하는 API 입니다.",
             description = "PathVariable 형식 데이터 -> (int : id)" +

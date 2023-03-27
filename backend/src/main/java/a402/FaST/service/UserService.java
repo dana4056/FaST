@@ -1,9 +1,6 @@
 package a402.FaST.service;
 
-import a402.FaST.model.dto.TokenDto;
-import a402.FaST.model.dto.UserModifyPasswordRequestDto;
-import a402.FaST.model.dto.UserRequestDto;
-import a402.FaST.model.dto.UserResponseDto;
+import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.User;
 
 import java.util.Map;
@@ -28,4 +25,5 @@ public interface UserService {
 
     UserResponseDto modifyPassword(int id, UserModifyPasswordRequestDto requestDto) throws Exception;
 
+    UserResponseDto modifyImg(int id, UserModifyImgRequestDto requestDto);
 }
