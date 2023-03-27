@@ -1,3 +1,5 @@
+import { GroupProps } from '@react-three/fiber';
+
 import { TagType } from './TagType';
 import {
   CardDetailProps,
@@ -136,4 +138,23 @@ export interface FindPwdProps {
 
 export interface FollowPageProps {
   followList: UserProps;
+}
+
+export interface ModelType {
+  model: (props: GroupProps) => React.ReactElement;
+  cameraPosition: Array<number>;
+}
+export interface ModelPageProps {
+  model: ModelType | undefined;
+  name: string;
+  description: string;
+}
+
+interface LandmarkProps extends ModelType {
+  name: string;
+  link: string;
+}
+
+export interface StampPageProps {
+  models: Array<LandmarkProps>;
 }
