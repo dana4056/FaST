@@ -9,8 +9,6 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -33,15 +31,9 @@ type GLTFResult = GLTF & {
 
 export default function Model({ transX, transY }: any) {
   const { nodes, materials } = useGLTF('/models/ChinaTown.glb') as GLTFResult;
-  const modelRef = useRef<Group>(null);
-  useFrame(() => {
-    if (modelRef.current !== null && transX && transY) {
-      modelRef.current.rotation.y += transX / 3000;
-      modelRef.current.rotation.x += transY / 3000;
-    }
-  });
+
   return (
-    <group dispose={null} ref={modelRef} position={[0, -3, 0]} receiveShadow>
+    <group dispose={null} position={[0, -3, 0]} receiveShadow>
       <group
         position={[0, 4.18, 0]}
         rotation={[0, -Math.PI / 2, 0]}

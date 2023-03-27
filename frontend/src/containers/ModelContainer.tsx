@@ -15,6 +15,7 @@ import {
   OlympicPark,
   Building63,
   Yisunshin,
+  ChinaTown,
 } from '../components/models';
 
 function ModelContainer() {
@@ -93,6 +94,12 @@ function ModelContainer() {
         setModel({
           model: Yisunshin,
           cameraPosition: [0, 0, 5],
+        });
+        break;
+      case 'chinatown':
+        setModel({
+          model: ChinaTown,
+          cameraPosition: [0, 0, 15],
         });
         break;
       default:
