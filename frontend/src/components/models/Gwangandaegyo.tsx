@@ -28,7 +28,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
     '/models/Gwangandaegyo.glb'
   ) as GLTFResult;
   return (
-    <group {...props} dispose={null} position={[0, -0.5, 0]}>
+    <group {...props} dispose={null}>
       <group rotation={[0, 0, Math.PI / 2]} scale={[0.07, 1, 1]}>
         <mesh
           geometry={nodes.NurbsPath181.geometry}
