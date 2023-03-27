@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
         UserResponseDto userResponseDto = null;
         User user = userRepository.findByEmail(requestDto.getEmail()).get();
         user.setPassword(requestDto.getPassword());
-        user.setSalt(requestDto.getSalt());
+        user.setSalt(passwordEncoder.encode(requestDto.getSalt()));
         userResponseDto = UserResponseDto.from(user);
         return userResponseDto;
     }
