@@ -9,38 +9,36 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Cylinder_1: THREE.Mesh;
-    Cylinder_2: THREE.Mesh;
-    Cylinder_3: THREE.Mesh;
+    Cube004: THREE.Mesh;
+    Cube004_1: THREE.Mesh;
+    Cube004_2: THREE.Mesh;
   };
   materials: {
-    ['Material.012']: THREE.MeshStandardMaterial;
+    ['Material.002']: THREE.MeshStandardMaterial;
     ['Material.001']: THREE.MeshStandardMaterial;
   };
 };
 
-export default function Model() {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF(
     '/models/Cheomseongdae.glb'
   ) as GLTFResult;
   return (
-    <group dispose={null} position={[0, -2, 0]} receiveShadow>
-      <group rotation={[0, -Math.PI / 2, 0]} scale={[1, 2.5, 1]}>
+    <group {...props} dispose={null} position={[0, -1.5, 0]} receiveShadow>
+      <group position={[0, 3, 0]} scale={[0.75, 0.13, 0.75]}>
         <mesh
-          geometry={nodes.Cylinder_1.geometry}
-          material={materials['Material.012']}
+          geometry={nodes.Cube004.geometry}
+          material={materials['Material.002']}
         />
         <mesh
-          geometry={nodes.Cylinder_2.geometry}
+          geometry={nodes.Cube004_1.geometry}
           material={materials['Material.001']}
         />
         <mesh
-          geometry={nodes.Cylinder_3.geometry}
+          geometry={nodes.Cube004_2.geometry}
           material={materials['Material.001']}
         />
       </group>

@@ -16,6 +16,7 @@ import {
   Yisunshin,
   ChinaTown,
   Cheongwadae,
+  Cheomseongdae,
 } from '../components/models';
 
 function StampContainer() {
@@ -103,6 +104,12 @@ function StampContainer() {
       name: '청와대',
       link: 'cheongwadae',
       cameraPosition: [0, 0, 15],
+    },
+    {
+      model: Cheomseongdae,
+      name: '첨성대',
+      link: 'cheomseongdae',
+      cameraPosition: [0, 0, 5],
     },
   ];
   return <StampPage models={models} />;

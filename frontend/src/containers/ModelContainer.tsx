@@ -17,6 +17,7 @@ import {
   Yisunshin,
   ChinaTown,
   Cheongwadae,
+  Cheomseongdae,
 } from '../components/models';
 
 function ModelContainer() {
@@ -107,6 +108,12 @@ function ModelContainer() {
         setModel({
           model: Cheongwadae,
           cameraPosition: [0, 0, 15],
+        });
+        break;
+      case 'cheomseongdae':
+        setModel({
+          model: Cheomseongdae,
+          cameraPosition: [0, 0, 6],
         });
         break;
       default:
