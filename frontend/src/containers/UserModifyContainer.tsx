@@ -1,10 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getDownloadURL, ref } from 'firebase/storage';
 import UserModifyPage from '../pages/UserModifyPage';
 import { TagType } from '../types/TagType';
+import modifyApi from '../api/modify';
+import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
+  // 내 정보 조회 api
+  const [userData, setUserData] = useState<any>({});
+  useEffect(() => {
+    const getData = async () => {
+      const myData: any = await modifyApi.getMyData(8);
+      setUserData(myData.data);
+    };
+    getData();
+  }, []);
+  console.log(userData);
+
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
+  useEffect(() => {
+    // if (userData.imgPath.substring(0, 4) === 'http') {
+    //   setImageUrl(userData.imgPath);
+    // } else {
+    const getProfileImage = async () => {
+      const imageRef = ref(storage, userData.imgPath);
+      const ret = await getDownloadURL(imageRef);
+      setImageUrl(ret);
+    };
+    getProfileImage();
+    // }
+  }, [userData.imgPath]);
+
   // 이미지 파일 저장 배열
   const [image, setImage] = useState<File>();
   // 이미지 입력
@@ -90,15 +117,14 @@ function UserModifyContainer() {
       setTags([...newTags]);
     }
   };
-
   return (
     <div>
       <UserModifyPage
         imageUrl={imageUrl}
         handleImageChange={handleImageChange}
         handleImageDelete={handleImageDelete}
-        name={name}
-        email={email}
+        name={userData.nickname}
+        email={userData.email}
         tags={tags}
         keyword={keyword}
         handleKeywordChange={handleKeywordChange}

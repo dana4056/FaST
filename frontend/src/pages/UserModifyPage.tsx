@@ -50,9 +50,10 @@ function UserModifyPage({
         <div className="modify__email__container">
           <span className="modify__email__text">이메일</span>
           <input
-            placeholder="example@email.com"
+            placeholder={email}
             className="card modify__input"
             type="email"
+            disabled
           />
         </div>
         <div className="sign-up-page__row__text">
@@ -61,7 +62,7 @@ function UserModifyPage({
         <input
           className="card modify__input"
           type="text"
-          placeholder="중복 불가능, 1~10자리"
+          defaultValue={name}
           // onChange={onChangeNickName}
         />
         {/* {name.length > 0 && (

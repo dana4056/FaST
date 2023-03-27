@@ -35,7 +35,6 @@ function FollowList({ following, notFollowing }: any) {
 
   const deleteInput = (e: React.MouseEvent<SVGAElement>) => {
     setUserInput('');
-    console.log(userInput);
   };
 
   return (

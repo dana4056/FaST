@@ -6,6 +6,7 @@ import {
   SearchBoxProps,
   InputProfileProps,
   UserProps,
+  ProfileProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -42,10 +43,10 @@ export interface CardDetailPageProps extends CardDetailProps {
 }
 
 // 내 기록 페이지
-export interface MyRecordPageProps extends SearchBoxProps, CardListProps {
-  followerNum: number;
-  followingNum: number;
-}
+export interface MyRecordPageProps
+  extends SearchBoxProps,
+    CardListProps,
+    ProfileProps {}
 
 export type MapPageProps = CardListProps;
 

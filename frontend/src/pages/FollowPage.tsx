@@ -9,8 +9,6 @@ const tabList = [
   { id: 1, title: '팔로잉' },
 ];
 
-const followingTabIndex = tabList.findIndex((tab) => tab.title === '팔로잉');
-
 function FollowPage({ followList, notFollowingList }: any) {
   const [currentTab, setCurrentTab] = useState(() => {
     // Get the current tab index from localStorage, or default to 0 if not found
@@ -24,7 +22,6 @@ function FollowPage({ followList, notFollowingList }: any) {
     setCurrentTab(index);
     setUnderlinePosition(index * 100);
 
-    // Save the current tab index to localStorage
     localStorage.setItem('currentTab', index.toString());
   };
 

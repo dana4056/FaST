@@ -145,6 +145,8 @@ export interface InputProfileProps {
 export interface ProfileProps {
   followerNum: number;
   followingNum: number;
+  imageUrl: string;
+  myTag: Array<TagType>;
 }
 
 export interface FollowProps {
