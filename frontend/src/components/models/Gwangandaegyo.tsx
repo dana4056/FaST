@@ -23,12 +23,12 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model() {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF(
     '/models/Gwangandaegyo.glb'
   ) as GLTFResult;
   return (
-    <group dispose={null} position={[0, -0.5, 0]}>
+    <group {...props} dispose={null} position={[0, -0.5, 0]}>
       <group rotation={[0, 0, Math.PI / 2]} scale={[0.07, 1, 1]}>
         <mesh
           geometry={nodes.NurbsPath181.geometry}

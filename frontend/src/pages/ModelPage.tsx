@@ -3,8 +3,9 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { MdArrowBackIos } from 'react-icons/md';
 import Landmark from '../components/Landmark';
+import { ModelPageProps } from '../types/PagePropsType';
 
-function ModelPage({ model }: any) {
+function ModelPage({ model, name, description }: ModelPageProps) {
   return (
     <div className="model-page">
       <div className="model-page__header">
@@ -23,6 +24,8 @@ function ModelPage({ model }: any) {
           />
         ) : null}
       </div>
+      <div className="model-page__name">{name}</div>
+      <div className="model-page__description">{description}</div>
     </div>
   );
 }

@@ -24,6 +24,7 @@ public class ArticleCommentResponseDto {
    private String lng;
    private List<CommentResponseDto> commentList;
    private boolean likeCheck;
+//   private List<TagResponseDto> tags;
 
 
    public static ArticleCommentResponseDto from(Article article) {
@@ -39,6 +40,14 @@ public class ArticleCommentResponseDto {
                  .lng(article.getLng())
                  .commentList(article.getComments().stream()
                          .map(x->new CommentResponseDto(x)).collect(Collectors.toList()))
+
+//                 .tags(article.getTags().stream()
+//                         .map(x->new TagResponseDto(x)))
+//                 .tags(article.getId()).get().getTags().stream()
+//                         .map(Tag->TagResponseDto.builder()
+//                                 .tagId(Tag.getTag().getId())
+//                                 .tagName(Tag.getTag().getName())
+//                                 .build()).collect(Collectors.toList()))
                  .build();
    }
 }
