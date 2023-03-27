@@ -12,6 +12,7 @@ import {
   KingSejong,
   Seokguram,
   Sungnyemun,
+  OlympicPark,
 } from '../components/models';
 
 function ModelContainer() {
@@ -72,6 +73,12 @@ function ModelContainer() {
         setModel({
           model: Sungnyemun,
           cameraPosition: [0, 0, 5],
+        });
+        break;
+      case 'olympicpark':
+        setModel({
+          model: OlympicPark,
+          cameraPosition: [0, 0, 8],
         });
         break;
       default:

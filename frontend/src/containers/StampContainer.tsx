@@ -11,6 +11,7 @@ import {
   KingSejong,
   Seokguram,
   Sungnyemun,
+  OlympicPark,
 } from '../components/models';
 
 function StampContainer() {
@@ -68,6 +69,12 @@ function StampContainer() {
       name: '숭례문',
       link: 'sungnyemun',
       cameraPosition: [0, 0, 5],
+    },
+    {
+      model: OlympicPark,
+      name: '올림픽 공원',
+      link: 'olympicpark',
+      cameraPosition: [0, 0, 8],
     },
   ];
   return <StampPage models={models} />;
