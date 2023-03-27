@@ -40,6 +40,7 @@ public class ArticleCommentResponseDto {
                  .lng(article.getLng())
                  .commentList(article.getComments().stream()
                          .map(x->new CommentResponseDto(x)).collect(Collectors.toList()))
+
 //                 .tags(article.getTags().stream()
 //                         .map(x->new TagResponseDto(x)))
 //                 .tags(article.getId()).get().getTags().stream()
