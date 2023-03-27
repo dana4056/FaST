@@ -14,7 +14,4 @@ public class TagResponseDto {
    private int tagId;
    private String tagName;
 
-
-   public TagResponseDto(ArticleHasTag x) {
-   }
 }
