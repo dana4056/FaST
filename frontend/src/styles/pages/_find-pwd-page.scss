@@ -1,20 +1,112 @@
 @use '../color';
 
 .find-pwd-page {
-  margin-top: 20%;
+  overflow: hidden;
+  // background-color: #efefef;
+  background-image: url(../../assets/images/sky.png);
+  background-size: 100% 100%;
+  height: 100%;
 }
-
-.find-pwd-page__row {
+.find-pwd-page__form {
+  margin-top: 20%;
   width: 100%;
-  margin: 8% 0;
+  height: 100%;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.find-pwd-page__row {
+  margin-top: 6px;
+  // width: 100%;
+  // margin: 8% 0;
+  // flex-wrap: wrap;
+  // height: fit-content;
+  // display: flex;
+  // justify-content: center;
+  width: 90%;
+  padding: 0 5%;
   flex-wrap: wrap;
   height: fit-content;
   display: flex;
   justify-content: center;
+  .find-pwd-page__message {
+    // font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    // position: absolute;
+    // bottom: -10px;
+    left: 0;
+
+    &.success {
+      color: #8f8c8b;
+      margin-top: 3px;
+    }
+
+    &.error {
+      color: #ff2727;
+      margin-top: 3px;
+    }
+  }
+  .find-pwd-page__row__text {
+    width: 100%;
+    flex-wrap: wrap;
+    height: fit-content;
+    display: flex;
+    justify-content: left;
+    color: white;
+    .find-pwd-page__text {
+      margin-top: 10px;
+      font-size: 20px;
+      height: 20px;
+    }
+  }
+  .find-pwd-page__input {
+    font-size: 16px;
+    margin-top: 3%;
+    width: 100%;
+    height: 35px;
+    padding: 1% 0;
+    padding-left: 3%;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background-color: color.$color-5;
+  }
+  .find-pwd-page__input--auth {
+    font-size: 16px;
+    width: 70%;
+    height: 35px;
+    padding: 1% 0;
+    margin-top: 3%;
+    padding-left: 3%;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background-color: color.$color-5;
+  }
+  .find-pwd-page__button {
+    width: 20%;
+    margin-top: 3%;
+    margin-left: auto;
+    padding: 10px 0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    background-color: color.$color-1;
+    border-radius: 10px;
+
+    &:active {
+      background: darken($color: color.$color-1, $amount: 10);
+    }
+  }
 }
 
 .find-pwd-page__change__button {
-  width: 90%;
+  margin-top: 10%;
+  width: 100%;
   padding: 12px 0;
   color: white;
   font-size: 16px;

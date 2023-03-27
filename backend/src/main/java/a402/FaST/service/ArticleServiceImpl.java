@@ -113,11 +113,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
 
-        responseDto = articleRepository.ArticleList(userId, pageable)
+        responseDto = articleRepository.ArticleListTag(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
                         .imgPath(x.getImg_path())
@@ -148,6 +148,29 @@ public class ArticleServiceImpl implements ArticleService {
                         .createTime(x.getCreateTime())
                         .nickName(userRepository.nickName(userId))
                         .likeCount(x.getLikeCount())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+
+        responseDto = articleRepository.ArticleListFollow(userId, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImg_path())
+                        .createTime(x.getCreate_Time())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLike_Count())
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()

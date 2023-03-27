@@ -17,15 +17,6 @@ public class CommentResponseDto {
    private int articleId;
    private int userId;
 
-   public CommentResponseDto(Comment comment) {
-      this.id = comment.getId();
-      this.content = comment.getContent();
-      this.createTime = comment.getCreateTime();
-      this.articleId = comment.getArticle().getId();
-      this.userId = comment.getUser().getId();
-   }
-
-
    public CommentResponseDto from(Comment comment) {
       if (comment == null) return null;
       return CommentResponseDto.builder()

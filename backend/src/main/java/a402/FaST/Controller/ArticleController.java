@@ -70,12 +70,12 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/follow/{userId}/{size}/{offset}")
+    @GetMapping("/tag/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
             description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
-        return articleService.listArticleFollow(userId, size, offset);
+    public List<ArticleListResponseDto> articleListTag(@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return articleService.listArticleTag(userId, size, offset);
     }
 
     @GetMapping("/user/{userId}/{size}/{offset}")
@@ -84,6 +84,14 @@ public class ArticleController {
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListUser (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return articleService.listArticleUser(userId, size, offset);
+    }
+
+    @GetMapping("/follow/{userId}/{size}/{offset}")
+    @Operation(summary = "게시글 목록 조회 (사용자 팔로우 기반) API =>  게시글 목록 조회하는 API 입니다.",
+            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+                    " => ArticleListResponseDto 를 Return 해줍니다.")
+    public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return articleService.listArticleFollow(userId, size, offset);
     }
 
 }
