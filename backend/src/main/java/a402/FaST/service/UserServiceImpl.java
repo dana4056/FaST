@@ -9,10 +9,7 @@ import a402.FaST.Controller.UserController;
 import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
-import a402.FaST.model.dto.TokenDto;
-import a402.FaST.model.dto.UserModifyPasswordRequestDto;
-import a402.FaST.model.dto.UserResponseDto;
-import a402.FaST.model.dto.UserRequestDto;
+import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.Authority;
 import a402.FaST.model.entity.Cert;
 import a402.FaST.model.entity.User;
@@ -142,6 +139,19 @@ public class UserServiceImpl implements UserService {
         }else{
             User user = userRepository.findById(id).get();
             user.setNickname(requestDto.getNickname());
+            userResponseDto = UserResponseDto.from(user);
+        }
+        return userResponseDto;
+    }
+
+    @Override
+    public UserResponseDto modifyImg(int id, UserModifyImgRequestDto requestDto) {
+        UserResponseDto userResponseDto = null;
+        if(!userRepository.existsById(id)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(id).get();
+            user.setImgPath(requestDto.getImgPath());
             userResponseDto = UserResponseDto.from(user);
         }
         return userResponseDto;
