@@ -1,0 +1,22 @@
+@use '../color';
+
+.model-page {
+  height: 100%;
+  background-color: color.$color-4;
+  .model-page__header {
+    display: flex;
+    align-items: center;
+    height: 10%;
+    .model-page__button--back {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px;
+      margin-left: 20px;
+    }
+  }
+  .model-page__model {
+    height: 45%;
+  }
+}
