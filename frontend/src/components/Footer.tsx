@@ -35,12 +35,6 @@ function Footer() {
       </label>
       <input type="radio" id="three" name="buttons" onClick={onClickNewCard} />
       <label htmlFor="three" className="icons plus">
-        <svg width="0" height="0">
-          <linearGradient id="plus-color" x1="100%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#80ddf2" />
-            <stop offset="100%" stopColor="#77a9f2" />
-          </linearGradient>
-        </svg>
         <FaPlus />
         {}
       </label>
@@ -54,8 +48,6 @@ function Footer() {
         <IoSettingsOutline />
         {}
       </label>
-      {/* <div id="box" /> */}
-      <div id="body" />
       <span className="title home">Home</span>
       <span className="title people">People</span>
       <span className="title plus">Plus</span>

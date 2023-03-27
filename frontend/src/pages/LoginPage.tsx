@@ -4,7 +4,7 @@ import { SiNaver, SiKakaotalk } from 'react-icons/si';
 import { Canvas } from '@react-three/fiber';
 import { LoginPageProps } from '../types/PagePropsType';
 import Header from '../components/Header';
-import Model from '../assets/blender/Logo';
+import Model from '../components/models/Logo';
 
 export default function LoginPage({
   goLogin,

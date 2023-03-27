@@ -26,6 +26,8 @@ async function login(email: string, password: string) {
       email,
       password,
     });
+    const { headers, data } = res;
+
     localStorage.setItem(
       'token',
       encryptToken(res.headers.authorization, email)

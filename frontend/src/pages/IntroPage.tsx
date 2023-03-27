@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Model from '../assets/blender/Logo';
+import Model from '../components/models/Logo';
 
 export default function IntroPage() {
   const navigate = useNavigate();

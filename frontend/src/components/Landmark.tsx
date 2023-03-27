@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { BlurShaderUtils } from 'three-stdlib';
+import { OrbitControls } from '@react-three/drei';
 
-function Landmark({ Model, cameraPosition }: any) {
+function Landmark({ Model, cameraPosition, isControllable }: any) {
   return (
     <div className="landmark">
       <div className="landmark__canvas">
@@ -14,18 +14,18 @@ function Landmark({ Model, cameraPosition }: any) {
         >
           <ambientLight
             // eslint-disable-next-line react/no-unknown-property
-            intensity={2}
+            intensity={0.5}
           />
           <directionalLight
             // eslint-disable-next-line react/no-unknown-property
-            intensity={0.5}
+            intensity={1}
             // eslint-disable-next-line react/no-unknown-property
             castShadow
           />
-
           <Suspense fallback={null}>
-            <Model receiveShadow />
+            <Model />
           </Suspense>
+          {isControllable ? <OrbitControls /> : null}
         </Canvas>
       </div>
     </div>
