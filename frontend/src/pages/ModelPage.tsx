@@ -3,8 +3,9 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { MdArrowBackIos } from 'react-icons/md';
 import Landmark from '../components/Landmark';
+import { ModelPageProps } from '../types/PagePropsType';
 
-function ModelPage({ model, name, description }: any) {
+function ModelPage({ model, name, description }: ModelPageProps) {
   return (
     <div className="model-page">
       <div className="model-page__header">

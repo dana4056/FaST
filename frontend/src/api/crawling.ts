@@ -1,7 +1,7 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: 'http://j8a402.p.ssafy.io:4000',
   headers: {
     'Content-Type': 'application/json',
   },

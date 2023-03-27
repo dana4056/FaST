@@ -46,7 +46,7 @@ router.get('/:landmark', async (req: Request, res: Response) => {
       query = 'docId=1134958&cid=40942&categoryId=33383';
       break;
     case 'chinatown':
-      query = 'docId=1145410&cid=40942&categoryId=31620';
+      query = 'docId=1301681&cid=40942&categoryId=35446';
       break;
     case 'cheongwadae':
       query = 'docId=1146706&cid=40942&categoryId=31645';

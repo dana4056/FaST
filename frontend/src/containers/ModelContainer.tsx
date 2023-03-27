@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { GroupProps } from '@react-three/fiber';
 
 import ModelPage from '../pages/ModelPage';
 import useViewModel from '../viewmodels/LandmarkViewModel';
@@ -20,12 +21,13 @@ import {
   Cheongwadae,
   Cheomseongdae,
 } from '../components/models';
+import { ModelType } from '../types/PagePropsType';
 
 function ModelContainer() {
   const params = useParams();
-  const [model, setModel] = useState<any>();
-  const [name, setName] = useState<string>();
-  const [description, setDescription] = useState<string>();
+  const [model, setModel] = useState<ModelType>();
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
 
   const { getLandmarkData } = useViewModel();
 

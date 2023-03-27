@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { MdArrowBackIos } from 'react-icons/md';
 
 import Landmark from '../components/Landmark';
+import { StampPageProps } from '../types/PagePropsType';
 
-function StampPage({ models }: any) {
+function StampPage({ models }: StampPageProps) {
   return (
     <div className="stamp-page">
       <div className="stamp-page__header">
