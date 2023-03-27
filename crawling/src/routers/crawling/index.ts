@@ -64,7 +64,6 @@ router.get('/:landmark', async (req: Request, res: Response) => {
     });
   } else {
     const crawlingRes = await axios.get(`https://terms.naver.com/entry.naver?${query}`);
-    console.log(req.params.landmark);
 
     const htmlString = crawlingRes.data;
     const $ = cheerio.load(htmlString);

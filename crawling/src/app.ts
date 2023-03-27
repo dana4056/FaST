@@ -1,9 +1,13 @@
 import express, { Express, Request, Response } from 'express';
 import crawlingRouter from './routers/crawling';
 
+const cors = require('cors');
+
 const app = express();
 
 app.set('port', 4000);
+
+app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Express');
