@@ -6,8 +6,6 @@ import wandb
 import os.path
 from os import path
 import csv
-import matplotlib.pyplot as plt
-
 
 class ArcMarginProduct(tf.keras.layers.Layer):
     def __init__(self, n_classes, s=30, m=0.50, easy_margin=False,
@@ -161,155 +159,19 @@ class DistributedModel:
         self.valid_loss_history = []
         self.valid_acc_history = []
 
-    def _compute_loss(self, labels, probs):
-        per_example_loss = self.loss_object(labels, probs)
-        return tf.nn.compute_average_loss(
-            per_example_loss, global_batch_size=self.global_batch_size)
-
-    def _backprop_loss(self, tape, loss, weights):
-        gradients = tape.gradient(loss, weights)
-        if self.mixed_precision:
-            gradients = self.optimizer.get_unscaled_gradients(gradients)
-        clipped, _ = tf.clip_by_global_norm(gradients, clip_norm=self.clip_grad)
-        self.optimizer.apply_gradients(zip(clipped, weights))
-
-    def _train_step(self, inputs):
-        with tf.GradientTape() as tape:
-            probs = self.model(inputs, training=True)
-            loss = self._compute_loss(inputs[1], probs)
-            if self.mixed_precision:
-                loss = self.optimizer.get_scaled_loss(loss)
-        self._backprop_loss(tape, loss, self.model.trainable_weights)
-        self.mean_loss_train.update_state(inputs[1], probs)
-        self.mean_accuracy_train.update_state(inputs[1], probs)
-        return loss
-
-    def _valid_step(self, inputs):
-        with tf.GradientTape() as tape:
-            probs = self.model(inputs, training=False)
-            loss = self._compute_loss(inputs[1], probs)
-            if self.mixed_precision:
-                loss = self.optimizer.get_scaled_loss(loss)
-        self.mean_loss_valid.update_state(inputs[1], probs)
-        self.mean_accuracy_valid.update_state(inputs[1], probs)
-        return loss
-
     def _predict_step(self, inputs):
         probs = self.model(inputs, training=False)
         return probs
-
-    @tf.function
-    def _distributed_train_step(self, dist_inputs):
-        per_replica_loss = self.strategy.run(self._train_step, args=(dist_inputs,))
-        return self.strategy.reduce(
-            tf.distribute.ReduceOp.SUM, per_replica_loss, axis=None)
-
-    @tf.function
-    def _distributed_valid_step(self, dist_inputs):
-        per_replica_loss = self.strategy.run(self._valid_step, args=(dist_inputs,))
-        return self.strategy.reduce(
-            tf.distribute.ReduceOp.SUM, per_replica_loss, axis=None)
 
     @tf.function
     def _distributed_predict_step(self, dist_inputs):
         probs = self.strategy.run(self._predict_step, args=(dist_inputs,))
         return probs
 
-    def train(self, train_ds, valid_ds, epochs, save_path):
-        if self.wandb:
-            wandb.init()
-
-        for epoch in range(epochs):
-            try:
-                dist_train_ds = self.strategy.experimental_distribute_dataset(train_ds)
-            except:
-                continue;
-
-            dist_train_ds = tqdm.tqdm(dist_train_ds)
-            for i, inputs in enumerate(dist_train_ds):
-                loss = self._distributed_train_step(inputs)
-                dist_train_ds.set_description(
-                    "[EPOCH {}] TRAIN: Loss {:.3f}, Accuracy {:.3f}".format(
-                        epoch,
-                        self.mean_loss_train.result().numpy(),
-                        self.mean_accuracy_train.result().numpy()
-                    )
-                )
-
-            if self.wandb:
-                wandb.log({"train_loss": self.mean_loss_train.result().numpy(),
-                           "train_accuracy": self.mean_accuracy_train.result().numpy()})
-
-            dist_valid_ds = self.strategy.experimental_distribute_dataset(valid_ds)
-            dist_valid_ds = tqdm.tqdm(dist_valid_ds)
-            for i, inputs in enumerate(dist_valid_ds):
-                loss = self._distributed_valid_step(inputs)
-                dist_valid_ds.set_description(
-                    "[EPOCH {}] Valid: Loss {:.3f}, Accuracy {:.3f}".format(
-                        epoch,
-                        self.mean_loss_valid.result().numpy(),
-                        self.mean_accuracy_valid.result().numpy()
-                    )
-                )
-
-            if self.wandb:
-                wandb.log({"valid_loss": self.mean_loss_valid.result().numpy(),
-                           "valid_accuracy": self.mean_accuracy_valid.result().numpy()})
-            if save_path:
-                self.model.save_weights(save_path)
-                print(f"Model saved at {save_path}")
-
-            self.train_loss_history.append(self.mean_loss_train.result().numpy())
-            self.train_acc_history.append(self.mean_accuracy_train.result().numpy())
-            self.valid_loss_history.append(self.mean_loss_valid.result().numpy())
-            self.valid_acc_history.append(self.mean_accuracy_valid.result().numpy())
-
-            x_len = np.arange(len(self.train_loss_history))
-            plt.subplot(2, 2, 1)
-            plt.plot(x_len, self.train_loss_history, c='blue', label="TRAIN Loss")
-            plt.grid()
-            plt.xlabel('epoch')
-            plt.ylabel('loss')
-            plt.title('Train Loss')
-
-            plt.subplot(2, 2, 3)
-            plt.plot(x_len, self.train_acc_history, c='red', label="TRAIN Accuracy")
-            plt.grid()
-            plt.xlabel('epoch')
-            plt.ylabel('acc')
-            plt.title('Train Accuracy')
-
-            plt.subplot(2, 2, 2)
-            plt.plot(x_len, self.valid_loss_history, c='blue', label="VALID Loss")
-            plt.grid()
-            plt.xlabel('epoch')
-            plt.ylabel('loss')
-            plt.title('Valid Loss')
-
-            plt.subplot(2, 2, 4)
-            plt.plot(x_len, self.valid_acc_history, c='red', label="VALID Accuracy")
-            plt.grid()
-            plt.xlabel('epoch')
-            plt.ylabel('acc')
-            plt.title('Valid Accuracy')
-
-            plt.tight_layout()
-            #             plt.show()
-            plt.savefig('../data/checkpoint/graph.png')
-
-            self.mean_loss_train.reset_states()
-            self.mean_accuracy_train.reset_states()
-            self.mean_loss_valid.reset_states()
-            self.mean_accuracy_valid.reset_states()
-
     def predict2(self, test_ds, area):
         class_list = read_classes(area)
         dist_test_ds = self.strategy.experimental_distribute_dataset(test_ds)
         dist_test_ds = tqdm.tqdm(dist_test_ds)
-
-        # Initialize accumulators
-        predictions = np.zeros([0, ], dtype='int32')
-        confidences = np.zeros([0, ], dtype='float32')
 
         # # Iterate over the distributed test dataset
         for inputs in dist_test_ds:
@@ -331,36 +193,9 @@ class DistributedModel:
 
         return classes, probs
 
-    # 성능평가용 예측함수
-    def predict(self, test_ds):
-        dist_test_ds = self.strategy.experimental_distribute_dataset(test_ds)
-        dist_test_ds = tqdm.tqdm(dist_test_ds)
-
-        # initialize accumulators
-        predictions = np.zeros([0, ], dtype='int32')
-        confidences = np.zeros([0, ], dtype='float32')
-        for inputs in dist_test_ds:
-
-            probs_replicates = self._distributed_predict_step(inputs)
-            probs_replicates = self.strategy.experimental_local_results(probs_replicates)
-            for probs in probs_replicates:
-                m = tf.gather(tf.shape(probs), 0)
-                probs_argsort = tf.argsort(probs, direction='DESCENDING')
-                # obtain predictions
-                idx1 = tf.stack([tf.range(m), tf.zeros(m, dtype='int32')], axis=1)
-                preds = tf.gather_nd(probs_argsort, idx1)
-                # obtain confidences
-                idx2 = tf.stack([tf.range(m), preds], axis=1)
-                confs = tf.gather_nd(probs, idx2)
-                # add to accumulator
-                predictions = np.concatenate([predictions, preds], axis=0)
-                confidences = np.concatenate([confidences, confs], axis=0)
-        return predictions, confidences
-
-
 def read_classes(area):
     classes = []
-    f = open("../data/class/" + area + "/class.csv", "rt")
+    f = open("./data/class/" + area + "/class.csv", "rt", encoding='UTF8')
     reader = csv.reader(f)
 
     for row in reader:
