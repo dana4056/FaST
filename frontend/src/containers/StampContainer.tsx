@@ -13,6 +13,7 @@ import {
   Sungnyemun,
   OlympicPark,
   Building63,
+  Yisunshin,
 } from '../components/models';
 
 function StampContainer() {
@@ -82,6 +83,12 @@ function StampContainer() {
       name: '올림픽 공원',
       link: 'olympicpark',
       cameraPosition: [0, 0, 8],
+    },
+    {
+      model: Yisunshin,
+      name: '이순신',
+      link: 'yisunshin',
+      cameraPosition: [0, 0, 5],
     },
   ];
   return <StampPage models={models} />;

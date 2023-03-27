@@ -14,6 +14,7 @@ import {
   Sungnyemun,
   OlympicPark,
   Building63,
+  Yisunshin,
 } from '../components/models';
 
 function ModelContainer() {
@@ -88,7 +89,12 @@ function ModelContainer() {
           cameraPosition: [0, 0, 8],
         });
         break;
-
+      case 'yisunshin':
+        setModel({
+          model: Yisunshin,
+          cameraPosition: [0, 0, 5],
+        });
+        break;
       default:
         break;
     }

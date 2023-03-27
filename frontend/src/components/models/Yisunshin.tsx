@@ -9,14 +9,11 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Group } from 'three';
-import { useFrame } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {
     Cube_1: THREE.Mesh;
     Cube_2: THREE.Mesh;
-    Cylinder001: THREE.Mesh;
   };
   materials: {
     ['Material.001']: THREE.MeshStandardMaterial;
@@ -24,31 +21,17 @@ type GLTFResult = GLTF & {
   };
 };
 
-export default function Model({ transX, transY }: any) {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/Yisunshin.glb') as GLTFResult;
-  const modelRef = useRef<Group>(null);
-  useFrame(() => {
-    if (modelRef.current !== null && transX && transY) {
-      modelRef.current.rotation.y += transX / 3000;
-      modelRef.current.rotation.x += transY / 3000;
-    }
-  });
   return (
-    <group dispose={null} ref={modelRef} position={[0, -2, 0]}>
-      <group scale={[0.6, 0.9, 0.6]}>
+    <group {...props} dispose={null} position={[0, -1.8, 0]} receiveShadow>
+      <group rotation={[0, -Math.PI / 2, 0]} scale={[0.6, 0.9, 0.6]}>
         <mesh
           geometry={nodes.Cube_1.geometry}
           material={materials['Material.001']}
         />
         <mesh geometry={nodes.Cube_2.geometry} material={materials.Material} />
       </group>
-      <mesh
-        geometry={nodes.Cylinder001.geometry}
-        material={materials.Material}
-        position={[0.08, 1.9, -0.4]}
-        rotation={[1.69, -0.05, -2.66]}
-        scale={[0.08, 0.14, 0.07]}
-      />
     </group>
   );
 }
