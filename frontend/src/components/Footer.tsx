@@ -20,7 +20,6 @@ function Footer() {
   const onClickMyPage = () => {
     navigate('/mypage');
   };
-
   return (
     <div className="footer">
       <input type="radio" id="one" name="buttons" onClick={onClickHome} />
