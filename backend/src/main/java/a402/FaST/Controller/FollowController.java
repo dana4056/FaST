@@ -69,7 +69,7 @@ public class FollowController {
         return ResponseEntity.ok(cnt);
     }
 
-    @PostMapping("/search2")
+    @PostMapping("/not-follow")
     @Operation(summary = "NOT 팔로워 조회 API =>  유저 ID로 해당 유저를 팔로워 하지 않는 유저 정보를 조회하는 API 입니다.",
             description = "json 형식 데이터 -> (int : id)" +
                     " => UserFromFollowResponseDto Return 해줍니다.")
