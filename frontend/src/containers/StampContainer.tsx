@@ -10,6 +10,7 @@ import {
   Seongsan,
   KingSejong,
   Seokguram,
+  Sungnyemun,
 } from '../components/models';
 
 function StampContainer() {
@@ -61,6 +62,12 @@ function StampContainer() {
       name: '세종대왕',
       link: 'kingsejong',
       cameraPosition: [0, 0, 4],
+    },
+    {
+      model: Sungnyemun,
+      name: '숭례문',
+      link: 'sungnyemun',
+      cameraPosition: [0, 0, 5],
     },
   ];
   return <StampPage models={models} />;

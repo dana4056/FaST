@@ -11,6 +11,7 @@ import {
   Seongsan,
   KingSejong,
   Seokguram,
+  Sungnyemun,
 } from '../components/models';
 
 function ModelContainer() {
@@ -65,6 +66,12 @@ function ModelContainer() {
         setModel({
           model: KingSejong,
           cameraPosition: [0, 0, 4],
+        });
+        break;
+      case 'sungnyemun':
+        setModel({
+          model: Sungnyemun,
+          cameraPosition: [0, 0, 5],
         });
         break;
       default:
