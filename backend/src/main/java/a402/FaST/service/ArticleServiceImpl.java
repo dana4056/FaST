@@ -8,7 +8,6 @@ import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -103,12 +102,24 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticle(int userId, int limit, int offset) {
-        Pageable pageable = PageRequest.of(offset, limit);
+    public int articleCnt(int userId) {
+        if(!userRepository.existsById(userId)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(userId).get();
+            return articleRepository.countArticleByUser(user);
+        }
+
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
 
         responseDto = articleRepository.ArticleList(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
                         .imgPath(x.getImg_path())
                         .createTime(x.getCreate_Time())
                         .nickName(userRepository.nickName(userId))
@@ -123,6 +134,31 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
         return responseDto;
     }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+        User user = userRepository.findById(userId).get();
+
+        responseDto = articleRepository.findByUser(user, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImgPath())
+                        .createTime(x.getCreateTime())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLikeCount())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+        return responseDto;
+    }
+
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {

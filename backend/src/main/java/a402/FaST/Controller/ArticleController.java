@@ -7,10 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +52,14 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @GetMapping("/{userId}")
+    @Operation(summary = "게시글 수 조회 API =>  사용자가 작성한 게시글 수 조회하는 API 입니다.",
+            description = "PathVariable 형식 데이터 (int : userId)" +
+                    " => 검증 결과에 따라 Int or error 를 Return 해줍니다.")
+    public int articleCnt (@Valid @PathVariable("userId") int userId) throws Exception {
+        return articleService.articleCnt(userId);
+    }
+
     @GetMapping("{id}/{userId}")
     @Operation(summary = "게시글 상세 조회 API =>  게시글 상세 조회하는 API 입니다.",
             description = "PathVariable 형식 데이터 (int : id)" +
@@ -66,12 +70,20 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("{userId}/{size}/{offset}")
+    @GetMapping("/follow/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
             description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleList (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
-        return articleService.listArticle(userId, size, offset);
+    public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return articleService.listArticleFollow(userId, size, offset);
+    }
+
+    @GetMapping("/user/{userId}/{size}/{offset}")
+    @Operation(summary = "게시글 목록 조회 (사용자 작성 기반) API =>  게시글 목록 조회하는 API 입니다.",
+            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+                    " => ArticleListResponseDto 를 Return 해줍니다.")
+    public List<ArticleListResponseDto> articleListUser (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return articleService.listArticleUser(userId, size, offset);
     }
 
 }
