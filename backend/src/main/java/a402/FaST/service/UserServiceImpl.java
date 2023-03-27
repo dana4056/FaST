@@ -158,6 +158,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponseDto findPw(UserFindPwDto requestDto) {
+        UserResponseDto userResponseDto = null;
+        if (userRepository.existsByEmail(requestDto.getEmail())) {
+            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+        }else{
+            User user = userRepository.findByEmail(requestDto.getEmail()).get();
+            user.setPassword(requestDto.getPassword());
+            user.setSalt(requestDto.getSalt());
+            userResponseDto = UserResponseDto.from(user);
+        }
+        return userResponseDto;
+    }
+
+    @Override
     public void tempPassword(UserRequestDto requestDto) throws Exception {
         MimeMessage message = createMessage(requestDto.getEmail());
         try{//예외처리

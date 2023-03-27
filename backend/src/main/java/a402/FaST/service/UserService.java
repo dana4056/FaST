@@ -26,4 +26,6 @@ public interface UserService {
     UserResponseDto modifyPassword(int id, UserModifyPasswordRequestDto requestDto) throws Exception;
 
     UserResponseDto modifyImg(int id, UserModifyImgRequestDto requestDto);
+
+    UserResponseDto findPw(UserFindPwDto requestDto);
 }
