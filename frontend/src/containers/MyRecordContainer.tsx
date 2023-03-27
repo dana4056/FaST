@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../utils/firebase';
+import modifyApi from '../api/modify';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
@@ -11,6 +14,43 @@ import { CardType } from '../types/CardType';
 import followApi from '../api/follow';
 
 function MyRecordContainer() {
+  // 내 정보 조회 api
+  const [userData, setUserData] = useState<any>({});
+  // 내 관심 태그
+  const [myTag, setMyTag] = useState<any>([]);
+  useEffect(() => {
+    const getData = async () => {
+      const myData: any = await modifyApi.getMyData(8);
+      setUserData(myData.data);
+      setMyTag(myData.data.tags);
+      const newMyTag: Array<TagType> = [];
+      myData.data.tags.map((tag: any) =>
+        newMyTag.push({
+          className: `tag-${Math.floor(Math.random() * 4) + 1}`,
+          value: tag.tagName,
+        })
+      );
+      setMyTag(newMyTag);
+    };
+    getData();
+  }, []);
+  console.log(myTag);
+
+  // 미리보기 이미지 url 저장 배열
+  const [imageUrl, setImageUrl] = useState<string>('');
+  useEffect(() => {
+    // if (userData.imgPath.substring(0, 4) === 'http') {
+    //   setImageUrl(userData.imgPath);
+    // } else {
+    const getProfileImage = async () => {
+      const imageRef = ref(storage, userData.imgPath);
+      const ret = await getDownloadURL(imageRef);
+      setImageUrl(ret);
+    };
+    getProfileImage();
+    // }
+  }, [userData.imgPath]);
+
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
@@ -171,8 +211,10 @@ function MyRecordContainer() {
 
   return (
     <MyRecordPage
+      imageUrl={imageUrl}
       followerNum={followerNum}
       followingNum={followingNum}
+      myTag={myTag}
       tags={tags}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}

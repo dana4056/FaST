@@ -1,23 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { BsPersonCircle } from 'react-icons/bs';
 import { ProfileProps } from '../types/ComponentPropsType';
 import { TagType } from '../types/TagType';
 import Tag from './Tag';
 
-function Profile({ followerNum, followingNum }: ProfileProps) {
-  const tags: TagType[] = [
-    { value: 'tag1', className: 'profile__tag' },
-    { value: 'tag2', className: 'profile__tag' },
-    { value: 'tag3', className: 'profile__tag' },
-    { value: 'tag4', className: 'profile__tag' },
-    { value: 'tag5', className: 'profile__tag' },
-  ];
-
+function Profile({ imageUrl, followerNum, followingNum, myTag }: ProfileProps) {
   return (
     <div className="profile__container">
-      <BsPersonCircle className="profile__img" />
+      <img src={imageUrl} alt="profileImg" className="profile__img" />
       <div className="profile__card card">
         <Link to="/follow">
           <div className="profile__cnt">
@@ -32,7 +22,7 @@ function Profile({ followerNum, followingNum }: ProfileProps) {
       </div>
       <div className="profile__hashtags">
         <div className="profile__tags card">
-          {tags.map((tag: TagType) => (
+          {myTag.map((tag: TagType) => (
             <Tag
               key={tag.value}
               className={tag.className}
