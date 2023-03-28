@@ -168,6 +168,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
+        return null;
+    }
+
+    @Override
     public void tempPassword(UserRequestDto requestDto) throws Exception {
         MimeMessage message = createMessage(requestDto.getEmail());
         try{//예외처리
