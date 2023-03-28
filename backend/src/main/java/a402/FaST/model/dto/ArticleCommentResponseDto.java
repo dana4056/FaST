@@ -22,7 +22,7 @@ public class ArticleCommentResponseDto {
    private int commentCount;
    private String let;
    private String lng;
-   private List<CommentResponseDto> commentList;
+//   private List<CommentResponseDto> commentList;
    private boolean likeCheck;
    private List<TagResponseDto> tags;
 
@@ -38,14 +38,14 @@ public class ArticleCommentResponseDto {
                  .commentCount(article.getCommentCount())
                  .let(article.getLet())
                  .lng(article.getLng())
-                 .commentList(article.getComments().stream()
-                         .map(comment->CommentResponseDto.builder()
-                                 .articleId(comment.getArticle().getId())
-                                 .content(comment.getContent())
-                                 .createTime(comment.getCreateTime())
-                                 .articleId(comment.getArticle().getId())
-                                 .userId(comment.getUser().getId())
-                                 .build()).collect(Collectors.toList()))
+//                 .commentList(article.getComments().stream()
+//                         .map(comment->CommentResponseDto.builder()
+//                                 .articleId(comment.getArticle().getId())
+//                                 .content(comment.getContent())
+//                                 .createTime(comment.getCreateTime())
+//                                 .articleId(comment.getArticle().getId())
+//                                 .userId(comment.getUser().getId())
+//                                 .build()).collect(Collectors.toList()))
                  .tags(article.getTags().stream()
                          .map((Tag -> TagResponseDto.builder()
                                  .tagId(Tag.getTag().getId())
