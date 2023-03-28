@@ -22,5 +22,6 @@
     "@types/node": "^18.15.10",
     "nodemon": "^2.0.22",
     "typescript": "^5.0.2"
-  }
+  },
+  "type": "module"
 }
