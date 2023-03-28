@@ -15,5 +15,5 @@ public interface CommentService {
 
     CommentResponseDto modify(CommentModifyDto modifyDto) throws Exception;
 
-    List<CommentListResponseDto> commentList(int articleId, int size, int offset);
+    List<CommentListResponseDto> commentList(int articleId, int userId, int size, int offset);
 }

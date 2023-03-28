@@ -45,7 +45,15 @@ public class CommentServiceImpl implements CommentService{
                 .build();
 
         commentRepository.save(comment);
-        CommentResponseDto responseDto = CommentResponseDto.from(comment);
+        CommentResponseDto responseDto = CommentResponseDto.builder()
+                .id(comment.getId())
+                .userId(comment.getUser().getId())
+                .articleId(comment.getArticle().getId())
+                .content(comment.getContent())
+                .createTime(comment.getCreateTime())
+                .likeCount(0)
+                .commentReplyCount(0)
+                .build();
 
         return responseDto;
     }
@@ -77,17 +85,17 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<CommentListResponseDto> commentList(int articleId, int size, int offset) {
+    public List<CommentListResponseDto> commentList(int articleId, int userId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<CommentListResponseDto> responseDto = null;
 
         responseDto = commentRepository.findAllByArticleIdOrderByCreateTime(articleId,pageable)
                 .stream().map(x-> CommentListResponseDto.builder()
                         .id(x.getId())
-                        .content(x.getContent())
-                        .createTime(x.getCreateTime())
                         .userId(x.getUser().getId())
                         .nickName(x.getUser().getNickname())
+                        .createTime(x.getCreateTime())
+                        .content(x.getContent())
                         .build()).collect(Collectors.toList());
 
         return responseDto;

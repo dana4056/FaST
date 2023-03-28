@@ -53,12 +53,12 @@ public class CommentController {
         return ResponseEntity.ok(responseDto);
     }
 //
-    @GetMapping("/{articleId}/{size}/{offset}")
+    @GetMapping("/{articleId}/{userId}/{size}/{offset}")
     @Operation(summary = "게시글에 있는 댓글 조회 API =>  게시글에 존재하는 댓글 조회하는 API 입니다.",
             description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
                     " => CommentListResponseDto 를 Return 해줍니다.")
-    public List<CommentListResponseDto> commentList(@Valid @PathVariable("articleId") int articleId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
-        return commentService.commentList(articleId, size, offset);
+    public List<CommentListResponseDto> commentList(@Valid @PathVariable("articleId") int articleId, @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return commentService.commentList(articleId, userId, size, offset);
     }
 
 
