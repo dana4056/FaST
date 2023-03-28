@@ -28,4 +28,6 @@ public interface UserService {
     UserResponseDto modifyImg(int id, UserModifyImgRequestDto requestDto);
 
     UserResponseDto findPw(UserFindPwDto requestDto);
+
+    UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto);
 }

@@ -1,14 +1,16 @@
 @use '../color';
+@use '../components/header';
 
 .find-pwd-page {
   overflow: hidden;
   // background-color: #efefef;
   background-image: url(../../assets/images/sky.png);
   background-size: 100% 100%;
-  height: 100%;
+  // height: 100%;
+  height: calc(100% - header.$height);
 }
 .find-pwd-page__form {
-  margin-top: 20%;
+  margin-top: 30%;
   width: 100%;
   height: 100%;
   flex: none;

@@ -160,6 +160,16 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
+    @PutMapping("/{id}/modify-user")
+    @Operation(summary = "유저 수정 API =>  유저 수정 API (닉네임, 프로필, 태그) 입니다.",
+            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : nick)" +
+                    " => 검증 결과에 따라 userResponseDto or error 를 Return 해줍니다.")
+    public ResponseEntity<UserResponseDto> modifyUser(@Valid @PathVariable int id, @RequestBody UserModifyUserRequestDto requestDto) throws Exception {
+        UserResponseDto userResponseDto = null;
+        userResponseDto = userService.modifyUser(id,requestDto);
+        return ResponseEntity.ok(userResponseDto);
+    }
+
     @PutMapping("/find-pw")
     @Operation(summary = "유저 비밀번호 찾기 API =>  유저 비밀번호 찾는 API 입니다.",
             description = "json 형식 데이터 -> (String : email, String password, String salt)" +
