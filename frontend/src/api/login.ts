@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useRecoilState } from 'recoil';
 import { encryptToken } from '../utils/passwordEncryption';
+import { userInfo } from '../atoms/userInfo';
 
 const api = axios.create({
   baseURL: 'http://j8a402.p.ssafy.io:8080',
@@ -26,12 +28,14 @@ async function login(email: string, password: string) {
       email,
       password,
     });
+    const { headers, data } = res;
+
     localStorage.setItem(
       'token',
       encryptToken(res.headers.authorization, email)
     );
-    console.log(res);
-    console.log(res.headers.authorization);
+    // console.log(res);
+    // console.log(res.headers.authorization);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -39,4 +43,20 @@ async function login(email: string, password: string) {
   }
 }
 
-export default { login, getSalt };
+// 카카오 네이버 간편 로그인
+async function fastLogin(token: string) {
+  try {
+    const res = await api.post(`/user/token`, {
+      token,
+    });
+    console.log(res.data);
+    localStorage.setItem('token', encryptToken(token, res.data.email));
+    // console.log(res.headers.authorization);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { login, getSalt, fastLogin };

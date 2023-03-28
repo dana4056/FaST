@@ -14,7 +14,7 @@ public class FollowerResponseDto {
     public FollowerResponseDto(Follow follow) {
         this.fromUser = FollowAllResponseDto.builder()
                 .id(follow.getFromId().getId())
-                .imgPath(follow.getFromId().getImg_path())
+                .imgPath(follow.getFromId().getImgPath())
                 .nickname(follow.getFromId().getNickname())
                 .build();
     }

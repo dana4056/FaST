@@ -9,7 +9,11 @@
   grid-template-rows: 80px minmax(30px, auto);
   gap: 15px;
   .profile__img {
-    font-size: 85px;
+    // font-size: 85px;
+    object-fit: cover;
+    width: 85px;
+    height: 85px;
+    border-radius: 50px;
     grid-column: 1;
     grid-row: 1;
   }

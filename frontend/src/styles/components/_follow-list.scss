@@ -119,3 +119,23 @@
     box-shadow: 4px 5px 0px color.$color-3;
   }
 }
+
+// @keyframes move-right {
+//   from {
+//     transform: translateX(0);
+//   }
+//   to {
+//     transform: translateX(100px);
+//   }
+// }
+// .follow_delete_btn:checked ~ div.follow_box {
+//   position: absolute;
+//   animation: move-right 1s ease-in-out infinite alternate;
+// }
+
+.not-following__title {
+  width: 90%;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}

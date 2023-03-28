@@ -1,3 +1,5 @@
+import { GroupProps } from '@react-three/fiber';
+
 import { TagType } from './TagType';
 import {
   CardDetailProps,
@@ -5,6 +7,8 @@ import {
   InputPhotoProps,
   SearchBoxProps,
   InputProfileProps,
+  UserProps,
+  ProfileProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -40,7 +44,11 @@ export interface CardDetailPageProps extends CardDetailProps {
   isCommentOpen: boolean;
 }
 
-export interface MyRecordPageProps extends SearchBoxProps, CardListProps {}
+// 내 기록 페이지
+export interface MyRecordPageProps
+  extends SearchBoxProps,
+    CardListProps,
+    ProfileProps {}
 
 export type MapPageProps = CardListProps;
 
@@ -124,4 +132,29 @@ export interface FindPwdProps {
   onClickCheckEmailCode: () => void;
   onClickSend: () => void;
   onClickNext: () => void;
+}
+
+// FollowPage Props
+
+export interface FollowPageProps {
+  followList: UserProps;
+}
+
+export interface ModelType {
+  model: (props: GroupProps) => React.ReactElement;
+  cameraPosition: Array<number>;
+}
+export interface ModelPageProps {
+  model: ModelType | undefined;
+  name: string;
+  description: string;
+}
+
+interface LandmarkProps extends ModelType {
+  name: string;
+  link: string;
+}
+
+export interface StampPageProps {
+  models: Array<LandmarkProps>;
 }

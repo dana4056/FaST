@@ -1,20 +1,21 @@
 package a402.FaST.service;
 
 
-import a402.FaST.model.dto.ArticleCommentResponseDto;
-import a402.FaST.model.dto.ArticleModifyDto;
-import a402.FaST.model.dto.ArticleRequestDto;
-import a402.FaST.model.dto.ArticleResponseDto;
+import a402.FaST.exception.NotFoundMemberException;
+import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.*;
 import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
         User user = userRepository.findById(requestDto.getUserId()).get();
 
         Article article = Article.builder()
-                .img_path(requestDto.getImg_path())
+                .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
                 .createTime(LocalDateTime.now())
                 .let(requestDto.getLet())
@@ -70,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (article.getUser().getId() != modifyDto.getUserId()){
             throw new Exception("작성자가 아닙니다!");
         }else{
-            article.setImg_path(modifyDto.getImg_path());
+            article.setImgPath(modifyDto.getImgPath());
             article.setContent(modifyDto.getContent());
             article.setLet(modifyDto.getLet());
             article.setLng(modifyDto.getLng());
@@ -84,18 +85,128 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleCommentResponseDto detail(int id) {
+    public ArticleCommentResponseDto detail(int id, int userId) {
         ArticleCommentResponseDto responseDto = null;
 
         Article article = articleRepository.findById(id).get();
-        article.setLike_count(likesRepository.countByArticleId(id));
-        article.setComment_count(commentRepository.countByArticleId(id));
-
+        article.setLikeCount(likesRepository.countByArticleId(id));
+        article.setCommentCount(commentRepository.countByArticleId(id));
         responseDto = ArticleCommentResponseDto.from(article);
+
+        Boolean check = likesRepository.existsByIdAndUserId(id,userId);
+        if (check){
+            responseDto.setLikeCheck(true);
+        }
+
         return responseDto;
     }
 
-//    -----------------------------------------------------------------------------------
+    @Override
+    public int articleCnt(int userId) {
+        if(!userRepository.existsById(userId)){
+            throw new NotFoundMemberException("없는 유저입니다.");
+        }else{
+            User user = userRepository.findById(userId).get();
+            return articleRepository.countArticleByUser(user);
+        }
+
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+
+        responseDto = articleRepository.ArticleListTag(userId, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImg_path())
+                        .createTime(x.getCreate_Time())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLike_Count())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+        User user = userRepository.findById(userId).get();
+
+        responseDto = articleRepository.findByUser(user, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImgPath())
+                        .createTime(x.getCreateTime())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLikeCount())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+
+        responseDto = articleRepository.ArticleListFollow(userId, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImg_path())
+                        .createTime(x.getCreate_Time())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLike_Count())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+
+        responseDto = articleRepository.ArticleListTagSearch(tagName, pageable)
+                .stream().map(x->ArticleListResponseDto.builder()
+                        .id(x.getId())
+                        .imgPath(x.getImg_path())
+                        .createTime(x.getCreate_Time())
+                        .nickName(userRepository.nickName(userId))
+                        .likeCount(x.getLike_Count())
+                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                                .map(Tag->TagResponseDto.builder()
+                                        .tagId(Tag.getTag().getId())
+                                        .tagName(Tag.getTag().getName())
+                                        .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+
+        return responseDto;
+    }
+
+    //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
@@ -111,4 +222,5 @@ public class ArticleServiceImpl implements ArticleService {
             articleHasTagRepository.save(articleHasTag);
         }
     }
+
 }

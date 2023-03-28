@@ -3,19 +3,15 @@ package a402.FaST.service;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import a402.FaST.Controller.UserController;
 import a402.FaST.exception.DuplicateMemberException;
 import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
-import a402.FaST.model.dto.TokenDto;
-import a402.FaST.model.dto.UserModifyPasswordRequestDto;
-import a402.FaST.model.dto.UserResponseDto;
-import a402.FaST.model.dto.UserRequestDto;
-import a402.FaST.model.entity.Authority;
-import a402.FaST.model.entity.Cert;
-import a402.FaST.model.entity.User;
+import a402.FaST.model.dto.*;
+import a402.FaST.model.entity.*;
+import a402.FaST.repository.TagHasUserRepository;
+import a402.FaST.repository.TagRepository;
 import a402.FaST.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,7 +22,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +31,6 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import static a402.FaST.service.CertServiceImpl.createKey;
 
 @Service
 @Transactional
@@ -44,6 +38,8 @@ import static a402.FaST.service.CertServiceImpl.createKey;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
+    private final TagHasUserRepository tagHasUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -67,7 +63,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .nickname(requestDto.getNickname())
                 .salt((requestDto.getSalt()))
-                .img_path(requestDto.getImgPath())
+                .imgPath(requestDto.getImgPath())
                 .authorities(Collections.singleton(authority))
                 .build();
 
@@ -135,13 +131,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto modifyNickname(int id, UserRequestDto requestDto) {
+    public UserResponseDto findPw(UserFindPwDto requestDto) {
+        UserResponseDto userResponseDto = null;
+        User user = userRepository.findByEmail(requestDto.getEmail()).get();
+        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        user.setSalt(requestDto.getSalt());
+        userResponseDto = UserResponseDto.from(user);
+        return userResponseDto;
+    }
+
+    @Override
+    public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
         if(!userRepository.existsById(id)){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             User user = userRepository.findById(id).get();
             user.setNickname(requestDto.getNickname());
+            user.setImgPath(requestDto.getImgPath());
+
+            // 사용자 태그 전체 삭제
+            tagHasUserRepository.deleteAllByUser(user);
+
+            // 만약 태그 테이블에 없는 태그 입력시 태그 생성
+            for (String tagName : requestDto.getTags()) {
+                if (!tagRepository.existsByName(tagName)) {
+                    Tag tag = Tag.builder().name(tagName).build();
+                    logger.info(" Tag : {}", tag.getName());
+                    tagRepository.save(tag);
+                }
+            }
+
+            // 태그 insert
+            for (String tagName : requestDto.getTags()){
+                Tag tag = tagRepository.findByName(tagName).get();
+
+                TagHasUser tagHasUser = TagHasUser.builder()
+                        .user(user)
+                        .tag(tag)
+                        .build();
+                tagHasUserRepository.save(tagHasUser);
+            }
+
             userResponseDto = UserResponseDto.from(user);
         }
         return userResponseDto;

@@ -7,6 +7,47 @@ const api = axios.create({
   },
 });
 
-// async function findPwd(params: type) {}
+async function sendEmail(email: string) {
+  try {
+    const res = await api.post(`/user/send-email`, {
+      email,
+    });
 
-// export default { findPwd };
+    console.log(res.status);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+async function checkEmail(email: string, code: string) {
+  try {
+    const res = await api.post(`/user/check-code`, {
+      code,
+      email,
+    });
+    console.log(res.status);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+async function findPwd(email: string, password: string, salt: string) {
+  try {
+    const res = await api.put(`/user/find-pw`, {
+      email,
+      password,
+      salt,
+    });
+    console.log(res.status);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { sendEmail, checkEmail, findPwd };

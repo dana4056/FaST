@@ -2,9 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FindPwdPage from '../pages/FindPwdPage';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
-// import api from '../api/findPwd';
+import api from '../api/findPwd';
+import Header from '../components/Header';
 
 export default function FindPwdContainer() {
+  const navigate = useNavigate();
   // 유효성 검사
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isCheckEmail, setIsCheckEmail] = useState<boolean>(false); // 인증번호 확인
@@ -33,26 +35,26 @@ export default function FindPwdContainer() {
     if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
     setIsSend(true);
     // 이메일 인증번호 전송 api 연결
-    // const status = await api.sendEmail(email);
-    // if (status === 200) {
-    //   console.log('인증번호 전송 성공!');
-    // } else {
-    //   alert('인증번호 전송에 실패했습니다.');
-    // }
-    // console.log(status);
+    const status = await api.sendEmail(email);
+    if (status === 200) {
+      console.log('인증번호 전송 성공!');
+    } else {
+      alert('인증번호 전송에 실패했습니다.');
+    }
+    console.log(status);
   };
 
   // 인증번호 확인
   const onClickCheckEmailCode = async () => {
     console.log('이메일 인증번호 확인 중!');
-    // const status = await api.checkEmail(email, auth);
-    // if (status === 200) {
-    //   alert('인증번호 확인이 완료됐습니다 :)');
-    // } else {
-    //   alert('인증번호 확인에 실패했습니다.');
-    // }
-    // console.log(status);
-    // setIsCheckEmail(true);
+    const status = await api.checkEmail(email, auth);
+    if (status === 200) {
+      alert('인증번호 확인이 완료됐습니다 :)');
+    } else {
+      alert('인증번호 확인에 실패했습니다.');
+    }
+    console.log(status);
+    setIsCheckEmail(true);
   };
 
   // 이메일
@@ -121,49 +123,49 @@ export default function FindPwdContainer() {
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isPassword && isPasswordConfirm) {
-      console.log('회원가입 api 통신할 때 보낼 데이터 : ');
-      const imgPath = `profiles/${email}`;
+      console.log('새 비밀번호 통신할 때 보낼 데이터 : ');
       const salt = createSalt();
+      console.log(salt);
       const pwd = createHashedPassword(password, salt);
       console.log(`email : ${email}`); // 이메일
-      console.log(`password : ${password}`); // 비밀번호
+      // console.log(`password : ${password}`); // 비밀번호
       console.log(`암호화된 password : ${pwd}`); // 암호화된 password
-      // const res = await api.signUp(email, imgPath, pwd, salt);
-      // console.log(`signUpContainer res :${res}`);
-      // if (res.status === 200) {
-      //   // db에 있는 사용자 pk값 저장
-      //   setIdPk(res.data.id);
-      // } else if (res.status === 409) {
-      //   alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
-      // } else {
-      //   alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
-      // }
+      const res = await api.findPwd(email, pwd, salt);
+      if (res === 200) {
+        // db에 있는 사용자 pk값 저장
+        navigate('/login');
+      } else {
+        alert('비밀번호 찾기에 실패했습니다. 다시 시도해 주세요.');
+      }
     }
     // eslint-disable-next-line no-alert
     else alert('다시 확인해 주세요 :)');
   };
   return (
-    <div className="find-pwd-page">
-      <FindPwdPage
-        email={email}
-        password={password}
-        passwordConfirm={passwordConfirm}
-        emailMessage={emailMessage}
-        passwordMessage={passwordMessage}
-        passwordConfirmMessage={passwordConfirmMessage}
-        isEmail={isEmail}
-        isCheckEmail={isCheckEmail}
-        isPassword={isPassword}
-        isPasswordConfirm={isPasswordConfirm}
-        isSend={isSend}
-        onChangeEmail={onChangeEmail}
-        onChangeAuthNum={onChangeAuthNum}
-        onChangePassword={onChangePassword}
-        onChangePasswordConfirm={onChangePasswordConfirm}
-        onClickCheckEmailCode={onClickCheckEmailCode}
-        onClickSend={onClickSend}
-        onClickNext={onClickNext}
-      />
-    </div>
+    <>
+      <Header />
+      <div className="find-pwd-page">
+        <FindPwdPage
+          email={email}
+          password={password}
+          passwordConfirm={passwordConfirm}
+          emailMessage={emailMessage}
+          passwordMessage={passwordMessage}
+          passwordConfirmMessage={passwordConfirmMessage}
+          isEmail={isEmail}
+          isCheckEmail={isCheckEmail}
+          isPassword={isPassword}
+          isPasswordConfirm={isPasswordConfirm}
+          isSend={isSend}
+          onChangeEmail={onChangeEmail}
+          onChangeAuthNum={onChangeAuthNum}
+          onChangePassword={onChangePassword}
+          onChangePasswordConfirm={onChangePasswordConfirm}
+          onClickCheckEmailCode={onClickCheckEmailCode}
+          onClickSend={onClickSend}
+          onClickNext={onClickNext}
+        />
+      </div>
+    </>
   );
 }

@@ -1,9 +1,12 @@
 package a402.FaST.repository;
 
+import a402.FaST.model.dto.ArticleList;
 import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +22,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
    boolean existsByNickname(String nickname);
    boolean existsById(int id);
    boolean existsByEmailAndProvider(String email, String provider);
-   List<User> findByToIdNotContaining(User toId);
+
+   @Query(value = "select u.nickname from User u where u.id = :userId")
+   String nickName (@Param("userId") int userId);
+
 }

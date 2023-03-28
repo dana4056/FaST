@@ -61,6 +61,7 @@ public class FollowServiceImpl implements FollowService {
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             User user = userRepository.findById(requestDto.getId()).get();
+
             UserFromToFollowResponseDto userFromToFollowResponseDto = null;
             userFromToFollowResponseDto = UserFromToFollowResponseDto.from(user);
             return userFromToFollowResponseDto;
@@ -95,10 +96,9 @@ public class FollowServiceImpl implements FollowService {
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
-            List<NotFollowList> list = followRepository.SearchNotFollower(requestDto.getId());
 
-            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId())
-                    .stream().map(x-> new UserNotFollowResponseDto(x.getnickName(),x.getImg_path()))
+            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId(), requestDto.getId())
+                    .stream().map(x-> new UserNotFollowResponseDto(x.getId(),x.getnickName(),x.getImg_path()))
                     .collect(Collectors.toList());
             return userNotFollowResponseDtoList;
         }

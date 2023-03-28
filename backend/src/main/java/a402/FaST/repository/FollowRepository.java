@@ -2,7 +2,7 @@ package a402.FaST.repository;
 
 
 import a402.FaST.model.PK.FollowPK;
-import a402.FaST.model.dto.NotFollowList;
+import a402.FaST.model.dto.NotFollowerList;
 import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,10 +23,10 @@ public interface FollowRepository extends JpaRepository<Follow, FollowPK> {
     void FollowDelete(@Param("fromId") User fromId, @Param("toId") User toId);
 
 
-    @Query(value = "select u.nickname, u.img_path " +
-            "from User u " +
-            "where u.id not in (select f.from_id from Follow f where f.to_id = ?1)", nativeQuery = true)
-    List<NotFollowList> SearchNotFollower(int to_id);
+    @Query(value = "select u.id, u.nickname, u.img_path " +
+            "from user u " +
+            "where u.id not in (select f.to_id from follow f where f.from_id = ?1) and u.id != ?2", nativeQuery = true)
+    List<NotFollowerList> SearchNotFollower(int from_id, int user_id);
 
 
 
