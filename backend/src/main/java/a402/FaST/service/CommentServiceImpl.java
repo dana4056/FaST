@@ -30,6 +30,7 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
+    private final LikesRepository likesRepository;
 
 
     @Override
@@ -51,7 +52,7 @@ public class CommentServiceImpl implements CommentService{
                 .articleId(comment.getArticle().getId())
                 .content(comment.getContent())
                 .createTime(comment.getCreateTime())
-                .likeCount(0)
+                .likeCount(likesRepository.countByCommentId(comment.getId()))
                 .commentReplyCount(0)
                 .build();
 

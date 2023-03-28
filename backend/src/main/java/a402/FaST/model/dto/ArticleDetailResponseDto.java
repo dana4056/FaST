@@ -20,10 +20,10 @@ public class ArticleDetailResponseDto {
    private String imgPath;
    private String content;
    private LocalDateTime createTime;
-   private int likeCount;
-   private int commentCount;
    private String let;
    private String lng;
+   private int commentCount;
+   private int likeCount;
    private boolean likeCheck;
    private List<TagResponseDto> tags;
 

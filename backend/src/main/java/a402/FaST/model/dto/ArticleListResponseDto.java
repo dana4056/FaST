@@ -18,6 +18,7 @@ public class ArticleListResponseDto {
    private String nickName;
    private String imgPath;
    private LocalDateTime createTime;
+   private int commentCount;
    private int likeCount;
    private boolean likeCheck;
    private List<TagResponseDto> tags;
