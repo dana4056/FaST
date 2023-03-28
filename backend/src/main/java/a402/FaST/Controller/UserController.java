@@ -90,21 +90,20 @@ public class UserController {
     @Operation(summary = "소셜 로그인 조회 API =>  JWT 토큰으로 소셜 로그인한 정보를 가져옵니다",
             description = "json 형식 데이터 -> (String : token)" +
                     " => User 정보를 Return 해줍니다.")
-    public ResponseEntity<Map<String, Object>> tokenUser(@RequestBody TokenDto token) throws Exception {
-        Map<String, Object> resultMap = new HashMap<>();
+    public ResponseEntity<UserResponseDto> tokenUser(@RequestBody TokenDto token) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
+        UserResponseDto userResponseDto = null;
 
         Map<String, Object> tempMap = userService.findByJwtUser(token);
         String email = (String) tempMap.get("email");
         String provider = (String) tempMap.get("provider");
         logger.info("email : {}", email);
         logger.info("provider : {}", provider);
-
-        UserResponseDto userResponseDto = null;
+        headers.set("Authorization", "Bearer"+" "+ token.getToken());
         userResponseDto = userService.findJwtUser(email,provider);
-        resultMap.put("user", userResponseDto);
 
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<UserResponseDto>(userResponseDto, headers, status);
     }
 
     @GetMapping("/{id}")
