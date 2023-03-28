@@ -27,7 +27,6 @@ function ModelContainer() {
   const [model, setModel] = useState<ModelType>();
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-
   const { getLandmarkData } = useViewModel();
 
   useEffect(() => {
