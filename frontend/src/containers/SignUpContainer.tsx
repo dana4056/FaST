@@ -6,6 +6,7 @@ import SignUpPage from '../pages/SignUpPage';
 import { storage } from '../utils/firebase';
 import api from '../api/signUp';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
+import Header from '../components/Header';
 
 function SignUpContainer() {
   const navigate = useNavigate();
@@ -360,39 +361,42 @@ function SignUpContainer() {
   };
 
   return (
-    <SignUpPage
-      email={email}
-      name={name}
-      password={password}
-      passwordConfirm={passwordConfirm}
-      nameMessage={nameMessage}
-      emailMessage={emailMessage}
-      passwordMessage={passwordMessage}
-      passwordConfirmMessage={passwordConfirmMessage}
-      isEmail={isEmail}
-      isCheckEmail={isCheckEmail}
-      isName={isName}
-      isPassword={isPassword}
-      isPasswordConfirm={isPasswordConfirm}
-      isSend={isSend}
-      isOpen={isOpen}
-      tag={tag}
-      selectedTag={selectedTag}
-      isChecked={isChecked}
-      imageUrl={imageUrl}
-      handleImageChange={handleImageChange}
-      handleImageDelete={handleImageDelete}
-      onChangeEmail={onChangeEmail}
-      onChangeAuthNum={onChangeAuthNum}
-      onChangeNickName={onChangeNickName}
-      onChangePassword={onChangePassword}
-      onChangePasswordConfirm={onChangePasswordConfirm}
-      onClickCheckEmailCode={onClickCheckEmailCode}
-      onClickSend={onClickSend}
-      onClickNext={onClickNext}
-      onClickComplete={onClickComplete}
-      onClickTag={onClickTag}
-    />
+    <>
+      <Header />
+      <SignUpPage
+        email={email}
+        name={name}
+        password={password}
+        passwordConfirm={passwordConfirm}
+        nameMessage={nameMessage}
+        emailMessage={emailMessage}
+        passwordMessage={passwordMessage}
+        passwordConfirmMessage={passwordConfirmMessage}
+        isEmail={isEmail}
+        isCheckEmail={isCheckEmail}
+        isName={isName}
+        isPassword={isPassword}
+        isPasswordConfirm={isPasswordConfirm}
+        isSend={isSend}
+        isOpen={isOpen}
+        tag={tag}
+        selectedTag={selectedTag}
+        isChecked={isChecked}
+        imageUrl={imageUrl}
+        handleImageChange={handleImageChange}
+        handleImageDelete={handleImageDelete}
+        onChangeEmail={onChangeEmail}
+        onChangeAuthNum={onChangeAuthNum}
+        onChangeNickName={onChangeNickName}
+        onChangePassword={onChangePassword}
+        onChangePasswordConfirm={onChangePasswordConfirm}
+        onClickCheckEmailCode={onClickCheckEmailCode}
+        onClickSend={onClickSend}
+        onClickNext={onClickNext}
+        onClickComplete={onClickComplete}
+        onClickTag={onClickTag}
+      />
+    </>
   );
 }
 
