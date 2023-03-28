@@ -1,16 +1,16 @@
 import express, { Express, Request, Response } from 'express';
-import crawlingRouter from './routers/crawling';
+import crawlingRouter from './routers/crawling.js';
 
-const cors = require('cors');
+import * as cors from 'cors';
 
 const app = express();
 
 app.set('port', 4040);
 
-app.use(cors());
+app.use(cors.default());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, Express');
+  res.send(process.env.HEALTH);
 });
 
 app.use('/crawling', crawlingRouter);
