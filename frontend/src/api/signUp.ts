@@ -6,6 +6,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
 async function sendEmail(email: string) {
   try {
     const res = await api.post(`/user/send-email`, {
