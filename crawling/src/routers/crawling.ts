@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 
 const router = express.Router();
 
