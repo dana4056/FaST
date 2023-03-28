@@ -17,7 +17,7 @@ public class CommentResponseDto {
    private int articleId;
    private int userId;
 
-   public CommentResponseDto from(Comment comment) {
+   public static CommentResponseDto from(Comment comment) {
       if (comment == null) return null;
       return CommentResponseDto.builder()
               .id(comment.getId())
