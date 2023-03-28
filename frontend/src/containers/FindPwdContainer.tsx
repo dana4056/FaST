@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FindPwdPage from '../pages/FindPwdPage';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 import api from '../api/findPwd';
+import Header from '../components/Header';
 
 export default function FindPwdContainer() {
   const navigate = useNavigate();
@@ -141,27 +142,30 @@ export default function FindPwdContainer() {
     else alert('다시 확인해 주세요 :)');
   };
   return (
-    <div className="find-pwd-page">
-      <FindPwdPage
-        email={email}
-        password={password}
-        passwordConfirm={passwordConfirm}
-        emailMessage={emailMessage}
-        passwordMessage={passwordMessage}
-        passwordConfirmMessage={passwordConfirmMessage}
-        isEmail={isEmail}
-        isCheckEmail={isCheckEmail}
-        isPassword={isPassword}
-        isPasswordConfirm={isPasswordConfirm}
-        isSend={isSend}
-        onChangeEmail={onChangeEmail}
-        onChangeAuthNum={onChangeAuthNum}
-        onChangePassword={onChangePassword}
-        onChangePasswordConfirm={onChangePasswordConfirm}
-        onClickCheckEmailCode={onClickCheckEmailCode}
-        onClickSend={onClickSend}
-        onClickNext={onClickNext}
-      />
-    </div>
+    <>
+      <Header />
+      <div className="find-pwd-page">
+        <FindPwdPage
+          email={email}
+          password={password}
+          passwordConfirm={passwordConfirm}
+          emailMessage={emailMessage}
+          passwordMessage={passwordMessage}
+          passwordConfirmMessage={passwordConfirmMessage}
+          isEmail={isEmail}
+          isCheckEmail={isCheckEmail}
+          isPassword={isPassword}
+          isPasswordConfirm={isPasswordConfirm}
+          isSend={isSend}
+          onChangeEmail={onChangeEmail}
+          onChangeAuthNum={onChangeAuthNum}
+          onChangePassword={onChangePassword}
+          onChangePasswordConfirm={onChangePasswordConfirm}
+          onClickCheckEmailCode={onClickCheckEmailCode}
+          onClickSend={onClickSend}
+          onClickNext={onClickNext}
+        />
+      </div>
+    </>
   );
 }

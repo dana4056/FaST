@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../components/Header';
 import { FindPwdProps } from '../types/PagePropsType';
 
 export default function FindPwdPage({
@@ -22,7 +23,7 @@ export default function FindPwdPage({
   onClickNext,
 }: FindPwdProps) {
   return (
-    <div className="sign-up-page">
+    <div>
       <div>
         <form className="find-pwd-page__form">
           <div className="find-pwd-page__row">

@@ -32,8 +32,8 @@ async function login(email: string, password: string) {
       'token',
       encryptToken(res.headers.authorization, email)
     );
-    console.log(res);
-    console.log(res.headers.authorization);
+    // console.log(res);
+    // console.log(res.headers.authorization);
     return res.status;
   } catch (error) {
     console.log(error);

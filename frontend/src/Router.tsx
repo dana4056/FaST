@@ -29,7 +29,7 @@ function Router() {
           <Route path="/follow" element={<FollowContainer />} />
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />
-          <Route path="/find-pwd" element={<FindPwdContainer />} />
+          {/* <Route path="/find-pwd" element={<FindPwdContainer />} /> */}
         </Routes>
       </div>
       <Footer />
