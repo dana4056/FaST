@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { GroupProps } from '@react-three/fiber';
 
 import ModelPage from '../pages/ModelPage';
 import useViewModel from '../viewmodels/LandmarkViewModel';
