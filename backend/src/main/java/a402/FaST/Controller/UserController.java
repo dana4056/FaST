@@ -1,9 +1,6 @@
 package a402.FaST.Controller;
 
-import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.*;
-import a402.FaST.model.entity.User;
-import a402.FaST.repository.UserRepository;
 import a402.FaST.service.CertServiceImpl;
 import a402.FaST.service.UserServiceImpl;
 import io.swagger.annotations.Api;
@@ -14,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -94,21 +90,20 @@ public class UserController {
     @Operation(summary = "소셜 로그인 조회 API =>  JWT 토큰으로 소셜 로그인한 정보를 가져옵니다",
             description = "json 형식 데이터 -> (String : token)" +
                     " => User 정보를 Return 해줍니다.")
-    public ResponseEntity<Map<String, Object>> tokenUser(@RequestBody TokenDto token) throws Exception {
-        Map<String, Object> resultMap = new HashMap<>();
+    public ResponseEntity<UserResponseDto> tokenUser(@RequestBody TokenDto token) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.OK;
+        UserResponseDto userResponseDto = null;
 
         Map<String, Object> tempMap = userService.findByJwtUser(token);
         String email = (String) tempMap.get("email");
         String provider = (String) tempMap.get("provider");
         logger.info("email : {}", email);
         logger.info("provider : {}", provider);
-
-        UserResponseDto userResponseDto = null;
+        headers.set("Authorization", "Bearer"+" "+ token.getToken());
         userResponseDto = userService.findJwtUser(email,provider);
-        resultMap.put("user", userResponseDto);
 
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<UserResponseDto>(userResponseDto, headers, status);
     }
 
     @GetMapping("/{id}")
@@ -130,16 +125,6 @@ public class UserController {
         return ResponseEntity.ok(salt);
     }
 
-    @PutMapping("/{id}/nickname")
-    @Operation(summary = "유저 닉네임 수정 API =>  유저 닉네임 수정 API 입니다.",
-            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : nickname)" +
-                    " => 검증 결과에 따라 UserResponseDto or error 를 Return 해줍니다.")
-    public ResponseEntity<UserResponseDto> modifyNickname(@Valid @PathVariable int id, @RequestBody UserRequestDto requestDto) throws Exception {
-        UserResponseDto userResponseDto = null;
-        userResponseDto = userService.modifyNickname(id,requestDto);
-        return ResponseEntity.ok(userResponseDto);
-    }
-
     @PutMapping("/{id}/modify-password")
     @Operation(summary = "유저 비밀번호 수정 API =>  유저 비밀번호 수정 API 입니다.",
             description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : password, String : newPassword)" +
@@ -147,16 +132,6 @@ public class UserController {
     public ResponseEntity<UserResponseDto> modifyPassword(@Valid @PathVariable int id, @RequestBody UserModifyPasswordRequestDto requestDto) throws Exception {
         UserResponseDto userResponseDto = null;
         userResponseDto = userService.modifyPassword(id,requestDto);
-        return ResponseEntity.ok(userResponseDto);
-    }
-
-    @PutMapping("/{id}/modify-img")
-    @Operation(summary = "유저 프로필 수정 API =>  유저 프로필 수정 API 입니다.",
-            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : imgPath)" +
-                    " => 검증 결과에 따라 userResponseDto or error 를 Return 해줍니다.")
-    public ResponseEntity<UserResponseDto> modifyImg(@Valid @PathVariable int id, @RequestBody UserModifyImgRequestDto requestDto) throws Exception {
-        UserResponseDto userResponseDto = null;
-        userResponseDto = userService.modifyImg(id,requestDto);
         return ResponseEntity.ok(userResponseDto);
     }
 
