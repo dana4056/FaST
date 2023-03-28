@@ -47,8 +47,8 @@ async function fastLogin(token: string) {
     const res = await api.post(`/user/token`, {
       token,
     });
-    console.log(res.data);
-    // localStorage.setItem('token', encryptToken(token, email));
+    // console.log(res.data);
+    localStorage.setItem('token', encryptToken(token, res.data.email));
     // console.log(res.headers.authorization);
     return res.status;
   } catch (error) {
