@@ -20,6 +20,11 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "(select f.to_id from follow f where f.from_id =?1) order by a.create_time desc", nativeQuery = true)
     List<ArticleList> ArticleListFollow(int userId, Pageable pageable);
 
+    @Query(value = "select a.id, a.img_path, a.create_time, a.like_count from article a where a.id in " +
+            "(select ah.article_id from article_has_tag ah, tag t " +
+            "where ah.tag_id = t.id and t.name like %?1%) order by a.create_time desc", nativeQuery = true)
+    List<ArticleList> ArticleListTagSearch(String tagName, Pageable pageable);
+
     List<Article> findByUser(User userId, Pageable pageable);
 
     int countArticleByUser(User userId);
