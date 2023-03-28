@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResponseDto create(ArticleRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).get();
-
+        ArticleResponseDto responseDto = null;
         Article article = Article.builder()
                 .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
@@ -48,7 +48,18 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.save(article);
         TagAdd(article, requestDto.getTags());
 
-        ArticleResponseDto responseDto = ArticleResponseDto.from(article);
+        responseDto = ArticleResponseDto.builder()
+                .id(article.getId())
+                .imgPath(article.getImgPath())
+                .content(article.getContent())
+                .createTime(article.getCreateTime())
+                .likeCount(likesRepository.countByArticleId(article.getId()))
+                .commentCount(commentRepository.countByArticleId(article.getId()))
+                .let(article.getLet())
+                .lng(article.getLng())
+                .userId(requestDto.getUserId())
+                .build();
+
         return responseDto;
     }
 
@@ -66,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception {
         Article article = articleRepository.findById(modifyDto.getArticleId()).get();
-        ArticleResponseDto responseDto;
+        ArticleResponseDto responseDto = null;
 
         if (article.getUser().getId() != modifyDto.getUserId()){
             throw new Exception("작성자가 아닙니다!");
@@ -78,25 +89,49 @@ public class ArticleServiceImpl implements ArticleService {
 
             articleHasTagRepository.deleteAllByArticleId(modifyDto.getArticleId());
             TagAdd(article, modifyDto.getTags());
-            responseDto = ArticleResponseDto.from(article);
+
+            responseDto = ArticleResponseDto.builder()
+                    .id(article.getId())
+                    .imgPath(article.getImgPath())
+                    .content(article.getContent())
+                    .createTime(article.getCreateTime())
+                    .likeCount(likesRepository.countByArticleId(article.getId()))
+                    .commentCount(commentRepository.countByArticleId(article.getId()))
+                    .let(article.getLet())
+                    .lng(article.getLng())
+                    .userId(modifyDto.getUserId())
+                    .build();
+
         }
 
         return responseDto;
     }
 
     @Override
-    public ArticleCommentResponseDto detail(int id, int userId) {
-        ArticleCommentResponseDto responseDto = null;
+    public ArticleDetailResponseDto detail(int id, int userId) {
+        ArticleDetailResponseDto responseDto = null;
 
         Article article = articleRepository.findById(id).get();
-        article.setLikeCount(likesRepository.countByArticleId(id));
-        article.setCommentCount(commentRepository.countByArticleId(id));
-        responseDto = ArticleCommentResponseDto.from(article);
 
-        Boolean check = likesRepository.existsByIdAndUserId(id,userId);
-        if (check){
-            responseDto.setLikeCheck(true);
-        }
+        responseDto = ArticleDetailResponseDto.builder()
+                .id(article.getId())
+                .userId(article.getUser().getId())
+                .nickName(article.getUser().getNickname())
+                .imgPath(article.getImgPath())
+                .content(article.getContent())
+                .createTime(article.getCreateTime())
+                .likeCount(likesRepository.countByArticleId(id))
+                .commentCount(commentRepository.countByArticleId(id))
+                .let(article.getLet())
+                .lng(article.getLng())
+                .likeCheck(likesRepository.existsByIdAndUserId(id,userId))
+                .tags(article.getTags().stream()
+                        .map((Tag -> TagResponseDto.builder()
+                                .tagId(Tag.getTag().getId())
+                                .tagName(Tag.getTag().getName())
+                                .build()))
+                        .collect(Collectors.toList()))
+                .build();
 
         return responseDto;
     }
@@ -120,10 +155,11 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListTag(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
+                        .userId(x.getUser_Id())
+                        .nickName(userRepository.nickName(x.getUser_Id()))
                         .imgPath(x.getImg_path())
                         .createTime(x.getCreate_Time())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
@@ -144,10 +180,11 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.findByUser(user, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
+                        .userId(userId)
+                        .nickName(userRepository.nickName(userId))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLikeCount())
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
@@ -167,10 +204,11 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListFollow(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
+                        .userId(x.getUser_Id())
+                        .nickName(userRepository.nickName(x.getUser_Id()))
                         .imgPath(x.getImg_path())
                         .createTime(x.getCreate_Time())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
@@ -190,10 +228,11 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListTagSearch(tagName, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
+                        .userId(x.getUser_Id())
+                        .nickName(userRepository.nickName(x.getUser_Id()))
                         .imgPath(x.getImg_path())
                         .createTime(x.getCreate_Time())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
                         .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()

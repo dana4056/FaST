@@ -12,7 +12,7 @@ public interface ArticleService {
 
     ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception;
 
-    ArticleCommentResponseDto detail(int id, int userId);
+    ArticleDetailResponseDto detail(int id, int userId);
 
     List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset);
     List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset);

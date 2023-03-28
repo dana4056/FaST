@@ -14,11 +14,12 @@ import java.util.List;
 public class ArticleListResponseDto {
 
    private int id;
+   private int userId;
+   private String nickName;
    private String imgPath;
    private LocalDateTime createTime;
    private int likeCount;
    private boolean likeCheck;
-   private String nickName;
    private List<TagResponseDto> tags;
 
 
