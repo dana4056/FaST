@@ -2,6 +2,8 @@ package a402.FaST.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -10,6 +12,5 @@ import lombok.*;
 public class UserModifyUserRequestDto {
    private String nickname;
    private String imgPath;
-
-
+   private List<String> tags;
 }
