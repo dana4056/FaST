@@ -8,7 +8,7 @@ function LoadingPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log(location.search.split('=')[1]);
+  // console.log(location.search.split('=')[1]);
 
   const jwt = location.search.split('=')[1];
 

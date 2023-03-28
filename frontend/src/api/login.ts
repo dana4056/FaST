@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useRecoilState } from 'recoil';
 import { encryptToken } from '../utils/passwordEncryption';
+import { userInfo } from '../atoms/userInfo';
 
 const api = axios.create({
   baseURL: 'http://j8a402.p.ssafy.io:8080',
@@ -47,7 +49,7 @@ async function fastLogin(token: string) {
     const res = await api.post(`/user/token`, {
       token,
     });
-    // console.log(res.data);
+    console.log(res.data);
     localStorage.setItem('token', encryptToken(token, res.data.email));
     // console.log(res.headers.authorization);
     return res.status;
