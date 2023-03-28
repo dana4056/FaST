@@ -8,7 +8,8 @@
   height: 100%;
   .sign-up-page__wrapper {
     width: 100%;
-    height: 100%;
+    // height: 100%;
+    margin-top: 15%;
     transition: 0.2s;
     display: flex;
     .sign-up-page__form {
@@ -104,12 +105,13 @@
       display: flex;
       flex: none;
       width: 100%;
-      height: 100%;
+      // height: 100%;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       .sign-up-page__row {
         width: 90%;
+        margin-top: 8%;
         display: flex;
         justify-content: center;
         .sign-up-page__button {
