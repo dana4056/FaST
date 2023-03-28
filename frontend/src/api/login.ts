@@ -41,4 +41,20 @@ async function login(email: string, password: string) {
   }
 }
 
-export default { login, getSalt };
+// 카카오 네이버 간편 로그인
+async function fastLogin(token: string) {
+  try {
+    const res = await api.post(`/user/token`, {
+      token,
+    });
+    console.log(res);
+    // localStorage.setItem('token', encryptToken(token, email));
+    // console.log(res.headers.authorization);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { login, getSalt, fastLogin };
