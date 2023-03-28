@@ -182,6 +182,15 @@ public class ArticleServiceImpl implements ArticleService {
         return responseDto;
     }
 
+    @Override
+    public List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+
+
+        return responseDto;
+    }
+
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
