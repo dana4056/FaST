@@ -27,8 +27,8 @@ public class TagController {
 
     @PostMapping("")
     @Operation(summary = "태그 추가 API => 사용자 정보와 태그 리스트를 받아 사용자 태그로 저장하는 API 입니다.",
-            description = "json 형식 데이터 -> (List : [String : name] int : userId) " +
-            " => 태그를 가지고 있는 사용자 정보를 Return 해줍니다.")
+            description = "json 형식 데이터 -> (int : userId, List<String> : tags) " +
+            " => 태그를 가지고 있는 사용자 정보 UserResponseDto 를 리턴 해줍니다.")
     public ResponseEntity<UserResponseDto> insertTag( @RequestBody TagRequestDto requestDto) {
         UserResponseDto responseDto = null;
         responseDto = tagService.insertTag(requestDto);

@@ -27,7 +27,7 @@ public class LikesController {
 
     @GetMapping("/article")
     @Operation(summary = "게시글 좋아요 API =>  게시글 좋아요 추가하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int articleId, int userId)" +
+            description = "RequestParam 형식 데이터 -> (int : articleId, int : userId)" +
                     " => 좋아요 수를 Return 해줍니다. -> 만약 좋아요 상태면 좋아요 취소")
     public ResponseEntity likeArticle (@Valid @RequestParam int articleId, @RequestParam int userId)  {
         int cnt = likesService.likeArticle(articleId, userId);
@@ -36,7 +36,7 @@ public class LikesController {
 
     @GetMapping("/comment")
     @Operation(summary = "댓글 좋아요 API =>  댓글 좋아요 추가하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int commentId, int userId)" +
+            description = "RequestParam 형식 데이터 -> (int : commentId, int : userId)" +
                     " => 좋아요 수를 Return 해줍니다. -> 만약 좋아요 상태면 좋아요 취소")
     public ResponseEntity likeComment (@Valid @RequestParam int commentId, @RequestParam int userId)  {
         int cnt = likesService.likeComment(commentId, userId);
@@ -45,7 +45,7 @@ public class LikesController {
 
     @GetMapping("/commentReply")
     @Operation(summary = "대댓글 좋아요 API =>  대댓글 좋아요 추가하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int commentReplyId, int userId)" +
+            description = "RequestParam 형식 데이터 -> (int : commentReplyId, int : userId)" +
                     " => 좋아요 수를 Return 해줍니다. -> 만약 좋아요 상태면 좋아요 취소")
     public ResponseEntity likeCommentReply (@Valid @RequestParam int commentReplyId, @RequestParam int userId)  {
         int cnt = likesService.likeCommentReply(commentReplyId, userId);

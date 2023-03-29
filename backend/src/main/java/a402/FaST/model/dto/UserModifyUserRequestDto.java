@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserModifyUserRequestDto {
-   private String nickname;
+   private String nickName;
    private String imgPath;
    private List<String> tags;
 }
