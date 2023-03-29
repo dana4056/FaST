@@ -11,6 +11,7 @@ function MyRecordPage({
   imageUrl,
   followerNum,
   followingNum,
+  articleNum,
   myTag,
   tags,
   cardsLeft,
@@ -26,6 +27,7 @@ function MyRecordPage({
         imageUrl={imageUrl}
         followerNum={followerNum}
         followingNum={followingNum}
+        articleNum={articleNum}
         myTag={myTag}
       />
       <MoveToMap />

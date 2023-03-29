@@ -30,6 +30,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleHasTagRepository articleHasTagRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
+    private final UserHasLandMarkRepository userHasLandMarkRepository;
+    private final LandMarkRepository landMarkRepository;
 
 
     @Override
@@ -48,6 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         articleRepository.save(article);
         TagAdd(article, requestDto.getTags());
+        autoTagAdd(article, user.getId(), requestDto.getAutoTags());
 
         responseDto = ArticleResponseDto.builder()
                 .id(article.getId())
@@ -268,6 +271,31 @@ public class ArticleServiceImpl implements ArticleService {
                     .tag(tag)
                     .build();
             articleHasTagRepository.save(articleHasTag);
+        }
+    }
+
+    private void autoTagAdd(Article article, int userId, List<String> tags) {
+        for (String tagName : tags) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                logger.info(" Tag : {}", tag.getName());
+                tagRepository.save(tag);
+            }
+            Tag tag = tagRepository.findByName(tagName).get();
+            ArticleHasTag articleHasTag = ArticleHasTag.builder()
+                    .article(article)
+                    .tag(tag)
+                    .build();
+            articleHasTagRepository.save(articleHasTag);
+
+            if (!userHasLandMarkRepository.existsByUserIdAndLandMarkName(userId,tagName)){
+                UserHasLandMark userHasLandMark = UserHasLandMark.builder()
+                        .user(userRepository.findById(userId).get())
+                        .landMark(landMarkRepository.findById(tagName).get())
+                        .build();
+
+                userHasLandMarkRepository.save(userHasLandMark);
+            }
         }
     }
 
