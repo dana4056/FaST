@@ -8,7 +8,7 @@ import { userInfo } from '../atoms/userInfo';
 
 function LoginContainer() {
   const navigate = useNavigate();
-  const [user, setuser] = useRecoilState(userInfo);
+  const [user, setUser] = useRecoilState(userInfo);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [salt, setSalt] = useState<string>('');
@@ -41,7 +41,7 @@ function LoginContainer() {
       const res = await api.login(email, pwd);
       if (res.status === 200) {
         // recoil-persist로 localstorage에 user 정보 저장
-        setuser(res.data);
+        setUser(res.data);
         navigate('/home');
       }
     }

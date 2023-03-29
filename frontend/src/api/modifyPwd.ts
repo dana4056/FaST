@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { encryptToken } from '../utils/passwordEncryption';
 
 const api = axios.create({
   baseURL: 'http://j8a402.p.ssafy.io:8080',
@@ -7,19 +8,32 @@ const api = axios.create({
   },
 });
 
+async function getSalt(email: string): Promise<AxiosResponse> {
+  try {
+    const res = await api.get<any>(`/user/salt/${email}`);
+
+    console.log(res.status);
+    return res;
+  } catch (error: any) {
+    console.log(error);
+    return error;
+  }
+}
+
 async function modifyPwd(
   id: number,
-  email: string,
   password: string,
+  newPassword: string,
   salt: string
 ) {
   try {
-    const res = await api.put(`/user/find-pw`, {
-      email,
+    const res = await api.put(`/user/${id}/modify-password`, {
+      newPassword,
       password,
       salt,
     });
     console.log(res.status);
+    console.log(res.data);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -27,4 +41,4 @@ async function modifyPwd(
   }
 }
 
-export default { modifyPwd };
+export default { getSalt, modifyPwd };
