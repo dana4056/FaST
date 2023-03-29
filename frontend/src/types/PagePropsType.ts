@@ -101,11 +101,13 @@ export interface LoginPageProps {
 
 // 회원정보수정 페이지 props
 export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
-  // 태그 저장 배열
-  // tags: Array<TagType>;
-
+  // 회원정보 수정 저장
+  handleSaveModifyData: React.MouseEventHandler;
+  onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   email: string;
   name: string;
+  isName: boolean;
+  nameMessage: string;
 }
 
 export interface FindPwdProps {

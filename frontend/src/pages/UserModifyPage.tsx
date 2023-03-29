@@ -14,9 +14,13 @@ function UserModifyPage({
   handleTagDelete,
   email,
   name,
+  isName,
+  nameMessage,
   imageUrl,
   handleImageChange,
   handleImageDelete,
+  handleSaveModifyData,
+  onChangeNickName,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -63,19 +67,23 @@ function UserModifyPage({
           className="card modify__input"
           type="text"
           defaultValue={name}
-          // onChange={onChangeNickName}
+          onChange={onChangeNickName}
         />
-        {/* {name.length > 0 && (
-        <span className={`message ${isName ? 'success' : 'error'}`}>
-        {nameMessage}
-        </span>
-      )} */}
+        {name.length > 0 && (
+          <span className={`message ${isName ? 'success' : 'error'}`}>
+            {nameMessage}
+          </span>
+        )}
       </div>
       <div className="modify__buttons">
         <button type="button" className="modify__button modify__password">
           비밀번호 변경하러 가기
         </button>
-        <button type="button" className="modify__button modify__save">
+        <button
+          type="button"
+          className="modify__button modify__save"
+          onClick={handleSaveModifyData}
+        >
           저장하기
         </button>
         {openLogoutModal && (
