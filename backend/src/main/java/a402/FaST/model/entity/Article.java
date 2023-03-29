@@ -1,7 +1,6 @@
 package a402.FaST.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,8 +23,9 @@ public class Article {
     private String imgPath;
     private String content;
     private LocalDateTime createTime;  ;
-    private String let;
+    private String lat;
     private String lng;
+    private String area;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<ArticleHasTag> tags = new ArrayList<>();

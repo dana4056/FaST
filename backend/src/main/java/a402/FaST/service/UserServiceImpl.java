@@ -249,6 +249,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(id).get();
             if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+                user.setSalt(requestDto.getSalt());
                 userResponseDto = UserResponseDto.from(user);
             }else{
                 throw new Exception("비밀번호가 다릅니다");
