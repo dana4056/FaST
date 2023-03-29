@@ -25,7 +25,8 @@ public class ArticleController {
 
     @PostMapping
     @Operation(summary = "게시글 생성 API =>  게시글 생성하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : userId, String img_path, String content, String let, String lng)" +
+            description = "json 형식 데이터 -> (int : userId, String : img_path, String : content, String : let, String : lng, String : area, " +
+                    "List<String> : tags, List<String> : autoTags)" +
                     " => 검증 결과에 따라 ArticleResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<ArticleResponseDto> create(@Valid @RequestBody ArticleRequestDto requestDto) {
         ArticleResponseDto responseDto = null;
@@ -44,7 +45,7 @@ public class ArticleController {
 
     @PutMapping("/modify-article")
     @Operation(summary = "게시글 수정 API =>  게시글 수정하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : userId, String img_path, String content, String let, String lng)" +
+            description = "json 형식 데이터 -> (int : userId, int : articleId, String : img_path, String : content, String : let, String : lng, List<String> : tags)" +
                     " => 검증 결과에 따라 ArticleResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<ArticleResponseDto> modifyArticle(@Valid @RequestBody ArticleModifyDto modifyDto) throws Exception {
         ArticleResponseDto responseDto = null;
@@ -55,15 +56,15 @@ public class ArticleController {
     @GetMapping("/{userId}")
     @Operation(summary = "게시글 수 조회 API =>  사용자가 작성한 게시글 수 조회하는 API 입니다.",
             description = "PathVariable 형식 데이터 (int : userId)" +
-                    " => 검증 결과에 따라 Int or error 를 Return 해줍니다.")
+                    " => 검증 결과에 따라 게시글 수 or error 를 Return 해줍니다.")
     public int articleCnt (@Valid @PathVariable("userId") int userId) throws Exception {
         return articleService.articleCnt(userId);
     }
 
     @GetMapping("{id}/{userId}")
     @Operation(summary = "게시글 상세 조회 API =>  게시글 상세 조회하는 API 입니다.",
-            description = "PathVariable 형식 데이터 (int : id)" +
-                    " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
+            description = "PathVariable 형식 데이터 (int : id, int : userId)" +
+                    " => 검증 결과에 따라 ArticleDetailResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<ArticleDetailResponseDto> detail (@Valid @PathVariable("id") int id, @PathVariable("userId") int userId) throws Exception {
         ArticleDetailResponseDto responseDto = null;
         responseDto = articleService.detail(id, userId);
@@ -72,7 +73,7 @@ public class ArticleController {
 
     @GetMapping("/tag/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListTag(@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return articleService.listArticleTag(userId, size, offset);
@@ -80,7 +81,7 @@ public class ArticleController {
 
     @GetMapping("/user/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 작성 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListUser (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return articleService.listArticleUser(userId, size, offset);
@@ -88,7 +89,7 @@ public class ArticleController {
 
     @GetMapping("/follow/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 팔로우 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return articleService.listArticleFollow(userId, size, offset);
@@ -96,7 +97,8 @@ public class ArticleController {
 
     @GetMapping("/tag-search/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (태그 검색 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "size = 받을 데이터 개수 -> offset = 이에 따른 페이지 번호" +
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
+                    "RequestParam 형식 데이터 (String : tagName)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("tagName") String tagName) {
         return articleService.listArticleTagSearch(userId, size, offset, tagName);

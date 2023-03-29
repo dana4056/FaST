@@ -30,6 +30,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleHasTagRepository articleHasTagRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
+    private final UserHasLandMarkRepository userHasLandMarkRepository;
+    private final LandMarkRepository landMarkRepository;
 
 
     @Override
@@ -40,13 +42,15 @@ public class ArticleServiceImpl implements ArticleService {
                 .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
                 .createTime(LocalDateTime.now())
-                .let(requestDto.getLet())
+                .lat(requestDto.getLat())
                 .lng(requestDto.getLng())
+                .area(requestDto.getArea())
                 .user(user)
                 .build();
 
         articleRepository.save(article);
         TagAdd(article, requestDto.getTags());
+        autoTagAdd(article, user.getId(), requestDto.getAutoTags());
 
         responseDto = ArticleResponseDto.builder()
                 .id(article.getId())
@@ -55,8 +59,9 @@ public class ArticleServiceImpl implements ArticleService {
                 .createTime(article.getCreateTime())
                 .commentCount(commentRepository.countByArticleId(article.getId()))
                 .likeCount(likesRepository.countByArticleId(article.getId()))
-                .let(article.getLet())
+                .lat(article.getLat())
                 .lng(article.getLng())
+                .area(article.getArea())
                 .userId(requestDto.getUserId())
                 .build();
 
@@ -84,8 +89,9 @@ public class ArticleServiceImpl implements ArticleService {
         }else{
             article.setImgPath(modifyDto.getImgPath());
             article.setContent(modifyDto.getContent());
-            article.setLet(modifyDto.getLet());
+            article.setLat(modifyDto.getLat());
             article.setLng(modifyDto.getLng());
+            article.setArea(modifyDto.getArea());
 
             articleHasTagRepository.deleteAllByArticleId(modifyDto.getArticleId());
             TagAdd(article, modifyDto.getTags());
@@ -97,8 +103,9 @@ public class ArticleServiceImpl implements ArticleService {
                     .createTime(article.getCreateTime())
                     .commentCount(commentRepository.countByArticleId(article.getId()))
                     .likeCount(likesRepository.countByArticleId(article.getId()))
-                    .let(article.getLet())
+                    .lat(article.getLat())
                     .lng(article.getLng())
+                    .area(article.getArea())
                     .userId(modifyDto.getUserId())
                     .build();
 
@@ -120,8 +127,9 @@ public class ArticleServiceImpl implements ArticleService {
                 .imgPath(article.getImgPath())
                 .content(article.getContent())
                 .createTime(article.getCreateTime())
-                .let(article.getLet())
+                .lat(article.getLat())
                 .lng(article.getLng())
+                .area(article.getArea())
                 .commentCount(commentRepository.countByArticleId(id))
                 .likeCount(likesRepository.countByArticleId(id))
                 .likeCheck(likesRepository.existsByArticleIdAndUserId(id,userId))
@@ -263,6 +271,31 @@ public class ArticleServiceImpl implements ArticleService {
                     .tag(tag)
                     .build();
             articleHasTagRepository.save(articleHasTag);
+        }
+    }
+
+    private void autoTagAdd(Article article, int userId, List<String> tags) {
+        for (String tagName : tags) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                logger.info(" Tag : {}", tag.getName());
+                tagRepository.save(tag);
+            }
+            Tag tag = tagRepository.findByName(tagName).get();
+            ArticleHasTag articleHasTag = ArticleHasTag.builder()
+                    .article(article)
+                    .tag(tag)
+                    .build();
+            articleHasTagRepository.save(articleHasTag);
+
+            if (!userHasLandMarkRepository.existsByUserIdAndLandMarkName(userId,tagName)){
+                UserHasLandMark userHasLandMark = UserHasLandMark.builder()
+                        .user(userRepository.findById(userId).get())
+                        .landMark(landMarkRepository.findById(tagName).get())
+                        .build();
+
+                userHasLandMarkRepository.save(userHasLandMark);
+            }
         }
     }
 

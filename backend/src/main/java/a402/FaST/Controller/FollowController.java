@@ -53,7 +53,7 @@ public class FollowController {
 
     @GetMapping("/to")
     @Operation(summary = "팔로워 조회 API =>  필로워 수 조회하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int toId)" +
+            description = "RequestParam 형식 데이터 -> (int : toId)" +
                     " => 팔로워 수를 Return 해줍니다.")
     public ResponseEntity cntFollower(@Valid @RequestParam int toId)  {
         int cnt = followService.cntFollower(toId);
@@ -62,7 +62,7 @@ public class FollowController {
 
     @GetMapping("/from")
     @Operation(summary = "팔로잉 조회 API =>  필로잉 수 조회하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int fromId)" +
+            description = "RequestParam 형식 데이터 -> (int : fromId)" +
                     " => 팔로잉 수를 Return 해줍니다.")
     public ResponseEntity cntFollowing(@Valid @RequestParam int fromId)  {
         int cnt = followService.cntFollowing(fromId);

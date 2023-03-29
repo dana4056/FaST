@@ -8,6 +8,7 @@ const api = axios.create({
   },
 });
 
+
 // 유저 게시물 조회
 async function getUserArticle(userId: number, size: number, offset: number) {
   try {
@@ -17,10 +18,30 @@ async function getUserArticle(userId: number, size: number, offset: number) {
     );
     // console.log(res);
     return res;
+
+export async function doWriteArticle(requestBody: any) {
+  try {
+    const res = await api.post(`/article`, requestBody);
+
+    return res.status;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+export async function sendEmail(email: string) {
+  try {
+    const res = await api.post(`/user/send-email`, {
+      email,
+    });
+
+    console.log(res.status);
+    return res.status;
   } catch (error) {
     console.log(error);
     return error;
   }
 }
+
 
 export default { getUserArticle };

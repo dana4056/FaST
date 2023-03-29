@@ -28,6 +28,7 @@ public class User {
 
     private String salt;
 
+    @Column(length = 500)
     private String imgPath;
 
     private String provider;
@@ -41,6 +42,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<TagHasUser> tags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<UserHasLandMark> landMarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromId", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Follow> fromId = new ArrayList<>();

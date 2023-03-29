@@ -19,5 +19,6 @@ public class CommentListResponseDto {
    private LocalDateTime createTime;
    private String nickName;
    private boolean likeCheck;
+   private int commentReplyCount;
 
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
+import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 
 import CommentContainer from '../../containers/CommentContainer';
 import { CommentType } from '../../types/CommentType';
@@ -14,7 +14,7 @@ function Comments({ comments, handleCommentClick }: CommentsProps) {
           className="comments__back-button transparent-button"
           onClick={handleCommentClick}
         >
-          <MdArrowBackIosNew />
+          <MdArrowBack />
         </button>
       </div>
       {comments.map((comment: CommentType) => (

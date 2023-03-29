@@ -143,11 +143,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(!userRepository.existsById(id)){
-            throw new NotFoundMemberException("없는 유저입니다.");
+        if(userRepository.existsByNickname(requestDto.getNickName())){
+            throw new DuplicateMemberException("이미 있는 닉네임 입니다");
         }else{
             User user = userRepository.findById(id).get();
-            user.setNickname(requestDto.getNickname());
+            user.setNickname(requestDto.getNickName());
             user.setImgPath(requestDto.getImgPath());
 
             // 사용자 태그 전체 삭제
@@ -249,6 +249,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(id).get();
             if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+                user.setSalt(requestDto.getSalt());
                 userResponseDto = UserResponseDto.from(user);
             }else{
                 throw new Exception("비밀번호가 다릅니다");

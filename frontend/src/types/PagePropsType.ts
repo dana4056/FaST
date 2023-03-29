@@ -136,6 +136,25 @@ export interface FindPwdProps {
   onClickNext: () => void;
 }
 
+export interface ModifyPwdProps {
+  originalPassword: string;
+  password: string;
+  passwordConfirm: string;
+
+  originalPasswordMessage: string;
+  passwordMessage: string;
+  passwordConfirmMessage: string;
+
+  isOriginalPassword: boolean;
+  isPassword: boolean;
+  isPasswordConfirm: boolean;
+
+  onChangeOriginalPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickNext: () => void;
+}
+
 // FollowPage Props
 
 export interface FollowPageProps {

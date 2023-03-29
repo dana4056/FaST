@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { MdArrowBackIos } from 'react-icons/md';
+import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 
 import Landmark from '../components/Landmark';
 import { StampPageProps } from '../types/PagePropsType';
@@ -11,7 +11,7 @@ function StampPage({ models }: StampPageProps) {
       <div className="stamp-page__header">
         <Link to="/test">
           <div className="stamp-page__button--back">
-            <MdArrowBackIos />
+            <MdArrowBack />
           </div>
         </Link>
       </div>

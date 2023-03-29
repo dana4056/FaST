@@ -15,7 +15,8 @@ public class ArticleModifyDto {
    private int articleId;
    private String imgPath;
    private String content;
-   private String let;
+   private String lat;
    private String lng;
+   private String area;
    private List<String> tags;
 }
