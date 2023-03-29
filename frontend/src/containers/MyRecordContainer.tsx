@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../utils/firebase';
-import modifyApi from '../api/modify';
+import modifyApi from '../api/user';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
@@ -34,21 +34,20 @@ function MyRecordContainer() {
     };
     getData();
   }, []);
-  console.log(myTag);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
   useEffect(() => {
-    // if (userData.imgPath.substring(0, 4) === 'http') {
-    //   setImageUrl(userData.imgPath);
-    // } else {
-    const getProfileImage = async () => {
-      const imageRef = ref(storage, userData.imgPath);
-      const ret = await getDownloadURL(imageRef);
-      setImageUrl(ret);
-    };
-    getProfileImage();
-    // }
+    if (userData.imgPath?.substring(0, 4) === 'http') {
+      setImageUrl(userData.imgPath);
+    } else if (userData.imgPath) {
+      const getProfileImage = async () => {
+        const imageRef = ref(storage, userData.imgPath);
+        const ret = await getDownloadURL(imageRef);
+        setImageUrl(ret);
+      };
+      getProfileImage();
+    }
   }, [userData.imgPath]);
 
   // 검색 키워드

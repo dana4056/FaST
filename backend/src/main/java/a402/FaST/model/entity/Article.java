@@ -23,10 +23,6 @@ public class Article {
     private String imgPath;
     private String content;
     private LocalDateTime createTime;  ;
-    @ColumnDefault("0")
-    private int likeCount;
-    @ColumnDefault("0")
-    private int commentCount;
     private String let;
     private String lng;
 

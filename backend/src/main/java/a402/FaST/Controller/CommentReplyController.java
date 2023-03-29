@@ -1,7 +1,9 @@
 package a402.FaST.Controller;
 
-import a402.FaST.model.dto.*;
-import a402.FaST.service.ArticleServiceImpl;
+import a402.FaST.model.dto.CommentListResponseDto;
+import a402.FaST.model.dto.CommentModifyDto;
+import a402.FaST.model.dto.CommentRequestDto;
+import a402.FaST.model.dto.CommentResponseDto;
 import a402.FaST.service.CommentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,11 +19,11 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comment")
-@Api(tags = "Comment Controller")
-public class CommentController {
+@RequestMapping("/commentReply")
+@Api(tags = "CommentReply Controller")
+public class CommentReplyController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommentReplyController.class);
     private final CommentServiceImpl commentService;
 
     @PostMapping
