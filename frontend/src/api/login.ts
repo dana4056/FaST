@@ -26,7 +26,6 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
       email,
       password,
     });
-    const { headers, data } = res;
 
     // 토큰 저장
     localStorage.setItem(
@@ -34,9 +33,6 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
       encryptToken(res.headers.authorization, email)
     );
 
-    // setuser({
-
-    // })
     console.log(res);
     // console.log(res.headers.authorization);
     return res;
@@ -47,7 +43,7 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
 }
 
 // 카카오 네이버 간편 로그인
-async function fastLogin(token: string) {
+async function fastLogin(token: string): Promise<AxiosResponse> {
   try {
     const res = await api.post(`/user/token`, {
       token,
@@ -55,8 +51,8 @@ async function fastLogin(token: string) {
     console.log(res.data);
     localStorage.setItem('token', encryptToken(token, res.data.email));
     // console.log(res.headers.authorization);
-    return res.status;
-  } catch (error) {
+    return res;
+  } catch (error: any) {
     console.log(error);
     return error;
   }
