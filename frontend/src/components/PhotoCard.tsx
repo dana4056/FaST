@@ -1,6 +1,6 @@
 import React from 'react';
-import { SlPencil } from 'react-icons/sl';
-import { BsTrash } from 'react-icons/bs';
+import { BsPencil } from '@react-icons/all-files/bs/BsPencil';
+import { BsTrash } from '@react-icons/all-files/bs/BsTrash';
 import { Link } from 'react-router-dom';
 
 import Heart from './Heart';
@@ -30,7 +30,7 @@ function PhotoCard({ card }: PhotoCardProps) {
                 type="button"
                 className="photo-card__button transparent-button"
               >
-                <SlPencil />
+                <BsPencil />
               </button>
               <button
                 type="button"

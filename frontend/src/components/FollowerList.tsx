@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { TiDelete } from 'react-icons/ti';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { TiDelete } from '@react-icons/all-files/ti/TiDelete';
+import { BsSearch } from '@react-icons/all-files/bs/BsSearch';
 import FollowItem from './FollowerItem';
-import { storage } from '../utils/firebase';
-import Modal from './Modal';
-import cardimg from '../assets/images/photocardimg.jpeg';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import {
-  UserProps,
-  UserItemProps,
-  FollowProps,
-} from '../types/ComponentPropsType';
-import followApi from '../api/follow';
 
 function FollowList({ follower }: any) {
   const [userInput, setUserInput] = useState('');
@@ -42,7 +31,7 @@ function FollowList({ follower }: any) {
             onChange={getValue}
             value={userInput}
           />
-          <HiMagnifyingGlass className="magnifier" />
+          <BsSearch className="magnifier" />
           {userInput && (
             <TiDelete className="input_delete_btn" onClick={deleteInput} />
           )}

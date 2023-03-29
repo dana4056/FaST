@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MdArrowBackIosNew } from 'react-icons/md';
+import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 
 import KoreaMap from '../components/KoreaMap';
 import CardList from '../components/CardList';
@@ -11,7 +11,7 @@ function MapPage({ cardsLeft, cardsRight }: MapPageProps) {
     <div className="map-page">
       <div className="map-page__header">
         <Link to="/myrecord">
-          <MdArrowBackIosNew />
+          <MdArrowBack />
         </Link>
       </div>
       <div className="mappage__map__container card">

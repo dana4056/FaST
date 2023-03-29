@@ -1,5 +1,6 @@
 import React from 'react';
-import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
+import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
+import { MdArrowForward } from '@react-icons/all-files/md/MdArrowForward';
 
 import { ImageSliderProps } from '../types/ComponentPropsType';
 
@@ -22,7 +23,7 @@ function ImageSlider({
         className="image-slider__control transparent-button"
         onClick={handleImageLeft}
       >
-        <MdArrowBackIosNew />
+        <MdArrowBack />
       </button>
       <div className="image-slider__container">
         <div
@@ -51,7 +52,7 @@ function ImageSlider({
         className="image-slider__control transparent-button"
         onClick={handleImageRight}
       >
-        <MdArrowForwardIos />
+        <MdArrowForward />
       </button>
     </div>
   );
