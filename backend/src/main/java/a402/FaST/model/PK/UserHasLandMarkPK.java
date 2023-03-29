@@ -10,5 +10,5 @@ import java.io.Serializable;
 public class UserHasLandMarkPK implements Serializable {
 
     private int user;
-    private int landMark;
+    private String landMark;
 }

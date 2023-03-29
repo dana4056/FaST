@@ -22,7 +22,7 @@ public class UserHasLandMark {
 
     @Id
     @ManyToOne(targetEntity = LandMark.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="landMark_id")
+    @JoinColumn(name="landMark_name")
     private LandMark landMark;
 
 }

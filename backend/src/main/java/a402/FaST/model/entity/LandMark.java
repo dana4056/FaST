@@ -16,9 +16,6 @@ import java.util.List;
 public class LandMark {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     private String name;
 
     @OneToMany(mappedBy = "landMark", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
