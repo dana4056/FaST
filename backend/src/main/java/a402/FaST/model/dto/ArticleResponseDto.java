@@ -1,6 +1,5 @@
 package a402.FaST.model.dto;
 
-import a402.FaST.model.entity.Article;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,8 @@ public class ArticleResponseDto {
    private LocalDateTime createTime;
    private int likeCount;
    private int commentCount;
-   private String let;
+   private String lat;
    private String lng;
+   private String area;
 
 }
