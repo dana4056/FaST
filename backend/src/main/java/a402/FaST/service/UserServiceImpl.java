@@ -143,8 +143,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(!userRepository.existsById(id)){
-            throw new NotFoundMemberException("없는 유저입니다.");
+        if(userRepository.existsByNickname(requestDto.getNickname())){
+            throw new DuplicateMemberException("이미 있는 닉네임 입니다");
         }else{
             User user = userRepository.findById(id).get();
             user.setNickname(requestDto.getNickname());

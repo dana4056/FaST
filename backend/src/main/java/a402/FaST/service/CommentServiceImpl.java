@@ -31,6 +31,7 @@ public class CommentServiceImpl implements CommentService{
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final LikesRepository likesRepository;
+    private final CommentReplyRepository commentReplyRepository;
 
 
     @Override
@@ -53,7 +54,7 @@ public class CommentServiceImpl implements CommentService{
                 .content(comment.getContent())
                 .createTime(comment.getCreateTime())
                 .likeCount(likesRepository.countByCommentId(comment.getId()))
-                .commentReplyCount(0)
+                .commentReplyCount(commentReplyRepository.countByCommentId(comment.getId()))
                 .build();
 
         return responseDto;
@@ -79,7 +80,15 @@ public class CommentServiceImpl implements CommentService{
             throw new Exception("작성자가 아닙니다!");
         }else{
             comment.setContent(modifyDto.getContent());
-            responseDto = CommentResponseDto.from(comment);
+            responseDto = CommentResponseDto.builder()
+                    .id(comment.getId())
+                    .userId(comment.getUser().getId())
+                    .articleId(comment.getArticle().getId())
+                    .content(comment.getContent())
+                    .createTime(comment.getCreateTime())
+                    .likeCount(likesRepository.countByCommentId(comment.getId()))
+                    .commentReplyCount(commentReplyRepository.countByCommentId(comment.getId()))
+                    .build();
         }
         return responseDto;
 
@@ -97,6 +106,8 @@ public class CommentServiceImpl implements CommentService{
                         .nickName(x.getUser().getNickname())
                         .createTime(x.getCreateTime())
                         .content(x.getContent())
+                        .likeCheck(likesRepository.existsByCommentIdAndUserId(x.getId(),userId))
+                        .commentReplyCount(commentReplyRepository.countByCommentId(x.getId()))
                         .build()).collect(Collectors.toList());
 
         return responseDto;
