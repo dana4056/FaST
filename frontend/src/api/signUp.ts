@@ -12,6 +12,7 @@ async function sendEmail(email: string) {
     const res = await api.post(`/user/send-email`, {
       email,
     });
+
     console.log(res.status);
     return res.status;
   } catch (error) {
