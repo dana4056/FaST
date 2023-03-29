@@ -3,7 +3,6 @@ package a402.FaST.model.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Getter
@@ -11,7 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentListResponseDto {
+public class CommentReplyListResponseDto {
 
    private int id;
    private int userId;
@@ -19,6 +18,5 @@ public class CommentListResponseDto {
    private LocalDateTime createTime;
    private String nickName;
    private boolean likeCheck;
-   private int commentReplyCount;
 
 }
