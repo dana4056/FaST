@@ -9,7 +9,7 @@ import { userInfo } from '../atoms/userInfo';
 function LoadingPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setuser] = useRecoilState(userInfo);
+  const [user, setUser] = useRecoilState(userInfo);
   // console.log(location.search.split('=')[1]);
 
   const jwt = location.search.split('=')[1];
@@ -17,9 +17,9 @@ function LoadingPage() {
   const login = async () => {
     const res = await api.fastLogin(jwt);
     if (res.status === 200) {
-      console.log(res.data);
+      console.log(res.data.email);
       // recoil-persist로 localstorage에 user 정보 저장
-      setuser(res.data);
+      setUser(res.data);
       navigate('/home');
     }
   };
