@@ -59,4 +59,18 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
   }
 }
 
-export default { login, getSalt, fastLogin };
+async function registerTag(tags: Array<string>, userId: number) {
+  try {
+    const res = await api.post(`/tag`, {
+      tags,
+      userId,
+    });
+    console.log(res.status);
+    return res.status;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { login, getSalt, fastLogin, registerTag };
