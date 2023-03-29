@@ -17,6 +17,8 @@ public class ArticleRequestDto {
    private String lat;
    private String lng;
    private String area;
+   // 수동 태그
    private List<String> tags;
+   // 자동 태그
    private List<String> autoTags;
 }
