@@ -11,9 +11,9 @@ import MyRecordContainer from './containers/MyRecordContainer';
 import MapContainer from './containers/MapContainer';
 import FollowContainer from './containers/FollowContainer';
 import UserModifyContainer from './containers/UserModifyContainer';
-import FindPwdContainer from './containers/FindPwdContainer';
 
 import './styles/main.scss';
+import ModifyPwdContainer from './containers/ModifyPwdContainer';
 
 function Router() {
   return (
@@ -29,7 +29,7 @@ function Router() {
           <Route path="/follow" element={<FollowContainer />} />
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />
-          {/* <Route path="/find-pwd" element={<FindPwdContainer />} /> */}
+          <Route path="/modify-pwd" element={<ModifyPwdContainer />} />
         </Routes>
       </div>
       <Footer />
