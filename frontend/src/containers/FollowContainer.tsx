@@ -4,8 +4,9 @@ import FollowPage from '../pages/FollowPage';
 import followApi from '../api/follow';
 
 function FollowContainer() {
+  const dummyId = 5;
   // 팔로우 목록 조회
-  const [id, setId] = useState<number>(2);
+  const [id, setId] = useState<number>(dummyId);
   const [followData, setFollowData] = useState<any>({});
   // 팔로우 하지 않은 목록 조회
   const [notFollowingData, setNotFollowingData] = useState<any>([]);
