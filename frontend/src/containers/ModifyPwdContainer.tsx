@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import ModifyPwdPage from '../pages/ModifyPwdPage';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
+import api from '../api/modifyPwd';
+import { userInfo } from '../atoms/userInfo';
 
 export default function ModifyPwdContainer() {
   const navigate = useNavigate();
-
+  const [user, setUser] = useRecoilState(userInfo);
   // 유효성 검사
   const [isOriginalPassword, setIsOriginalPassword] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
@@ -78,25 +81,24 @@ export default function ModifyPwdContainer() {
     [password]
   );
 
-  // 변경하기 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
+  // 비밀번호 변경 처리
   const onClickNext = async () => {
-    if (isPassword && isPasswordConfirm) {
-      console.log('새 비밀번호 통신할 때 보낼 데이터 : ');
+    if (isOriginalPassword && isPassword && isPasswordConfirm) {
+      // 사용자의 새로운 salt
       const salt = createSalt();
-      console.log(salt);
-      const pwd = createHashedPassword(password, salt);
-      // console.log(`password : ${password}`); // 비밀번호
-      console.log(`암호화된 password : ${pwd}`); // 암호화된 password
-      //   const res = await api.findPwd(email, pwd, salt);
-      //   if (res === 200) {
-      //     // db에 있는 사용자 pk값 저장
-      //     navigate('/login');
-      //   } else {
-      //     alert('비밀번호 찾기에 실패했습니다. 다시 시도해 주세요.');
-      //   }
-      // }
-      // // eslint-disable-next-line no-alert
-      // else alert('다시 확인해 주세요 :)');
+      // 사용자의 기존 salt 요청
+      const saltRes = await api.getSalt(user.email);
+      if (saltRes.status === 200) {
+        // 기존 salt로 기존 비밀번호 암호화 처리
+        const pwd = createHashedPassword(originalPassword, saltRes.data);
+        const newPwd = createHashedPassword(password, salt);
+        const res = await api.modifyPwd(user.id, pwd, newPwd, salt);
+        if (res === 200) {
+          // recoil-persist로 localstorage에 user 정보 저장
+          // setuser(res.data);
+          navigate('/home');
+        }
+      }
     }
   };
   return (

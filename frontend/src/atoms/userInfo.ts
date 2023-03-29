@@ -6,8 +6,8 @@ import { recoilPersist } from 'recoil-persist';
 const { persistAtom } = recoilPersist();
 
 interface User {
-  userPk: number;
-  userEmail: string;
+  id: number;
+  email: string;
 }
 
 // Recoil-persist를 적용시키려면 아래의 effects_UNSTABLE을 적어주어야 한다.
@@ -15,8 +15,8 @@ interface User {
 export const userInfo = atom<User>({
   key: 'user',
   default: {
-    userPk: 0,
-    userEmail: '',
+    id: 0,
+    email: '',
   },
   effects_UNSTABLE: [persistAtom],
 });
