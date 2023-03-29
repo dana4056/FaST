@@ -18,4 +18,5 @@ public class ArticleRequestDto {
    private String lng;
    private String area;
    private List<String> tags;
+   private List<String> autoTags;
 }

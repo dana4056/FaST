@@ -25,7 +25,8 @@ public class ArticleController {
 
     @PostMapping
     @Operation(summary = "게시글 생성 API =>  게시글 생성하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : userId, String : img_path, String : content, String : let, String : lng, String : area, List<String> : tags)" +
+            description = "json 형식 데이터 -> (int : userId, String : img_path, String : content, String : let, String : lng, String : area, " +
+                    "List<String> : tags, List<String> : autoTags)" +
                     " => 검증 결과에 따라 ArticleResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<ArticleResponseDto> create(@Valid @RequestBody ArticleRequestDto requestDto) {
         ArticleResponseDto responseDto = null;
