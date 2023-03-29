@@ -10,8 +10,6 @@ import os
 import argparse
 import logging
 
-# from utils.utils import *
-# from dataset.dataset import *
 from model import DistributedModel
 
 import warnings
@@ -23,11 +21,8 @@ np.set_printoptions(threshold=np.inf, linewidth=np.inf)  # inf = infinity
 warnings.filterwarnings("ignore")
 
 options = easydict.EasyDict({
-        "gpus": '5',
-        "checkpoint": './checkpoint/checkpoint'
+    "gpus": '5',
 })
-
-area = "서울특별시"
 
 os.environ["CUDA_VISIBLE_DEVICES"] = options.gpus
 
@@ -58,85 +53,94 @@ cors = CORS(app)
 Bootstrap(app)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/article/image', methods=['POST'])
 def index():
-    if request.method == 'POST':
-        uploaded_file = request.files['file']
-        class_list = read_classes()
 
-        # 파일이 업로드가 되면 result.html로 이동
-        if uploaded_file.filename != '':
-            config = {
-                'learning_rate': 1e-3,
-                'momentum': 0.9,
-                'input_size': (224, 224, 3),
-                'n_classes': len(class_list),
-                'scale': 30,
-                'margin': 0.1,
-                'clip_grad': 10.0,
-                'n_epochs': 100,
-                'batch_size': 1,
-                'dense_units': 512,
-                'dropout_rate': 0.0,
-                'save_interval': 50,
-                'wandb': False,
-                'CITY_NAME': "서울특별시"
-            }
+    # if request.method == 'POST':
+    uploaded_file = request.files['file']   # 업로드된 이미지
+    area = request.form['area']             # 지역명
+    checkpoint_path = './checkpoint/' + area + '/checkpoint'
+    print("> 지역:" , area)
+    print("> checkpoint path:", checkpoint_path)
 
-            # 이미지 불러오기 및 전처리
-            image_path = os.path.join('static', uploaded_file.filename)  # 이미지 저장
-            print(">>>image_path", image_path)
-            uploaded_file.save(image_path)
+    class_list = read_classes(area)
 
-            image = read_image(image_path)
-            image = preprocess_input(image, config['input_size'][:2])
-            image = np.reshape(image, (1, 224, 224, 3))
 
-            with strategy.scope():
-                optimizer = tf.keras.optimizers.SGD(config['learning_rate'], momentum=config['momentum'])
+    # 파일 업로드 되면
+    if uploaded_file.filename != '':
+        config = {
+            'learning_rate': 1e-3,
+            'momentum': 0.9,
+            'input_size': (224, 224, 3),
+            'n_classes': len(class_list),
+            'scale': 30,
+            'margin': 0.1,
+            'clip_grad': 10.0,
+            'n_epochs': 100,
+            'batch_size': 1,
+            'dense_units': 512,
+            'dropout_rate': 0.0,
+            'save_interval': 50,
+            'wandb': False,
+            'CITY_NAME': area
+        }
 
-                dist_model = DistributedModel(
-                    input_size=config['input_size'],
-                    n_classes=config['n_classes'],
-                    batch_size=config['batch_size'],
-                    finetuned_weights=options.checkpoint,
-                    dense_units=config['dense_units'],
-                    dropout_rate=config['dropout_rate'],
-                    scale=config['scale'],
-                    margin=config['margin'],
-                    optimizer=optimizer,
-                    strategy=strategy,
-                    mixed_precision=False,
-                    clip_grad=config['clip_grad'],
-                    wandb_log=config['wandb'])
+        # 이미지 불러오기 및 전처리
+        image_path = os.path.join('static', uploaded_file.filename)  # 이미지 저장
+        print("> save path:", image_path)
+        uploaded_file.save(image_path)
 
-                label = pd.DataFrame([-1])
-                dataset = tf.data.Dataset.from_tensor_slices((image, label))
+        image = read_image(image_path)
+        image = preprocess_input(image, config['input_size'][:2])
+        image = np.reshape(image, (1, 224, 224, 3))
 
-                option = tf.data.Options()
-                option.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.FILE
-                dataset = dataset.with_options(option)
+        with strategy.scope():
+            optimizer = tf.keras.optimizers.SGD(config['learning_rate'], momentum=config['momentum'])
 
-                dataset = dataset.map(lambda x, y: (x, tf.squeeze(y)))
-                dataset = dataset.batch(1)
+            dist_model = DistributedModel(
+                input_size=config['input_size'],
+                n_classes=config['n_classes'],
+                batch_size=config['batch_size'],
+                finetuned_weights= checkpoint_path,
+                dense_units=config['dense_units'],
+                dropout_rate=config['dropout_rate'],
+                scale=config['scale'],
+                margin=config['margin'],
+                optimizer=optimizer,
+                strategy=strategy,
+                mixed_precision=False,
+                clip_grad=config['clip_grad'],
+                wandb_log=config['wandb'])
 
-                classes, probs = dist_model.predict2(test_ds=dataset, area=config['CITY_NAME'])
+            label = pd.DataFrame([-1])
+            dataset = tf.data.Dataset.from_tensor_slices((image, label))
 
-            result = {
-                'class_name': classes,
-                'probs': probs,
-                'image_path': image_path,
-            }
+            option = tf.data.Options()
+            option.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.FILE
+            dataset = dataset.with_options(option)
 
-            return str(result)
+            dataset = dataset.map(lambda x, y: (x, tf.squeeze(y)))
+            dataset = dataset.batch(1)
 
-    return "GET 요청"
+            classes, probs = dist_model.predict2(test_ds=dataset, area=config['CITY_NAME'])
+        print(">> top5 landmark", classes)
+        print(">> top5 probs", probs)
+
+        tags = []
+
+        for i in range(5):
+            if probs[i] >= 0.8:
+                tags.append(classes[i])
+
+        return tags
+    return "No Image"
+    # return "GET 요청"
 
 def read_image(image_path):
     image = tf.io.read_file(image_path)
     return tf.image.decode_jpeg(image, channels=3)
 
-def preprocess_input(image, target_size, augment=False):
+def preprocess_input(image, target_size):
     image = tf.image.resize(
         image, target_size, method='bilinear')
 
@@ -145,13 +149,15 @@ def preprocess_input(image, target_size, augment=False):
 
     return image
 
-def read_classes():
+def read_classes(area):
+    print("> class path:", "./data/class/" + area + "/class.csv")
     classes = []
-    f = open("./data/class/서울특별시/class.csv", "rt", encoding='UTF8')
+    f = open("./data/class/" + area + "/class.csv", "rt", encoding='UTF8')
     reader = csv.reader(f)
 
     for row in reader:
         classes.append(row[0])
+    print('> class len', len(classes))
     return classes
 
 if __name__ == '__main__':

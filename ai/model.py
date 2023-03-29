@@ -169,6 +169,7 @@ class DistributedModel:
         return probs
 
     def predict2(self, test_ds, area):
+        print(">> in model", area)
         class_list = read_classes(area)
         dist_test_ds = self.strategy.experimental_distribute_dataset(test_ds)
         dist_test_ds = tqdm.tqdm(dist_test_ds)
