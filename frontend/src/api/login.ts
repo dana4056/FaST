@@ -48,6 +48,7 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
     const res = await api.post(`/user/token`, {
       token,
     });
+    console.log(res.status);
     console.log(res.data);
     localStorage.setItem('token', encryptToken(token, res.data.email));
     // console.log(res.headers.authorization);

@@ -17,6 +17,7 @@ function LoadingPage() {
   const login = async () => {
     const res = await api.fastLogin(jwt);
     if (res.status === 200) {
+      console.log(res.data);
       // recoil-persist로 localstorage에 user 정보 저장
       setuser(res.data);
       navigate('/home');
