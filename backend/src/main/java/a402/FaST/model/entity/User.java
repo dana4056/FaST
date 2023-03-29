@@ -28,6 +28,7 @@ public class User {
 
     private String salt;
 
+    @Column(length = 500)
     private String imgPath;
 
     private String provider;
