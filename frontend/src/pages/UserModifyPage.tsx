@@ -21,6 +21,7 @@ function UserModifyPage({
   handleImageDelete,
   handleSaveModifyData,
   onChangeNickName,
+  goModifyPwd,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -76,7 +77,11 @@ function UserModifyPage({
         )}
       </div>
       <div className="modify__buttons">
-        <button type="button" className="modify__button modify__password">
+        <button
+          type="button"
+          onClick={goModifyPwd}
+          className="modify__button modify__password"
+        >
           비밀번호 변경하러 가기
         </button>
         <button

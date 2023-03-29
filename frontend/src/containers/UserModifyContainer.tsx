@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { getDownloadURL, ref } from 'firebase/storage';
 import UserModifyPage from '../pages/UserModifyPage';
 import Modal from '../components/Modal';
-
+import { userInfo } from '../atoms/userInfo';
 import { TagType } from '../types/TagType';
 import modifyApi from '../api/user';
 import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
+  const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userInfo);
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   useEffect(() => {
     const getData = async () => {
-      const myData: any = await modifyApi.getMyData(1);
+      const myData: any = await modifyApi.getMyData(user.id);
       setUserData(myData.data);
     };
     getData();
@@ -177,13 +181,18 @@ function UserModifyContainer() {
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
     const newData: any = await modifyApi.modifyData(
-      2, // 유저 id
+      user.id, // 유저 id
       imgPath,
       nickname,
       tagList
     );
     onClickSaveModal();
     return newData;
+  };
+
+  // 비밀번호 변경하러 가기
+  const goModifyPwd = () => {
+    navigate('/modify-pwd');
   };
 
   return (
@@ -219,6 +228,7 @@ function UserModifyContainer() {
         handleTagDelete={handleTagDelete}
         handleSaveModifyData={handleSaveModifyData}
         onChangeNickName={onChangeNickName}
+        goModifyPwd={goModifyPwd}
       />
     </div>
   );
