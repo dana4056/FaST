@@ -17,8 +17,11 @@ function LoadingPage() {
   const login = async () => {
     const res = await api.fastLogin(jwt);
     if (res.status === 200) {
-      console.log(res.data.email);
+      console.log(res.data.tags);
       // recoil-persist로 localstorage에 user 정보 저장
+      if (res.data.tags.length === 0) {
+        console.log('ddddddddd');
+      }
       setUser(res.data);
       navigate('/home');
     }
