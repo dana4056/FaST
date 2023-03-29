@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../utils/firebase';
-import modifyApi from '../api/user';
+import userApi from '../api/user';
+import articleApi from '../api/article';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
@@ -14,15 +15,22 @@ import { CardType } from '../types/CardType';
 import followApi from '../api/follow';
 
 function MyRecordContainer() {
+  const dummyId = 5;
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   // 내 관심 태그
   const [myTag, setMyTag] = useState<any>([]);
+  // 게시글 수
+  const [articleNum, setArticleNum] = useState<number>(0);
+  // 게시글 목록
+  const [article, setArticle] = useState<any>({});
+  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
+
   useEffect(() => {
+    // 프로필 박스
     const getData = async () => {
-      const myData: any = await modifyApi.getMyData(8);
+      const myData: any = await userApi.getMyData(dummyId);
       setUserData(myData.data);
-      setMyTag(myData.data.tags);
       const newMyTag: Array<TagType> = [];
       myData.data.tags.map((tag: any) =>
         newMyTag.push({
@@ -31,9 +39,49 @@ function MyRecordContainer() {
         })
       );
       setMyTag(newMyTag);
+
+      // 프로필 박스 - 기록수
+      const cntArticle: any = await userApi.countArticle(dummyId);
+      setArticleNum(cntArticle.data);
+
+      // 게시글
+      const articleData: any = await articleApi.getUserArticle(5, 20, 0);
+      setArticle(articleData.data);
+      console.log(article);
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    const cardLeftList: any = [];
+    if (article.length > 0) {
+      article.map((item: any) =>
+        cardLeftList.push({
+          id: item?.id,
+          // imageUrls: [item?.imgPath],
+          imageUrls: [sample1],
+          nickname: item?.nickname,
+          content: '',
+          regTime: item?.createTime,
+          isLike: item?.likeCheck,
+          numLikes: item?.likeCount,
+          numComments: item?.commentCount,
+          tags: [
+            {
+              value: item?.tags[0].tagName,
+              className: 'tag-2 tag-small',
+            },
+          ],
+        })
+      );
+    }
+    console.log(cardLeftList);
+    if (cardLeftList.length > 0) {
+      setCardsLeft([...cardLeftList]);
+    }
+  }, [article]);
+
+  // console.log(cardsLeft);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -55,48 +103,21 @@ function MyRecordContainer() {
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
 
-  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
-    {
-      id: 3,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 4,
-      imageUrls: [sample2],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
+  // useEffect(() => {
+  //   setCardsLeft([
+  //     {
+  //       id: article[0].id,
+  //       imageUrls: article[0].imgPath,
+  //       nickname: article[0].nickname,
+  //       content: 'sample',
+  //       regTime: article[0].createTime,
+  //       isLike: article[0].likeCheck,
+  //       numLikes: article[0].likeCount,
+  //       numComments: article[0].commentCount,
+  //       tags: article[0].tags,
+  //     },
+  //   ]);
+  // }, [article]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([
     {
       id: 5,
@@ -191,10 +212,10 @@ function MyRecordContainer() {
   };
 
   // 팔로우 수 조회
-  const [toId, setToId] = useState<number>(2);
+  const [toId, setToId] = useState<number>(dummyId);
   const [followerNum, setFollowerNum] = useState<number>(0);
 
-  const [fromId, setFromId] = useState<number>(2);
+  const [fromId, setFromId] = useState<number>(dummyId);
   const [followingNum, setFollowingNum] = useState<number>(0);
   useEffect(() => {
     const getData = async () => {
@@ -210,6 +231,7 @@ function MyRecordContainer() {
 
   return (
     <MyRecordPage
+      articleNum={articleNum}
       imageUrl={imageUrl}
       followerNum={followerNum}
       followingNum={followingNum}

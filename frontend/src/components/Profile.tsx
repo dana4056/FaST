@@ -4,7 +4,13 @@ import { ProfileProps } from '../types/ComponentPropsType';
 import { TagType } from '../types/TagType';
 import Tag from './Tag';
 
-function Profile({ imageUrl, followerNum, followingNum, myTag }: ProfileProps) {
+function Profile({
+  imageUrl,
+  followerNum,
+  followingNum,
+  articleNum,
+  myTag,
+}: ProfileProps) {
   return (
     <div className="profile__container">
       <img src={imageUrl} alt="profileImg" className="profile__img" />
@@ -16,7 +22,7 @@ function Profile({ imageUrl, followerNum, followingNum, myTag }: ProfileProps) {
             <div className="profile__record">기록수</div>
             <div className="profile__follower__cnt">{followerNum}</div>
             <div className="profile__following__cnt">{followingNum}</div>
-            <div className="profile__record__cnt">123</div>
+            <div className="profile__record__cnt">{articleNum}</div>
           </div>
         </Link>
       </div>
