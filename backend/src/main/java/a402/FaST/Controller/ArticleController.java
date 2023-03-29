@@ -64,8 +64,8 @@ public class ArticleController {
     @Operation(summary = "게시글 상세 조회 API =>  게시글 상세 조회하는 API 입니다.",
             description = "PathVariable 형식 데이터 (int : id)" +
                     " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
-    public ResponseEntity<ArticleCommentResponseDto> detail (@Valid @PathVariable("id") int id, @PathVariable("userId") int userId) throws Exception {
-        ArticleCommentResponseDto responseDto = null;
+    public ResponseEntity<ArticleDetailResponseDto> detail (@Valid @PathVariable("id") int id, @PathVariable("userId") int userId) throws Exception {
+        ArticleDetailResponseDto responseDto = null;
         responseDto = articleService.detail(id, userId);
         return ResponseEntity.ok(responseDto);
     }

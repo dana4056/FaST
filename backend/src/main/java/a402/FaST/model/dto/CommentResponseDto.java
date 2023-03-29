@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentResponseDto {
    private int id;
+   private int userId;
+   private int articleId;
    private String content;
    private LocalDateTime createTime;
-   private int articleId;
-   private int userId;
+   private int likeCount;
+   private int commentReplyCount;
 
    public static CommentResponseDto from(Comment comment) {
       if (comment == null) return null;

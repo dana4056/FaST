@@ -14,9 +14,10 @@ import java.util.List;
 public class CommentListResponseDto {
 
    private int id;
+   private int userId;
    private String content;
    private LocalDateTime createTime;
-   private int userId;
    private String nickName;
+   private boolean likeCheck;
 
 }

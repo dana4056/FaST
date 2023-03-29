@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ArticleResponseDto {
    private int id;
+   private int userId;
    private String imgPath;
    private String content;
    private LocalDateTime createTime;
@@ -19,20 +20,5 @@ public class ArticleResponseDto {
    private int commentCount;
    private String let;
    private String lng;
-   private int user;
 
-   public static ArticleResponseDto from(Article article) {
-      if(article == null) return null;
-         return ArticleResponseDto.builder()
-                 .id(article.getId())
-                 .imgPath(article.getImgPath())
-                 .content(article.getContent())
-                 .createTime(article.getCreateTime())
-                 .likeCount(article.getLikeCount())
-                 .commentCount(article.getCommentCount())
-                 .let(article.getLet())
-                 .lng(article.getLng())
-                 .user(article.getUser().getId())
-                 .build();
-   }
 }
