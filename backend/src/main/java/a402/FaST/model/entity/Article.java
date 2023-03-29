@@ -20,6 +20,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(length = 500)
     private String imgPath;
     private String content;
     private LocalDateTime createTime;  ;
