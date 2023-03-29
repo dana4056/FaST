@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { AiOutlineCheck, AiFillCheckCircle } from 'react-icons/ai';
-import Header from '../components/Header';
+import React, { useEffect } from 'react';
+import { AiFillCheckCircle } from '@react-icons/all-files/ai/AiFillCheckCircle';
 import InputProfile from '../components/SignUp/InputProfile';
 import { SignUpPageProps } from '../types/PagePropsType';
 

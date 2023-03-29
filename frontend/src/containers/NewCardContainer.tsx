@@ -14,7 +14,7 @@ function NewCardContainer() {
   // 카드 내용
   const [description, setDescription] = useState<string>('');
 
-  const { uploadImages } = useViewModel();
+  const { uploadImages, writeArticle } = useViewModel();
 
   // 이미지 입력
   const handleImageChange = async (
@@ -66,7 +66,9 @@ function NewCardContainer() {
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
 
-    await uploadImages(images);
+    const res = await writeArticle({
+      content: description,
+    });
   };
 
   return (

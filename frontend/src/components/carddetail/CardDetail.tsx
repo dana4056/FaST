@@ -1,7 +1,7 @@
 import React from 'react';
-import { CgProfile } from 'react-icons/cg';
-import { BsThreeDots } from 'react-icons/bs';
-import { BiComment } from 'react-icons/bi';
+import { CgProfile } from '@react-icons/all-files/cg/CgProfile';
+import { BsThreeDots } from '@react-icons/all-files/bs/BsThreeDots';
+import { BiComment } from '@react-icons/all-files/bi/BiComment';
 
 import Heart from '../Heart';
 import { TagType } from '../../types/TagType';

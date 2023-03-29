@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import { callEnvironmentData } from '../utils/callEnvironmentData';
-import { IoArrowBackCircle } from 'react-icons/io5';
+import { IoArrowBackCircle } from '@react-icons/all-files/io5/IoArrowBackCircle';
 import SouthKorea from '../assets/images/south-korea.svg';
 import Kakaomap from './Kakaomap';
 

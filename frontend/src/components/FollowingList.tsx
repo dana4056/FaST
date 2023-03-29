@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { TiDelete } from 'react-icons/ti';
+import { BsSearch } from '@react-icons/all-files/bs/BsSearch';
+import { TiDelete } from '@react-icons/all-files/ti/TiDelete';
 import { getDownloadURL, ref } from 'firebase/storage';
 import FollowingItem from './FollowingItem';
 import NotFollowingItem from './NotFollowingItem';
@@ -48,7 +48,7 @@ function FollowList({ following, notFollowing }: any) {
             onChange={getValue}
             value={userInput}
           />
-          <HiMagnifyingGlass className="magnifier" />
+          <BsSearch className="magnifier" />
           {userInput && (
             <TiDelete className="input_delete_btn" onClick={deleteInput} />
           )}

@@ -1,17 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { TiDelete } from 'react-icons/ti';
-import { BsPersonCircle } from 'react-icons/bs';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../utils/firebase';
-import Modal from './Modal';
-import cardimg from '../assets/images/photocardimg.jpeg';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import {
-  UserProps,
-  UserItemProps,
-  FollowProps,
-} from '../types/ComponentPropsType';
 import followApi from '../api/follow';
 
 function NotFollowItem({ notFollowing }: any) {
