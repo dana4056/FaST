@@ -1,5 +1,5 @@
 import { ref, uploadBytes } from 'firebase/storage';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import SignUpPage from '../pages/SignUpPage';

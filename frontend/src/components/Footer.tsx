@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { VscHome } from 'react-icons/vsc';
-import { BsPeople } from 'react-icons/bs';
-import { FaPlus } from 'react-icons/fa';
-import { AiOutlineCamera } from 'react-icons/ai';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { VscHome } from '@react-icons/all-files/vsc/VscHome';
+import { BsPeople } from '@react-icons/all-files/bs/BsPeople';
+import { FaPlus } from '@react-icons/all-files/fa/FaPlus';
+import { AiOutlineCamera } from '@react-icons/all-files/ai/AiOutlineCamera';
+import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline';
 import { useNavigate } from 'react-router-dom';
 
 function Footer() {

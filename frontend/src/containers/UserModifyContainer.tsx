@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import UserModifyPage from '../pages/UserModifyPage';
+import Modal from '../components/Modal';
+
 import { TagType } from '../types/TagType';
-import modifyApi from '../api/modify';
+import modifyApi from '../api/user';
 import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
@@ -10,26 +12,29 @@ function UserModifyContainer() {
   const [userData, setUserData] = useState<any>({});
   useEffect(() => {
     const getData = async () => {
-      const myData: any = await modifyApi.getMyData(8);
+      const myData: any = await modifyApi.getMyData(1);
       setUserData(myData.data);
     };
     getData();
   }, []);
-  console.log(userData);
+  // console.log(userData);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [imgPath, setImgPath] = useState<string>('profiles/default.jpg');
   useEffect(() => {
-    // if (userData.imgPath.substring(0, 4) === 'http') {
-    //   setImageUrl(userData.imgPath);
-    // } else {
-    const getProfileImage = async () => {
-      const imageRef = ref(storage, userData.imgPath);
-      const ret = await getDownloadURL(imageRef);
-      setImageUrl(ret);
-    };
-    getProfileImage();
-    // }
+    if (userData.imgPath?.substring(0, 4) === 'http') {
+      setImageUrl(userData.imgPath);
+      setImgPath(imageUrl);
+    } else if (userData.imgPath) {
+      const getProfileImage = async () => {
+        const imageRef = ref(storage, userData.imgPath);
+        const ret = await getDownloadURL(imageRef);
+        setImageUrl(ret);
+        setImgPath(`profiles/${userData.email}`);
+      };
+      getProfileImage();
+    }
   }, [userData.imgPath]);
 
   // 이미지 파일 저장 배열
@@ -50,6 +55,7 @@ function UserModifyContainer() {
       }
       setImage(newImages[0]);
       setImageUrl(newImageUrls[0]);
+      setImgPath(`profiles/${userData.email}`);
 
       // 입력 초기화
       event.target.value = ''; // eslint-disable-line no-param-reassign
@@ -59,14 +65,51 @@ function UserModifyContainer() {
   const handleImageDelete = () => {
     setImageUrl('');
     setImage(undefined);
+    setImgPath('profiles/default.jpg');
+    console.log(imgPath);
   };
 
-  const [name, setName] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [isName, setIsName] = useState<boolean>(false);
+  const [nameMessage, setNameMessage] = useState<string>('');
+  // 입력창 변화를 감지할 함수
+  const onChangeNickName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(event.currentTarget.value);
+    if (event.target.value.length <= 1 || event.target.value.length > 10) {
+      setNameMessage('1글자 이상 11글자 미만으로 입력해주세요.');
+      setIsName(false);
+    } else {
+      setNameMessage('올바른 닉네임 형식입니다 :)');
+      setIsName(true);
+    }
+  };
   const [email, setEmail] = useState<string>('');
+
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
+
+  useEffect(() => {
+    // 이미 등록된 관심태그
+    const myTags: Array<TagType> = [];
+    // 내 관심태그 추가
+    if (userData.tags) {
+      userData.tags.map((tag: any) =>
+        myTags.push({
+          className: `tag-${Math.floor(Math.random() * 4) + 1}`,
+          value: tag.tagName,
+        })
+      );
+    }
+    setTags(myTags);
+    if (userData.nickname) {
+      setNickname(userData.nickname);
+    }
+    if (userData.email) {
+      setEmail(userData.email);
+    }
+  }, [userData]);
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -76,10 +119,11 @@ function UserModifyContainer() {
     // 전에 검색하지 않은 키워드만 검색하도록 index를 찾음
     const index = tags.findIndex((tag: TagType) => keyword === tag.value);
 
+    const newTags = tags;
+
     // 빈 문자열이 아니고 없는 키워드일 경우 검색
     if (keyword.trim().length !== 0 && index === -1) {
       // 배열에 추가
-      const newTags = tags;
       newTags.push({
         className: `tag-${Math.floor(Math.random() * 4) + 1}`,
         value: keyword,
@@ -97,6 +141,13 @@ function UserModifyContainer() {
     // 검색창 초기화
     setKeyword('');
   };
+
+  // 새로 업데이트 된 관심태그 리스트
+  const tagList: any = [];
+  // 내 관심태그 추가
+  if (tags) {
+    tags.map((tag: any) => tagList.push(tag.value));
+  }
 
   // 입력창 변화를 감지할 함수
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,19 +168,57 @@ function UserModifyContainer() {
       setTags([...newTags]);
     }
   };
+
+  const [openSaveModal, setOpenSaveModal] = useState<boolean>(false);
+
+  const onClickSaveModal = useCallback(() => {
+    setOpenSaveModal(!openSaveModal);
+  }, [openSaveModal]);
+  // 변경사항 저장 api
+  const handleSaveModifyData = async () => {
+    const newData: any = await modifyApi.modifyData(
+      2, // 유저 id
+      imgPath,
+      nickname,
+      tagList
+    );
+    onClickSaveModal();
+    return newData;
+  };
+
   return (
     <div>
+      {openSaveModal && (
+        <Modal onClickToggleModal={onClickSaveModal}>
+          <div className="follow_delete_modal">
+            <h3 className="follow_delete_text">저장되었습니다.</h3>
+            <button
+              className="follow_delete_btn"
+              type="button"
+              onClick={() => {
+                setOpenSaveModal(!openSaveModal);
+              }}
+            >
+              닫기
+            </button>
+          </div>
+        </Modal>
+      )}
       <UserModifyPage
         imageUrl={imageUrl}
         handleImageChange={handleImageChange}
         handleImageDelete={handleImageDelete}
-        name={userData.nickname}
-        email={userData.email}
+        name={nickname}
+        isName={isName}
+        nameMessage={nameMessage}
+        email={email}
         tags={tags}
         keyword={keyword}
         handleKeywordChange={handleKeywordChange}
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
+        handleSaveModifyData={handleSaveModifyData}
+        onChangeNickName={onChangeNickName}
       />
     </div>
   );

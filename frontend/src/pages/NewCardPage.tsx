@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiFillPlusCircle } from '@react-icons/all-files/ai/AiFillPlusCircle';
 
 import InputPhoto from '../components/NewCard/InputPhoto';
 import Tag from '../components/Tag';
@@ -32,6 +33,10 @@ function NewCardPage({
               {tag.value}
             </Tag>
           ))}
+          <button type="button" className="new-card-page__add-tag">
+            <AiFillPlusCircle className="new-card-page__add-icon" />
+            태그 추가하기
+          </button>
         </div>
         <div className="new-card-page__description card">
           <textarea
