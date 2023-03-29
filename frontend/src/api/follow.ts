@@ -44,7 +44,7 @@ async function followList(id: number) {
 // Not 팔로잉 목록 조회
 async function notFollowingList(id: number) {
   try {
-    const res = await api.post<number>('/follow/search2', { id });
+    const res = await api.post<number>('/follow/not-follow', { id });
     return res;
   } catch (error) {
     console.log(error);

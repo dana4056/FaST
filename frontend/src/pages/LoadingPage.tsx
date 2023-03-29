@@ -1,20 +1,25 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { ReactComponent as Spin } from '../assets/images/Spin.svg';
 import { encryptToken } from '../utils/passwordEncryption';
 import api from '../api/login';
+import { userInfo } from '../atoms/userInfo';
 
 function LoadingPage() {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [user, setuser] = useRecoilState(userInfo);
   // console.log(location.search.split('=')[1]);
 
   const jwt = location.search.split('=')[1];
 
   const login = async () => {
     const res = await api.fastLogin(jwt);
-    if (res === 200) {
+    if (res.status === 200) {
+      console.log(res.data);
+      // recoil-persist로 localstorage에 user 정보 저장
+      setuser(res.data);
       navigate('/home');
     }
   };
