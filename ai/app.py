@@ -50,7 +50,9 @@ else:
     print("Setting strategy to MirroredStrategy()")
 
 app = Flask(__name__)
-CORS(app)
+
+cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
+# CORS(app)
 # Bootstrap(app)
 
 
@@ -61,11 +63,10 @@ def index():
     uploaded_file = request.files['file']   # 업로드된 이미지
     area = request.form['area']             # 지역명
     checkpoint_path = './checkpoint/' + area + '/checkpoint'
-    print("> 지역:" , area)
+    print("> 지역:", area)
     print("> checkpoint path:", checkpoint_path)
 
     class_list = read_classes(area)
-
 
     # 파일 업로드 되면
     if uploaded_file.filename != '':
