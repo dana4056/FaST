@@ -1,4 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useRecoilState } from 'recoil';
+import { userInfo } from '../atoms/userInfo';
 import { TagType } from '../types/TagType';
 
 const api = axios.create({

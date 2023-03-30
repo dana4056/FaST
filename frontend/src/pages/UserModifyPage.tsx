@@ -22,6 +22,8 @@ function UserModifyPage({
   handleSaveModifyData,
   onChangeNickName,
   goModifyPwd,
+  goLogout,
+  doWithdraw,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -98,8 +100,12 @@ function UserModifyPage({
               <div>
                 <p>로그아웃 하시겠습니까?</p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
+              <Link to="/login">
+                <button
+                  onClick={goLogout}
+                  className="follow_delete_btn"
+                  type="button"
+                >
                   예
                 </button>
               </Link>
@@ -130,11 +136,13 @@ function UserModifyPage({
                   정말 탈퇴하시겠습니까?
                 </p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
-                  예
-                </button>
-              </Link>
+              <button
+                onClick={doWithdraw}
+                className="follow_delete_btn"
+                type="button"
+              >
+                예
+              </button>
               <button
                 className="follow_delete_btn"
                 type="button"

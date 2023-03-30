@@ -2,6 +2,7 @@ package a402.FaST.service;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import a402.FaST.Controller.UserController;
@@ -143,38 +144,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(userRepository.existsByNickname(requestDto.getNickName())){
+
+        User user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
+
+
+        if(!requestDto.getNickName().equals(user.getNickname()) && userRepository.existsByNickname(requestDto.getNickName())){
             throw new DuplicateMemberException("이미 있는 닉네임 입니다");
-        }else{
-            User user = userRepository.findById(id).get();
-            user.setNickname(requestDto.getNickName());
-            user.setImgPath(requestDto.getImgPath());
-
-            // 사용자 태그 전체 삭제
-            tagHasUserRepository.deleteAllByUser(user);
-
-            // 만약 태그 테이블에 없는 태그 입력시 태그 생성
-            for (String tagName : requestDto.getTags()) {
-                if (!tagRepository.existsByName(tagName)) {
-                    Tag tag = Tag.builder().name(tagName).build();
-                    logger.info(" Tag : {}", tag.getName());
-                    tagRepository.save(tag);
-                }
-            }
-
-            // 태그 insert
-            for (String tagName : requestDto.getTags()){
-                Tag tag = tagRepository.findByName(tagName).get();
-
-                TagHasUser tagHasUser = TagHasUser.builder()
-                        .user(user)
-                        .tag(tag)
-                        .build();
-                tagHasUserRepository.save(tagHasUser);
-            }
-
-            userResponseDto = UserResponseDto.from(user);
         }
+        user.setNickname(requestDto.getNickName());
+        user.setImgPath(requestDto.getImgPath());
+
+
+        // 사용자 태그 전체 삭제
+        tagHasUserRepository.deleteAllByUser(user);
+
+        // 만약 태그 테이블에 없는 태그 입력시 태그 생성
+        for (String tagName : requestDto.getTags()) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                logger.info(" Tag : {}", tag.getName());
+                tagRepository.save(tag);
+            }
+        }
+
+        // 태그 insert
+        for (String tagName : requestDto.getTags()){
+            Tag tag = tagRepository.findByName(tagName).get();
+
+            TagHasUser tagHasUser = TagHasUser.builder()
+                .user(user)
+                .tag(tag)
+                .build();
+            tagHasUserRepository.save(tagHasUser);
+        }
+
+        userResponseDto = UserResponseDto.from(user);
+
+
         return userResponseDto;
     }
 

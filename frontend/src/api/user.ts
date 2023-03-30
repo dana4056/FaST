@@ -12,7 +12,7 @@ const api = axios.create({
 async function getMyData(id: number) {
   try {
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -21,10 +21,10 @@ async function getMyData(id: number) {
 }
 
 // 게시물 수 조회
-async function countArticle(userId: number) {
+async function countArticle(id: number) {
   try {
-    const res = await api.get<number>(`/article/${userId}`, {
-      params: { userId },
+    const res = await api.get<number>(`/article/${id}`, {
+      params: { id },
     });
     console.log(res);
     return res;
@@ -38,21 +38,35 @@ async function countArticle(userId: number) {
 async function modifyData(
   id: number,
   imgPath: string,
-  nickname: string,
+  nickName: string,
   tags: Array<TagType>
 ) {
   try {
     const res = await api.put<any>(`/user/${id}/modify-user`, {
       imgPath,
-      nickname,
+      nickName,
       tags,
     });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
+    console.log(error);
+    console.log(id, { imgPath, nickName, tags });
+    return error;
+  }
+}
+
+// 회원 탈퇴
+async function goWithdraw(id: number) {
+  try {
+    const res = await api.delete(`/user/${id}`);
+
+    console.log(res.data);
+    return res.status;
+  } catch (error: any) {
     console.log(error);
     return error;
   }
 }
 
-export default { getMyData, countArticle, modifyData };
+export default { getMyData, countArticle, modifyData, goWithdraw };

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { ReactComponent as Spin } from '../assets/images/Spin.svg';
+import { ReactComponent as Spinner } from '../assets/images/Spinner.svg';
 import { encryptToken } from '../utils/passwordEncryption';
 import api from '../api/login';
 import { userInfo } from '../atoms/userInfo';
@@ -50,7 +51,7 @@ function LoadingPage() {
   }, []);
   return (
     <div className="intro-page">
-      <Spin style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '0 auto' }} />
+      <Spinner style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '0 auto' }} />
     </div>
   );
 }

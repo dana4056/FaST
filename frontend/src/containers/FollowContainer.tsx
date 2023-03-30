@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-
+import { useRecoilState } from 'recoil';
+import { userInfo } from '../atoms/userInfo';
 import FollowPage from '../pages/FollowPage';
 import followApi from '../api/follow';
 
 function FollowContainer() {
-  const dummyId = 5;
+  const [user, setUser] = useRecoilState(userInfo);
   // 팔로우 목록 조회
-  const [id, setId] = useState<number>(dummyId);
+  const [id, setId] = useState<number>(user.id);
   const [followData, setFollowData] = useState<any>({});
   // 팔로우 하지 않은 목록 조회
   const [notFollowingData, setNotFollowingData] = useState<any>([]);
   useEffect(() => {
     const getData = async () => {
-      const followList: any = await followApi.followList(id);
+      const followList: any = await followApi.followList(user.id);
       setFollowData(followList.data);
     };
     getData();
@@ -20,7 +21,7 @@ function FollowContainer() {
 
   useEffect(() => {
     const getData = async () => {
-      const notFollowingList: any = await followApi.notFollowingList(id);
+      const notFollowingList: any = await followApi.notFollowingList(user.id);
       setNotFollowingData(notFollowingList.data);
     };
     getData();

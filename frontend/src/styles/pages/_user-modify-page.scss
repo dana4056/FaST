@@ -21,17 +21,18 @@
   height: 100%;
   display: flex;
   flex-flow: column wrap;
-  justify-content: space-between;
+  justify-content: center;
   .modify__button {
+    margin-top: 3%;
     width: 100%;
     border: 0px;
     border-radius: 10px;
     color: white;
   }
   .modify__password {
-    height: 35px;
+    height: 40px;
     background-color: color.$color-1;
-    font-size: 15px;
+    font-size: 20px;
     margin-top: 20px;
     flex-grow: 2;
   }
@@ -43,6 +44,7 @@
   }
   .logout {
     border: 0px;
+    margin: 5% 0;
     background-color: transparent;
     color: color.$color-3;
     font-size: 17px;

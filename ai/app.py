@@ -3,9 +3,10 @@ import easydict
 import numpy as np
 import tensorflow as tf
 import pandas as pd
-from flask import Flask, render_template, url_for, request, redirect
-from flask_bootstrap import Bootstrap
+from flask import Flask, render_template, url_for, request, redirect, make_response
+# from flask_bootstrap import Bootstrap
 from flask_cors import CORS, cross_origin
+
 import os
 import argparse
 import logging
@@ -48,23 +49,21 @@ else:
     strategy = tf.distribute.MirroredStrategy()
     print("Setting strategy to MirroredStrategy()")
 
-app = Flask(__name__, template_folder='Template')
-cors = CORS(app)
-Bootstrap(app)
+app = Flask(__name__)
+
+cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
 
 
 @app.route('/article/image', methods=['POST'])
 def index():
 
-    # if request.method == 'POST':
     uploaded_file = request.files['file']   # 업로드된 이미지
     area = request.form['area']             # 지역명
     checkpoint_path = './checkpoint/' + area + '/checkpoint'
-    print("> 지역:" , area)
+    print("> 지역:", area)
     print("> checkpoint path:", checkpoint_path)
 
     class_list = read_classes(area)
-
 
     # 파일 업로드 되면
     if uploaded_file.filename != '':
@@ -132,9 +131,12 @@ def index():
             if probs[i] >= 0.8:
                 tags.append(classes[i])
 
-        return tags
+        response = make_response(tags)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "*")
+        response.headers.add('Access-Control-Allow-Methods', "*")
+        return response
     return "No Image"
-    # return "GET 요청"
 
 def read_image(image_path):
     image = tf.io.read_file(image_path)

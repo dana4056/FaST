@@ -1,14 +1,18 @@
 .photo-card {
   width: 100%;
   margin: 4px 0;
+  z-index: 0;
   a {
     text-decoration: none;
     color: black;
   }
+  border-radius: 0px;
+  padding-bottom: 8px;
   .photo-card__image {
+    padding-top: 10px;
     display: block;
     width: 90%;
-    margin: 20px auto;
+    margin: 10px auto;
     margin-bottom: 0;
   }
   .photo-card__row {
@@ -17,6 +21,7 @@
     padding: 2px 10px;
     .photo-card__buttons {
       margin-left: auto;
+      z-index: 9999;
       .photo-card__button {
         margin: 0 2px;
       }
@@ -26,10 +31,19 @@
       align-items: center;
       font-size: 12px;
       font-weight: bold;
+      svg {
+        width: 25px;
+        height: 25px;
+      }
     }
   }
   .photo-card__tags {
     display: flex;
+    flex-wrap: wrap;
     padding: 2px 10px;
+    max-width: 90%;
+    .photo-card__tag {
+      max-width: 90%;
+    }
   }
 }
