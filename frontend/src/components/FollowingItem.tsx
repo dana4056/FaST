@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
 
 import followApi from '../api/follow';
 
 function FollowItem({ following }: any) {
   const [profileImg, setProfileImg] = useState<string>('');
-
+  const [user, setUser] = useRecoilState(userInfo);
   useEffect(() => {
     if (following.toUser.imgPath.substring(0, 4) === 'http') {
       setProfileImg(following.toUser.imgPath);
@@ -21,10 +23,9 @@ function FollowItem({ following }: any) {
   }, []);
 
   // 팔로잉 취소 api
-  const [fromId, setFromId] = useState<number>(2);
   const onClickDelete = async (followingId: number) => {
     const followingDelete: any = await followApi.followDelete(
-      fromId,
+      user.id,
       followingId
     );
     window.location.reload();

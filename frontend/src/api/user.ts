@@ -9,9 +9,8 @@ const api = axios.create({
 });
 
 // 내 정보 조회
-async function getMyData(toId: number) {
+async function getMyData(id: number) {
   try {
-    const id = 5;
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
     // console.log(res);
     return res;
@@ -22,10 +21,9 @@ async function getMyData(toId: number) {
 }
 
 // 게시물 수 조회
-async function countArticle(userId: number) {
+async function countArticle(id: number) {
   try {
-    const id = 5;
-    const res = await api.get<number>(`/article/${userId}`, { params: { id } });
+    const res = await api.get<number>(`/article/${id}`, { params: { id } });
     // console.log(res);
     return res;
   } catch (error) {
@@ -38,19 +36,20 @@ async function countArticle(userId: number) {
 async function modifyData(
   id: number,
   imgPath: string,
-  nickname: string,
+  nickName: string,
   tags: Array<TagType>
 ) {
   try {
     const res = await api.put<any>(`/user/${id}/modify-user`, {
       imgPath,
-      nickname,
+      nickName,
       tags,
     });
     // console.log(res);
     return res;
   } catch (error) {
     console.log(error);
+    console.log(id, { imgPath, nickName, tags });
     return error;
   }
 }
