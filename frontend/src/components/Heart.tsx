@@ -4,7 +4,6 @@ function Heart() {
   const [liked, setLiked] = useState(false);
 
   const handleLikeClick = (event: any) => {
-    console.log('liked');
     event.stopPropagation();
     setLiked(!liked);
   };

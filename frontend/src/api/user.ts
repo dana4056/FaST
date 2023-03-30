@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { getErrorMessage } from 'three-stdlib';
 import { TagType } from '../types/TagType';
 
 const api = axios.create({
@@ -12,7 +13,7 @@ const api = axios.create({
 async function getMyData(id: number) {
   try {
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
-    console.log(res.data);
+    // console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -49,9 +50,10 @@ async function modifyData(
     });
     console.log(res.data);
     return res;
-  } catch (error) {
-    console.log(error);
-    console.log(id, { imgPath, nickName, tags });
+  } catch (error: any) {
+    if (error.response.status === 409) {
+      alert('중복된 닉네임입니다. 다른 닉네임으로 시도해주세요');
+    }
     return error;
   }
 }

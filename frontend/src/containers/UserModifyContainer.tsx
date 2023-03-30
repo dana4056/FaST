@@ -94,7 +94,6 @@ function UserModifyContainer() {
   const [tags, setTags] = useState<Array<TagType>>([]);
 
   useEffect(() => {
-    console.log(userData);
     // 이미 등록된 관심태그
     const myTags: Array<TagType> = [];
     // 내 관심태그 추가
@@ -181,10 +180,6 @@ function UserModifyContainer() {
 
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
-    console.log(`저장하기 버튼 클릭 : ${imgPath}`);
-    console.log(nickname);
-    console.log(tagList);
-
     if (image === undefined) {
       setImgPath(() => '/profiles/default.jpg');
     }
@@ -207,7 +202,12 @@ function UserModifyContainer() {
       nickname,
       tagList
     );
-    onClickSaveModal();
+    console.log(newData.status);
+    if (newData.status === 200) {
+      onClickSaveModal();
+    } else {
+      console.log('에러');
+    }
     return newData;
   };
 

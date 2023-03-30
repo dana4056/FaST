@@ -49,4 +49,17 @@ export async function sendEmail(email: string) {
   }
 }
 
-export default { getUserArticle };
+async function userArticleLike(articleId: number, userId: number) {
+  try {
+    const res = await api.get('/likes/article', {
+      params: { articleId, userId },
+    });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { getUserArticle, userArticleLike };
