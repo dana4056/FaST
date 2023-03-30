@@ -165,8 +165,9 @@ function SignUpContainer() {
       setImage(newImages[0]);
       setImageUrl(newImageUrls[0]);
       setImgPath(`profiles/${email}`);
+      console.log(`사용자 이미지 입력 : ${imgPath}`);
       // 입력 초기화
-      event.target.value = ''; // eslint-disable-line no-param-reassign
+      // event.target.value = ''; // eslint-disable-line no-param-reassign
     }
   };
   // 입력한 이미지 삭제
@@ -314,35 +315,60 @@ function SignUpContainer() {
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
-      console.log('회원가입 api 통신할 때 보낼 데이터 : ');
       const salt = createSalt();
       const pwd = createHashedPassword(password, salt);
-      console.log(`email : ${email}`); // 이메일
-      console.log(`nickname : ${name}`); // 닉네임
-      console.log(`password : ${password}`); // 비밀번호
-      console.log(`암호화된 password : ${pwd}`); // 암호화된 password
-      const res = await api.signUp(email, imgPath, name, pwd, salt);
-      console.log(`signUpContainer res :${res}`);
-      if (res.status === 200) {
-        // db에 있는 사용자 pk값 저장
-        setIdPk(res.data.id);
-        // 파이어베이스에 사용자 프로필 사진 등록
-        const uploadImage = async (img: File | undefined) => {
-          if (img === undefined) {
-            return;
-          }
-          const result = await uploadBytes(
-            ref(storage, `profiles/${email}`),
-            img
-          );
-          console.log(result);
-        };
-        uploadImage(image);
-        setIsOpen(() => true);
-      } else if (res.status === 409) {
-        alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+
+      // 파이어베이스에 사용자 프로필 사진 등록
+      const uploadImage = async (img: File | undefined) => {
+        if (img === undefined) {
+          return;
+        }
+        const result = await uploadBytes(
+          ref(storage, `profiles/${email}`),
+          img
+        );
+        console.log(result);
+      };
+
+      uploadImage(image);
+
+      if (image === undefined) {
+        setImgPath(() => '/profiles/default.jpg');
+        const res = await api.signUp(
+          email,
+          '/profiles/default.jpg',
+          name,
+          pwd,
+          salt
+        );
+        if (res.status === 200) {
+          // db에 있는 사용자 pk값 저장
+          setIdPk(res.data.id);
+          setIsOpen(() => true);
+        } else if (res.status === 409) {
+          alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+        } else {
+          alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        }
       } else {
-        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        setImgPath(() => `/profiles/${email}`);
+        const res = await api.signUp(
+          email,
+          `/profiles/${email}`,
+          name,
+          pwd,
+          salt
+        );
+        if (res.status === 200) {
+          // db에 있는 사용자 pk값 저장
+          setIdPk(res.data.id);
+
+          setIsOpen(() => true);
+        } else if (res.status === 409) {
+          alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+        } else {
+          alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        }
       }
     }
     // eslint-disable-next-line no-alert
@@ -352,7 +378,9 @@ function SignUpContainer() {
   // 관심 태그 선택까지 모두 마쳤다면
   const onClickComplete = async () => {
     console.log('완료 버튼 클릭!!!');
-
+    if (selectedTag.length === 0) {
+      alert('관심 태그를 선택해주세요!');
+    }
     const res = await api.registerTag(selectedTag, idPk);
 
     if (res === 200) {

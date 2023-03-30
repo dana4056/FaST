@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { userInfo } from '../atoms/userInfo';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import UserModifyPage from '../pages/UserModifyPage';
 import Modal from '../components/Modal';
+import { userInfo } from '../atoms/userInfo';
 import { TagType } from '../types/TagType';
 import modifyApi from '../api/user';
 import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
+
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userInfo);
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
@@ -92,6 +95,7 @@ function UserModifyContainer() {
   const [tags, setTags] = useState<Array<TagType>>([]);
 
   useEffect(() => {
+    console.log(userData);
     // 이미 등록된 관심태그
     const myTags: Array<TagType> = [];
     // 내 관심태그 추가
@@ -175,8 +179,29 @@ function UserModifyContainer() {
   const onClickSaveModal = useCallback(() => {
     setOpenSaveModal(!openSaveModal);
   }, [openSaveModal]);
+
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
+    console.log(`저장하기 버튼 클릭 : ${imgPath}`);
+    console.log(nickname);
+    console.log(tagList);
+
+    if (image === undefined) {
+      setImgPath(() => '/profiles/default.jpg');
+    }
+
+    // 파이어베이스에 사용자 프로필 사진 등록
+    const uploadImage = async (img: File | undefined) => {
+      if (img === undefined) {
+        setImgPath(() => '/profiles/default.jpg');
+        return;
+      }
+      const result = await uploadBytes(ref(storage, `profiles/${email}`), img);
+      console.log(result);
+    };
+
+    uploadImage(image);
+
     const newData: any = await modifyApi.modifyData(
       user.id,
       imgPath,
@@ -185,6 +210,26 @@ function UserModifyContainer() {
     );
     onClickSaveModal();
     return newData;
+  };
+
+  // 비밀번호 변경하러 가기
+  const goModifyPwd = () => {
+    navigate('/modify-pwd');
+  };
+
+  // 로그아웃
+  const goLogout = () => {
+    localStorage.clear();
+  };
+
+  // 회원 탈퇴
+  const doWithdraw = async () => {
+    localStorage.clear();
+
+    const res = await modifyApi.goWithdraw(user.id);
+    if (res === 200) {
+      navigate('/');
+    }
   };
 
   return (
@@ -220,6 +265,9 @@ function UserModifyContainer() {
         handleTagDelete={handleTagDelete}
         handleSaveModifyData={handleSaveModifyData}
         onChangeNickName={onChangeNickName}
+        goModifyPwd={goModifyPwd}
+        goLogout={goLogout}
+        doWithdraw={doWithdraw}
       />
     </div>
   );

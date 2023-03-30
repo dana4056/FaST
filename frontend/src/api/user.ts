@@ -12,7 +12,7 @@ const api = axios.create({
 async function getMyData(id: number) {
   try {
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -23,8 +23,10 @@ async function getMyData(id: number) {
 // 게시물 수 조회
 async function countArticle(id: number) {
   try {
-    const res = await api.get<number>(`/article/${id}`, { params: { id } });
-    // console.log(res);
+    const res = await api.get<number>(`/article/${userId}`, {
+      params: { userId },
+    });
+    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -45,7 +47,7 @@ async function modifyData(
       nickName,
       tags,
     });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -54,4 +56,17 @@ async function modifyData(
   }
 }
 
-export default { getMyData, countArticle, modifyData };
+// 회원 탈퇴
+async function goWithdraw(id: number) {
+  try {
+    const res = await api.delete(`/user/${id}`);
+
+    console.log(res.data);
+    return res.status;
+  } catch (error: any) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { getMyData, countArticle, modifyData, goWithdraw };

@@ -21,6 +21,9 @@ function UserModifyPage({
   handleImageDelete,
   handleSaveModifyData,
   onChangeNickName,
+  goModifyPwd,
+  goLogout,
+  doWithdraw,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -76,7 +79,11 @@ function UserModifyPage({
         )}
       </div>
       <div className="modify__buttons">
-        <button type="button" className="modify__button modify__password">
+        <button
+          type="button"
+          onClick={goModifyPwd}
+          className="modify__button modify__password"
+        >
           비밀번호 변경하러 가기
         </button>
         <button
@@ -93,8 +100,12 @@ function UserModifyPage({
               <div>
                 <p>로그아웃 하시겠습니까?</p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
+              <Link to="/login">
+                <button
+                  onClick={goLogout}
+                  className="follow_delete_btn"
+                  type="button"
+                >
                   예
                 </button>
               </Link>
@@ -125,11 +136,13 @@ function UserModifyPage({
                   정말 탈퇴하시겠습니까?
                 </p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
-                  예
-                </button>
-              </Link>
+              <button
+                onClick={doWithdraw}
+                className="follow_delete_btn"
+                type="button"
+              >
+                예
+              </button>
               <button
                 className="follow_delete_btn"
                 type="button"

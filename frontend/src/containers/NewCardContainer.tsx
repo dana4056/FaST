@@ -1,8 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import EXIF from 'exif-js';
 
 import NewCardPage from '../pages/NewCardPage';
 import { TagType } from '../types/TagType';
 import useViewModel from '../viewmodels/CardViewModel';
+import { userInfo } from '../atoms/userInfo';
+import test from '../api/tag';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 function NewCardContainer() {
   // 미리보기 이미지 url 저장 배열
@@ -13,36 +23,71 @@ function NewCardContainer() {
   const [tags, setTags] = useState<Array<TagType>>([]);
   // 카드 내용
   const [description, setDescription] = useState<string>('');
+  const [la, setLa] = useState<string>('');
+  const [lo, setLo] = useState<string>('');
+  const [loc, setLoc] = useState<string>('');
+
+  const user = useRecoilValue(userInfo);
 
   const { uploadImages, writeArticle } = useViewModel();
 
   // 이미지 입력
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageChange = async (event: React.ChangeEvent<any>) => {
     if (event.target.files) {
-      const { files } = event.target;
+      const fileList = event.target.files;
+      const filesArray: Array<File> = Array.from(fileList);
+      if (images.length + filesArray.length > 10) {
+        alert('최대 10개의 이미지를 업로드할 수 있습니다.');
+        return;
+      }
       const newImages: Array<File> = [];
       const newImageUrls: Array<string> = [];
 
-      // 입력한 파일을 순회하며 state에 추가
-      for (let i = 0; i < files.length; i += 1) {
-        newImages[i] = files[i];
-        newImageUrls[i] = URL.createObjectURL(files[i]);
-      }
+      filesArray.forEach((file: any, i: number) => {
+        EXIF.getData(file, () => {
+          const meta = EXIF.getAllTags(file);
+          if (la.length === 0 && meta && meta.GPSLatitudeRef) {
+            if (meta.GPSLatitudeRef === 'S') {
+              setLa(
+                String(
+                  -1 * meta.GPSLatitude[0] +
+                    (-60 * meta.GPSLatitude[1] - meta.GPSLatitude[2]) / 3600
+                )
+              );
+            } else {
+              setLa(
+                String(
+                  meta.GPSLatitude[0] +
+                    (60 * meta.GPSLatitude[1] + meta.GPSLatitude[2]) / 3600
+                )
+              );
+            }
+            if (meta.GPSLongitudeRef === 'W') {
+              setLo(
+                String(
+                  -1 * meta.GPSLongitude[0] +
+                    (-60 * meta.GPSLongitude[1] - meta.GPSLongitude[2]) / 3600
+                )
+              );
+            } else {
+              setLo(
+                String(
+                  meta.GPSLongitude[0] +
+                    (60 * meta.GPSLongitude[1] + meta.GPSLongitude[2]) / 3600
+                )
+              );
+            }
+          }
+        });
+        newImages[i] = file;
+        newImageUrls[i] = URL.createObjectURL(filesArray[i]);
+      });
+
       setImages((prev: Array<File>) => [...prev.concat(newImages)]);
       setImageUrls((prev: Array<string>) => [...prev.concat(newImageUrls)]);
 
       // 입력 초기화
       event.target.value = ''; // eslint-disable-line no-param-reassign
-
-      // 샘플 태그
-      setTags([
-        {
-          value: '테스트태그',
-          className: 'tag-1',
-        },
-      ]);
     }
   };
 
@@ -59,18 +104,48 @@ function NewCardContainer() {
   ) => {
     setDescription(event.currentTarget.value);
   };
-
   // 카드 생성 함수
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // 새로고침 방지
     event.preventDefault();
+    // test(images[0], '서울특별시');
+    console.log(loc);
     // 서버에 업로드하는 함수는 여기에
+    // imageUrls.map((url: string) => getLocation(url));
 
-    const res = await writeArticle({
-      content: description,
-    });
+    // const uploadPaths = await uploadImages(images);
+    // const res = await writeArticle({
+    //   imagePath: uploadPaths.join(),
+    //   content: description,
+    //   tags,
+    //   userId: user.id,
+    // });
   };
 
+  useEffect(() => {
+    if (
+      la.length !== 0 &&
+      window.kakao &&
+      window.kakao.maps &&
+      window.kakao.maps.services
+    ) {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      const coord = new window.kakao.maps.LatLng(la, lo);
+      if (geocoder && coord) {
+        const callback = function (result: any, status: any) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            const region = result[0].address.region_1depth_name;
+            if (region === '서울') {
+              setLoc('서울특별시');
+            } else if (region === '인천') {
+              setLoc('인천광역시');
+            }
+          }
+        };
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+      }
+    }
+  }, [la]);
   return (
     <NewCardPage
       imageUrls={imageUrls}
