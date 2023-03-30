@@ -11,8 +11,6 @@ export default async function test(image: File, area: string) {
   const formData = new FormData();
   formData.append('file', image);
   formData.append('area', area);
-  const res = await api.post('/article/image', {
-    formData,
-  });
-  console.log(res);
+  const res = await api.post('/article/image', formData);
+  return res;
 }
