@@ -4,8 +4,9 @@ import numpy as np
 import tensorflow as tf
 import pandas as pd
 from flask import Flask, render_template, url_for, request, redirect
-from flask_bootstrap import Bootstrap
+# from flask_bootstrap import Bootstrap
 from flask_cors import CORS, cross_origin
+
 import os
 import argparse
 import logging
@@ -48,9 +49,9 @@ else:
     strategy = tf.distribute.MirroredStrategy()
     print("Setting strategy to MirroredStrategy()")
 
-app = Flask(__name__, template_folder='Template')
-cors = CORS(app)
-Bootstrap(app)
+app = Flask(__name__)
+CORS(app)
+# Bootstrap(app)
 
 
 @app.route('/article/image', methods=['POST'])
