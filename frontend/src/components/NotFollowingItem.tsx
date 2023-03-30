@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
 import followApi from '../api/follow';
 
 function NotFollowItem({ notFollowing }: any) {
+  const [user, setUser] = useRecoilState(userInfo);
   const [profileImg, setProfileImg] = useState<string>('');
 
   useEffect(() => {
@@ -24,9 +27,11 @@ function NotFollowItem({ notFollowing }: any) {
   }, []);
 
   // 팔로잉 추가 api
-  const [fromId, setFromId] = useState<number>(2);
   const onClickAdd = async (followingId: number) => {
-    const followingDelete: any = await followApi.followAdd(fromId, followingId);
+    const followingDelete: any = await followApi.followAdd(
+      user.id,
+      followingId
+    );
     window.location.reload();
     return followingDelete;
   };

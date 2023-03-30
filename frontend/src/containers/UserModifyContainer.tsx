@@ -10,6 +10,7 @@ import modifyApi from '../api/user';
 import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
+
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userInfo);
   // 내 정보 조회 api
@@ -21,7 +22,6 @@ function UserModifyContainer() {
     };
     getData();
   }, []);
-  // console.log(userData);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -203,7 +203,7 @@ function UserModifyContainer() {
     uploadImage(image);
 
     const newData: any = await modifyApi.modifyData(
-      user.id, // 유저 id
+      user.id,
       imgPath,
       nickname,
       tagList

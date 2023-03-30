@@ -21,7 +21,7 @@ async function getMyData(id: number) {
 }
 
 // 게시물 수 조회
-async function countArticle(userId: number) {
+async function countArticle(id: number) {
   try {
     const res = await api.get<number>(`/article/${userId}`, {
       params: { userId },
@@ -38,19 +38,20 @@ async function countArticle(userId: number) {
 async function modifyData(
   id: number,
   imgPath: string,
-  nickname: string,
+  nickName: string,
   tags: Array<TagType>
 ) {
   try {
     const res = await api.put<any>(`/user/${id}/modify-user`, {
       imgPath,
-      nickname,
+      nickName,
       tags,
     });
     console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
+    console.log(id, { imgPath, nickName, tags });
     return error;
   }
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
 import userApi from '../api/user';
 import articleApi from '../api/article';
@@ -15,7 +17,7 @@ import { CardType } from '../types/CardType';
 import followApi from '../api/follow';
 
 function MyRecordContainer() {
-  const dummyId = 5;
+  const [user, setUser] = useRecoilState(userInfo);
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   // 내 관심 태그
@@ -24,12 +26,11 @@ function MyRecordContainer() {
   const [articleNum, setArticleNum] = useState<number>(0);
   // 게시글 목록
   const [article, setArticle] = useState<any>({});
-  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
 
   useEffect(() => {
     // 프로필 박스
     const getData = async () => {
-      const myData: any = await userApi.getMyData(dummyId);
+      const myData: any = await userApi.getMyData(user.id);
       setUserData(myData.data);
       const newMyTag: Array<TagType> = [];
       myData.data.tags.map((tag: any) =>
@@ -41,7 +42,7 @@ function MyRecordContainer() {
       setMyTag(newMyTag);
 
       // 프로필 박스 - 기록수
-      const cntArticle: any = await userApi.countArticle(dummyId);
+      const cntArticle: any = await userApi.countArticle(user.id);
       setArticleNum(cntArticle.data);
 
       // 게시글
@@ -52,32 +53,63 @@ function MyRecordContainer() {
     getData();
   }, []);
 
+  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
+  const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
+
   useEffect(() => {
     const cardLeftList: any = [];
+    const cardRightList: any = [];
     if (article.length > 0) {
-      article.map((item: any) =>
+      for (let i = article.length - 1; i >= 0; i -= 2) {
+        const leftArticleTags: any = [];
+        const leftItem = article[i];
+        leftItem.tags.map((tag: any) =>
+          leftArticleTags.push({
+            value: tag.tagName,
+            className: 'tag-2 tag-small',
+          })
+        );
         cardLeftList.push({
-          id: item?.id,
-          // imageUrls: [item?.imgPath],
+          id: leftItem?.id,
+          // imageUrls: [leftItem?.imgPath],
           imageUrls: [sample1],
-          nickname: item?.nickname,
+          nickname: leftItem?.nickname,
           content: '',
-          regTime: item?.createTime,
-          isLike: item?.likeCheck,
-          numLikes: item?.likeCount,
-          numComments: item?.commentCount,
-          tags: [
-            {
-              value: item?.tags[0].tagName,
-              className: 'tag-2 tag-small',
-            },
-          ],
-        })
-      );
+          regTime: leftItem?.createTime,
+          isLike: leftItem?.likeCheck,
+          numLikes: leftItem?.likeCount,
+          numComments: leftItem?.commentCount,
+          tags: leftArticleTags,
+        });
+      }
+      for (let i = article.length - 2; i >= 0; i -= 2) {
+        const rightArticleTags: any = [];
+        const rightItem = article[i];
+        rightItem.tags.map((tag: any) =>
+          rightArticleTags.push({
+            value: tag.tagName,
+            className: 'tag-2 tag-small',
+          })
+        );
+        cardRightList.push({
+          id: rightItem?.id,
+          // imageUrls: [rightItem?.imgPath],
+          imageUrls: [sample1],
+          nickname: rightItem?.nickname,
+          content: '',
+          regTime: rightItem?.createTime,
+          isLike: rightItem?.likeCheck,
+          numLikes: rightItem?.likeCount,
+          numComments: rightItem?.commentCount,
+          tags: rightArticleTags,
+        });
+      }
     }
-    console.log(cardLeftList);
     if (cardLeftList.length > 0) {
       setCardsLeft([...cardLeftList]);
+    }
+    if (cardRightList.length > 0) {
+      setCardsRight([...cardRightList]);
     }
   }, [article]);
 
@@ -102,64 +134,6 @@ function MyRecordContainer() {
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
-
-  // useEffect(() => {
-  //   setCardsLeft([
-  //     {
-  //       id: article[0].id,
-  //       imageUrls: article[0].imgPath,
-  //       nickname: article[0].nickname,
-  //       content: 'sample',
-  //       regTime: article[0].createTime,
-  //       isLike: article[0].likeCheck,
-  //       numLikes: article[0].likeCount,
-  //       numComments: article[0].commentCount,
-  //       tags: article[0].tags,
-  //     },
-  //   ]);
-  // }, [article]);
-  const [cardsRight, setCardsRight] = useState<Array<CardType>>([
-    {
-      id: 5,
-      imageUrls: [sample3],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 6,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -212,10 +186,10 @@ function MyRecordContainer() {
   };
 
   // 팔로우 수 조회
-  const [toId, setToId] = useState<number>(dummyId);
+  const [toId, setToId] = useState<number>(user.id);
   const [followerNum, setFollowerNum] = useState<number>(0);
 
-  const [fromId, setFromId] = useState<number>(dummyId);
+  const [fromId, setFromId] = useState<number>(user.id);
   const [followingNum, setFollowingNum] = useState<number>(0);
   useEffect(() => {
     const getData = async () => {
