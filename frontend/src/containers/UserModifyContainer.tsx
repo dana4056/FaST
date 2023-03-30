@@ -180,6 +180,9 @@ function UserModifyContainer() {
   }, [openSaveModal]);
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
+    console.log(`저장하기 버튼 클릭 : ${imgPath}`);
+    console.log(nickname);
+    console.log(tagList);
     const newData: any = await modifyApi.modifyData(
       user.id, // 유저 id
       imgPath,
