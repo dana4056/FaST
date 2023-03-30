@@ -12,7 +12,7 @@ const api = axios.create({
 async function getMyData(id: number) {
   try {
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -47,7 +47,7 @@ async function modifyData(
       nickname,
       tags,
     });
-    // console.log(res);
+    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);

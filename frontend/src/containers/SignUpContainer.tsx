@@ -177,11 +177,6 @@ function SignUpContainer() {
     setImgPath('profiles/default.jpg');
   };
 
-  useEffect(() => {
-    console.log(imgPath);
-    setImgPath(imgPath);
-  }, [imgPath]);
-
   // 사용자 이메일로 인증번호 전송
   const onClickSend = async () => {
     console.log('사용자 이메일로 인증번호 전송!');
@@ -320,14 +315,8 @@ function SignUpContainer() {
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
-      console.log('회원가입 api 통신할 때 보낼 데이터 : ');
-      console.log(`imgPath : ${imgPath}`);
       const salt = createSalt();
       const pwd = createHashedPassword(password, salt);
-      console.log(`email : ${email}`); // 이메일
-      console.log(`nickname : ${name}`); // 닉네임
-      console.log(`password : ${password}`); // 비밀번호
-      console.log(`암호화된 password : ${pwd}`); // 암호화된 password
 
       // 파이어베이스에 사용자 프로필 사진 등록
       const uploadImage = async (img: File | undefined) => {
