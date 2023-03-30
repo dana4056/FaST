@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
 
 
-        if(userRepository.existsByNickname(requestDto.getNickName())){
+        if(!requestDto.getNickName().equals(user.getNickname()) && userRepository.existsByNickname(requestDto.getNickName())){
             throw new DuplicateMemberException("이미 있는 닉네임 입니다");
         }
         user.setNickname(requestDto.getNickName());
