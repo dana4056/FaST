@@ -48,11 +48,9 @@ function MyRecordContainer() {
       // 게시글
       const articleData: any = await articleApi.getUserArticle(5, 20, 0);
       setArticle(articleData.data);
-      console.log(article);
     };
     getData();
   }, []);
-
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
