@@ -91,11 +91,7 @@ function MapContainer() {
       ],
     },
   ]);
-  return (
-    <div>
-      <MapPage cardsLeft={cardsLeft} cardsRight={cardsRight} />
-    </div>
-  );
+  return <MapPage cardsLeft={cardsLeft} cardsRight={cardsRight} />;
 }
 
 export default MapContainer;
