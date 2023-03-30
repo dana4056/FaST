@@ -1,31 +1,27 @@
 @font-face {
   font-family: 'ImcreSoojin';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff')
-    format('woff');
+  src: url('../src/assets/fonts/ImcreSoojin.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Dovemayo_gothic';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2')
-    format('woff2');
+  src: url('../src/assets/fonts/Dovemayo_gothic.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Katuri';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff')
-    format('woff');
+  src: url('../src/assets/fonts/Katuri.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'IM_Hyemin-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2')
-    format('woff');
+  src: url('../src/assets/fonts/IM_Hyemin-Bold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -34,20 +30,16 @@
   font-family: 'Godo';
   font-style: normal;
   font-weight: 400;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2')
-      format('woff2'),
-    url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff')
-      format('woff');
+  src: url('../src/assets/fonts/GodoM.woff2') format('woff2'),
+    url('../src/assets/fonts/GodoM.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Godo';
   font-style: normal;
   font-weight: 700;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff2')
-      format('woff2'),
-    url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff')
-      format('woff');
+  src: url('../src/assets/fonts/GodoB.woff2') format('woff2'),
+    url('../src/assets/fonts/GodoB.woff') format('woff');
 }
 
 .godo * {
