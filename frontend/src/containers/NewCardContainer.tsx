@@ -20,16 +20,44 @@ function NewCardContainer() {
   // 이미지 파일 저장 배열
   const [images, setImages] = useState<Array<File>>([]);
   // 태그 저장 배열
-  const [tags, setTags] = useState<Array<TagType>>([]);
+  const [autoTags, setAutoTags] = useState<Array<TagType>>([]);
   // 카드 내용
   const [description, setDescription] = useState<string>('');
   const [la, setLa] = useState<string>('');
   const [lo, setLo] = useState<string>('');
-  const [loc, setLoc] = useState<string>('');
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [customTags, setCustomTags] = useState<Array<TagType>>([]);
+  const [customTag, setCustomTag] = useState<string>('');
 
   const user = useRecoilValue(userInfo);
 
   const { uploadImages, writeArticle } = useViewModel();
+  const handleCustomTagInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCustomTag(event.currentTarget.value);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setCustomTag('');
+    setIsModalOpen(false);
+  };
+
+  const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const newCustomTags = customTags;
+    newCustomTags.push({
+      className: 'tag-4',
+      value: customTag,
+    });
+    setCustomTags([...newCustomTags]);
+    handleModalClose();
+  };
 
   // 이미지 입력
   const handleImageChange = async (event: React.ChangeEvent<any>) => {
@@ -95,7 +123,7 @@ function NewCardContainer() {
   const handleImageDelete = () => {
     setImageUrls([]);
     setImages([]);
-    setTags([]);
+    setAutoTags([]);
   };
 
   // 내용 변화를 감지
@@ -108,8 +136,6 @@ function NewCardContainer() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // 새로고침 방지
     event.preventDefault();
-    // test(images[0], '서울특별시');
-    console.log(loc);
     // 서버에 업로드하는 함수는 여기에
     // imageUrls.map((url: string) => getLocation(url));
 
@@ -123,6 +149,10 @@ function NewCardContainer() {
   };
 
   useEffect(() => {
+    const postData = async (tt: string) => {
+      const res = await test(images[0], tt);
+      console.log(res.data[0]);
+    };
     if (
       la.length !== 0 &&
       window.kakao &&
@@ -136,9 +166,9 @@ function NewCardContainer() {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
             if (region === '서울') {
-              setLoc('서울특별시');
+              postData('서울특별시');
             } else if (region === '인천') {
-              setLoc('인천광역시');
+              postData('인천광역시');
             }
           }
         };
@@ -148,13 +178,21 @@ function NewCardContainer() {
   }, [la]);
   return (
     <NewCardPage
+      isModalOpen={isModalOpen}
+      isLoading={isLoading}
+      customTag={customTag}
+      handleCustomTagInputChange={handleCustomTagInputChange}
+      handleModalOpen={handleModalOpen}
+      handleModalClose={handleModalClose}
       imageUrls={imageUrls}
       handleImageChange={handleImageChange}
       handleImageDelete={handleImageDelete}
-      tags={tags}
+      autoTags={autoTags}
+      customTags={customTags}
       description={description}
       handleDescriptionChange={handleDescriptionChange}
       handleSubmit={handleSubmit}
+      handleCustomTagAdd={handleCustomTagAdd}
     />
   );
 }
