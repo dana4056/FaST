@@ -106,6 +106,7 @@ export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
   // 회원정보 수정 저장
   goModifyPwd: () => void;
   goLogout: () => void;
+  doWithdraw: () => void;
   handleSaveModifyData: React.MouseEventHandler;
   onChangeNickName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   email: string;

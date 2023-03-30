@@ -198,7 +198,16 @@ function UserModifyContainer() {
   // 로그아웃
   const goLogout = () => {
     localStorage.clear();
-    navigate('/login');
+  };
+
+  // 회원 탈퇴
+  const doWithdraw = async () => {
+    localStorage.clear();
+
+    const res = await modifyApi.goWithdraw(user.id);
+    if (res === 200) {
+      navigate('/');
+    }
   };
 
   return (
@@ -236,6 +245,7 @@ function UserModifyContainer() {
         onChangeNickName={onChangeNickName}
         goModifyPwd={goModifyPwd}
         goLogout={goLogout}
+        doWithdraw={doWithdraw}
       />
     </div>
   );

@@ -55,4 +55,17 @@ async function modifyData(
   }
 }
 
-export default { getMyData, countArticle, modifyData };
+// 회원 탈퇴
+async function goWithdraw(id: number) {
+  try {
+    const res = await api.delete(`/user/${id}`);
+
+    console.log(res.data);
+    return res.status;
+  } catch (error: any) {
+    console.log(error);
+    return error;
+  }
+}
+
+export default { getMyData, countArticle, modifyData, goWithdraw };
