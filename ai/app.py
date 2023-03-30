@@ -52,8 +52,6 @@ else:
 app = Flask(__name__)
 
 cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
-# CORS(app)
-# Bootstrap(app)
 
 
 @app.route('/article/image', methods=['POST'])
@@ -139,7 +137,6 @@ def index():
         response.headers.add('Access-Control-Allow-Methods', "*")
         return response
     return "No Image"
-    # return "GET 요청"
 
 def read_image(image_path):
     image = tf.io.read_file(image_path)
