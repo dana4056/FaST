@@ -28,8 +28,8 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleModalOpen: () => void;
   handleModalClose: () => void;
   // 태그 저장 배열
-  customTags: Array<TagType>;
-  autoTags: Array<TagType>;
+  customTags: Array<string>;
+  autoTags: Array<string>;
   // 카드 내용
   description: string;
 
@@ -45,6 +45,8 @@ export interface NewCardPageProps extends InputPhotoProps {
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleCustomTagAdd: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleCustomTagDelete: (i: number) => void;
+  handleAutoTagDelete: (i: number) => void;
 }
 
 // 카드 상세 페이지 props

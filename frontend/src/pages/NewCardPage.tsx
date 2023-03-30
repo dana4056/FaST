@@ -5,6 +5,7 @@ import InputPhoto from '../components/NewCard/InputPhoto';
 import Tag from '../components/Tag';
 import { TagType } from '../types/TagType';
 import { NewCardPageProps } from '../types/PagePropsType';
+import { ReactComponent as Spin } from '../assets/images/Spin.svg';
 
 function NewCardPage({
   isModalOpen,
@@ -22,6 +23,8 @@ function NewCardPage({
   customTag,
   handleCustomTagInputChange,
   handleCustomTagAdd,
+  handleCustomTagDelete,
+  handleAutoTagDelete,
 }: NewCardPageProps) {
   return (
     <div className="new-card-page">
@@ -32,22 +35,22 @@ function NewCardPage({
           handleImageDelete={handleImageDelete}
         />
         <div className="new-card-page__tags card">
-          {customTags.map((tag: TagType) => (
+          {autoTags.map((tag: string, i: number) => (
             <Tag
-              key={tag.value}
-              className={tag.className}
-              handleTagDelete={null}
+              key={tag}
+              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              handleTagDelete={() => handleAutoTagDelete(i)}
             >
-              {tag.value}
+              {tag}
             </Tag>
           ))}
-          {autoTags.map((tag: TagType) => (
+          {customTags.map((tag: string, i: number) => (
             <Tag
-              key={tag.value}
-              className={tag.className}
-              handleTagDelete={null}
+              key={tag}
+              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              handleTagDelete={() => handleCustomTagDelete(i)}
             >
-              {tag.value}
+              {tag}
             </Tag>
           ))}
           <button
@@ -98,7 +101,13 @@ function NewCardPage({
           </form>
         </div>
       ) : null}
-      {isLoading ? <div className="new-card-page__loading">로딩</div> : null}
+      {isLoading ? (
+        <div className="new-card-page__loading">
+          <Spin
+            style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '0 auto' }}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
 
+import { AxiosResponse } from 'axios';
 import NewCardPage from '../pages/NewCardPage';
 import { TagType } from '../types/TagType';
 import useViewModel from '../viewmodels/CardViewModel';
 import { userInfo } from '../atoms/userInfo';
-import test from '../api/tag';
 
 declare global {
   interface Window {
@@ -20,24 +20,36 @@ function NewCardContainer() {
   // 이미지 파일 저장 배열
   const [images, setImages] = useState<Array<File>>([]);
   // 태그 저장 배열
-  const [autoTags, setAutoTags] = useState<Array<TagType>>([]);
+  const [autoTags, setAutoTags] = useState<Array<string>>([]);
   // 카드 내용
   const [description, setDescription] = useState<string>('');
   const [la, setLa] = useState<string>('');
   const [lo, setLo] = useState<string>('');
+  const [loc, setLoc] = useState<string>('서울특별시');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [customTags, setCustomTags] = useState<Array<TagType>>([]);
+  const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
 
   const user = useRecoilValue(userInfo);
 
-  const { uploadImages, writeArticle } = useViewModel();
+  const { uploadImages, writeArticle, createAutoTags } = useViewModel();
   const handleCustomTagInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCustomTag(event.currentTarget.value);
+  };
+
+  const handleAutoTagDelete = (idx: number) => {
+    const newAutoTags = autoTags;
+    newAutoTags.splice(idx, 1);
+    setAutoTags([...newAutoTags]);
+  };
+  const handleCustomTagDelete = (idx: number) => {
+    const newCustomTags = customTags;
+    newCustomTags.splice(idx, 1);
+    setCustomTags([...newCustomTags]);
   };
 
   const handleModalOpen = () => {
@@ -51,11 +63,9 @@ function NewCardContainer() {
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newCustomTags = customTags;
-    newCustomTags.push({
-      className: 'tag-4',
-      value: customTag,
-    });
+    newCustomTags.push(customTag);
     setCustomTags([...newCustomTags]);
+    setCustomTag('');
     handleModalClose();
   };
 
@@ -124,6 +134,9 @@ function NewCardContainer() {
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
+    setLoc('서울특별시');
+    setLo('');
+    setLa('');
   };
 
   // 내용 변화를 감지
@@ -137,22 +150,24 @@ function NewCardContainer() {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
-    // imageUrls.map((url: string) => getLocation(url));
-
-    // const uploadPaths = await uploadImages(images);
-    // const res = await writeArticle({
-    //   imagePath: uploadPaths.join(),
-    //   content: description,
-    //   tags,
-    //   userId: user.id,
-    // });
+    const imgPath = await uploadImages(images);
+    console.log(imgPath);
+    const res: any = await writeArticle({
+      area: loc,
+      autoTags: [],
+      content: description,
+      imgPath: imgPath.join(),
+      lat: la,
+      lng: lo,
+      tags: customTags,
+      userId: user.id,
+    });
+    if (res.status === 200) {
+      console.log('성공');
+    }
   };
 
   useEffect(() => {
-    const postData = async (tt: string) => {
-      const res = await test(images[0], tt);
-      console.log(res.data[0]);
-    };
     if (
       la.length !== 0 &&
       window.kakao &&
@@ -166,16 +181,33 @@ function NewCardContainer() {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
             if (region === '서울') {
-              postData('서울특별시');
+              setLoc('서울특별시');
             } else if (region === '인천') {
-              postData('인천광역시');
+              setLoc('인천광역시');
             }
           }
         };
         geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
       }
     }
-  }, [la]);
+  }, [lo]);
+
+  useEffect(() => {
+    const getTags = async () => {
+      setIsLoading(true);
+      const res = await createAutoTags(images, loc);
+      const newAutoTags: Array<string> = [];
+      if (res.length > 0) {
+        res.forEach((tag: string) => {
+          newAutoTags.push(tag);
+        });
+      }
+      setAutoTags([...newAutoTags]);
+      setIsLoading(false);
+    };
+    getTags();
+    // }
+  }, [images]);
   return (
     <NewCardPage
       isModalOpen={isModalOpen}
@@ -193,6 +225,8 @@ function NewCardContainer() {
       handleDescriptionChange={handleDescriptionChange}
       handleSubmit={handleSubmit}
       handleCustomTagAdd={handleCustomTagAdd}
+      handleCustomTagDelete={handleCustomTagDelete}
+      handleAutoTagDelete={handleAutoTagDelete}
     />
   );
 }
