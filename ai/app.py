@@ -3,7 +3,7 @@ import easydict
 import numpy as np
 import tensorflow as tf
 import pandas as pd
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, make_response
 # from flask_bootstrap import Bootstrap
 from flask_cors import CORS, cross_origin
 
@@ -59,7 +59,6 @@ cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
 @app.route('/article/image', methods=['POST'])
 def index():
 
-    # if request.method == 'POST':
     uploaded_file = request.files['file']   # 업로드된 이미지
     area = request.form['area']             # 지역명
     checkpoint_path = './checkpoint/' + area + '/checkpoint'
@@ -134,7 +133,11 @@ def index():
             if probs[i] >= 0.8:
                 tags.append(classes[i])
 
-        return tags
+        response = make_response(tags)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "*")
+        response.headers.add('Access-Control-Allow-Methods', "*")
+        return response
     return "No Image"
     # return "GET 요청"
 
