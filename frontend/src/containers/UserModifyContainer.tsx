@@ -195,6 +195,12 @@ function UserModifyContainer() {
     navigate('/modify-pwd');
   };
 
+  // 로그아웃
+  const goLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <div>
       {openSaveModal && (
@@ -229,6 +235,7 @@ function UserModifyContainer() {
         handleSaveModifyData={handleSaveModifyData}
         onChangeNickName={onChangeNickName}
         goModifyPwd={goModifyPwd}
+        goLogout={goLogout}
       />
     </div>
   );
