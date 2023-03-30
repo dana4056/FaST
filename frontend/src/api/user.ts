@@ -23,8 +23,8 @@ async function getMyData(id: number) {
 // 게시물 수 조회
 async function countArticle(id: number) {
   try {
-    const res = await api.get<number>(`/article/${userId}`, {
-      params: { userId },
+    const res = await api.get<number>(`/article/${id}`, {
+      params: { id },
     });
     console.log(res);
     return res;
