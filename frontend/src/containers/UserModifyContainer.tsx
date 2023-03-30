@@ -10,7 +10,6 @@ import modifyApi from '../api/user';
 import { storage } from '../utils/firebase';
 
 function UserModifyContainer() {
-
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userInfo);
   // 내 정보 조회 api
