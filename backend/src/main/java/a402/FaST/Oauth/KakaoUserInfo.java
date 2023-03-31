@@ -1,6 +1,7 @@
 package a402.FaST.Oauth;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class KakaoUserInfo implements OAuth2UserInfo{
 
@@ -28,10 +29,16 @@ public class KakaoUserInfo implements OAuth2UserInfo{
     public String getEmail() {
         return attributesAccount.get("email").toString();
     }
+    UUID one = UUID.randomUUID();
+    // @Override
+    // public String getName() {
+    //     return attributesProperties.get("nickname").toString();
+    // }
 
     @Override
     public String getName() {
-        return attributesProperties.get("nickname").toString();
+        UUID uid = UUID.randomUUID();
+        return "kakao_" + uid.toString();
     }
 
     @Override
