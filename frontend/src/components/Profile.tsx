@@ -5,6 +5,7 @@ import { TagType } from '../types/TagType';
 import Tag from './Tag';
 
 function Profile({
+  nickname,
   imageUrl,
   followerNum,
   followingNum,
@@ -14,6 +15,7 @@ function Profile({
   return (
     <div className="profile__container">
       <img src={imageUrl} alt="profileImg" className="profile__img" />
+      <span className="profile__nickname">{nickname}</span>
       <div className="profile__card card">
         <Link to="/follow">
           <div className="profile__cnt">

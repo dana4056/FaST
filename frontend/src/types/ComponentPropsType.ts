@@ -143,6 +143,7 @@ export interface InputProfileProps {
 
 // 프로필 박스
 export interface ProfileProps {
+  nickname: string;
   followerNum: number;
   followingNum: number;
   articleNum: number;

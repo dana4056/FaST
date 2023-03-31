@@ -8,6 +8,7 @@ import CardList from '../components/CardList';
 import { MyRecordPageProps } from '../types/PagePropsType';
 
 function MyRecordPage({
+  nickname,
   imageUrl,
   followerNum,
   followingNum,
@@ -24,6 +25,7 @@ function MyRecordPage({
   return (
     <div className="my-record-page">
       <Profile
+        nickname={nickname}
         imageUrl={imageUrl}
         followerNum={followerNum}
         followingNum={followingNum}
