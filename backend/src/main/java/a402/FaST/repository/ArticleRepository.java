@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.awt.geom.Area;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
@@ -24,6 +25,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "(select ah.article_id from article_has_tag ah, tag t " +
             "where ah.tag_id = t.id and t.name like %?1%) order by a.create_time desc", nativeQuery = true)
     List<ArticleList> ArticleListTagSearch(String tagName, Pageable pageable);
+
+    List<Article> findAllByUserAndArea(User user, String Area);
 
     List<Article> findByUser(User userId, Pageable pageable);
 

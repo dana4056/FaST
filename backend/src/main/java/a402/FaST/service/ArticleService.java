@@ -21,4 +21,6 @@ public interface ArticleService {
     int articleCnt(int userId);
 
     List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName);
+
+	List<ArticleListResponseDto> listArticleArea(int userId, String area);
 }
