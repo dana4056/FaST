@@ -50,7 +50,7 @@ function MyRecordContainer() {
       // 게시글
 
       const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
-      setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
+      setArticles(articleData.data);
     };
     getData();
   }, []);
@@ -65,7 +65,6 @@ function MyRecordContainer() {
         await Promise.all(
           articles.map(async (article: any, i: number) => {
             if (i % 2 === 0) {
-              console.log(article.tags);
               const leftArticleTags: any = [];
               article.tags.map((tag: any) =>
                 leftArticleTags.push({
@@ -117,11 +116,15 @@ function MyRecordContainer() {
         );
       }
       if (cardLeftList.length > 0) {
-        setCardsLeft([...cardLeftList]);
+        setCardsLeft([
+          ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
+        ]);
       }
       console.log(cardLeftList);
       if (cardRightList.length > 0) {
-        setCardsRight([...cardRightList]);
+        setCardsRight([
+          ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
+        ]);
       }
     };
     setData();
