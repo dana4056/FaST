@@ -104,8 +104,10 @@ public class CommentServiceImpl implements CommentService{
                         .id(x.getId())
                         .userId(x.getUser().getId())
                         .nickName(x.getUser().getNickname())
+                        .imgPath(x.getUser().getImgPath())
                         .createTime(x.getCreateTime())
                         .content(x.getContent())
+                        .likeCount(likesRepository.countByCommentId(x.getId()))
                         .likeCheck(likesRepository.existsByCommentIdAndUserId(x.getId(),userId))
                         .commentReplyCount(commentReplyRepository.countByCommentId(x.getId()))
                         .build()).collect(Collectors.toList());

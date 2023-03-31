@@ -18,6 +18,8 @@ public class CommentListResponseDto {
    private String content;
    private LocalDateTime createTime;
    private String nickName;
+   private String imgPath;
+   private int likeCount;
    private boolean likeCheck;
    private int commentReplyCount;
 
