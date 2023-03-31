@@ -53,7 +53,7 @@ function Comment({
           className="comment__button--show-reply transparent-button"
           onClick={handleVisibleRepliesClick}
         >
-          답글 {comment.numReplies}개 보기
+          답글 {replies.length}개 보기
         </button>
       </div>
       <form
