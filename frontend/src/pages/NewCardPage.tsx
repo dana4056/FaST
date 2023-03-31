@@ -5,11 +5,14 @@ import InputPhoto from '../components/NewCard/InputPhoto';
 import Tag from '../components/Tag';
 import { TagType } from '../types/TagType';
 import { NewCardPageProps } from '../types/PagePropsType';
-import { ReactComponent as Spin } from '../assets/images/Spin.svg';
+import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 
 function NewCardPage({
   isModalOpen,
   isLoading,
+  isSuccess,
+  isFail,
+  handleFailModalClose,
   handleModalOpen,
   handleModalClose,
   imageUrls,
@@ -17,14 +20,14 @@ function NewCardPage({
   handleImageDelete,
   autoTags,
   customTags,
-  description,
-  handleDescriptionChange,
+  textareaRef,
   handleSubmit,
   customTag,
   handleCustomTagInputChange,
   handleCustomTagAdd,
   handleCustomTagDelete,
   handleAutoTagDelete,
+  handlePageMove,
 }: NewCardPageProps) {
   return (
     <div className="new-card-page">
@@ -38,7 +41,7 @@ function NewCardPage({
           {autoTags.map((tag: string, i: number) => (
             <Tag
               key={tag}
-              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              className="tag-4"
               handleTagDelete={() => handleAutoTagDelete(i)}
             >
               {tag}
@@ -47,7 +50,7 @@ function NewCardPage({
           {customTags.map((tag: string, i: number) => (
             <Tag
               key={tag}
-              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              className="tag-4"
               handleTagDelete={() => handleCustomTagDelete(i)}
             >
               {tag}
@@ -63,11 +66,7 @@ function NewCardPage({
           </button>
         </div>
         <div className="new-card-page__description card">
-          <textarea
-            placeholder="추억을 남겨보세요"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
+          <textarea placeholder="추억을 남겨보세요" ref={textareaRef} />
         </div>
         <div className="new-card-page__row">
           <button type="submit" className="new-card-page__submit card">
@@ -106,6 +105,38 @@ function NewCardPage({
           <Spin
             style={{ backgroundColor: 'rgba(0,0,0,0)', margin: '0 auto' }}
           />
+        </div>
+      ) : null}
+      {isSuccess ? (
+        <div className="new-card-page__modal">
+          <div className="new-card-page__success card">
+            <div className="new-card-page__success-content">작성 완료</div>
+            <button
+              type="button"
+              className="new-card-page__success-button"
+              onClick={handlePageMove}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {isFail ? (
+        <div className="new-card-page__modal">
+          <div className="new-card-page__success card">
+            <div className="new-card-page__success-content">
+              내부 서버 오류
+              <br />
+              잠시 후 다시 시도해주세요.
+            </div>
+            <button
+              type="button"
+              className="new-card-page__success-button"
+              onClick={handleFailModalClose}
+            >
+              닫기
+            </button>
+          </div>
         </div>
       ) : null}
     </div>
