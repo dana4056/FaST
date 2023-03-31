@@ -19,6 +19,7 @@ export interface HomePageProps extends SearchBoxProps {
   cardsLeft: Array<CardType>;
   // 오른쪽 카드 목록
   cardsRight: Array<CardType>;
+  isMine: boolean;
 }
 
 // 새 카드 페이지 Props

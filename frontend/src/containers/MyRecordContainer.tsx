@@ -18,6 +18,8 @@ function MyRecordContainer() {
   const params = useParams();
   const [user, setUser] = useRecoilState(userInfo);
   const [userState, setUserState] = useState<any>(params.userId);
+  const [isMine, setIsMine] = useState<boolean>(false);
+
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   // 내 관심 태그
@@ -30,6 +32,11 @@ function MyRecordContainer() {
   const { downloadImages } = useViewModel();
 
   useEffect(() => {
+    if (user.id.toString() === userState.toString()) {
+      setIsMine(true);
+    } else {
+      setIsMine(false);
+    }
     // 프로필 박스
     const getData = async () => {
       const myData: any = await userApi.getMyData(userState);
@@ -48,9 +55,12 @@ function MyRecordContainer() {
       setArticleNum(cntArticle.data);
 
       // 게시글
-
-      const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
-      setArticles(articleData.data);
+      const articleData: any = await articleApi.getUserArticle(
+        userState,
+        20,
+        0
+      );
+      setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
     };
     getData();
   }, []);
@@ -79,7 +89,7 @@ function MyRecordContainer() {
               cardLeftList.push({
                 id: article?.id,
                 imageUrls,
-                nickname: article.nickname,
+                nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
                 isLike: article?.isLike,
@@ -103,7 +113,7 @@ function MyRecordContainer() {
               cardRightList.push({
                 id: article?.id,
                 imageUrls,
-                nickname: article.nickname,
+                nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
                 isLike: article?.isLike,
@@ -120,7 +130,6 @@ function MyRecordContainer() {
           ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
         ]);
       }
-      console.log(cardLeftList);
       if (cardRightList.length > 0) {
         setCardsRight([
           ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
@@ -227,6 +236,7 @@ function MyRecordContainer() {
 
   return (
     <MyRecordPage
+      isMine={isMine}
       nickname={nickname}
       articleNum={articleNum}
       imageUrl={imageUrl}

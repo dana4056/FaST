@@ -123,6 +123,7 @@ export interface CommentContinaerProps {
 export interface PhotoCardProps {
   // 카드
   card: CardType;
+  isMine: boolean;
 }
 
 // 카드 목록의 Props
@@ -131,6 +132,7 @@ export interface CardListProps {
   cardsLeft: Array<CardType>;
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
+  isMine: boolean;
 }
 
 // 프로필 사진 입력 Props

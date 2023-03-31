@@ -5,6 +5,7 @@ import CardList from '../components/CardList';
 import { HomePageProps } from '../types/PagePropsType';
 
 function HomePage({
+  isMine,
   tags,
   keyword,
   cardsLeft,
@@ -22,7 +23,7 @@ function HomePage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList isMine={isMine} cardsLeft={cardsLeft} cardsRight={cardsRight} />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { useParams } from 'react-router-dom';
+import { userInfo } from '../atoms/userInfo';
 import HomePage from '../pages/HomePage';
 import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
@@ -9,15 +11,16 @@ import useViewModel from '../viewmodels/ArticleViewModel';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import sample3 from '../assets/images/sample-images/sample_3.jpg';
-import { userInfo } from '../atoms/userInfo';
 
 // ViewModel과 View를 연결하기 위한 Container
 function HomeContainer() {
+  const [user, setUser] = useRecoilState(userInfo);
+  const [isMine, setIsMine] = useState<boolean>(true);
+
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
-  const user = useRecoilValue(userInfo);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
@@ -84,6 +87,7 @@ function HomeContainer() {
 
   return (
     <HomePage
+      isMine={isMine}
       tags={tags}
       keyword={keyword}
       cardsLeft={cardsLeft}
