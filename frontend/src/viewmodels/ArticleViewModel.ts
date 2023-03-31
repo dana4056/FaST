@@ -1,7 +1,7 @@
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { storage } from '../utils/firebase';
-import { doWriteArticle, doGetArticles } from '../api/article';
+import { doWriteArticle, doGetArticles, doGetArticle } from '../api/article';
 import uuid from '../utils/uuid';
 import doGetAutoTags from '../api/tag';
 
@@ -46,6 +46,11 @@ const ArticleViewModel = () => {
     return ret;
   };
 
+  const getArticle = async (articleId: string, userId: number) => {
+    const res = await doGetArticle(articleId, userId);
+    return res;
+  };
+
   const getArticles = async (userId: number, size: number, offset: number) => {
     const res = await doGetArticles(userId, size, offset);
     return res;
@@ -56,6 +61,7 @@ const ArticleViewModel = () => {
     createAutoTags,
     getArticles,
     downloadImages,
+    getArticle,
   };
 };
 

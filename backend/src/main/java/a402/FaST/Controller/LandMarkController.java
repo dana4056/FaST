@@ -2,13 +2,11 @@ package a402.FaST.Controller;
 
 import a402.FaST.model.dto.LandMarkResponseDto;
 import a402.FaST.service.LandMarkServiceImpl;
-import a402.FaST.service.LikesServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

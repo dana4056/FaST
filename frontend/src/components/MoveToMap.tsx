@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function MoveToMap() {
   return (
     <div className="move__btn__container">
-      <Link to="/test">
+      <Link to="/stamp">
         <button type="button" className="move-stamp-btn">
           스탬프 보기
         </button>

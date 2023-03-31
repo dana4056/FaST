@@ -55,6 +55,10 @@ export interface CardDetailPageProps extends CardDetailProps {
   comments: Array<CommentType>;
   // 댓글창이 열려있는지
   isCommentOpen: boolean;
+  // 댓글 input 태그를 다루기 위한 ref
+  commentInputRef: React.RefObject<HTMLInputElement>;
+  // 댓글 전송 함수
+  handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // 내 기록 페이지

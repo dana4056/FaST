@@ -109,6 +109,8 @@ export interface CommentProps {
 export interface CommentsProps {
   comments: Array<CommentType>;
   handleCommentClick: React.MouseEventHandler;
+  commentInputRef: React.RefObject<HTMLInputElement>;
+  handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // 댓글 컨테이너 Props

@@ -14,7 +14,7 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
   const navigate = useNavigate();
 
   const onClickMoveDetail = (id: number) => {
-    navigate(`/card/${id}`);
+    navigate(`/article/${id}`);
   };
   console.log(card);
   return (
