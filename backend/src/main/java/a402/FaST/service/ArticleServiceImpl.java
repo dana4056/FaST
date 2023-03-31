@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -259,6 +260,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
                 Tag tag = Tag.builder().name(tagName).build();
@@ -275,10 +280,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private void autoTagAdd(Article article, int userId, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
                 Tag tag = Tag.builder().name(tagName).build();
-                logger.info(" Tag : {}", tag.getName());
                 tagRepository.save(tag);
             }
             Tag tag = tagRepository.findByName(tagName).get();
