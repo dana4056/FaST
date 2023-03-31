@@ -139,8 +139,7 @@
         cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
       background-color: white;
       width: 60%;
-      height: 100px;
-      font-size: 24px;
+      font-size: 20px;
       display: flex;
       flex-direction: column;
 
@@ -149,6 +148,7 @@
       .new-card-page__success-content {
         display: flex;
         align-items: center;
+        text-align: center;
         height: 100%;
       }
       .new-card-page__success-button {

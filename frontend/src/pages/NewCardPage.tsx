@@ -11,6 +11,8 @@ function NewCardPage({
   isModalOpen,
   isLoading,
   isSuccess,
+  isFail,
+  handleFailModalClose,
   handleModalOpen,
   handleModalClose,
   imageUrls,
@@ -39,7 +41,7 @@ function NewCardPage({
           {autoTags.map((tag: string, i: number) => (
             <Tag
               key={tag}
-              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              className="tag-4"
               handleTagDelete={() => handleAutoTagDelete(i)}
             >
               {tag}
@@ -48,7 +50,7 @@ function NewCardPage({
           {customTags.map((tag: string, i: number) => (
             <Tag
               key={tag}
-              className={`tag-${Math.floor(Math.random() * 4) + 1}`}
+              className="tag-4"
               handleTagDelete={() => handleCustomTagDelete(i)}
             >
               {tag}
@@ -113,6 +115,24 @@ function NewCardPage({
               type="button"
               className="new-card-page__success-button"
               onClick={handlePageMove}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {isFail ? (
+        <div className="new-card-page__modal">
+          <div className="new-card-page__success card">
+            <div className="new-card-page__success-content">
+              내부 서버 오류
+              <br />
+              잠시 후 다시 시도해주세요.
+            </div>
+            <button
+              type="button"
+              className="new-card-page__success-button"
+              onClick={handleFailModalClose}
             >
               닫기
             </button>

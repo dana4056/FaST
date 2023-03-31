@@ -31,6 +31,7 @@ function NewCardContainer() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isFail, setIsFail] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
 
@@ -65,6 +66,9 @@ function NewCardContainer() {
   };
   const handlePageMove = () => {
     navigate('/home');
+  };
+  const handleFailModalClose = () => {
+    setIsFail(false);
   };
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
@@ -165,6 +169,8 @@ function NewCardContainer() {
     });
     if (res === 200) {
       setIsSuccess(true);
+    } else {
+      setIsFail(true);
     }
   };
 
@@ -214,6 +220,8 @@ function NewCardContainer() {
       isModalOpen={isModalOpen}
       isLoading={isLoading}
       isSuccess={isSuccess}
+      isFail={isFail}
+      handleFailModalClose={handleFailModalClose}
       customTag={customTag}
       handleCustomTagInputChange={handleCustomTagInputChange}
       handleModalOpen={handleModalOpen}

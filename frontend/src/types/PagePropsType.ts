@@ -26,6 +26,8 @@ export interface NewCardPageProps extends InputPhotoProps {
   isModalOpen: boolean;
   isLoading: boolean;
   isSuccess: boolean;
+  isFail: boolean;
+  handleFailModalClose: () => void;
   handleModalOpen: () => void;
   handleModalClose: () => void;
   // 태그 저장 배열
