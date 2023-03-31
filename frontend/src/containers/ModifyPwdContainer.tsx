@@ -101,6 +101,10 @@ export default function ModifyPwdContainer() {
       }
     }
   };
+
+  const onClickBack = () => {
+    navigate(-1);
+  };
   return (
     <div className="modify-pwd-page">
       <ModifyPwdPage
@@ -117,6 +121,7 @@ export default function ModifyPwdContainer() {
         onChangePassword={onChangePassword}
         onChangePasswordConfirm={onChangePasswordConfirm}
         onClickNext={onClickNext}
+        onClickBack={onClickBack}
       />
     </div>
   );

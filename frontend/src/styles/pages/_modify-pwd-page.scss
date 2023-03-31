@@ -9,7 +9,7 @@
   height: 100%;
 }
 .modify-pwd-page__form {
-  margin-top: 30%;
+  margin-top: 20%;
   width: 100%;
   height: 100%;
   flex: none;
@@ -118,4 +118,9 @@
   &:active {
     background: darken($color: color.$color-1, $amount: 10);
   }
+}
+.modify-pwd-page__back__button {
+  border: none;
+  background-color: transparent;
+  margin: 2% 2%;
 }
