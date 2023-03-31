@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
+import { useRecoilValue } from 'recoil';
 import HomePage from '../pages/HomePage';
 import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
+import useViewModel from '../viewmodels/ArticleViewModel';
 
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import sample3 from '../assets/images/sample-images/sample_3.jpg';
+import { userInfo } from '../atoms/userInfo';
 
 // ViewModel과 View를 연결하기 위한 Container
 function HomeContainer() {
@@ -14,91 +17,12 @@ function HomeContainer() {
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
+  const user = useRecoilValue(userInfo);
 
-  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
-    {
-      id: 3,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 4,
-      imageUrls: [sample2],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
-  const [cardsRight, setCardsRight] = useState<Array<CardType>>([
-    {
-      id: 5,
-      imageUrls: [sample3],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 6,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
+  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
+  const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
+
+  const { getArticles } = useViewModel();
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -149,6 +73,14 @@ function HomeContainer() {
       setTags([...newTags]);
     }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const res: any = await getArticles(user.id, 3, 0);
+      console.log(res);
+    };
+    getData();
+  }, []);
 
   return (
     <HomePage
