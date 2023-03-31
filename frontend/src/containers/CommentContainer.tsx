@@ -19,28 +19,23 @@ function CommentContainer({ comment }: CommentContinaerProps) {
   // 답글 목록
   const [replies, setReplies] = useState<Array<ReplyType>>([
     {
-      id: 1,
-      nickname: '샘플 닉네임',
-      profile: '프로필이미지',
-      content: '샘플 댓글 내용',
-      regTime: '작성날짜',
-      isLike: true, // 좋아요 눌렀는지
-      numLikes: 123, // 좋아요 개수
+      id: 0,
+      nickname: '',
+      profile: '',
+      content: '',
+      regTime: '',
+      isLike: false, // 좋아요 눌렀는지
+      numLikes: 0, // 좋아요 개수
     },
   ]);
   // 사용자가 이 댓글에 좋아요 표시를 했는지
   const [isLike, setIsLike] = useState<boolean>(comment.isLike);
 
-  const { createCommentReply } = useViewModel();
+  const { createCommentReply, getCommentReplies } = useViewModel();
 
   // 좋아요 클릭 함수
   const handleLikeClick = () => {
     setIsLike((prev: boolean) => !prev);
-  };
-
-  // 답글 작성 함수
-  const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReply(event.target.value);
   };
 
   // 답글 작성칸 여는 함수
@@ -48,9 +43,37 @@ function CommentContainer({ comment }: CommentContinaerProps) {
     setIsWriteReplyOpen((prev: boolean) => !prev);
   };
 
+  const getCommentRepliesData = async () => {
+    const res = await getCommentReplies(comment.id, user.id, 20, 0);
+    if (res.status === 200) {
+      const newReplies: Array<ReplyType> = [];
+      await Promise.all(
+        res.data.map((item: any) =>
+          newReplies.push({
+            id: item.id,
+            nickname: item.nickName,
+            profile: 'profile/default',
+            content: item.content,
+            regTime: new Date(item.createTime).toDateString(),
+            isLike: item.likeCheck,
+            numLikes: 0,
+          })
+        )
+      );
+      setReplies([...newReplies]);
+    }
+  };
+  // 답글 작성 함수
+  const handleReplyChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setReply(event.target.value);
+  };
+
   // 답글 목록 여는 함수
-  const handleVisibleRepliesClick = () => {
+  const handleVisibleRepliesClick = async () => {
     setIsVisibleReplies((prev: boolean) => !prev);
+    await getCommentRepliesData();
   };
 
   // 작성한 답글 제출 함수
@@ -59,12 +82,13 @@ function CommentContainer({ comment }: CommentContinaerProps) {
     event.preventDefault();
 
     // 이 자리에 api 함수 들어감
-    console.log(comment.id, reply, user.id);
     const res = await createCommentReply(comment.id, reply, user.id);
-    console.log(res);
-
+    if (res.status === 200) {
+      getCommentRepliesData();
+    }
     // 작성 답글 초기화
     setReply('');
+    setIsVisibleReplies(true);
   };
   return (
     <Comment
