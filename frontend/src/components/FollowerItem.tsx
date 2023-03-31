@@ -36,14 +36,11 @@ function FollowItem({ follower, isMine }: any) {
   }, []);
 
   // 팔로워 삭제 api
-  const [fromId, setFromId] = useState<number>(user.id);
+  const [toId, setToId] = useState<number>(user.id);
   const onClickDelete = async (followerId: number) => {
-    const followerDelete: any = await followApi.followDelete(
-      fromId,
-      followerId
-    );
-    console.log(fromId, followerId);
+    const followerDelete: any = await followApi.followDelete(followerId, toId);
     setOpenModal(!openModal);
+    console.log(toId, followerId);
     window.location.reload();
     return followerDelete;
   };
@@ -71,7 +68,10 @@ function FollowItem({ follower, isMine }: any) {
               <button
                 className="follow_delete_btn"
                 type="button"
-                onClick={() => onClickDelete(follower.fromUser.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickDelete(follower.fromUser.id);
+                }}
               >
                 팔로워 끊기
               </button>
@@ -91,7 +91,10 @@ function FollowItem({ follower, isMine }: any) {
           <button
             className="follow_btn"
             type="button"
-            onClick={onClickToggleModal}
+            onClick={(e) => {
+              e.stopPropagation(); // prevent event from propagating
+              onClickToggleModal();
+            }}
           >
             삭제
           </button>
