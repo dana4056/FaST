@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -260,6 +261,35 @@ public class ArticleServiceImpl implements ArticleService {
 
         return responseDto;
     }
+
+
+    @Override
+    public List<ArticleListResponseDto> listArticleArea(int userId,String area) {
+        List<ArticleListResponseDto> responseDto = null;
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
+
+
+        responseDto = articleRepository.findAllByUserAndArea(user, area)
+            .stream().map(x->ArticleListResponseDto.builder()
+                .id(x.getId())
+                .userId(userId)
+                .nickName(userRepository.nickName(userId))
+                .imgPath(x.getImgPath())
+                .createTime(x.getCreateTime())
+                .commentCount(commentRepository.countByArticleId(x.getId()))
+                .likeCount(likesRepository.countByArticleId(x.getId()))
+                .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                    .map(Tag->TagResponseDto.builder()
+                        .tagId(Tag.getTag().getId())
+                        .tagName(Tag.getTag().getName())
+                        .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
+
+        return responseDto;
+    }
+
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
