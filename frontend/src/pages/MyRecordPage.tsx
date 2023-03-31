@@ -8,6 +8,7 @@ import CardList from '../components/CardList';
 import { MyRecordPageProps } from '../types/PagePropsType';
 
 function MyRecordPage({
+  isMine,
   nickname,
   imageUrl,
   followerNum,
@@ -40,7 +41,7 @@ function MyRecordPage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList isMine={isMine} cardsLeft={cardsLeft} cardsRight={cardsRight} />
     </div>
   );
 }

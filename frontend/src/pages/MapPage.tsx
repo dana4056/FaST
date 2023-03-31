@@ -6,7 +6,7 @@ import KoreaMap from '../components/KoreaMap';
 import CardList from '../components/CardList';
 import { MapPageProps } from '../types/PagePropsType';
 
-function MapPage({ cardsLeft, cardsRight }: MapPageProps) {
+function MapPage({ isMine, cardsLeft, cardsRight }: MapPageProps) {
   return (
     <div className="map-page">
       <div className="map-page__header">
@@ -19,7 +19,7 @@ function MapPage({ cardsLeft, cardsRight }: MapPageProps) {
           <KoreaMap />
         </div>
       </div>
-      <CardList cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList isMine={isMine} cardsLeft={cardsLeft} cardsRight={cardsRight} />
     </div>
   );
 }

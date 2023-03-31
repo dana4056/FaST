@@ -19,6 +19,7 @@
     display: flex;
     align-items: center;
     padding: 2px 10px;
+    justify-content: space-between;
     .photo-card__buttons {
       margin-left: auto;
       z-index: 9999;
@@ -35,6 +36,9 @@
         width: 25px;
         height: 25px;
       }
+    }
+    .photo-card__nickname {
+      float: right;
     }
   }
   .photo-card__tags {
