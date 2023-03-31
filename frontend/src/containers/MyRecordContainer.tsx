@@ -46,7 +46,7 @@ function MyRecordContainer() {
       setArticleNum(cntArticle.data);
 
       // 게시글
-      const articleData: any = await articleApi.getUserArticle(5, 20, 0);
+      const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
       setArticle(articleData.data);
     };
     getData();
@@ -128,6 +128,11 @@ function MyRecordContainer() {
     }
   }, [userData.imgPath]);
 
+  const [nickname, setNickname] = useState<string>('');
+  useEffect(() => {
+    setNickname(userData.nickname);
+  }, [userData]);
+
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
@@ -203,6 +208,7 @@ function MyRecordContainer() {
 
   return (
     <MyRecordPage
+      nickname={nickname}
       articleNum={articleNum}
       imageUrl={imageUrl}
       followerNum={followerNum}
