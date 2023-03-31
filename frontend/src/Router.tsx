@@ -23,7 +23,7 @@ function Router() {
         <Routes>
           <Route path="/home" element={<HomeContainer />} />
           <Route path="/newcard" element={<NewCardContainer />} />
-          <Route path="/card/:cardId" element={<CardDetailContainer />} />
+          <Route path="/article/:cardId" element={<CardDetailContainer />} />
           <Route path="/myrecord" element={<MyRecordContainer />} />
           <Route path="/map" element={<MapContainer />} />
           <Route path="/follow" element={<FollowContainer />} />

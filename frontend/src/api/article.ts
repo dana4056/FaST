@@ -46,6 +46,15 @@ export async function sendEmail(email: string) {
   }
 }
 
+export async function doGetArticle(articleId: string, userId: number) {
+  try {
+    const res = await api.get(`/article/${articleId}/${userId}`);
+    return res;
+  } catch (error: any) {
+    return error;
+  }
+}
+
 export async function userArticleLike(articleId: number, userId: number) {
   try {
     const res = await api.get('/likes/article', {

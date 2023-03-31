@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import CardDetailPage from '../pages/CardDetailPage';
-import { TagType } from '../types/TagType';
+import useViewModel from '../viewmodels/ArticleViewModel';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import sample2 from '../assets/images/sample-images/sample_2.jpg';
-import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
+import { userInfo } from '../atoms/userInfo';
 
 function CardDetailContainer() {
+  const params = useParams();
+  const { getArticle, downloadImages } = useViewModel();
+  const user = useRecoilValue(userInfo);
   const [card, setCard] = useState<CardType>({
-    id: 1,
-    nickname: 'abcd1234',
-    content: '샘플 카드',
-    imageUrls: [sample1, sample2, sample3],
+    content: '',
+    id: 0,
+    imageUrls: [],
     isLike: false,
-    numLikes: 123,
-    numComments: 12,
-    regTime: new Date().toDateString(),
-    tags: [
-      {
-        value: 'sample1',
-        className: 'tag-2',
-      },
-    ],
+    nickname: '',
+    numComments: 0,
+    numLikes: 0,
+    regTime: '',
+    tags: [],
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -53,19 +51,7 @@ function CardDetailContainer() {
       numReplies: 13,
     },
   ]);
-  // 이미지 경로 배열
-  const [imageUrls, setImageUrls] = useState<Array<string>>([
-    sample1,
-    sample2,
-    sample3,
-  ]);
-  // 태그 배열
-  const [tags, setTags] = useState<Array<TagType>>([
-    {
-      className: 'tag-1',
-      value: 'sample tag',
-    },
-  ]);
+
   // 메뉴 토글 버튼 클릭 함수
   const handleMenuClick = () => {
     setIsMenuOpen((prev: boolean) => !prev);
@@ -77,11 +63,43 @@ function CardDetailContainer() {
 
   // 좋아요 클릭 함수
   const handleLikeClick = () => {
-    setCard({
-      ...card,
-      isLike: !card.isLike,
-    });
+    if (card) {
+      setCard({
+        ...card,
+        isLike: !card.isLike,
+      });
+    }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      if (params.cardId) {
+        const res = await getArticle(params.cardId, user.id);
+        if (res.status === 200) {
+          const imageUrls = await downloadImages(res.data.imgPath.split(','));
+          const tags: any = [];
+          res.data.tags.map((tag: any) =>
+            tags.push({
+              value: tag.tagName,
+              className: 'tag-2',
+            })
+          );
+          setCard({
+            id: res.data.id,
+            nickname: res.data.nickname,
+            content: res.data.content,
+            imageUrls,
+            isLike: res.data.likeCheck,
+            numLikes: res.data.likeCount,
+            numComments: res.data.commentCount,
+            regTime: new Date(res.data.createTime).toDateString(),
+            tags,
+          });
+        }
+      }
+    };
+    getData();
+  }, []);
 
   return (
     <CardDetailPage
