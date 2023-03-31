@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 import { ModifyPwdProps } from '../types/PagePropsType';
 
 export default function ModifyPwdPage({
@@ -15,10 +16,24 @@ export default function ModifyPwdPage({
   onChangePassword,
   onChangePasswordConfirm,
   onClickNext,
+  onClickBack,
 }: ModifyPwdProps) {
   return (
     <div>
       <div>
+        <button
+          onClick={onClickBack}
+          type="button"
+          className="modify-pwd-page__back__button"
+        >
+          <MdArrowBack
+            style={{
+              width: '40px',
+              height: '40px',
+              color: 'white',
+            }}
+          />
+        </button>
         <form className="modify-pwd-page__form">
           <div className="modify-pwd-page__row">
             <div className="modify-pwd-page__row">

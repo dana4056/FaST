@@ -168,6 +168,7 @@ export interface ModifyPwdProps {
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordConfirm: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickNext: () => void;
+  onClickBack: () => void;
 }
 
 // FollowPage Props
