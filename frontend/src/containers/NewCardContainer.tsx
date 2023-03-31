@@ -155,7 +155,7 @@ function NewCardContainer() {
 
     const res = await writeArticle({
       area: loc,
-      autoTags: [],
+      autoTags,
       content: textareaRef.current?.value,
       imgPath: imgPath.join(),
       lat: la,
