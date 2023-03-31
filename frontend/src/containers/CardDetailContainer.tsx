@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -13,6 +13,8 @@ function CardDetailContainer() {
   const params = useParams();
   const { getArticle, downloadImages } = useViewModel();
   const user = useRecoilValue(userInfo);
+  // 입력 댓글 input을 다루기 위한 ref
+  const commentInputRef = useRef<HTMLInputElement>(null);
   const [card, setCard] = useState<CardType>({
     content: '',
     id: 0,
@@ -71,8 +73,13 @@ function CardDetailContainer() {
     }
   };
 
+  // 댓글 전송 함수
+  const handleCommentSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
-    const getData = async () => {
+    const getArticleData = async () => {
       if (params.cardId) {
         const res = await getArticle(params.cardId, user.id);
         if (res.status === 200) {
@@ -98,7 +105,7 @@ function CardDetailContainer() {
         }
       }
     };
-    getData();
+    getArticleData();
   }, []);
 
   return (
@@ -110,6 +117,8 @@ function CardDetailContainer() {
       handleMenuClick={handleMenuClick}
       isCommentOpen={isCommentOpen}
       handleCommentClick={handleCommentClick}
+      commentInputRef={commentInputRef}
+      handleCommentSubmit={handleCommentSubmit}
     />
   );
 }
