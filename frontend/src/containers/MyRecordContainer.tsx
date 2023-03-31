@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
+import { useParams } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
 import userApi from '../api/user';
@@ -14,7 +15,9 @@ import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
 
 function MyRecordContainer() {
+  const params = useParams();
   const [user, setUser] = useRecoilState(userInfo);
+  const [userState, setUserState] = useState<any>(params.userId);
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   // 내 관심 태그
@@ -29,7 +32,7 @@ function MyRecordContainer() {
   useEffect(() => {
     // 프로필 박스
     const getData = async () => {
-      const myData: any = await userApi.getMyData(user.id);
+      const myData: any = await userApi.getMyData(userState);
       setUserData(myData.data);
       const newMyTag: Array<TagType> = [];
       myData.data.tags.map((tag: any) =>
@@ -41,10 +44,11 @@ function MyRecordContainer() {
       setMyTag(newMyTag);
 
       // 프로필 박스 - 기록수
-      const cntArticle: any = await userApi.countArticle(user.id);
+      const cntArticle: any = await userApi.countArticle(userState);
       setArticleNum(cntArticle.data);
 
       // 게시글
+
       const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
       setArticles(articleData.data);
     };
@@ -68,6 +72,7 @@ function MyRecordContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
+              console.log(article);
               const imageUrls = await downloadImages(
                 article.imgPath.split(',')
               );
@@ -203,10 +208,10 @@ function MyRecordContainer() {
   };
 
   // 팔로우 수 조회
-  const [toId, setToId] = useState<number>(user.id);
+  const [toId, setToId] = useState<number>(userState);
   const [followerNum, setFollowerNum] = useState<number>(0);
 
-  const [fromId, setFromId] = useState<number>(user.id);
+  const [fromId, setFromId] = useState<number>(userState);
   const [followingNum, setFollowingNum] = useState<number>(0);
   useEffect(() => {
     const getData = async () => {

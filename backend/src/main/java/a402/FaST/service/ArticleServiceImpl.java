@@ -10,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -36,8 +38,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleResponseDto create(ArticleRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).get();
+
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
+
         ArticleResponseDto responseDto = null;
+
         Article article = Article.builder()
                 .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
@@ -257,8 +262,41 @@ public class ArticleServiceImpl implements ArticleService {
         return responseDto;
     }
 
+
+    @Override
+    public List<ArticleListResponseDto> listArticleArea(int userId,String area) {
+        List<ArticleListResponseDto> responseDto = null;
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
+
+
+        responseDto = articleRepository.findAllByUserAndArea(user, area)
+            .stream().map(x->ArticleListResponseDto.builder()
+                .id(x.getId())
+                .userId(userId)
+                .nickName(userRepository.nickName(userId))
+                .imgPath(x.getImgPath())
+                .createTime(x.getCreateTime())
+                .commentCount(commentRepository.countByArticleId(x.getId()))
+                .likeCount(likesRepository.countByArticleId(x.getId()))
+                .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                    .map(Tag->TagResponseDto.builder()
+                        .tagId(Tag.getTag().getId())
+                        .tagName(Tag.getTag().getName())
+                        .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
+
+        return responseDto;
+    }
+
+
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
                 Tag tag = Tag.builder().name(tagName).build();
@@ -275,10 +313,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private void autoTagAdd(Article article, int userId, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
                 Tag tag = Tag.builder().name(tagName).build();
-                logger.info(" Tag : {}", tag.getName());
                 tagRepository.save(tag);
             }
             Tag tag = tagRepository.findByName(tagName).get();

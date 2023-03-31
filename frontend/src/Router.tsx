@@ -24,9 +24,9 @@ function Router() {
           <Route path="/home" element={<HomeContainer />} />
           <Route path="/newcard" element={<NewCardContainer />} />
           <Route path="/article/:cardId" element={<CardDetailContainer />} />
-          <Route path="/myrecord" element={<MyRecordContainer />} />
+          <Route path="/record/:userId" element={<MyRecordContainer />} />
           <Route path="/map" element={<MapContainer />} />
-          <Route path="/follow" element={<FollowContainer />} />
+          <Route path="/follow/:userId" element={<FollowContainer />} />
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />
           <Route path="/modify-pwd" element={<ModifyPwdContainer />} />

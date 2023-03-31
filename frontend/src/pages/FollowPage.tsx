@@ -9,7 +9,7 @@ const tabList = [
   { id: 1, title: '팔로잉' },
 ];
 
-function FollowPage({ followList, notFollowingList }: any) {
+function FollowPage({ followList, notFollowingList, isMine }: any) {
   const [currentTab, setCurrentTab] = useState(() => {
     // Get the current tab index from localStorage, or default to 0 if not found
     const savedTabIndex = localStorage.getItem('currentTab');
@@ -52,10 +52,11 @@ function FollowPage({ followList, notFollowingList }: any) {
         className="follow-page__user"
         style={currentTab === 1 ? { transform: 'translate(-50%)' } : {}}
       >
-        <FollowerList follower={followList.follower} />
+        <FollowerList follower={followList.follower} isMine={isMine} />
         <FollowingList
           following={followList.following}
           notFollowing={notFollowingList}
+          isMine={isMine}
         />
       </div>
     </div>
