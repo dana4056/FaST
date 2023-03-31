@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { doCreateComment, doGetComments } from '../api/comment';
+import {
+  doCreateComment,
+  doGetComments,
+  doGetCommentReplies,
+} from '../api/comment';
 
 function CommentViewModel() {
   const createComment = async (
@@ -21,9 +25,19 @@ function CommentViewModel() {
     const res = await doGetComments(articleId, userId, size, offset);
     return res;
   };
+  const getCommentReplies = async (
+    commentId: number,
+    userId: number,
+    size: number,
+    offset: number
+  ) => {
+    const res = await doGetCommentReplies(commentId, userId, size, offset);
+    return res;
+  };
   return {
     createComment,
     getComments,
+    getCommentReplies,
   };
 }
 

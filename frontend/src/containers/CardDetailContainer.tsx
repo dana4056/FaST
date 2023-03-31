@@ -65,6 +65,32 @@ function CardDetailContainer() {
     }
   };
 
+  const getCommentsData = async () => {
+    if (params.cardId) {
+      const res = await getComments(params.cardId, user.id, 10, 0);
+      if (res.status === 200) {
+        console.log(res.data);
+      }
+
+      const newComments: Array<CommentType> = [];
+      await Promise.all(
+        res.data.map((comment: any) =>
+          newComments.push({
+            id: comment.id,
+            nickname: comment.nickName,
+            profile: 'profile/default.jpg',
+            content: comment.content,
+            regTime: new Date(comment.createTime).toDateString(),
+            isLike: comment.likeCheck, // 좋아요 눌렀는지
+            numLikes: 0, // 좋아요 개수
+            numReplies: comment.commentReplyCount, // 답글 개수
+          })
+        )
+      );
+      setComments([...newComments]);
+    }
+  };
+
   // 댓글 전송 함수
   const handleCommentSubmit = async (
     event: React.FormEvent<HTMLFormElement>
@@ -77,12 +103,11 @@ function CardDetailContainer() {
         user.id
       );
       if (res.status === 200) {
-        console.log('성공');
+        getCommentsData();
       }
       commentInputRef.current.value = '';
     }
   };
-
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -108,31 +133,6 @@ function CardDetailContainer() {
             tags,
           });
         }
-      }
-    };
-    const getCommentsData = async () => {
-      if (params.cardId) {
-        const res = await getComments(params.cardId, user.id, 10, 0);
-        if (res.status === 200) {
-          console.log(res.data);
-        }
-
-        const newComments: Array<CommentType> = [];
-        await Promise.all(
-          res.data.map((comment: any) =>
-            newComments.push({
-              id: comment.id,
-              nickname: comment.nickname,
-              profile: 'profile/default.jpg',
-              content: comment.content,
-              regTime: new Date(comment.createTime).toDateString(),
-              isLike: comment.likeCheck, // 좋아요 눌렀는지
-              numLikes: 0, // 좋아요 개수
-              numReplies: comment.commentReplycount, // 답글 개수
-            })
-          )
-        );
-        setComments([...newComments]);
       }
     };
     getArticleData();

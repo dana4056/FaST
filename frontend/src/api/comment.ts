@@ -45,3 +45,20 @@ export async function doGetComments(
     return error;
   }
 }
+
+export async function doGetCommentReplies(
+  commentId: number,
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(
+      `/commentReply/${commentId}/${userId}/${size}/${offset}`
+    );
+    return res;
+  } catch (error: any) {
+    console.error(error);
+    return error;
+  }
+}

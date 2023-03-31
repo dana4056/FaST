@@ -22,15 +22,6 @@ function CommentContainer({ comment }: CommentContinaerProps) {
       isLike: true, // 좋아요 눌렀는지
       numLikes: 123, // 좋아요 개수
     },
-    {
-      id: 2,
-      nickname: '샘플 닉네임 2',
-      profile: '프로필 이미지2',
-      content: '샘플 댓글 내용',
-      regTime: '작성 날짜 2',
-      isLike: false,
-      numLikes: 11,
-    },
   ]);
   // 사용자가 이 댓글에 좋아요 표시를 했는지
   const [isLike, setIsLike] = useState<boolean>(comment.isLike);
