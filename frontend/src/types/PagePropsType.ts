@@ -25,18 +25,14 @@ export interface HomePageProps extends SearchBoxProps {
 export interface NewCardPageProps extends InputPhotoProps {
   isModalOpen: boolean;
   isLoading: boolean;
+  isSuccess: boolean;
   handleModalOpen: () => void;
   handleModalClose: () => void;
   // 태그 저장 배열
   customTags: Array<string>;
   autoTags: Array<string>;
-  // 카드 내용
-  description: string;
 
-  // 카드 내용 변경 함수
-  handleDescriptionChange: (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => void;
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
   // 카드 생성 함수
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 
@@ -47,6 +43,7 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleCustomTagAdd: (event: React.FormEvent<HTMLFormElement>) => void;
   handleCustomTagDelete: (i: number) => void;
   handleAutoTagDelete: (i: number) => void;
+  handlePageMove: () => void;
 }
 
 // 카드 상세 페이지 props

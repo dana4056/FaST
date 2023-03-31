@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
 
@@ -22,17 +23,20 @@ function NewCardContainer() {
   // 태그 저장 배열
   const [autoTags, setAutoTags] = useState<Array<string>>([]);
   // 카드 내용
-  const [description, setDescription] = useState<string>('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [la, setLa] = useState<string>('');
   const [lo, setLo] = useState<string>('');
   const [loc, setLoc] = useState<string>('서울특별시');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
 
   const user = useRecoilValue(userInfo);
+
+  const navigate = useNavigate();
 
   const { uploadImages, writeArticle, createAutoTags } = useViewModel();
   const handleCustomTagInputChange = (
@@ -58,6 +62,9 @@ function NewCardContainer() {
   const handleModalClose = () => {
     setCustomTag('');
     setIsModalOpen(false);
+  };
+  const handlePageMove = () => {
+    navigate('/home');
   };
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
@@ -139,31 +146,25 @@ function NewCardContainer() {
     setLa('');
   };
 
-  // 내용 변화를 감지
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescription(event.currentTarget.value);
-  };
   // 카드 생성 함수
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
     const imgPath = await uploadImages(images);
-    console.log(imgPath);
-    const res: any = await writeArticle({
+
+    const res = await writeArticle({
       area: loc,
       autoTags: [],
-      content: description,
+      content: textareaRef.current?.value,
       imgPath: imgPath.join(),
       lat: la,
       lng: lo,
       tags: customTags,
       userId: user.id,
     });
-    if (res.status === 200) {
-      console.log('성공');
+    if (res === 200) {
+      setIsSuccess(true);
     }
   };
 
@@ -212,6 +213,7 @@ function NewCardContainer() {
     <NewCardPage
       isModalOpen={isModalOpen}
       isLoading={isLoading}
+      isSuccess={isSuccess}
       customTag={customTag}
       handleCustomTagInputChange={handleCustomTagInputChange}
       handleModalOpen={handleModalOpen}
@@ -221,12 +223,12 @@ function NewCardContainer() {
       handleImageDelete={handleImageDelete}
       autoTags={autoTags}
       customTags={customTags}
-      description={description}
-      handleDescriptionChange={handleDescriptionChange}
+      textareaRef={textareaRef}
       handleSubmit={handleSubmit}
       handleCustomTagAdd={handleCustomTagAdd}
       handleCustomTagDelete={handleCustomTagDelete}
       handleAutoTagDelete={handleAutoTagDelete}
+      handlePageMove={handlePageMove}
     />
   );
 }

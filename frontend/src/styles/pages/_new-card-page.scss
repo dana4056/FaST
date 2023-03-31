@@ -1,6 +1,6 @@
 @use '../color';
 
-@keyframes slide-in-bottom {
+@keyframes new-card-slide-in-bottom {
   0% {
     -webkit-transform: translate(-50%, 1000px);
     transform: translate(-50%, 1000px);
@@ -16,7 +16,6 @@
   display: none;
 }
 .new-card-page {
-  position: relative;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   padding-bottom: 20px;
@@ -84,8 +83,8 @@
   }
 
   .new-card-page__loading {
-    position: absolute;
-    background-color: rgba(200, 200, 200, 0.2);
+    position: fixed;
+    background-color: (0, 0, 0, 0);
     offset: 0.5;
     width: 100%;
     height: 100%;
@@ -95,9 +94,8 @@
     align-items: center;
   }
   .new-card-page__modal {
-    position: absolute;
-    background-color: rgba(200, 200, 200, 0.2);
-    offset: 0.5;
+    position: fixed;
+    background-color: (0, 0, 0, 0);
     width: 100%;
     height: 100%;
     top: 0;
@@ -108,10 +106,10 @@
       padding: 10px;
       border-radius: 10px;
       background-color: color.$color-2;
-      -webkit-animation: slide-in-bottom 0.7s
+      -webkit-animation: new-card-slide-in-bottom 0.7s
         cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
-      animation: slide-in-bottom 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55)
-        both;
+      animation: new-card-slide-in-bottom 0.7s
+        cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
       width: 60%;
       display: flex;
       .new-card-page__input {
@@ -129,6 +127,40 @@
         font-size: 20px;
         border: none;
         color: white;
+      }
+    }
+    .new-card-page__success {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      -webkit-animation: new-card-slide-in-bottom 0.7s
+        cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+      animation: new-card-slide-in-bottom 0.7s
+        cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+      background-color: white;
+      width: 60%;
+      height: 100px;
+      font-size: 24px;
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: end;
+      .new-card-page__success-content {
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+      .new-card-page__success-button {
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        width: calc(100% + 2px);
+        // margin-top: auto;
+        font-size: 20px;
+        border: none;
+        background-color: color.$color-4;
+        color: white;
+        padding: 4px 0;
       }
     }
   }

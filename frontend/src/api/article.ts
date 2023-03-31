@@ -27,10 +27,9 @@ async function getUserArticle(userId: number, size: number, offset: number) {
 
 export async function doWriteArticle(requestBody: any) {
   try {
-    console.log(requestBody);
-    const res = await api.post(`/article`, requestBody);
+    const res: AxiosResponse = await api.post(`/article`, requestBody);
 
-    return res;
+    return res.status;
   } catch (error) {
     console.error(error);
     return error;

@@ -18,7 +18,6 @@ const CardViewModel = () => {
     return paths;
   };
   const writeArticle = async (requestBody: any) => {
-    // console.log(requestBody);
     const res = await doWriteArticle(requestBody);
     return res;
   };
