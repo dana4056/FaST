@@ -3,12 +3,11 @@ import { TiDelete } from '@react-icons/all-files/ti/TiDelete';
 import { BsSearch } from '@react-icons/all-files/bs/BsSearch';
 import FollowItem from './FollowerItem';
 
-function FollowList({ follower }: any) {
+function FollowList({ follower, isMine }: any) {
   const [userInput, setUserInput] = useState('');
   const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value.toLowerCase());
   };
-
   const searchedFollower = follower
     ? follower.filter((user: any) =>
         user.fromUser.nickname.toLowerCase().includes(userInput)
@@ -39,10 +38,18 @@ function FollowList({ follower }: any) {
         <div>
           {searchedFollower
             ? searchedFollower.map((user: any) => (
-                <FollowItem key={user.fromUser.id} follower={user} />
+                <FollowItem
+                  key={user.fromUser.id}
+                  follower={user}
+                  isMine={isMine}
+                />
               ))
             : follower.map((user: any) => (
-                <FollowItem key={user.fromUser.id} follower={user} />
+                <FollowItem
+                  key={user.fromUser.id}
+                  follower={user}
+                  isMine={isMine}
+                />
               ))}
         </div>
       </div>
