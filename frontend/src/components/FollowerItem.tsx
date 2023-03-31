@@ -1,10 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { useNavigate, Link } from 'react-router-dom';
+import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
+
 import Modal from './Modal';
 import followApi from '../api/follow';
 
-function FollowItem({ follower }: any) {
+function FollowItem({ follower, isMine }: any) {
+  const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userInfo);
+  const onClickMoveRecord = (id: number) => {
+    navigate(`/record/${id}`);
+  };
+
   const [openModal, setOpenModal] = useState<boolean>(false);
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!openModal);
@@ -26,18 +36,22 @@ function FollowItem({ follower }: any) {
   }, []);
 
   // 팔로워 삭제 api
-  const [fromId, setFromId] = useState<number>(2);
+  const [fromId, setFromId] = useState<number>(user.id);
   const onClickDelete = async (followerId: number) => {
     const followerDelete: any = await followApi.followDelete(
       fromId,
       followerId
     );
+    console.log(fromId, followerId);
     setOpenModal(!openModal);
     window.location.reload();
     return followerDelete;
   };
   return (
-    <div>
+    <div
+      role="presentation"
+      onClick={() => onClickMoveRecord(follower.fromUser.id)}
+    >
       <div key={follower.fromUser.id} className="follow_box card">
         <img className="follow_profile_img" src={profileImg} alt="profileImg" />
         <div className="follow_id">{follower.fromUser.nickname}</div>
@@ -73,13 +87,15 @@ function FollowItem({ follower }: any) {
             </div>
           </Modal>
         )}
-        <button
-          className="follow_btn"
-          type="button"
-          onClick={onClickToggleModal}
-        >
-          삭제
-        </button>
+        {isMine ? (
+          <button
+            className="follow_btn"
+            type="button"
+            onClick={onClickToggleModal}
+          >
+            삭제
+          </button>
+        ) : null}
       </div>
     </div>
   );

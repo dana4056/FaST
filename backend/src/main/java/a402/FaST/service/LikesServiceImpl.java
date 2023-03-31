@@ -20,48 +20,45 @@ public class LikesServiceImpl implements LikesService {
 
 
     @Override
-    public int likeArticle(int articleId, int userId) {
+    public boolean likeArticle(int articleId, int userId) {
         if (likesRepository.existsByArticleIdAndUserId(articleId, userId)){
             likesRepository.deleteByArticleIdAndUserId(articleId, userId);
-            return likesRepository.countByArticleId(articleId);
         }else{
             Likes likes = Likes.builder()
                     .article(articleRepository.findById(articleId).get())
                     .user(userRepository.findById(userId).get())
                     .build();
             likesRepository.save(likes);
-            return likesRepository.countByArticleId(articleId);
         }
+        return likesRepository.existsByArticleIdAndUserId(articleId, userId);
 
     }
 
     @Override
-    public int likeComment(int commentId, int userId) {
+    public boolean likeComment(int commentId, int userId) {
         if (likesRepository.existsByCommentIdAndUserId(commentId, userId)){
             likesRepository.deleteByCommentIdAndUserId(commentId, userId);
-            return likesRepository.countByCommentId(commentId);
         }else{
             Likes likes = Likes.builder()
                     .comment(commentRepository.findById(commentId).get())
                     .user(userRepository.findById(userId).get())
                     .build();
             likesRepository.save(likes);
-            return likesRepository.countByCommentId(commentId);
         }
+        return likesRepository.existsByCommentIdAndUserId(commentId, userId);
     }
 
     @Override
-    public int likeCommentReply(int commentReplyId, int userId) {
+    public boolean likeCommentReply(int commentReplyId, int userId) {
         if (likesRepository.existsByCommentReplyIdAndUserId(commentReplyId, userId)){
             likesRepository.deleteByCommentReplyIdAndUserId(commentReplyId, userId);
-            return likesRepository.countByCommentReplyId(commentReplyId);
         }else{
             Likes likes = Likes.builder()
                     .commentReply(commentReplyRepository.findById(commentReplyId).get())
                     .user(userRepository.findById(userId).get())
                     .build();
             likesRepository.save(likes);
-            return likesRepository.countByCommentReplyId(commentReplyId);
         }
+        return likesRepository.existsByCommentReplyIdAndUserId(commentReplyId, userId);
     }
 }

@@ -1,7 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useRecoilState } from 'recoil';
-import { userInfo } from '../atoms/userInfo';
-import { TagType } from '../types/TagType';
 
 const api = axios.create({
   baseURL: 'http://j8a402.p.ssafy.io:8080',
@@ -49,7 +46,7 @@ export async function sendEmail(email: string) {
   }
 }
 
-async function userArticleLike(articleId: number, userId: number) {
+export async function userArticleLike(articleId: number, userId: number) {
   try {
     const res = await api.get('/likes/article', {
       params: { articleId, userId },
@@ -62,4 +59,65 @@ async function userArticleLike(articleId: number, userId: number) {
   }
 }
 
-export default { getUserArticle, userArticleLike };
+export async function doGetArticles(
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(`/article/tag/${userId}/${size}/${offset}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function doGetFollowArticles(
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(`/article/follow/${userId}/${size}/${offset}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function doSearchArticles(
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(
+      `/article/tag-search/${userId}/${size}/${offset}`
+    );
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function doGetMyArticles(
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(`/article/user/${userId}/${size}/${offset}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export default {
+  getUserArticle,
+  userArticleLike,
+};
