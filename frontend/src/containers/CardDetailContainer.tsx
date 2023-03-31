@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import CardDetailPage from '../pages/CardDetailPage';
-import useViewModel from '../viewmodels/ArticleViewModel';
+import useArticleViewModel from '../viewmodels/ArticleViewModel';
+import useCommentViewModel from '../viewmodels/CommentViewModel';
 
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
@@ -11,7 +12,8 @@ import { userInfo } from '../atoms/userInfo';
 
 function CardDetailContainer() {
   const params = useParams();
-  const { getArticle, downloadImages } = useViewModel();
+  const { getArticle, downloadImages } = useArticleViewModel();
+  const { createComment } = useCommentViewModel();
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
   const commentInputRef = useRef<HTMLInputElement>(null);
@@ -74,8 +76,21 @@ function CardDetailContainer() {
   };
 
   // 댓글 전송 함수
-  const handleCommentSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCommentSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
+    if (commentInputRef.current && params.cardId) {
+      const res = await createComment(
+        params.cardId,
+        commentInputRef.current.value,
+        user.id
+      );
+      if (res.status === 200) {
+        console.log('성공');
+      }
+      commentInputRef.current.value = '';
+    }
   };
 
   useEffect(() => {
