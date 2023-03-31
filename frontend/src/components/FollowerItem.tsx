@@ -44,7 +44,7 @@ function FollowItem({ follower, isMine }: any) {
     );
     console.log(fromId, followerId);
     setOpenModal(!openModal);
-    // window.location.reload();
+    window.location.reload();
     return followerDelete;
   };
   return (
