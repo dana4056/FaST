@@ -8,7 +8,7 @@ function Heart() {
     setLiked(!liked);
   };
   useEffect(() => {
-    console.log('liked상태', liked);
+    // console.log('liked상태', liked);
   }, [liked]);
   return (
     <div onClick={handleLikeClick} role="presentation">

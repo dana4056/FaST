@@ -22,7 +22,7 @@ public class Article {
     @Column(length = 500)
     private String imgPath;
     private String content;
-    private LocalDateTime createTime;  ;
+    private LocalDateTime createTime;
     private String lat;
     private String lng;
     private String area;

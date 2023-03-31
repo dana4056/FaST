@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -36,8 +37,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleResponseDto create(ArticleRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).get();
+
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
+
         ArticleResponseDto responseDto = null;
+
         Article article = Article.builder()
                 .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
