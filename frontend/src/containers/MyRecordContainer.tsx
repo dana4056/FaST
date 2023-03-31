@@ -51,7 +51,6 @@ function MyRecordContainer() {
 
       const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
       setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
-
     };
     getData();
   }, []);
