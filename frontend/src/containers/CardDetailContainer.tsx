@@ -13,7 +13,7 @@ import { userInfo } from '../atoms/userInfo';
 function CardDetailContainer() {
   const params = useParams();
   const { getArticle, downloadImages } = useArticleViewModel();
-  const { createComment } = useCommentViewModel();
+  const { createComment, getComments } = useCommentViewModel();
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
   const commentInputRef = useRef<HTMLInputElement>(null);
@@ -35,24 +35,14 @@ function CardDetailContainer() {
   // 댓글 배열
   const [comments, setComments] = useState<Array<CommentType>>([
     {
-      id: 1,
-      nickname: '샘플 닉네임',
-      profile: '프로필이미지',
-      content: '샘플 댓글 내용',
-      regTime: '작성날짜',
-      isLike: true, // 좋아요 눌렀는지
-      numLikes: 123, // 좋아요 개수
-      numReplies: 12, // 답글 개수
-    },
-    {
-      id: 2,
-      nickname: '샘플 닉네임 2',
-      profile: '프로필 이미지2',
-      content: '샘플 댓글 내용',
-      regTime: '작성 날짜 2',
-      isLike: false,
-      numLikes: 11,
-      numReplies: 13,
+      id: 0,
+      nickname: '',
+      profile: '',
+      content: '',
+      regTime: '',
+      isLike: false, // 좋아요 눌렀는지
+      numLikes: 0, // 좋아요 개수
+      numReplies: 0, // 답글 개수
     },
   ]);
 
@@ -120,7 +110,33 @@ function CardDetailContainer() {
         }
       }
     };
+    const getCommentsData = async () => {
+      if (params.cardId) {
+        const res = await getComments(params.cardId, user.id, 10, 0);
+        if (res.status === 200) {
+          console.log(res.data);
+        }
+
+        const newComments: Array<CommentType> = [];
+        await Promise.all(
+          res.data.map((comment: any) =>
+            newComments.push({
+              id: comment.id,
+              nickname: comment.nickname,
+              profile: 'profile/default.jpg',
+              content: comment.content,
+              regTime: new Date(comment.createTime).toDateString(),
+              isLike: comment.likeCheck, // 좋아요 눌렀는지
+              numLikes: 0, // 좋아요 개수
+              numReplies: comment.commentReplycount, // 답글 개수
+            })
+          )
+        );
+        setComments([...newComments]);
+      }
+    };
     getArticleData();
+    getCommentsData();
   }, []);
 
   return (

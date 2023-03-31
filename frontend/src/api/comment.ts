@@ -28,3 +28,20 @@ export async function doCreateComment(
 export async function doDeleteComment() {
   console.log('test');
 }
+
+export async function doGetComments(
+  articleId: string,
+  userId: number,
+  size: number,
+  offset: number
+) {
+  try {
+    const res = await api.get(
+      `/comment/${articleId}/${userId}/${size}/${offset}`
+    );
+    return res;
+  } catch (error: any) {
+    console.error(error);
+    return error;
+  }
+}
