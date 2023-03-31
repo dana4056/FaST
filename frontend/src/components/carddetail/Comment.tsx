@@ -18,7 +18,6 @@ function Comment({
   isLike,
   handleLikeClick,
 }: CommentProps) {
-  console.log(comment);
   return (
     <div className="comment card">
       <div className="comment__header">

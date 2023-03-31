@@ -69,7 +69,7 @@ function CardDetailContainer() {
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 10, 0);
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
       }
 
       const newComments: Array<CommentType> = [];

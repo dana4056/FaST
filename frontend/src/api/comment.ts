@@ -62,3 +62,21 @@ export async function doGetCommentReplies(
     return error;
   }
 }
+
+export async function doCreateCommentReply(
+  commentId: number,
+  content: string,
+  userId: number
+) {
+  try {
+    const res = await api.post(`/commentReply`, {
+      commentId,
+      content,
+      userId,
+    });
+    return res;
+  } catch (error: any) {
+    console.error(error);
+    return error;
+  }
+}
