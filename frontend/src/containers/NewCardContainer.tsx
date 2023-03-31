@@ -6,7 +6,7 @@ import EXIF from 'exif-js';
 import { AxiosResponse } from 'axios';
 import NewCardPage from '../pages/NewCardPage';
 import { TagType } from '../types/TagType';
-import useViewModel from '../viewmodels/CardViewModel';
+import useViewModel from '../viewmodels/ArticleViewModel';
 import { userInfo } from '../atoms/userInfo';
 
 declare global {
@@ -161,7 +161,7 @@ function NewCardContainer() {
       area: loc,
       autoTags,
       content: textareaRef.current?.value,
-      imgPath: imgPath.join(),
+      imgPath: imgPath.join(','),
       lat: la,
       lng: lo,
       tags: customTags,

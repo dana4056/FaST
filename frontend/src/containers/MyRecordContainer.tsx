@@ -9,11 +9,8 @@ import articleApi from '../api/article';
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import sample2 from '../assets/images/sample-images/sample_2.jpg';
-import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CardType } from '../types/CardType';
-
+import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
 
 function MyRecordContainer() {
@@ -25,7 +22,9 @@ function MyRecordContainer() {
   // 게시글 수
   const [articleNum, setArticleNum] = useState<number>(0);
   // 게시글 목록
-  const [article, setArticle] = useState<any>({});
+  const [articles, setArticles] = useState<any>({});
+
+  const { downloadImages } = useViewModel();
 
   useEffect(() => {
     // 프로필 박스
@@ -47,7 +46,7 @@ function MyRecordContainer() {
 
       // 게시글
       const articleData: any = await articleApi.getUserArticle(user.id, 20, 0);
-      setArticle(articleData.data);
+      setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
     };
     getData();
   }, []);
@@ -55,61 +54,73 @@ function MyRecordContainer() {
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
   useEffect(() => {
-    const cardLeftList: any = [];
-    const cardRightList: any = [];
-    if (article.length > 0) {
-      for (let i = article.length - 1; i >= 0; i -= 2) {
-        const leftArticleTags: any = [];
-        const leftItem = article[i];
-        leftItem.tags.map((tag: any) =>
-          leftArticleTags.push({
-            value: tag.tagName,
-            className: 'tag-2 tag-small',
+    const setData = async () => {
+      const cardLeftList: any = [];
+      const cardRightList: any = [];
+      if (articles.length > 0) {
+        await Promise.all(
+          articles.map(async (article: any, i: number) => {
+            if (i % 2 === 0) {
+              console.log(article.tags);
+              const leftArticleTags: any = [];
+              article.tags.map((tag: any) =>
+                leftArticleTags.push({
+                  value: tag.tagName,
+                  className: 'tag-2 tag-small',
+                })
+              );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
+              cardLeftList.push({
+                id: article?.id,
+                imageUrls,
+                nickname: article.nickname,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.isLike,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: leftArticleTags,
+              });
+            } else {
+              const rightArticleTags: any = [];
+              await Promise.all(
+                article.tags.map((tag: any) =>
+                  rightArticleTags.push({
+                    value: tag.tagName,
+                    className: 'tag-2 tag-small',
+                  })
+                )
+              );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
+              cardRightList.push({
+                id: article?.id,
+                imageUrls,
+                nickname: article.nickname,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.isLike,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: rightArticleTags,
+              });
+            }
           })
         );
-        cardLeftList.push({
-          id: leftItem?.id,
-          // imageUrls: [leftItem?.imgPath],
-          imageUrls: [sample1],
-          nickname: leftItem?.nickname,
-          content: '',
-          regTime: leftItem?.createTime,
-          isLike: leftItem?.likeCheck,
-          numLikes: leftItem?.likeCount,
-          numComments: leftItem?.commentCount,
-          tags: leftArticleTags,
-        });
       }
-      for (let i = article.length - 2; i >= 0; i -= 2) {
-        const rightArticleTags: any = [];
-        const rightItem = article[i];
-        rightItem.tags.map((tag: any) =>
-          rightArticleTags.push({
-            value: tag.tagName,
-            className: 'tag-2 tag-small',
-          })
-        );
-        cardRightList.push({
-          id: rightItem?.id,
-          // imageUrls: [rightItem?.imgPath],
-          imageUrls: [sample1],
-          nickname: rightItem?.nickname,
-          content: '',
-          regTime: rightItem?.createTime,
-          isLike: rightItem?.likeCheck,
-          numLikes: rightItem?.likeCount,
-          numComments: rightItem?.commentCount,
-          tags: rightArticleTags,
-        });
+      if (cardLeftList.length > 0) {
+        setCardsLeft([...cardLeftList]);
       }
-    }
-    if (cardLeftList.length > 0) {
-      setCardsLeft([...cardLeftList]);
-    }
-    if (cardRightList.length > 0) {
-      setCardsRight([...cardRightList]);
-    }
-  }, [article]);
+      console.log(cardLeftList);
+      if (cardRightList.length > 0) {
+        setCardsRight([...cardRightList]);
+      }
+    };
+    setData();
+  }, [articles]);
 
   // console.log(cardsLeft);
 
