@@ -15,7 +15,7 @@ import {
 } from '../types/ComponentPropsType';
 import followApi from '../api/follow';
 
-function FollowList({ following, notFollowing }: any) {
+function FollowList({ following, notFollowing, isMine }: any) {
   const [userInput, setUserInput] = useState('');
   const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value.toLowerCase());
@@ -56,11 +56,19 @@ function FollowList({ following, notFollowing }: any) {
         <div>
           {searchedFollowing
             ? searchedFollowing.map((user: any) => (
-                <FollowingItem key={user.toUser.id} following={user} />
+                <FollowingItem
+                  key={user.toUser.id}
+                  following={user}
+                  isMine={isMine}
+                />
                 // <NotFollowingItem key={user.toUser.id} following={user} />
               ))
             : following.map((user: any) => (
-                <FollowingItem key={user.toUser.id} following={user} />
+                <FollowingItem
+                  key={user.toUser.id}
+                  following={user}
+                  isMine={isMine}
+                />
               ))}
         </div>
         {userInput && (
@@ -68,7 +76,11 @@ function FollowList({ following, notFollowing }: any) {
             <div className="not-following__title">새로운 사람</div>
             {searchedNotFollowing ? (
               searchedNotFollowing.map((user: any) => (
-                <NotFollowingItem key={user.id} notFollowing={user} />
+                <NotFollowingItem
+                  key={user.id}
+                  notFollowing={user}
+                  isMine={isMine}
+                />
               ))
             ) : (
               <div>검색된 결과가 없습니다.</div>
