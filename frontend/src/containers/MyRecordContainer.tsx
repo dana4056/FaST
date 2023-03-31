@@ -73,6 +73,7 @@ function MyRecordContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
+              console.log(article);
               const imageUrls = await downloadImages(
                 article.imgPath.split(',')
               );
