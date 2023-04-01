@@ -26,6 +26,11 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "where ah.tag_id = t.id and t.name like %?1%) order by a.create_time desc", nativeQuery = true)
     List<ArticleList> ArticleListTagSearch(String tagName, Pageable pageable);
 
+    @Query(value = "select a.id from article a where a.id in " +
+            "(select ah.article_id from article_has_tag ah, tag t " +
+            "where ah.tag_id = t.id and t.name like %?1%) order by a.create_time desc", nativeQuery = true)
+    List<Integer> ArticleListTagSearchAll(String tagName, Pageable pageable);
+
     List<Article> findAllByUserAndArea(User user, String Area);
 
     List<Article> findByUser(User userId, Pageable pageable);
