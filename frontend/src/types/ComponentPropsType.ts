@@ -119,6 +119,11 @@ export interface CommentContinaerProps {
   comment: CommentType;
 }
 
+// 좋아요 하트 Props
+export interface HeartProps {
+  cardId: number;
+}
+
 // 카드 목록의 카드 Props
 export interface PhotoCardProps {
   // 카드
