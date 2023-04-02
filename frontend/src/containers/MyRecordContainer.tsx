@@ -72,7 +72,6 @@ function MyRecordContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
-              console.log(article);
               const imageUrls = await downloadImages(
                 article.imgPath.split(',')
               );
@@ -120,7 +119,6 @@ function MyRecordContainer() {
           ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
         ]);
       }
-      console.log(cardLeftList);
       if (cardRightList.length > 0) {
         setCardsRight([
           ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),

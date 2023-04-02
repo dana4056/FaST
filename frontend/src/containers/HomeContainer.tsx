@@ -6,9 +6,6 @@ import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import sample2 from '../assets/images/sample-images/sample_2.jpg';
-import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { userInfo } from '../atoms/userInfo';
 
 // ViewModel과 View를 연결하기 위한 Container
@@ -22,7 +19,7 @@ function HomeContainer() {
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
-  const { getArticles } = useViewModel();
+  const { getArticles, downloadImages } = useViewModel();
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -77,7 +74,73 @@ function HomeContainer() {
   useEffect(() => {
     const getData = async () => {
       const res: any = await getArticles(user.id, 3, 0);
-      console.log(res);
+      if (res.status === 200) {
+        const cardLeftList: any = [];
+        const cardRightList: any = [];
+        if (res.data.length > 0) {
+          await Promise.all(
+            res.data.map(async (article: any, i: number) => {
+              if (i % 2 === 0) {
+                const leftArticleTags: any = [];
+                article.tags.map((tag: any) =>
+                  leftArticleTags.push({
+                    value: tag.tagName,
+                    className: 'tag-2 tag-small',
+                  })
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardLeftList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.isLike,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: leftArticleTags,
+                });
+              } else {
+                const rightArticleTags: any = [];
+                await Promise.all(
+                  article.tags.map((tag: any) =>
+                    rightArticleTags.push({
+                      value: tag.tagName,
+                      className: 'tag-2 tag-small',
+                    })
+                  )
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardRightList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.isLike,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: rightArticleTags,
+                });
+              }
+            })
+          );
+        }
+        if (cardLeftList.length > 0) {
+          setCardsLeft([
+            ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
+          ]);
+        }
+        if (cardRightList.length > 0) {
+          setCardsRight([
+            ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
+          ]);
+        }
+      }
     };
     getData();
   }, []);
