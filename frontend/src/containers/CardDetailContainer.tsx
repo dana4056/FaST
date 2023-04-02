@@ -27,6 +27,7 @@ function CardDetailContainer() {
     numLikes: 0,
     regTime: '',
     tags: [],
+    userId: 0,
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -123,7 +124,7 @@ function CardDetailContainer() {
           );
           setCard({
             id: res.data.id,
-            nickname: res.data.nickname,
+            nickname: res.data.nickName,
             content: res.data.content,
             imageUrls,
             isLike: res.data.likeCheck,
@@ -131,6 +132,7 @@ function CardDetailContainer() {
             numComments: res.data.commentCount,
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
+            userId: res.data.userId,
           });
         }
       }
@@ -142,6 +144,7 @@ function CardDetailContainer() {
   return (
     <CardDetailPage
       card={card}
+      user={user}
       comments={comments}
       handleLikeClick={handleLikeClick}
       isMenuOpen={isMenuOpen}

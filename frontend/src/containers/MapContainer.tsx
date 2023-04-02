@@ -17,6 +17,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -37,6 +38,8 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -59,6 +62,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -79,6 +83,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',

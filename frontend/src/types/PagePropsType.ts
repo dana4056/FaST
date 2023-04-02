@@ -50,6 +50,7 @@ export interface NewCardPageProps extends InputPhotoProps {
 
 // 카드 상세 페이지 props
 export interface CardDetailPageProps extends CardDetailProps {
+  user: any;
   // 댓글 배열
   comments: Array<CommentType>;
   // 댓글창이 열려있는지

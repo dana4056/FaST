@@ -67,6 +67,7 @@ export interface ImageSliderProps extends ImageSliderContainerProps {
 
 // 카드 상세 props
 export interface CardDetailProps {
+  user: any;
   // 카드 정보
   card: CardType;
   // 좋아요 클릭 함수

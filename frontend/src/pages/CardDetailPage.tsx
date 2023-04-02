@@ -6,6 +6,7 @@ import Comments from '../components/carddetail/Comments';
 import { CardDetailPageProps } from '../types/PagePropsType';
 
 function CardDetailPage({
+  user,
   handleLikeClick,
   card,
   comments,
@@ -23,6 +24,7 @@ function CardDetailPage({
         style={isCommentOpen ? { transform: 'translateX(-100%)' } : {}}
       >
         <CardDetail
+          user={user}
           card={card}
           handleLikeClick={handleLikeClick}
           isMenuOpen={isMenuOpen}
