@@ -16,6 +16,8 @@ function CardDetailPage({
   handleCommentClick,
   commentInputRef,
   handleCommentSubmit,
+  handleModifyClick,
+  handleDeleteClick,
 }: CardDetailPageProps) {
   return (
     <div className="card-detail-page">
@@ -30,6 +32,8 @@ function CardDetailPage({
           isMenuOpen={isMenuOpen}
           handleMenuClick={handleMenuClick}
           handleCommentClick={handleCommentClick}
+          handleModifyClick={handleModifyClick}
+          handleDeleteClick={handleDeleteClick}
         />
         <Comments
           comments={comments}

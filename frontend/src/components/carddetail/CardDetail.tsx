@@ -12,6 +12,8 @@ import { CardDetailProps } from '../../types/ComponentPropsType';
 function CardDetail({
   user,
   card,
+  handleModifyClick,
+  handleDeleteClick,
   handleLikeClick,
   isMenuOpen,
   handleMenuClick,
@@ -35,9 +37,21 @@ function CardDetail({
         ) : null}
         {isMenuOpen ? (
           <div className="card-detail__menu">
-            <div className="card-detail__modify">수정</div>
+            <div
+              className="card-detail__modify"
+              role="presentation"
+              onClick={handleModifyClick}
+            >
+              수정
+            </div>
             <hr />
-            <div className="card-detail__remove">삭제</div>
+            <div
+              className="card-detail__remove"
+              role="presentation"
+              onClick={handleDeleteClick}
+            >
+              삭제
+            </div>
           </div>
         ) : null}
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import CardDetailPage from '../pages/CardDetailPage';
@@ -12,6 +12,7 @@ import { userInfo } from '../atoms/userInfo';
 
 function CardDetailContainer() {
   const params = useParams();
+  const navigate = useNavigate();
   const { getArticle, downloadImages } = useArticleViewModel();
   const { createComment, getComments } = useCommentViewModel();
   const user = useRecoilValue(userInfo);
@@ -109,6 +110,12 @@ function CardDetailContainer() {
       commentInputRef.current.value = '';
     }
   };
+  const handleModifyClick = () => {
+    navigate(`/modify-article/${card.id}`);
+  };
+  const handleDeleteClick = () => {
+    // test
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -153,6 +160,8 @@ function CardDetailContainer() {
       handleCommentClick={handleCommentClick}
       commentInputRef={commentInputRef}
       handleCommentSubmit={handleCommentSubmit}
+      handleModifyClick={handleModifyClick}
+      handleDeleteClick={handleDeleteClick}
     />
   );
 }

@@ -14,6 +14,7 @@ import UserModifyContainer from './containers/UserModifyContainer';
 
 import './styles/main.scss';
 import ModifyPwdContainer from './containers/ModifyPwdContainer';
+import ModifyArticleContainer from './containers/ModifyArticleContainer';
 
 function Router() {
   return (
@@ -23,6 +24,10 @@ function Router() {
         <Routes>
           <Route path="/home" element={<HomeContainer />} />
           <Route path="/newcard" element={<NewCardContainer />} />
+          <Route
+            path="/modify-article/:articleId"
+            element={<ModifyArticleContainer />}
+          />
           <Route path="/article/:cardId" element={<CardDetailContainer />} />
           <Route path="/record/:userId" element={<MyRecordContainer />} />
           <Route path="/map" element={<MapContainer />} />

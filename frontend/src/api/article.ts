@@ -32,6 +32,15 @@ export async function doWriteArticle(requestBody: any) {
     return error;
   }
 }
+export async function doModifyArticle(requestBody: any) {
+  try {
+    const res = await api.put('/article/modify-article', requestBody);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
 export async function sendEmail(email: string) {
   try {
     const res = await api.post(`/user/send-email`, {

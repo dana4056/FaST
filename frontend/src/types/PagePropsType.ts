@@ -48,6 +48,10 @@ export interface NewCardPageProps extends InputPhotoProps {
   handlePageMove: () => void;
 }
 
+export interface ModifyArticlePageProps extends NewCardPageProps {
+  isNotAuth: boolean;
+}
+
 // 카드 상세 페이지 props
 export interface CardDetailPageProps extends CardDetailProps {
   user: any;
