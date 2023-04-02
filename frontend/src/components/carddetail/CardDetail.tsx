@@ -44,7 +44,7 @@ function CardDetail({
       <div className="card-detail__footer">
         <div className="card-detail__sns">
           <div className="card-detail__like">
-            <Heart />
+            <Heart cardId={card.id} />
             <span>{card.numLikes} Likes</span>
           </div>
           <button

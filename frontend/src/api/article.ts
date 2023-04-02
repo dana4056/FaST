@@ -132,7 +132,7 @@ async function articleLike(articleId: number, userId: number) {
     const res = await api.get(`/likes/article`, {
       params: { articleId, userId },
     });
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);

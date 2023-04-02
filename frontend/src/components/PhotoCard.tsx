@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { BsPencil } from '@react-icons/all-files/bs/BsPencil';
 import { BsTrash } from '@react-icons/all-files/bs/BsTrash';
 import { useNavigate, Link } from 'react-router-dom';
@@ -16,7 +17,8 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
   const onClickMoveDetail = (id: number) => {
     navigate(`/article/${id}`);
   };
-  console.log(card);
+  // console.log(card);
+
   return (
     <div
       className="photo-card card"
@@ -29,8 +31,8 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
         alt="photocardimg"
       />
       <div className="photo-card__row">
-        <div className="photo-card__like">
-          <Heart />
+        <div className="photo-card__like" role="presentation">
+          <Heart cardId={card.id} />
           {card.numLikes} Likes
         </div>
         {isMine ? (

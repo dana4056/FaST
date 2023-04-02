@@ -63,14 +63,14 @@
   border-radius: inherit;
   z-index: -1;
 }
-.like-button:active:before {
-  -webkit-animation: depress-shadow var(--duration) var(--easing) both;
-  animation: depress-shadow var(--duration) var(--easing) both;
-}
-.like-button:focus:after {
-  -webkit-animation: depress var(--duration) var(--easing) both;
-  animation: depress var(--duration) var(--easing) both;
-}
+// .like-button:active:before {
+//   -webkit-animation: depress-shadow var(--duration) var(--easing) both;
+//   animation: depress-shadow var(--duration) var(--easing) both;
+// }
+// .like-button:focus:after {
+//   -webkit-animation: depress var(--duration) var(--easing) both;
+//   animation: depress var(--duration) var(--easing) both;
+// }
 @-webkit-keyframes depress {
   from,
   to {
