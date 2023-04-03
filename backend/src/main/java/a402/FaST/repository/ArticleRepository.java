@@ -30,7 +30,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             "where ah.tag_id = t.id and t.name like %?1%) order by a.create_time desc", nativeQuery = true)
     List<Integer> ArticleListTagSearchAll(String tagName, Pageable pageable);
 
-    List<Article> findAllByUserAndArea(User user, String Area);
+
+    List<Article> findAllByUserAndArea(User user, String Area, Pageable pageable);
 
     List<Article> findByUser(User userId, Pageable pageable);
 

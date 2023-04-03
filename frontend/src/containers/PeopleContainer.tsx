@@ -7,8 +7,15 @@ import PeoplePage from '../pages/PeoplePage';
 import { userInfo } from '../atoms/userInfo';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { TagType } from '../types/TagType';
+import useIntersect from '../utils/useIntersect';
 
 function PeopleContainer() {
+  const size = 10;
+  let offset = 0;
+
+  const [isMine, setIsMine] = useState<boolean>(true);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
@@ -70,12 +77,13 @@ function PeopleContainer() {
     }
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const res: any = await getFollowArticles(user.id, 20, 0);
+  const getData = async () => {
+    if (!isLimit) {
+      setIsLoaded(true);
+      const res: any = await getFollowArticles(user.id, size, offset);
       if (res.status === 200) {
-        const cardLeftList: any = [];
-        const cardRightList: any = [];
+        const cardLeftList: any = cardsLeft;
+        const cardRightList: any = cardsRight;
         if (res.data.length > 0) {
           await Promise.all(
             res.data.map(async (article: any, i: number) => {
@@ -128,6 +136,10 @@ function PeopleContainer() {
               }
             })
           );
+        } else {
+          setIsLimit(true);
+          setIsLoaded(false);
+          return;
         }
         if (cardLeftList.length > 0) {
           setCardsLeft([
@@ -140,7 +152,13 @@ function PeopleContainer() {
           ]);
         }
       }
-    };
+      offset += 1;
+      setIsLoaded(false);
+    }
+  };
+
+  const [, setRef] = useIntersect(getData, isLoaded);
+  useEffect(() => {
     getData();
   }, []);
   return (
@@ -150,8 +168,12 @@ function PeopleContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
+      isMine={false}
+      isLoaded={isLoaded}
+      isLimit={isLimit}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
+      setRef={setRef}
     />
   );
 }

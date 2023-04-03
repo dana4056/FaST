@@ -12,6 +12,7 @@ import {
   doGetArticle,
   doModifyArticle,
   doGetFollowArticles,
+  doGetMyArticles,
   doDeleteArticle,
 } from '../api/article';
 import uuid from '../utils/uuid';
@@ -56,7 +57,6 @@ const ArticleViewModel = () => {
     await Promise.all(
       images.map(async (image: File) => {
         const res = await doGetAutoTags(image, area);
-        console.log(res, area);
         if (res.data.length > 0) {
           ret = ret.concat(res.data);
         }
@@ -89,6 +89,15 @@ const ArticleViewModel = () => {
     return res;
   };
 
+  const getMyArticles = async (
+    userId: number,
+    size: number,
+    offset: number
+  ) => {
+    const res = await doGetMyArticles(userId, size, offset);
+    return res;
+  };
+
   return {
     uploadImages,
     writeArticle,
@@ -100,6 +109,7 @@ const ArticleViewModel = () => {
     getArticle,
     deleteImage,
     deleteArticle,
+    getMyArticles,
   };
 };
 

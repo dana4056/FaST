@@ -6,7 +6,14 @@ import KoreaMap from '../components/KoreaMap';
 import CardList from '../components/CardList';
 import { MapPageProps } from '../types/PagePropsType';
 
-function MapPage({ isMine, cardsLeft, cardsRight, scrollRef }: MapPageProps) {
+function MapPage({
+  isMine,
+  cardsLeft,
+  cardsRight,
+  setRef,
+  isLoaded,
+  isLimit,
+}: MapPageProps) {
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
   const navigate = useNavigate();
@@ -14,7 +21,6 @@ function MapPage({ isMine, cardsLeft, cardsRight, scrollRef }: MapPageProps) {
   const onClickBack = () => {
     navigate(`/record/${user}`);
   };
-
   return (
     <div className="map-page">
       <div className="map-page__header">
@@ -29,7 +35,9 @@ function MapPage({ isMine, cardsLeft, cardsRight, scrollRef }: MapPageProps) {
         isMine={isMine}
         cardsLeft={cardsLeft}
         cardsRight={cardsRight}
-        scrollRef={scrollRef}
+        setRef={setRef}
+        isLoaded={isLoaded}
+        isLimit={isLimit}
       />
     </div>
   );

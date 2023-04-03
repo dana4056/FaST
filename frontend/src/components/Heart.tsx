@@ -26,6 +26,10 @@ function Heart({ cardId, cntLike }: HeartProps) {
   };
 
   useEffect(() => {
+    setLikeNum(cntLike);
+  }, [cntLike]);
+
+  useEffect(() => {
     if (liked !== undefined) {
       if (liked) {
         setLikeNum((prev) => prev + 1);

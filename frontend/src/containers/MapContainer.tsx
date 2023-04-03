@@ -5,6 +5,7 @@ import MapPage from '../pages/MapPage';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import articleApi from '../api/article';
+import useIntersect from '../utils/useIntersect';
 
 function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
@@ -112,7 +113,9 @@ function MapContainer() {
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
       isMine={isMine}
-      scrollRef={scrollRef}
+      setRef={null}
+      isLoaded={false}
+      isLimit={false}
     />
   );
 }

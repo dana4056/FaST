@@ -14,14 +14,7 @@ import { CommentType } from './CommentType';
 import { CardType } from './CardType';
 
 // 메인 페이지 Props
-export interface HomePageProps extends SearchBoxProps {
-  // 왼쪽 카드 목록
-  cardsLeft: Array<CardType>;
-  // 오른쪽 카드 목록
-  cardsRight: Array<CardType>;
-  isMine: boolean;
-  scrollRef: React.RefObject<HTMLDivElement>;
-}
+export interface HomePageProps extends SearchBoxProps, CardListProps {}
 
 // 새 카드 페이지 Props
 export interface NewCardPageProps extends InputPhotoProps {
