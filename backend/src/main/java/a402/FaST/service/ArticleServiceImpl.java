@@ -8,6 +8,7 @@ import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -161,7 +161,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleUserTag(int userId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
 
@@ -246,7 +246,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName) {
+    public List<ArticleListResponseDto> listArticleSearchTag(int userId, int size, int offset, String tagName) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
 
@@ -301,6 +301,43 @@ public class ArticleServiceImpl implements ArticleService {
                         .build()).collect(Collectors.toList()))
                 .build())
             .collect(Collectors.toList());
+
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, List<String> tags) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = new ArrayList<>();
+        Set<Integer> articleIds = new HashSet<>();
+
+        for (String tagName : tags){
+            List<Integer> articles = articleRepository.ArticleListTagSearchAll(tagName, pageable);
+            for (int id : articles){
+                articleIds.add(id);
+            }
+        }
+
+
+        for (int id : articleIds){
+            Article article = articleRepository.findById(id).get();
+            ArticleListResponseDto articleListResponseDto = ArticleListResponseDto.builder()
+                    .id(article.getId())
+                    .userId(article.getUser().getId())
+                    .nickName(article.getUser().getNickname())
+                    .imgPath(article.getUser().getImgPath())
+                    .createTime(article.getCreateTime())
+                    .commentCount(commentRepository.countByArticleId(article.getId()))
+                    .likeCount(likesRepository.countByArticleId(article.getId()))
+                    .likeCheck(likesRepository.existsByArticleIdAndUserId(article.getId(),article.getUser().getId()))
+                    .tags(articleRepository.findById(article.getId()).get().getTags().stream()
+                            .map(Tag->TagResponseDto.builder()
+                                    .tagId(Tag.getTag().getId())
+                                    .tagName(Tag.getTag().getName())
+                                    .build()).collect(Collectors.toList()))
+                    .build();
+            responseDto.add(articleListResponseDto);
+        }
 
         return responseDto;
     }

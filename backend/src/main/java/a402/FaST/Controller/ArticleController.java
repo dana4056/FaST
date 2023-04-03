@@ -71,20 +71,20 @@ public class ArticleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/tag/{userId}/{size}/{offset}")
-    @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
-                    " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleListTag(@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
-        return articleService.listArticleTag(userId, size, offset);
-    }
-
     @GetMapping("/user/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (사용자 작성 기반) API =>  게시글 목록 조회하는 API 입니다.",
             description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
     public List<ArticleListResponseDto> articleListUser (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return articleService.listArticleUser(userId, size, offset);
+    }
+
+    @GetMapping("/tag/{userId}/{size}/{offset}")
+    @Operation(summary = "게시글 목록 조회 (사용자 태그 기반) API =>  게시글 목록 조회하는 API 입니다.",
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
+                    " => ArticleListResponseDto 를 Return 해줍니다.")
+    public List<ArticleListResponseDto> articleListUserTag(@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
+        return articleService.listArticleUserTag(userId, size, offset);
     }
 
     @GetMapping("/follow/{userId}/{size}/{offset}")
@@ -100,8 +100,17 @@ public class ArticleController {
             description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
                     "RequestParam 형식 데이터 (String : tagName)" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleListFollow (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("tagName") String tagName) {
-        return articleService.listArticleTagSearch(userId, size, offset, tagName);
+    public List<ArticleListResponseDto> articleListSearchTag (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("tagName") String tagName) {
+        return articleService.listArticleSearchTag(userId, size, offset, tagName);
+    }
+
+    @GetMapping("/tag-searchAll/{userId}/{size}/{offset}")
+    @Operation(summary = "게시글 목록 조회 (태그 다중 검색 기반) API =>  게시글 목록 조회하는 API 입니다.",
+            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
+                    "RequestParam 형식 데이터 (String : tagName)" +
+                    " => ArticleListResponseDto 를 Return 해줍니다.")
+    public List<ArticleListResponseDto> articleListSearchTagAll (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("tagName") List<String> tags) {
+        return articleService.listArticleSearchTagAll(userId, size, offset, tags);
     }
 
     @GetMapping("/area/{userId}")
@@ -112,5 +121,7 @@ public class ArticleController {
     public List<ArticleListResponseDto> articleListArea (@Valid @PathVariable("userId") int userId, @RequestParam("area") String area) {
         return articleService.listArticleArea(userId, area);
     }
+
+
 
 }
