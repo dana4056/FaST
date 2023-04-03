@@ -113,13 +113,13 @@ public class ArticleController {
         return articleService.listArticleSearchTagAll(userId, size, offset, tags);
     }
 
-    @GetMapping("/area/{userId}")
+    @GetMapping("/area/{userId}/{size}/{offset}")
     @Operation(summary = "게시글 목록 조회 (지역 검색 기반) API =>  게시글 목록 조회하는 API 입니다.",
         description = "PathVariable 형식 데이터 (int : userId)" +
             "RequestParam 형식 데이터 (String : area)" +
             " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleListArea (@Valid @PathVariable("userId") int userId, @RequestParam("area") String area) {
-        return articleService.listArticleArea(userId, area);
+    public List<ArticleListResponseDto> articleListArea (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("area") String area) {
+        return articleService.listArticleArea(userId, size, offset, area);
     }
 
 
