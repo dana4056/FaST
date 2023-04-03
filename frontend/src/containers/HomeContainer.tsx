@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
 import { userInfo } from '../atoms/userInfo';
@@ -6,14 +6,16 @@ import HomePage from '../pages/HomePage';
 import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
+import useIntersect from '../utils/useIntersect';
 
 // ViewModel과 View를 연결하기 위한 Container
 function HomeContainer() {
-  const size = 3;
+  const size = 10;
+  let offset = 0;
   const user = useRecoilValue(userInfo);
   const [isMine, setIsMine] = useState<boolean>(true);
-  const [offset, setOffset] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
 
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
@@ -22,8 +24,6 @@ function HomeContainer() {
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
-
-  const scrollRef = useRef(null);
 
   const { getArticles, downloadImages } = useViewModel();
 
@@ -78,105 +78,85 @@ function HomeContainer() {
   };
 
   const getData = async () => {
-    setIsLoading(true);
-    const res: any = await getArticles(user.id, size, offset);
-    if (res.status === 200) {
-      const cardLeftList: any = [];
-      const cardRightList: any = [];
-      if (res.data.length > 0) {
-        await Promise.all(
-          res.data.map(async (article: any, i: number) => {
-            if (i % 2 === 0) {
-              const leftArticleTags: any = [];
-              article.tags.map((tag: any) =>
-                leftArticleTags.push({
-                  value: tag.tagName,
-                  className: 'tag-2 tag-small',
-                })
-              );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
-              cardLeftList.push({
-                id: article?.id,
-                imageUrls,
-                nickname: article.nickname,
-                content: '',
-                regTime: article?.createTime,
-                isLike: article?.likeCheck,
-                numLikes: article?.likeCount,
-                numComments: article?.commentCount,
-                tags: leftArticleTags,
-              });
-            } else {
-              const rightArticleTags: any = [];
-              await Promise.all(
+    if (!isLimit) {
+      setIsLoaded(true);
+      const res: any = await getArticles(user.id, size, offset);
+      if (res.status === 200) {
+        const cardLeftList: any = cardsLeft;
+        const cardRightList: any = cardsRight;
+        if (res.data.length > 0) {
+          await Promise.all(
+            res.data.map(async (article: any, i: number) => {
+              if (i % 2 === 0) {
+                const leftArticleTags: any = [];
                 article.tags.map((tag: any) =>
-                  rightArticleTags.push({
+                  leftArticleTags.push({
                     value: tag.tagName,
                     className: 'tag-2 tag-small',
                   })
-                )
-              );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
-              cardRightList.push({
-                id: article?.id,
-                imageUrls,
-                nickname: article.nickname,
-                content: '',
-                regTime: article?.createTime,
-                isLike: article?.likeCheck,
-                numLikes: article?.likeCount,
-                numComments: article?.commentCount,
-                tags: rightArticleTags,
-              });
-            }
-          })
-        );
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardLeftList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: leftArticleTags,
+                });
+              } else {
+                const rightArticleTags: any = [];
+                await Promise.all(
+                  article.tags.map((tag: any) =>
+                    rightArticleTags.push({
+                      value: tag.tagName,
+                      className: 'tag-2 tag-small',
+                    })
+                  )
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardRightList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: rightArticleTags,
+                });
+              }
+            })
+          );
+        } else {
+          setIsLimit(true);
+          setIsLoaded(false);
+          return;
+        }
+        if (cardLeftList.length > 0) {
+          setCardsLeft([...cardsLeft]);
+        }
+        if (cardRightList.length > 0) {
+          setCardsRight([...cardsRight]);
+        }
       }
-      if (cardLeftList.length > 0) {
-        let newCardsLeft = cardsLeft;
-        console.log(cardLeftList);
-        await Promise.all(
-          (newCardsLeft = newCardsLeft.concat(
-            cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id)
-          ))
-        );
-        setCardsLeft([...newCardsLeft]);
-      }
-      if (cardRightList.length > 0) {
-        let newCardsRight = cardsRight;
-        await Promise.all(
-          (newCardsRight = newCardsRight.concat(
-            cardRightList.sort((o1: any, o2: any) => o2.id - o1.id)
-          ))
-        );
-        setCardsRight([...newCardsRight]);
-      }
+      offset += 1;
+      setIsLoaded(false);
     }
-    setIsLoading(false);
   };
-  const callback = async () => {
-    if (!isLoading) {
-      console.log('load');
-      setOffset((prev: number) => prev + size);
-    }
-  };
-  const options = {
-    threshold: 0.5,
-  };
-  const observer = new IntersectionObserver(callback, options);
+
+  const [, setRef] = useIntersect(getData, isLoaded);
+
   useEffect(() => {
-    console.log(offset);
     getData();
-  }, [offset]);
-  useEffect(() => {
-    getData();
-    if (scrollRef.current) {
-      observer.observe(scrollRef.current);
-    }
   }, []);
 
   return (
@@ -189,7 +169,9 @@ function HomeContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
-      scrollRef={scrollRef}
+      isLoaded={isLoaded}
+      isLimit={isLimit}
+      setRef={setRef}
     />
   );
 }

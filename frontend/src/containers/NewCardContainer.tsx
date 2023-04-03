@@ -26,7 +26,7 @@ function NewCardContainer() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [la, setLa] = useState<string>('');
   const [lo, setLo] = useState<string>('');
-  const [loc, setLoc] = useState<string>('서울특별시');
+  const [loc, setLoc] = useState<string>('');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -188,6 +188,7 @@ function NewCardContainer() {
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
+            console.log(region);
             if (region === '서울') {
               setLoc('서울특별시');
             } else if (region === '인천') {

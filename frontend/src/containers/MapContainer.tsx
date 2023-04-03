@@ -6,6 +6,7 @@ import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CardType } from '../types/CardType';
+import useIntersect from '../utils/useIntersect';
 
 function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
@@ -102,12 +103,15 @@ function MapContainer() {
       ],
     },
   ]);
+  // const [, setRef] =useIntersect()
   return (
     <MapPage
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
       isMine={isMine}
-      scrollRef={scrollRef}
+      setRef={null}
+      isLoaded={false}
+      isLimit={false}
     />
   );
 }
