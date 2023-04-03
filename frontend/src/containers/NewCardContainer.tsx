@@ -95,6 +95,7 @@ function NewCardContainer() {
       filesArray.forEach((file: any, i: number) => {
         EXIF.getData(file, () => {
           const meta = EXIF.getAllTags(file);
+          console.log(meta);
           if (la.length === 0 && meta && meta.GPSLatitudeRef) {
             if (meta.GPSLatitudeRef === 'S') {
               setLa(
@@ -220,7 +221,7 @@ function NewCardContainer() {
     };
     getTags();
     // }
-  }, [images]);
+  }, [loc]);
   return (
     <NewCardPage
       isModalOpen={isModalOpen}
