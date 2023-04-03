@@ -13,11 +13,11 @@ function CardDetail({
   user,
   card,
   handleModifyClick,
-  handleDeleteClick,
   handleLikeClick,
   isMenuOpen,
   handleMenuClick,
   handleCommentClick,
+  handleDeleteOpen,
 }: CardDetailProps) {
   return (
     <div className="card card-detail">
@@ -48,7 +48,7 @@ function CardDetail({
             <div
               className="card-detail__remove"
               role="presentation"
-              onClick={handleDeleteClick}
+              onClick={handleDeleteOpen}
             >
               삭제
             </div>

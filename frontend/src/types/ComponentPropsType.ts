@@ -73,7 +73,7 @@ export interface CardDetailProps {
   // 좋아요 클릭 함수
   handleLikeClick: () => void;
   handleModifyClick: () => void;
-  handleDeleteClick: () => void;
+  handleDeleteOpen: () => void;
   // 메뉴 상태
   isMenuOpen: boolean;
   // 메뉴 클릭 함수

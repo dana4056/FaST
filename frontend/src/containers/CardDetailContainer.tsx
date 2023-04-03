@@ -114,12 +114,17 @@ function CardDetailContainer() {
   const handleModifyClick = () => {
     navigate(`/modify-article/${card.id}`);
   };
-  const handleDeleteClick = async () => {
+  const handleDeleteOpen = async () => {
     setIsDeleteOpen(true);
-    // const res: any = await deleteArticle(card.id, user.id);
-    // if (res.status === 200) {
-    //   navigate(-1);
-    // }
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteOpen(false);
+  };
+  const handleArticleDelete = async () => {
+    const res: any = await deleteArticle(card.id, user.id);
+    if (res.status === 200) {
+      navigate(-1);
+    }
   };
   useEffect(() => {
     const getArticleData = async () => {
@@ -166,7 +171,9 @@ function CardDetailContainer() {
       commentInputRef={commentInputRef}
       handleCommentSubmit={handleCommentSubmit}
       handleModifyClick={handleModifyClick}
-      handleDeleteClick={handleDeleteClick}
+      handleDeleteOpen={handleDeleteOpen}
+      handleDeleteClose={handleDeleteClose}
+      handleArticleDelete={handleArticleDelete}
       isDeleteOpen={isDeleteOpen}
     />
   );
