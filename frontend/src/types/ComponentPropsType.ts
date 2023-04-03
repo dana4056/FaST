@@ -125,6 +125,7 @@ export interface CommentContinaerProps {
 // 좋아요 하트 Props
 export interface HeartProps {
   cardId: number;
+  cntLike: number;
 }
 
 // 카드 목록의 카드 Props

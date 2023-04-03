@@ -31,8 +31,6 @@ function MyRecordContainer() {
   const [myTag, setMyTag] = useState<any>([]);
   // 게시글 수
   const [articleNum, setArticleNum] = useState<number>(0);
-  // 게시글 목록
-  const [articles, setArticles] = useState<any>({});
 
   const { downloadImages, getMyArticles } = useViewModel();
 
