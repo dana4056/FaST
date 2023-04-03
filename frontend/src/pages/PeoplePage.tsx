@@ -21,7 +21,7 @@ function PeoplePage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList isMine={false} cardsLeft={cardsLeft} cardsRight={cardsRight} />
     </div>
   );
 }

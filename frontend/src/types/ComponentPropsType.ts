@@ -122,10 +122,16 @@ export interface CommentContinaerProps {
   comment: CommentType;
 }
 
+// 좋아요 하트 Props
+export interface HeartProps {
+  cardId: number;
+}
+
 // 카드 목록의 카드 Props
 export interface PhotoCardProps {
   // 카드
   card: CardType;
+  isMine: boolean;
 }
 
 // 카드 목록의 Props
@@ -134,6 +140,7 @@ export interface CardListProps {
   cardsLeft: Array<CardType>;
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
+  isMine: boolean;
 }
 
 // 프로필 사진 입력 Props

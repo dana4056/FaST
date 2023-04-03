@@ -135,7 +135,21 @@ export async function doGetMyArticles(
   }
 }
 
+// 게시물 좋아요 api
+async function articleLike(articleId: number, userId: number) {
+  try {
+    const res = await api.get(`/likes/article`, {
+      params: { articleId, userId },
+    });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
 export default {
   getUserArticle,
   userArticleLike,
+  articleLike,
 };

@@ -17,6 +17,8 @@ public class CommentReplyListResponseDto {
    private String content;
    private LocalDateTime createTime;
    private String nickName;
+   private String imgPath;
+   private int likeCount;
    private boolean likeCheck;
 
 }

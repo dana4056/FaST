@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { BsPencil } from '@react-icons/all-files/bs/BsPencil';
 import { BsTrash } from '@react-icons/all-files/bs/BsTrash';
 import { useNavigate, Link } from 'react-router-dom';
@@ -8,14 +9,15 @@ import { TagType } from '../types/TagType';
 import Tag from './Tag';
 import { PhotoCardProps } from '../types/ComponentPropsType';
 
-function PhotoCard({ card }: PhotoCardProps) {
+function PhotoCard({ isMine, card }: PhotoCardProps) {
   // 내 카드인지 - 나중에 로그인 처리했을 때 card.nickname과 비교해서 정하도록
-  const isMine = true;
+  // const isMine = true;
   const navigate = useNavigate();
 
   const onClickMoveDetail = (id: number) => {
     navigate(`/article/${id}`);
   };
+  // console.log(card);
 
   return (
     <div
@@ -29,8 +31,8 @@ function PhotoCard({ card }: PhotoCardProps) {
         alt="photocardimg"
       />
       <div className="photo-card__row">
-        <div className="photo-card__like">
-          <Heart />
+        <div className="photo-card__like" role="presentation">
+          <Heart cardId={card.id} />
           {card.numLikes} Likes
         </div>
         {isMine ? (
@@ -49,7 +51,7 @@ function PhotoCard({ card }: PhotoCardProps) {
             </button>
           </div>
         ) : (
-          card.nickname
+          <div className="photo-card__nickname">{card.nickname}</div>
         )}
       </div>
       <div className="photo-card__tags">
