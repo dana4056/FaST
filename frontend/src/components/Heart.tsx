@@ -13,7 +13,6 @@ function Heart({ cardId, cntLike }: HeartProps) {
   const likeData = async () => {
     const articleLikeData: any = await articleApi.articleLike(cardId, user.id);
     setLiked(articleLikeData.data);
-    console.log('articleLikeData.data', articleLikeData.data);
   };
 
   useEffect(() => {
@@ -24,6 +23,10 @@ function Heart({ cardId, cntLike }: HeartProps) {
     event.stopPropagation();
     likeData();
   };
+
+  useEffect(() => {
+    setLikeNum(cntLike);
+  }, [cntLike]);
 
   useEffect(() => {
     if (liked !== undefined) {
