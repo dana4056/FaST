@@ -169,7 +169,7 @@ function PeopleContainer() {
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
       isMine={false}
-      isLoaded={false}
+      isLoaded={isLoaded}
       isLimit={isLimit}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
