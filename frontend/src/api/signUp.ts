@@ -56,7 +56,10 @@ async function signUp(
     return res;
   } catch (error: any) {
     console.log(error);
-    // console.log(error.response.data.status);
+    console.log(error.response.data.status);
+    if (error.response.data.status) {
+      alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+    }
     // const { status } = error.response.data.status;
     return error;
   }

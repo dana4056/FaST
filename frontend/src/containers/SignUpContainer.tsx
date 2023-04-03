@@ -341,15 +341,17 @@ function SignUpContainer() {
           pwd,
           salt
         );
+        console.log(res);
         if (res.status === 200) {
           // db에 있는 사용자 pk값 저장
           setIdPk(res.data.id);
           setIsOpen(() => true);
-        } else if (res.status === 409) {
-          alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
-        } else {
-          alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
         }
+        // else if (res.status === 409) {
+        //   alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+        // } else {
+        //   alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        // }
       } else {
         setImgPath(() => `/profiles/${email}`);
         const res = await api.signUp(
