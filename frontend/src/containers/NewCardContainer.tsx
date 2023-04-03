@@ -95,6 +95,7 @@ function NewCardContainer() {
       filesArray.forEach((file: any, i: number) => {
         EXIF.getData(file, () => {
           const meta = EXIF.getAllTags(file);
+          console.log(meta);
           if (la.length === 0 && meta && meta.GPSLatitudeRef) {
             if (meta.GPSLatitudeRef === 'S') {
               setLa(
@@ -191,6 +192,12 @@ function NewCardContainer() {
               setLoc('서울특별시');
             } else if (region === '인천') {
               setLoc('인천광역시');
+            } else if (region === '경북') {
+              setLoc('경상북도');
+            } else if (region === '제주특별자치도') {
+              setLoc('제주특별자치도');
+            } else if (region === '경기') {
+              setLoc('경기도');
             }
           }
         };
@@ -214,7 +221,7 @@ function NewCardContainer() {
     };
     getTags();
     // }
-  }, [images]);
+  }, [loc]);
   return (
     <NewCardPage
       isModalOpen={isModalOpen}

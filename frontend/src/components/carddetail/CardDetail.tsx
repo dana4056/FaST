@@ -10,11 +10,14 @@ import ImageSliderContainer from '../../containers/ImageSliderContainer';
 import { CardDetailProps } from '../../types/ComponentPropsType';
 
 function CardDetail({
+  user,
   card,
+  handleModifyClick,
   handleLikeClick,
   isMenuOpen,
   handleMenuClick,
   handleCommentClick,
+  handleDeleteOpen,
 }: CardDetailProps) {
   return (
     <div className="card card-detail">
@@ -23,18 +26,32 @@ function CardDetail({
           <CgProfile />
         </div>
         <div className="card-detail__profile-nickname">{card.nickname}</div>
-        <button
-          type="button"
-          className="card-detail__menu-button transparent-button"
-          onClick={handleMenuClick}
-        >
-          <BsThreeDots />
-        </button>
+        {user.id === card.userId ? (
+          <button
+            type="button"
+            className="card-detail__menu-button transparent-button"
+            onClick={handleMenuClick}
+          >
+            <BsThreeDots />
+          </button>
+        ) : null}
         {isMenuOpen ? (
           <div className="card-detail__menu">
-            <div className="card-detail__modify">수정</div>
+            <div
+              className="card-detail__modify"
+              role="presentation"
+              onClick={handleModifyClick}
+            >
+              수정
+            </div>
             <hr />
-            <div className="card-detail__remove">삭제</div>
+            <div
+              className="card-detail__remove"
+              role="presentation"
+              onClick={handleDeleteOpen}
+            >
+              삭제
+            </div>
           </div>
         ) : null}
       </div>

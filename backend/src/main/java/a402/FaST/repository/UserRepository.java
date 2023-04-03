@@ -1,6 +1,5 @@
 package a402.FaST.repository;
 
-import a402.FaST.model.dto.ArticleList;
 import a402.FaST.model.entity.Follow;
 import a402.FaST.model.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;

@@ -22,6 +22,8 @@ public class ArticleListResponseDto {
    private int likeCount;
    private boolean likeCheck;
    private List<TagResponseDto> tags;
-
+   private String area;
+   private String lat;
+   private String lng;
 
 }

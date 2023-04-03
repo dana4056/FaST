@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
@@ -31,6 +31,8 @@ function MyRecordContainer() {
 
   const { downloadImages } = useViewModel();
 
+  const scrollRef = useRef(null);
+
   useEffect(() => {
     if (user.id.toString() === userState.toString()) {
       setIsMine(true);
@@ -53,7 +55,6 @@ function MyRecordContainer() {
       // 프로필 박스 - 기록수
       const cntArticle: any = await userApi.countArticle(userState);
       setArticleNum(cntArticle.data);
-
       // 게시글
       const articleData: any = await articleApi.getUserArticle(
         userState,
@@ -249,6 +250,7 @@ function MyRecordContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
+      scrollRef={scrollRef}
     />
   );
 }

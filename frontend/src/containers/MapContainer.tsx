@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { userInfo } from '../atoms/userInfo';
 import MapPage from '../pages/MapPage';
@@ -9,7 +9,9 @@ import { CardType } from '../types/CardType';
 
 function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
-  const [isMine, setIsMine] = useState<boolean>(true);
+
+  const [isMine, setIsMine] = useState<boolean>(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
     {
@@ -21,6 +23,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -41,6 +44,8 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -63,6 +68,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -83,6 +89,7 @@ function MapContainer() {
       isLike: false,
       numLikes: 123,
       numComments: 12,
+      userId: 1,
       tags: [
         {
           value: 'sample1',
@@ -96,7 +103,12 @@ function MapContainer() {
     },
   ]);
   return (
-    <MapPage cardsLeft={cardsLeft} cardsRight={cardsRight} isMine={isMine} />
+    <MapPage
+      cardsLeft={cardsLeft}
+      cardsRight={cardsRight}
+      isMine={isMine}
+      scrollRef={scrollRef}
+    />
   );
 }
 

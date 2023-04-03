@@ -20,6 +20,7 @@ export interface HomePageProps extends SearchBoxProps {
   // 오른쪽 카드 목록
   cardsRight: Array<CardType>;
   isMine: boolean;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
 // 새 카드 페이지 Props
@@ -49,8 +50,13 @@ export interface NewCardPageProps extends InputPhotoProps {
   handlePageMove: () => void;
 }
 
+export interface ModifyArticlePageProps extends NewCardPageProps {
+  isNotAuth: boolean;
+}
+
 // 카드 상세 페이지 props
 export interface CardDetailPageProps extends CardDetailProps {
+  user: any;
   // 댓글 배열
   comments: Array<CommentType>;
   // 댓글창이 열려있는지
@@ -59,6 +65,10 @@ export interface CardDetailPageProps extends CardDetailProps {
   commentInputRef: React.RefObject<HTMLInputElement>;
   // 댓글 전송 함수
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isDeleteOpen: boolean;
+  handleDeleteOpen: () => void;
+  handleDeleteClose: () => void;
+  handleArticleDelete: () => void;
 }
 
 // 내 기록 페이지

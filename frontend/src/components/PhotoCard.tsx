@@ -13,11 +13,9 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
   // 내 카드인지 - 나중에 로그인 처리했을 때 card.nickname과 비교해서 정하도록
   // const isMine = true;
   const navigate = useNavigate();
-
   const onClickMoveDetail = (id: number) => {
     navigate(`/article/${id}`);
   };
-  console.log(card.isLike);
 
   return (
     <div

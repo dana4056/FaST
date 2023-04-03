@@ -2,8 +2,12 @@
   width: 90%;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   .card-list__column {
     width: 47.5%;
+  }
+  .card-list__footer {
+    height: 100px;
   }
 }

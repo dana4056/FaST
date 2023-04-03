@@ -67,10 +67,13 @@ export interface ImageSliderProps extends ImageSliderContainerProps {
 
 // 카드 상세 props
 export interface CardDetailProps {
+  user: any;
   // 카드 정보
   card: CardType;
   // 좋아요 클릭 함수
   handleLikeClick: () => void;
+  handleModifyClick: () => void;
+  handleDeleteOpen: () => void;
   // 메뉴 상태
   isMenuOpen: boolean;
   // 메뉴 클릭 함수
@@ -140,6 +143,7 @@ export interface CardListProps {
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
   isMine: boolean;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
 // 프로필 사진 입력 Props
