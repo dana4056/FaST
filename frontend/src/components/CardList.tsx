@@ -1,10 +1,18 @@
 import React from 'react';
 import { CardType } from '../types/CardType';
 import { CardListProps } from '../types/ComponentPropsType';
+import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 
 import PhotoCard from './PhotoCard';
 
-function CardList({ isMine, cardsLeft, cardsRight, scrollRef }: CardListProps) {
+function CardList({
+  isMine,
+  cardsLeft,
+  cardsRight,
+  isLoaded,
+  isLimit,
+  setRef,
+}: CardListProps) {
   return (
     <div className="card-list">
       <div className="card-list__column">
@@ -17,9 +25,11 @@ function CardList({ isMine, cardsLeft, cardsRight, scrollRef }: CardListProps) {
           <PhotoCard isMine={isMine} card={card} key={card.id} />
         ))}
       </div>
-      <div ref={scrollRef} className="card-list__footer">
-        스크롤sssssssssss
-      </div>
+      {isLoaded || isLimit ? null : (
+        <div ref={setRef} className="card-list__footer">
+          <Spin />
+        </div>
+      )}
     </div>
   );
 }

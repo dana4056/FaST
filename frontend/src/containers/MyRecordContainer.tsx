@@ -13,12 +13,17 @@ import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
+import useIntersect from '../utils/useIntersect';
 
 function MyRecordContainer() {
+  const size = 10;
+  let offset = 0;
   const params = useParams();
   const [user, setUser] = useRecoilState(userInfo);
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
 
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
@@ -26,120 +31,11 @@ function MyRecordContainer() {
   const [myTag, setMyTag] = useState<any>([]);
   // 게시글 수
   const [articleNum, setArticleNum] = useState<number>(0);
-  // 게시글 목록
-  const [articles, setArticles] = useState<any>({});
 
-  const { downloadImages } = useViewModel();
+  const { downloadImages, getMyArticles } = useViewModel();
 
-  const scrollRef = useRef(null);
-
-  useEffect(() => {
-    if (user.id.toString() === userState.toString()) {
-      setIsMine(true);
-    } else {
-      setIsMine(false);
-    }
-    // 프로필 박스
-    const getData = async () => {
-      const myData: any = await userApi.getMyData(userState);
-      setUserData(myData.data);
-      const newMyTag: Array<TagType> = [];
-      myData.data.tags.map((tag: any) =>
-        newMyTag.push({
-          className: `tag-${Math.floor(Math.random() * 4) + 1}`,
-          value: tag.tagName,
-        })
-      );
-      setMyTag(newMyTag);
-
-      // 프로필 박스 - 기록수
-      const cntArticle: any = await userApi.countArticle(userState);
-      setArticleNum(cntArticle.data);
-      // 게시글
-      const articleData: any = await articleApi.getUserArticle(
-        userState,
-        20,
-        0
-      );
-      setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
-    };
-    getData();
-  }, []);
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
-
-  useEffect(() => {
-    const setData = async () => {
-      const cardLeftList: any = [];
-      const cardRightList: any = [];
-      if (articles.length > 0) {
-        await Promise.all(
-          articles.map(async (article: any, i: number) => {
-            if (i % 2 === 0) {
-              const leftArticleTags: any = [];
-              article.tags.map((tag: any) =>
-                leftArticleTags.push({
-                  value: tag.tagName,
-                  className: 'tag-2 tag-small',
-                })
-              );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
-              cardLeftList.push({
-                id: article?.id,
-                imageUrls,
-                nickname: article?.nickName,
-                content: '',
-                regTime: article?.createTime,
-                isLike: article?.likeCheck,
-                numLikes: article?.likeCount,
-                numComments: article?.commentCount,
-                tags: leftArticleTags,
-              });
-            } else {
-              const rightArticleTags: any = [];
-              await Promise.all(
-                article.tags.map((tag: any) =>
-                  rightArticleTags.push({
-                    value: tag.tagName,
-                    className: 'tag-2 tag-small',
-                  })
-                )
-              );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
-              cardRightList.push({
-                id: article?.id,
-                imageUrls,
-                nickname: article?.nickName,
-                content: '',
-                regTime: article?.createTime,
-                isLike: article?.likeCheck,
-                numLikes: article?.likeCount,
-                numComments: article?.commentCount,
-                tags: rightArticleTags,
-              });
-            }
-          })
-        );
-      }
-      if (cardLeftList.length > 0) {
-        setCardsLeft([
-          ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
-        ]);
-      }
-      if (cardRightList.length > 0) {
-        setCardsRight([
-          ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
-        ]);
-      }
-    };
-    setData();
-  }, [articles]);
-
-  // console.log(cardsLeft);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -222,6 +118,111 @@ function MyRecordContainer() {
 
   const [fromId, setFromId] = useState<number>(userState);
   const [followingNum, setFollowingNum] = useState<number>(0);
+
+  const getArticleData = async () => {
+    if (!isLimit) {
+      setIsLoaded(true);
+      const res: any = await getMyArticles(user.id, size, offset);
+      if (res.status === 200) {
+        const cardLeftList: any = cardsLeft;
+        const cardRightList: any = cardsRight;
+        if (res.data.length > 0) {
+          await Promise.all(
+            res.data.map(async (article: any, i: number) => {
+              if (i % 2 === 0) {
+                const leftArticleTags: any = [];
+                article.tags.map((tag: any) =>
+                  leftArticleTags.push({
+                    value: tag.tagName,
+                    className: 'tag-2 tag-small',
+                  })
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardLeftList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: leftArticleTags,
+                });
+              } else {
+                const rightArticleTags: any = [];
+                await Promise.all(
+                  article.tags.map((tag: any) =>
+                    rightArticleTags.push({
+                      value: tag.tagName,
+                      className: 'tag-2 tag-small',
+                    })
+                  )
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardRightList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: rightArticleTags,
+                });
+              }
+            })
+          );
+        } else {
+          setIsLimit(true);
+          setIsLoaded(false);
+          return;
+        }
+        if (cardLeftList.length > 0) {
+          setCardsLeft([...cardsLeft]);
+        }
+        if (cardRightList.length > 0) {
+          setCardsRight([...cardsRight]);
+        }
+      }
+      offset += 1;
+      setIsLoaded(false);
+    }
+  };
+
+  const [, setRef] = useIntersect(getArticleData, isLoaded);
+
+  useEffect(() => {
+    if (user.id.toString() === userState.toString()) {
+      setIsMine(true);
+    } else {
+      setIsMine(false);
+    }
+    // 프로필 박스
+    const getData = async () => {
+      const myData: any = await userApi.getMyData(userState);
+      setUserData(myData.data);
+      const newMyTag: Array<TagType> = [];
+      myData.data.tags.map((tag: any) =>
+        newMyTag.push({
+          className: `tag-${Math.floor(Math.random() * 4) + 1}`,
+          value: tag.tagName,
+        })
+      );
+      setMyTag(newMyTag);
+
+      // 프로필 박스 - 기록수
+      const cntArticle: any = await userApi.countArticle(userState);
+      setArticleNum(cntArticle.data);
+    };
+    getData();
+  }, []);
+
   useEffect(() => {
     const getData = async () => {
       const followTo: any = await followApi.followTo(toId);
@@ -232,6 +233,7 @@ function MyRecordContainer() {
     };
 
     getData();
+    getArticleData();
   }, []);
 
   return (
@@ -250,7 +252,9 @@ function MyRecordContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
-      scrollRef={scrollRef}
+      setRef={setRef}
+      isLoaded={isLoaded}
+      isLimit={isLimit}
     />
   );
 }

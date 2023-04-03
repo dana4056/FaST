@@ -1,27 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
 import MapPage from '../pages/MapPage';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CardType } from '../types/CardType';
+import useIntersect from '../utils/useIntersect';
 
 function MapContainer() {
-  const params = useParams();
   const [user, setUser] = useRecoilState(userInfo);
-  const [userState, setUserState] = useState<any>(params.userId);
+
   const [isMine, setIsMine] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (user.id.toString() === userState.toString()) {
-      setIsMine(true);
-    } else {
-      setIsMine(false);
-    }
-  }, []);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
     {
@@ -112,12 +103,15 @@ function MapContainer() {
       ],
     },
   ]);
+  // const [, setRef] =useIntersect()
   return (
     <MapPage
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
       isMine={isMine}
-      scrollRef={scrollRef}
+      setRef={null}
+      isLoaded={false}
+      isLimit={false}
     />
   );
 }

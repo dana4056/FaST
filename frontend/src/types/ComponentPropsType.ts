@@ -125,6 +125,7 @@ export interface CommentContinaerProps {
 // 좋아요 하트 Props
 export interface HeartProps {
   cardId: number;
+  cntLike: number;
 }
 
 // 카드 목록의 카드 Props
@@ -141,7 +142,9 @@ export interface CardListProps {
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
   isMine: boolean;
-  scrollRef: React.RefObject<HTMLDivElement>;
+  isLoaded: boolean;
+  isLimit: boolean;
+  setRef: any;
 }
 
 // 프로필 사진 입력 Props

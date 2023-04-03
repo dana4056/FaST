@@ -27,7 +27,7 @@ async function countArticle(id: number) {
     const res = await api.get<number>(`/article/${id}`, {
       params: { id },
     });
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
     console.log(error);
