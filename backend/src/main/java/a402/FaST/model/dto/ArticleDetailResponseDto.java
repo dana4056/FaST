@@ -13,8 +13,8 @@ import java.util.List;
 public class ArticleDetailResponseDto {
 
    private int id;
-   private int userId;
-   private String nickName;
+   private UserProfileDto user;
+   private boolean followingCheck;
    private String imgPath;
    private String content;
    private LocalDateTime createTime;
