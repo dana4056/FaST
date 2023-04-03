@@ -276,12 +276,13 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public List<ArticleListResponseDto> listArticleArea(int userId,String area) {
+    public List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area) {
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
 
+        Pageable pageable = PageRequest.of(offset, size);
 
-        responseDto = articleRepository.findAllByUserAndArea(user, area)
+        responseDto = articleRepository.findAllByUserAndArea(user, area, pageable)
             .stream().map(x->ArticleListResponseDto.builder()
                 .id(x.getId())
                 .userId(userId)
