@@ -5,21 +5,16 @@ import { userInfo } from '../atoms/userInfo';
 import { HeartProps } from '../types/ComponentPropsType';
 import articleApi from '../api/article';
 
-function Heart({ cardId, cntLike }: HeartProps) {
+function Heart({ cardId, cntLike, isLike }: HeartProps) {
   const [liked, setLiked] = useState<boolean>();
   const [user, setUser] = useRecoilState(userInfo);
   const [likeNum, setLikeNum] = useState<number>(cntLike);
+  const [likeState, setLikeState] = useState<boolean>();
 
-  // console.log(cntLike);
   const likeData = async () => {
     const articleLikeData: any = await articleApi.articleLike(cardId, user.id);
     setLiked(articleLikeData.data);
   };
-
-  useEffect(() => {
-    likeData();
-  }, []);
-
   const handleLikeClick = (event: any) => {
     event.stopPropagation();
     likeData();
@@ -33,15 +28,26 @@ function Heart({ cardId, cntLike }: HeartProps) {
     if (liked !== undefined) {
       if (liked) {
         setLikeNum((prev) => prev + 1);
+        setLikeState(false);
       } else {
         setLikeNum((prev) => prev - 1);
+        setLikeState(true);
       }
     }
   }, [liked]);
 
+  useEffect(() => {
+    if (isLike) {
+      setLikeState(true);
+      console.log('aa', cardId, likeState);
+    } else {
+      setLikeState(false);
+      console.log('bb', cardId, likeState);
+    }
+  }, [liked]);
   return (
     <div role="presentation" onClick={handleLikeClick}>
-      {liked ? (
+      {likeState ? (
         <div className="like-button-container">
           <button className="like-button liked" type="button">
             <div className="like-wrapper">

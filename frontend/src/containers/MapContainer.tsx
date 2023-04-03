@@ -113,9 +113,8 @@ function MapContainer() {
     useState<SelectRegionOptionType>(seoulOptions);
   const [clicked, setClicked] = useState('before_click');
 
-  const [clickedArea, setClickedArea] = useState<string>('서울특별시');
-  const [clickedOption, setClickedOption] = useState<any>();
-  const [area, setArea] = useState<string>('');
+  const [clickedArea, setClickedArea] = useState<string>('');
+  const [area, setArea] = useState<string>('서울특별시');
   const size = 20;
   const offset = 0;
 
@@ -159,7 +158,6 @@ function MapContainer() {
     }
     console.log(target, selectOption);
     setClickedArea(() => target);
-    setClickedOption(() => selectOption);
     setClicked('after_click');
     console.log(clickedArea);
   };

@@ -34,11 +34,6 @@
   transition: transform var(--duration) var(--easing),
     -webkit-transform var(--duration) var(--easing);
   cursor: pointer;
-  // &.liked {
-  //   svg.heart {
-  //     fill: var(--color-heart);
-  //   }
-  // }
 }
 
 .liked .heart > path {
