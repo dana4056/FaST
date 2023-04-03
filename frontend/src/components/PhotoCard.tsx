@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { BsPencil } from '@react-icons/all-files/bs/BsPencil';
 import { BsTrash } from '@react-icons/all-files/bs/BsTrash';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Heart from './Heart';
 import { TagType } from '../types/TagType';
@@ -11,7 +11,6 @@ import { PhotoCardProps } from '../types/ComponentPropsType';
 
 function PhotoCard({ isMine, card }: PhotoCardProps) {
   // 내 카드인지 - 나중에 로그인 처리했을 때 card.nickname과 비교해서 정하도록
-  // const isMine = true;
   const navigate = useNavigate();
   const onClickMoveDetail = (id: number) => {
     navigate(`/article/${id}`);

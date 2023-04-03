@@ -13,7 +13,9 @@ function HomePage({
   handleKeywordChange,
   handleSearch,
   handleTagDelete,
-  scrollRef,
+  isLoaded,
+  isLimit,
+  setRef,
 }: HomePageProps) {
   return (
     <div className="main-page">
@@ -28,7 +30,9 @@ function HomePage({
         isMine={isMine}
         cardsLeft={cardsLeft}
         cardsRight={cardsRight}
-        scrollRef={scrollRef}
+        isLoaded={isLoaded}
+        isLimit={isLimit}
+        setRef={setRef}
       />
     </div>
   );

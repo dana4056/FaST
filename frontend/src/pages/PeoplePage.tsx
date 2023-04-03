@@ -2,6 +2,7 @@ import React from 'react';
 
 import SearchBox from '../components/SearchBox';
 import CardList from '../components/CardList';
+import { HomePageProps } from '../types/PagePropsType';
 
 function PeoplePage({
   tags,
@@ -11,8 +12,10 @@ function PeoplePage({
   handleTagDelete,
   cardsLeft,
   cardsRight,
-  scrollRef,
-}: any) {
+  isLoaded,
+  isLimit,
+  setRef,
+}: HomePageProps) {
   return (
     <div className="main-page">
       <SearchBox
@@ -26,7 +29,9 @@ function PeoplePage({
         isMine={false}
         cardsLeft={cardsLeft}
         cardsRight={cardsRight}
-        scrollRef={scrollRef}
+        isLoaded={isLoaded}
+        isLimit={isLimit}
+        setRef={setRef}
       />
     </div>
   );

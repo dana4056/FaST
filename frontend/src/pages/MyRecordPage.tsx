@@ -22,7 +22,9 @@ function MyRecordPage({
   handleKeywordChange,
   handleSearch,
   handleTagDelete,
-  scrollRef,
+  setRef,
+  isLoaded,
+  isLimit,
 }: MyRecordPageProps) {
   return (
     <div className="my-record-page">
@@ -46,7 +48,9 @@ function MyRecordPage({
         isMine={isMine}
         cardsLeft={cardsLeft}
         cardsRight={cardsRight}
-        scrollRef={scrollRef}
+        setRef={setRef}
+        isLoaded={isLoaded}
+        isLimit={isLimit}
       />
     </div>
   );
