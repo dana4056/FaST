@@ -15,6 +15,7 @@ import UserModifyContainer from './containers/UserModifyContainer';
 import './styles/main.scss';
 import ModifyPwdContainer from './containers/ModifyPwdContainer';
 import ModifyArticleContainer from './containers/ModifyArticleContainer';
+import PeopleContainer from './containers/PeopleContainer';
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />
           <Route path="/modify-pwd" element={<ModifyPwdContainer />} />
+          <Route path="/people" element={<PeopleContainer />} />
         </Routes>
       </div>
       <Footer />

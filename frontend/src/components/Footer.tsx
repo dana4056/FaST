@@ -14,6 +14,9 @@ function Footer() {
   const onClickHome = () => {
     navigate('/home');
   };
+  const onClickPeople = () => {
+    navigate('/people');
+  };
   const onClickNewCard = () => {
     navigate('/newcard');
   };
@@ -31,7 +34,7 @@ function Footer() {
         {}
         <VscHome />
       </label>
-      <input type="radio" id="two" name="buttons" onClick={onClickHome} />
+      <input type="radio" id="two" name="buttons" onClick={onClickPeople} />
       <label htmlFor="two" className="icons people">
         <BsPeople />
         {}
