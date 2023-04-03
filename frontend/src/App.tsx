@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import IntroPage from './pages/IntroPage';
+import IntroContainer from './containers/IntroContainer';
 import LoadingPage from './pages/LoadingPage';
 import LoginContainer from './containers/LoginContainer';
 import SignUpContainer from './containers/SignUpContainer';
@@ -15,7 +15,7 @@ function App() {
   return (
     <RecoilRoot>
       <Routes>
-        <Route path="/" element={<IntroPage />} />
+        <Route path="/" element={<IntroContainer />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/login" element={<LoginContainer />} />
         <Route path="/sign-up" element={<SignUpContainer />} />
