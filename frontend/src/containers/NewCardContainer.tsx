@@ -146,7 +146,7 @@ function NewCardContainer() {
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
-    setLoc('서울특별시');
+    setLoc('');
     setLo('');
     setLa('');
   };
