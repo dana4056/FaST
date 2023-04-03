@@ -30,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ArticleHasTagRepository articleHasTagRepository;
+    private final FollowRepository followRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
     private final UserHasLandMarkRepository userHasLandMarkRepository;
@@ -123,28 +124,29 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDetailResponseDto detail(int id, int userId) {
         ArticleDetailResponseDto responseDto = null;
 
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException("없는 게시물입니다."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("없는 유저입니다. "));
 
         responseDto = ArticleDetailResponseDto.builder()
-                .id(article.getId())
-                .userId(article.getUser().getId())
-                .nickName(article.getUser().getNickname())
-                .imgPath(article.getImgPath())
-                .content(article.getContent())
-                .createTime(article.getCreateTime())
-                .lat(article.getLat())
-                .lng(article.getLng())
-                .area(article.getArea())
-                .commentCount(commentRepository.countByArticleId(id))
-                .likeCount(likesRepository.countByArticleId(id))
-                .likeCheck(likesRepository.existsByArticleIdAndUserId(id,userId))
-                .tags(article.getTags().stream()
-                        .map((Tag -> TagResponseDto.builder()
-                                .tagId(Tag.getTag().getId())
-                                .tagName(Tag.getTag().getName())
-                                .build()))
-                        .collect(Collectors.toList()))
-                .build();
+            .id(article.getId())
+            .user(new UserProfileDto(article.getUser()))
+            .followingCheck(followRepository.existsByFromIdAndToId(user, article.getUser()))
+            .imgPath(article.getImgPath())
+            .content(article.getContent())
+            .createTime(article.getCreateTime())
+            .lat(article.getLat())
+            .lng(article.getLng())
+            .area(article.getArea())
+            .commentCount(commentRepository.countByArticleId(id))
+            .likeCount(likesRepository.countByArticleId(id))
+            .likeCheck(likesRepository.existsByArticleIdAndUserId(id,userId))
+            .tags(article.getTags().stream()
+                    .map((Tag -> TagResponseDto.builder()
+                            .tagId(Tag.getTag().getId())
+                            .tagName(Tag.getTag().getName())
+                            .build()))
+                    .collect(Collectors.toList()))
+            .build();
 
         return responseDto;
     }
@@ -168,8 +170,8 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListTag(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .userId(x.getUser().getId())
-                        .nickName(userRepository.nickName(x.getUser().getId()))
+                        .userId(userId)
+                        .nickName(userRepository.nickName(userId))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
                         .area(x.getArea())
@@ -192,13 +194,13 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
 
         responseDto = articleRepository.findByUser(user, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .userId(x.getUser().getId())
-                        .nickName(userRepository.nickName(x.getUser().getId()))
+                        .userId(userId)
+                        .nickName(userRepository.nickName(userId))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
                         .area(x.getArea())
@@ -225,8 +227,8 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListFollow(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .userId(x.getUser().getId())
-                        .nickName(userRepository.nickName(x.getUser().getId()))
+                        .userId(userId)
+                        .nickName(userRepository.nickName(userId))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
                         .area(x.getArea())
@@ -244,36 +246,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
         return responseDto;
     }
-
-    @Override
-    public List<ArticleListResponseDto> listArticleSearchTag(int userId, int size, int offset, String tagName) {
-        Pageable pageable = PageRequest.of(offset, size);
-        List<ArticleListResponseDto> responseDto = null;
-
-        responseDto = articleRepository.ArticleListTagSearch(tagName, pageable)
-                .stream().map(x->ArticleListResponseDto.builder()
-                        .id(x.getId())
-                        .userId(x.getUser().getId())
-                        .nickName(userRepository.nickName(x.getUser().getId()))
-                        .imgPath(x.getImgPath())
-                        .createTime(x.getCreateTime())
-                        .area(x.getArea())
-                        .lat(x.getLat())
-                        .lng(x.getLng())
-                        .commentCount(commentRepository.countByArticleId(x.getId()))
-                        .likeCount(likesRepository.countByArticleId(x.getId()))
-                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
-                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
-                                .map(Tag->TagResponseDto.builder()
-                                        .tagId(Tag.getTag().getId())
-                                        .tagName(Tag.getTag().getName())
-                                        .build()).collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
-
-        return responseDto;
-    }
-
 
     @Override
     public List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area) {
@@ -324,8 +296,8 @@ public class ArticleServiceImpl implements ArticleService {
             Article article = articleRepository.findById(id).get();
             ArticleListResponseDto articleListResponseDto = ArticleListResponseDto.builder()
                     .id(article.getId())
-                    .userId(article.getUser().getId())
-                    .nickName(article.getUser().getNickname())
+                    .userId(userId)
+                    .nickName(userRepository.nickName(userId))
                     .imgPath(article.getUser().getImgPath())
                     .createTime(article.getCreateTime())
                     .commentCount(commentRepository.countByArticleId(article.getId()))
