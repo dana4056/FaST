@@ -108,11 +108,12 @@ export async function doGetFollowArticles(
 export async function doSearchArticles(
   userId: number,
   size: number,
-  offset: number
+  offset: number,
+  tags: string
 ) {
   try {
     const res = await api.get(
-      `/article/tag-search/${userId}/${size}/${offset}`
+      `/article/tag-searchAll/${userId}/${size}/${offset}?tagName=${tags}`
     );
     return res;
   } catch (error) {

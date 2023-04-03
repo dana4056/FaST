@@ -38,7 +38,6 @@ function Heart({ cardId, cntLike }: HeartProps) {
     }
   }, [liked]);
 
-  console.log('liked', cardId, liked);
   return (
     <div role="presentation" onClick={handleLikeClick}>
       {liked ? (

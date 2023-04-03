@@ -13,6 +13,7 @@ function HomeContainer() {
   const size = 10;
   let offset = 0;
   const user = useRecoilValue(userInfo);
+  const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isMine, setIsMine] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
@@ -25,62 +26,19 @@ function HomeContainer() {
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
-  const { getArticles, downloadImages } = useViewModel();
-
-  // 검색 함수
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    // 새로고침 방지
-    event.preventDefault();
-
-    // 전에 검색하지 않은 키워드만 검색하도록 index를 찾음
-    const index = tags.findIndex((tag: TagType) => keyword === tag.value);
-
-    // 빈 문자열이 아니고 없는 키워드일 경우 검색
-    if (keyword.trim().length !== 0 && index === -1) {
-      // 배열에 추가
-      const newTags = tags;
-      newTags.push({
-        className: `tag-${Math.floor(Math.random() * 4) + 1}`,
-        value: keyword,
-      });
-
-      // 검색 api 호출은 여기 들어가면 될 듯
-
-      // 태그 길이 오름차순 정렬
-      newTags.sort((o1: any, o2: any) => {
-        return o1.value.length - o2.value.length;
-      });
-      setTags([...newTags]);
-    }
-
-    // 검색창 초기화
-    setKeyword('');
-  };
-
-  // 입력창 변화를 감지할 함수
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.currentTarget.value);
-  };
-
-  // 태그 삭제 함수
-  const handleTagDelete = (value: string) => {
-    // 해당 태그의 인덱스를 찾음
-    const index = tags.findIndex((tag: TagType) => value === tag.value);
-    if (index > -1) {
-      // 해당 인덱스의 태그 삭제
-      const newTags = tags;
-      newTags.splice(index, 1);
-
-      // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
-
-      setTags([...newTags]);
-    }
-  };
+  const { getArticles, downloadImages, searchArticles } = useViewModel();
 
   const getData = async () => {
     if (!isLimit) {
       setIsLoaded(true);
-      const res: any = await getArticles(user.id, size, offset);
+      let res: any;
+      if (isSearch) {
+        const searchTags: Array<string> = [];
+        await Promise.all(tags.map((tag: any) => searchTags.push(tag.value)));
+        res = await searchArticles(user.id, size, offset, searchTags.join(','));
+      } else {
+        res = await getArticles(user.id, size, offset);
+      }
       if (res.status === 200) {
         const cardLeftList: any = cardsLeft;
         const cardRightList: any = cardsRight;
@@ -148,16 +106,71 @@ function HomeContainer() {
           setCardsRight([...cardsRight]);
         }
       }
+
       offset += 1;
       setIsLoaded(false);
     }
   };
 
-  const [, setRef] = useIntersect(getData, isLoaded);
+  // 검색 함수
+  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    // 새로고침 방지
+    event.preventDefault();
 
+    // 전에 검색하지 않은 키워드만 검색하도록 index를 찾음
+    const index = tags.findIndex((tag: TagType) => keyword === tag.value);
+
+    // 빈 문자열이 아니고 없는 키워드일 경우 검색
+    if (keyword.trim().length !== 0 && index === -1) {
+      // 배열에 추가
+      const newTags = tags;
+      newTags.push({
+        className: `tag-${Math.floor(Math.random() * 4) + 1}`,
+        value: keyword,
+      });
+      offset = 0;
+      setIsSearch(true);
+      setCardsLeft([]);
+      setCardsRight([]);
+
+      // 태그 길이 오름차순 정렬
+      newTags.sort((o1: any, o2: any) => {
+        return o1.value.length - o2.value.length;
+      });
+      setTags([...newTags]);
+      // 검색 api 호출은 여기 들어가면 될 듯
+    }
+
+    // 검색창 초기화
+    setKeyword('');
+  };
   useEffect(() => {
-    getData();
-  }, []);
+    if (cardsLeft.length === 0 && cardsRight.length === 0) {
+      getData();
+    }
+  }, [cardsLeft, cardsRight]);
+
+  // 입력창 변화를 감지할 함수
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.currentTarget.value);
+  };
+
+  // 태그 삭제 함수
+  const handleTagDelete = (value: string) => {
+    // 해당 태그의 인덱스를 찾음
+    const index = tags.findIndex((tag: TagType) => value === tag.value);
+    if (index > -1) {
+      // 해당 인덱스의 태그 삭제
+      const newTags = tags;
+      newTags.splice(index, 1);
+
+      // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
+
+      setTags([...newTags]);
+    }
+  };
+
+  const [, setRef] = useIntersect(getData, isLoaded);
 
   return (
     <HomePage
