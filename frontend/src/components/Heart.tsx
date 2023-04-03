@@ -5,7 +5,7 @@ import { userInfo } from '../atoms/userInfo';
 import { HeartProps } from '../types/ComponentPropsType';
 import articleApi from '../api/article';
 
-function Heart({ cardId, isLike, cntLike }: HeartProps) {
+function Heart({ cardId, cntLike }: HeartProps) {
   const [liked, setLiked] = useState<boolean>();
   const [user, setUser] = useRecoilState(userInfo);
   const [likeNum, setLikeNum] = useState<number>(cntLike);
@@ -36,7 +36,6 @@ function Heart({ cardId, isLike, cntLike }: HeartProps) {
   }, [liked]);
 
   console.log('liked', cardId, liked);
-  console.log('isLike', cardId, isLike);
   return (
     <div role="presentation" onClick={handleLikeClick}>
       {liked ? (
