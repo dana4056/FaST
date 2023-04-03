@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 import { userInfo } from '../atoms/userInfo';
@@ -6,17 +6,20 @@ import HomePage from '../pages/HomePage';
 import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
-import useIntersect from '../utils/useIntersect';
+
+import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 // ViewModel과 View를 연결하기 위한 Container
 function HomeContainer() {
   const size = 10;
-  let offset = 0;
   const user = useRecoilValue(userInfo);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isMine, setIsMine] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [offset, setOffset] = useState<number>(0);
+  const pageEnd = useRef<HTMLDivElement>();
 
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
@@ -29,87 +32,84 @@ function HomeContainer() {
   const { getArticles, downloadImages, searchArticles } = useViewModel();
 
   const getData = async () => {
-    if (!isLimit) {
-      setIsLoaded(true);
-      let res: any;
-      if (isSearch) {
-        const searchTags: Array<string> = [];
-        await Promise.all(tags.map((tag: any) => searchTags.push(tag.value)));
-        res = await searchArticles(user.id, size, offset, searchTags.join(','));
-      } else {
-        res = await getArticles(user.id, size, offset);
-      }
-      if (res.status === 200) {
-        const cardLeftList: any = cardsLeft;
-        const cardRightList: any = cardsRight;
-        if (res.data.length > 0) {
-          await Promise.all(
-            res.data.map(async (article: any, i: number) => {
-              if (i % 2 === 0) {
-                const leftArticleTags: any = [];
+    setLoading(true);
+    let res: any;
+    if (isSearch) {
+      const searchTags: Array<string> = [];
+      await Promise.all(tags.map((tag: any) => searchTags.push(tag.value)));
+      res = await searchArticles(user.id, size, offset, searchTags.join(','));
+    } else {
+      res = await getArticles(user.id, size, offset);
+    }
+    console.log(offset);
+    console.log(res);
+    if (res.status === 200) {
+      const cardLeftList: any = [];
+      const cardRightList: any = [];
+      if (res.data.length > 0) {
+        await Promise.all(
+          res.data.map(async (article: any, i: number) => {
+            if (i % 2 === 0) {
+              const leftArticleTags: any = [];
+              article.tags.map((tag: any) =>
+                leftArticleTags.push({
+                  value: tag.tagName,
+                  className: 'tag-2 tag-small',
+                })
+              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
+              cardLeftList.push({
+                id: article?.id,
+                imageUrls: [sample1],
+                nickname: article.nickName,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.likeCheck,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: leftArticleTags,
+              });
+            } else {
+              const rightArticleTags: any = [];
+              await Promise.all(
                 article.tags.map((tag: any) =>
-                  leftArticleTags.push({
+                  rightArticleTags.push({
                     value: tag.tagName,
                     className: 'tag-2 tag-small',
                   })
-                );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
-                cardLeftList.push({
-                  id: article?.id,
-                  imageUrls,
-                  nickname: article.nickname,
-                  content: '',
-                  regTime: article?.createTime,
-                  isLike: article?.likeCheck,
-                  numLikes: article?.likeCount,
-                  numComments: article?.commentCount,
-                  tags: leftArticleTags,
-                });
-              } else {
-                const rightArticleTags: any = [];
-                await Promise.all(
-                  article.tags.map((tag: any) =>
-                    rightArticleTags.push({
-                      value: tag.tagName,
-                      className: 'tag-2 tag-small',
-                    })
-                  )
-                );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
-                cardRightList.push({
-                  id: article?.id,
-                  imageUrls,
-                  nickname: article.nickname,
-                  content: '',
-                  regTime: article?.createTime,
-                  isLike: article?.likeCheck,
-                  numLikes: article?.likeCount,
-                  numComments: article?.commentCount,
-                  tags: rightArticleTags,
-                });
-              }
-            })
-          );
-        } else {
-          setIsLimit(true);
-          setIsLoaded(false);
-          return;
-        }
+                )
+              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
+              cardRightList.push({
+                id: article?.id,
+                imageUrls: [sample1],
+                nickname: article.nickName,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.likeCheck,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: rightArticleTags,
+              });
+            }
+          })
+        );
         if (cardLeftList.length > 0) {
-          setCardsLeft([...cardsLeft]);
+          setCardsLeft((prev) => [...prev, ...cardLeftList]);
         }
         if (cardRightList.length > 0) {
-          setCardsRight([...cardsRight]);
+          setCardsRight((prev) => [...prev, ...cardRightList]);
         }
+      } else if (res.data.length === 0) {
+        setIsLimit(() => true);
+        setIsLoaded(false);
       }
-
-      offset += 1;
-      setIsLoaded(false);
     }
+    setLoading(false);
   };
 
   // 검색 함수
@@ -128,10 +128,6 @@ function HomeContainer() {
         className: `tag-${Math.floor(Math.random() * 4) + 1}`,
         value: keyword,
       });
-      offset = 0;
-      setIsSearch(true);
-      setCardsLeft([]);
-      setCardsRight([]);
 
       // 태그 길이 오름차순 정렬
       newTags.sort((o1: any, o2: any) => {
@@ -139,16 +135,20 @@ function HomeContainer() {
       });
       setTags([...newTags]);
       // 검색 api 호출은 여기 들어가면 될 듯
+      setIsSearch(true);
+      setIsLimit(false);
+      setCardsLeft([]);
+      setCardsRight([]);
+      if (offset === 0) {
+        getData();
+      } else {
+        setOffset(0);
+      }
     }
 
     // 검색창 초기화
     setKeyword('');
   };
-  useEffect(() => {
-    if (cardsLeft.length === 0 && cardsRight.length === 0) {
-      getData();
-    }
-  }, [cardsLeft, cardsRight]);
 
   // 입력창 변화를 감지할 함수
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,12 +165,41 @@ function HomeContainer() {
       newTags.splice(index, 1);
 
       // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
-
+      if (newTags.length === 0) {
+        setIsSearch(false);
+      }
       setTags([...newTags]);
+      setIsLimit(false);
+      setLoading(false);
+      setCardsLeft([]);
+      setCardsRight([]);
+      if (offset === 0) {
+        getData();
+      } else {
+        setOffset(0);
+      }
     }
   };
 
-  const [, setRef] = useIntersect(getData, isLoaded);
+  useEffect(() => {
+    getData();
+  }, [offset]);
+
+  const loadMore = () => {
+    setOffset((prev: number) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (!pageEnd.current) return;
+    const observer = new IntersectionObserver((entries: any) => {
+      if (entries[0].isIntersecting && !loading && !isLimit) {
+        loadMore();
+      }
+    });
+    observer.observe(pageEnd.current);
+    // eslint-disable-next-line consistent-return
+    return () => observer.disconnect();
+  }, [pageEnd, isLimit, loading]);
 
   return (
     <HomePage
@@ -182,9 +211,9 @@ function HomeContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
-      isLoaded={isLoaded}
+      isLoaded={false}
       isLimit={isLimit}
-      setRef={setRef}
+      pageEnd={pageEnd}
     />
   );
 }
