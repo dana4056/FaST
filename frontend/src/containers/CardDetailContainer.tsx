@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import CardDetailPage from '../pages/CardDetailPage';
@@ -12,7 +12,8 @@ import { userInfo } from '../atoms/userInfo';
 
 function CardDetailContainer() {
   const params = useParams();
-  const { getArticle, downloadImages } = useArticleViewModel();
+  const navigate = useNavigate();
+  const { getArticle, downloadImages, deleteArticle } = useArticleViewModel();
   const { createComment, getComments } = useCommentViewModel();
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
@@ -27,9 +28,11 @@ function CardDetailContainer() {
     numLikes: 0,
     regTime: '',
     tags: [],
+    userId: 0,
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   // 댓글창이 열려있는지
   const [isCommentOpen, setisCommentOpen] = useState<boolean>(false);
   // 댓글 배열
@@ -108,6 +111,16 @@ function CardDetailContainer() {
       commentInputRef.current.value = '';
     }
   };
+  const handleModifyClick = () => {
+    navigate(`/modify-article/${card.id}`);
+  };
+  const handleDeleteClick = async () => {
+    setIsDeleteOpen(true);
+    // const res: any = await deleteArticle(card.id, user.id);
+    // if (res.status === 200) {
+    //   navigate(-1);
+    // }
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -123,7 +136,7 @@ function CardDetailContainer() {
           );
           setCard({
             id: res.data.id,
-            nickname: res.data.nickname,
+            nickname: res.data.nickName,
             content: res.data.content,
             imageUrls,
             isLike: res.data.likeCheck,
@@ -131,6 +144,7 @@ function CardDetailContainer() {
             numComments: res.data.commentCount,
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
+            userId: res.data.userId,
           });
         }
       }
@@ -142,6 +156,7 @@ function CardDetailContainer() {
   return (
     <CardDetailPage
       card={card}
+      user={user}
       comments={comments}
       handleLikeClick={handleLikeClick}
       isMenuOpen={isMenuOpen}
@@ -150,6 +165,9 @@ function CardDetailContainer() {
       handleCommentClick={handleCommentClick}
       commentInputRef={commentInputRef}
       handleCommentSubmit={handleCommentSubmit}
+      handleModifyClick={handleModifyClick}
+      handleDeleteClick={handleDeleteClick}
+      isDeleteOpen={isDeleteOpen}
     />
   );
 }

@@ -1,23 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
 
-import { AxiosResponse } from 'axios';
-import NewCardPage from '../pages/NewCardPage';
-import { TagType } from '../types/TagType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { userInfo } from '../atoms/userInfo';
+import ModifyArticlePage from '../pages/ModifyArticlePage';
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
+function ModifyArticleContainer() {
+  const params = useParams();
 
-function NewCardContainer() {
+  const { getArticle } = useViewModel();
   // 미리보기 이미지 url 저장 배열
   const [imageUrls, setImageUrls] = useState<Array<string>>([]);
+  const [prevImagePaths, setPrevImagePaths] = useState<Array<string>>([]);
+  const [imagePaths, setImagePaths] = useState<Array<string>>([]);
   // 이미지 파일 저장 배열
   const [images, setImages] = useState<Array<File>>([]);
   // 태그 저장 배열
@@ -32,6 +29,7 @@ function NewCardContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isFail, setIsFail] = useState<boolean>(false);
+  const [isNotAuth, setIsNotAuth] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
 
@@ -39,7 +37,13 @@ function NewCardContainer() {
 
   const navigate = useNavigate();
 
-  const { uploadImages, writeArticle, createAutoTags } = useViewModel();
+  const {
+    uploadImages,
+    modifyArticle,
+    createAutoTags,
+    downloadImages,
+    deleteImage,
+  } = useViewModel();
   const handleCustomTagInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -142,6 +146,8 @@ function NewCardContainer() {
 
   // 입력한 이미지 삭제
   const handleImageDelete = () => {
+    setPrevImagePaths(imagePaths);
+    setImagePaths([]);
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
@@ -157,17 +163,21 @@ function NewCardContainer() {
     // 서버에 업로드하는 함수는 여기에
     const imgPath = await uploadImages(images);
 
-    const res = await writeArticle({
+    await Promise.all(
+      prevImagePaths.map((prevImagePath: string) => deleteImage(prevImagePath))
+    );
+    const res: any = await modifyArticle({
       area: loc,
       autoTags,
+      articleId: params.articleId,
       content: textareaRef.current?.value,
-      imgPath: imgPath.join(','),
+      imgPath: imagePaths.concat(imgPath).join(','),
       lat: la,
       lng: lo,
       tags: customTags,
       userId: user.id,
     });
-    if (res === 200) {
+    if (res.status === 200) {
       setIsSuccess(true);
     } else {
       setIsFail(true);
@@ -191,12 +201,6 @@ function NewCardContainer() {
               setLoc('서울특별시');
             } else if (region === '인천') {
               setLoc('인천광역시');
-            } else if (region === '경북') {
-              setLoc('경상북도');
-            } else if (region === '제주') {
-              setLoc('제주특별자치도');
-            } else if (region === '경기') {
-              setLoc('경기도');
             }
           }
         };
@@ -221,11 +225,43 @@ function NewCardContainer() {
     getTags();
     // }
   }, [images]);
+  useEffect(() => {
+    const getData = async () => {
+      if (params.articleId) {
+        const res = await getArticle(params.articleId, user.id);
+        if (res.status === 200) {
+          if (user.id !== res.data.userId) {
+            setIsNotAuth(true);
+          } else {
+            console.log(res);
+            const tags: Array<string> = [];
+            await Promise.all(
+              res.data.tags.map((tag: any) => tags.push(tag.tagName))
+            );
+            setImagePaths(res.data.imgPath.split(','));
+            const newImageUrls = await downloadImages(
+              res.data.imgPath.split(',')
+            );
+            setImageUrls(newImageUrls);
+            if (textareaRef.current) {
+              textareaRef.current.value = res.data.content;
+            }
+            setLa(res.data.lat);
+            setLo(res.data.lng);
+            setLoc(res.data.area);
+            setCustomTags(tags);
+          }
+        }
+      }
+    };
+    getData();
+  }, []);
   return (
-    <NewCardPage
+    <ModifyArticlePage
       isModalOpen={isModalOpen}
       isLoading={isLoading}
       isSuccess={isSuccess}
+      isNotAuth={isNotAuth}
       isFail={isFail}
       handleFailModalClose={handleFailModalClose}
       customTag={customTag}
@@ -247,4 +283,4 @@ function NewCardContainer() {
   );
 }
 
-export default NewCardContainer;
+export default ModifyArticleContainer;

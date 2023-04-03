@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
-import { userInfo } from '../atoms/userInfo';
-import HomePage from '../pages/HomePage';
-import { TagType } from '../types/TagType';
+import { useRecoilValue } from 'recoil';
 import { CardType } from '../types/CardType';
+
+import PeoplePage from '../pages/PeoplePage';
+import { userInfo } from '../atoms/userInfo';
 import useViewModel from '../viewmodels/ArticleViewModel';
+import { TagType } from '../types/TagType';
 
-// ViewModel과 View를 연결하기 위한 Container
-function HomeContainer() {
-  const [user, setUser] = useRecoilState(userInfo);
-  const [isMine, setIsMine] = useState<boolean>(true);
-
+function PeopleContainer() {
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
+  const user = useRecoilValue(userInfo);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
-  const { getArticles, downloadImages } = useViewModel();
+  const { getFollowArticles, downloadImages } = useViewModel();
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -75,7 +72,7 @@ function HomeContainer() {
 
   useEffect(() => {
     const getData = async () => {
-      const res: any = await getArticles(user.id, 3, 0);
+      const res: any = await getFollowArticles(user.id, 20, 0);
       if (res.status === 200) {
         const cardLeftList: any = [];
         const cardRightList: any = [];
@@ -146,19 +143,17 @@ function HomeContainer() {
     };
     getData();
   }, []);
-
   return (
-    <HomePage
-      isMine={isMine}
+    <PeoplePage
       tags={tags}
       keyword={keyword}
-      cardsLeft={cardsLeft}
-      cardsRight={cardsRight}
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
+      cardsLeft={cardsLeft}
+      cardsRight={cardsRight}
     />
   );
 }
 
-export default HomeContainer;
+export default PeopleContainer;

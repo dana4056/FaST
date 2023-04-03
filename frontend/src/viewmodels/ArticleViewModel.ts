@@ -1,7 +1,19 @@
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 
 import { storage } from '../utils/firebase';
-import { doWriteArticle, doGetArticles, doGetArticle } from '../api/article';
+import {
+  doWriteArticle,
+  doGetArticles,
+  doGetArticle,
+  doModifyArticle,
+  doGetFollowArticles,
+  doDeleteArticle,
+} from '../api/article';
 import uuid from '../utils/uuid';
 import doGetAutoTags from '../api/tag';
 
@@ -28,11 +40,17 @@ const ArticleViewModel = () => {
     );
     return ret;
   };
+  const deleteImage = async (imageUrl: string) => {
+    await deleteObject(ref(storage, imageUrl));
+  };
   const writeArticle = async (requestBody: any) => {
     const res = await doWriteArticle(requestBody);
     return res;
   };
-
+  const modifyArticle = async (requestBody: any) => {
+    const res = await doModifyArticle(requestBody);
+    return res;
+  };
   const createAutoTags = async (images: Array<File>, area: string) => {
     let ret: Array<string> = [];
     await Promise.all(
@@ -55,13 +73,32 @@ const ArticleViewModel = () => {
     const res = await doGetArticles(userId, size, offset);
     return res;
   };
+
+  const deleteArticle = async (articleId: number, userId: number) => {
+    const res = await doDeleteArticle(articleId, userId);
+    return res;
+  };
+
+  const getFollowArticles = async (
+    userId: number,
+    size: number,
+    offset: number
+  ) => {
+    const res = await doGetFollowArticles(userId, size, offset);
+    return res;
+  };
+
   return {
     uploadImages,
     writeArticle,
+    modifyArticle,
     createAutoTags,
     getArticles,
+    getFollowArticles,
     downloadImages,
     getArticle,
+    deleteImage,
+    deleteArticle,
   };
 };
 
