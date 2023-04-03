@@ -62,9 +62,11 @@ function MyRecordContainer() {
         0
       );
       setArticles(articleData.data.sort((o1: any, o2: any) => o2.id - o1.id));
+      // console.log(articleData.data[0]);
     };
     getData();
   }, []);
+
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
@@ -138,8 +140,6 @@ function MyRecordContainer() {
     };
     setData();
   }, [articles]);
-
-  // console.log(cardsLeft);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');

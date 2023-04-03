@@ -29,25 +29,15 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
         alt="photocardimg"
       />
       <div className="photo-card__row">
-        <div className="photo-card__like" role="presentation">
-          <Heart cardId={card.id} />
-          {card.numLikes} Likes
+        <div className="photo-card__like">
+          <Heart
+            cardId={card.id}
+            isLike={card.isLike}
+            cntLike={card.numLikes}
+          />
         </div>
         {isMine ? (
-          <div className="photo-card__buttons">
-            <button
-              type="button"
-              className="photo-card__button transparent-button"
-            >
-              <BsPencil />
-            </button>
-            <button
-              type="button"
-              className="photo-card__button transparent-button"
-            >
-              <BsTrash />
-            </button>
-          </div>
+          <div>{}</div>
         ) : (
           <div className="photo-card__nickname">{card.nickname}</div>
         )}
