@@ -344,7 +344,7 @@ public class ArticleServiceImpl implements ArticleService {
                     .build();
             articleHasTagRepository.save(articleHasTag);
 
-            if (!userHasLandMarkRepository.existsByUserIdAndLandMarkName(userId,tagName)){
+            if (!userHasLandMarkRepository.existsByUserIdAndLandMarkName(userId,tagName) && landMarkRepository.existsById(tagName)){
                 UserHasLandMark userHasLandMark = UserHasLandMark.builder()
                         .user(userRepository.findById(userId).get())
                         .landMark(landMarkRepository.findById(tagName).get())
