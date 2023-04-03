@@ -17,8 +17,10 @@ function CardDetailPage({
   commentInputRef,
   handleCommentSubmit,
   handleModifyClick,
-  handleDeleteClick,
   isDeleteOpen,
+  handleDeleteOpen,
+  handleDeleteClose,
+  handleArticleDelete,
 }: CardDetailPageProps) {
   return (
     <div className="card-detail-page">
@@ -34,7 +36,7 @@ function CardDetailPage({
           handleMenuClick={handleMenuClick}
           handleCommentClick={handleCommentClick}
           handleModifyClick={handleModifyClick}
-          handleDeleteClick={handleDeleteClick}
+          handleDeleteOpen={handleDeleteOpen}
         />
         <Comments
           comments={comments}
@@ -45,19 +47,23 @@ function CardDetailPage({
       </div>
       {isDeleteOpen ? (
         <div className="card-detail-page__delete">
-          <div className="card-dateil-page__delete-content">정말삭제?</div>
+          <div className="card-dateil-page__delete-content">
+            정말 삭제하시겠습니까?
+          </div>
           <div className="card-detail-page__delete-buttons">
             <button
               type="button"
-              className="card-detail-page__delete-button--yes"
+              className="card-detail-page__delete-button--no"
+              onClick={handleDeleteClose}
             >
-              예
+              아니오
             </button>
             <button
               type="button"
-              className="card-detail-page__delete-button--no"
+              className="card-detail-page__delete-button--yes"
+              onClick={handleArticleDelete}
             >
-              아니오
+              예
             </button>
           </div>
         </div>
