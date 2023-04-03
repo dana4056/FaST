@@ -20,25 +20,23 @@
     align-items: center;
     padding: 2px 10px;
     justify-content: space-between;
-    .photo-card__buttons {
-      margin-left: auto;
-      z-index: 9999;
-      .photo-card__button {
-        margin: 0 2px;
-      }
-    }
+
     .photo-card__like {
       display: flex;
       align-items: center;
       font-size: 12px;
-      font-weight: bold;
+      float: left;
       svg {
         width: 25px;
         height: 25px;
       }
+      span {
+        font-size: 14px;
+      }
     }
     .photo-card__nickname {
       float: right;
+      margin-right: 4px;
     }
   }
   .photo-card__tags {
