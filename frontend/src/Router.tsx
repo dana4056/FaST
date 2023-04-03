@@ -31,7 +31,7 @@ function Router() {
           />
           <Route path="/article/:cardId" element={<CardDetailContainer />} />
           <Route path="/record/:userId" element={<MyRecordContainer />} />
-          <Route path="/map" element={<MapContainer />} />
+          <Route path="/map/:userId" element={<MapContainer />} />
           <Route path="/follow/:userId" element={<FollowContainer />} />
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />

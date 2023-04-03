@@ -144,7 +144,7 @@ function KoreaMap() {
   };
   const jejuOptions = {
     center: new window.kakao.maps.LatLng(33.364805, 126.542671),
-    level: 12,
+    level: 11,
   };
   const sejongOptions = {
     center: new window.kakao.maps.LatLng(36.5040736, 127.2494855),
