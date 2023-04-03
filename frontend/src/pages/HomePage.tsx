@@ -13,6 +13,7 @@ function HomePage({
   handleKeywordChange,
   handleSearch,
   handleTagDelete,
+  scrollRef,
 }: HomePageProps) {
   return (
     <div className="main-page">
@@ -23,7 +24,12 @@ function HomePage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList isMine={isMine} cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList
+        isMine={isMine}
+        cardsLeft={cardsLeft}
+        cardsRight={cardsRight}
+        scrollRef={scrollRef}
+      />
     </div>
   );
 }

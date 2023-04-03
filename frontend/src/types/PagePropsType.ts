@@ -20,6 +20,7 @@ export interface HomePageProps extends SearchBoxProps {
   // 오른쪽 카드 목록
   cardsRight: Array<CardType>;
   isMine: boolean;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
 // 새 카드 페이지 Props

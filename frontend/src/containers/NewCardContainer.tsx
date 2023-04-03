@@ -194,7 +194,7 @@ function NewCardContainer() {
               setLoc('인천광역시');
             } else if (region === '경북') {
               setLoc('경상북도');
-            } else if (region === '제주') {
+            } else if (region === '제주특별자치도') {
               setLoc('제주특별자치도');
             } else if (region === '경기') {
               setLoc('경기도');

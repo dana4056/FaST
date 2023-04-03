@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
@@ -13,6 +13,7 @@ function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user.id.toString() === userState.toString()) {
@@ -112,7 +113,12 @@ function MapContainer() {
     },
   ]);
   return (
-    <MapPage cardsLeft={cardsLeft} cardsRight={cardsRight} isMine={isMine} />
+    <MapPage
+      cardsLeft={cardsLeft}
+      cardsRight={cardsRight}
+      isMine={isMine}
+      scrollRef={scrollRef}
+    />
   );
 }
 

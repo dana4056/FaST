@@ -141,6 +141,7 @@ export interface CardListProps {
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
   isMine: boolean;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
 // 프로필 사진 입력 Props

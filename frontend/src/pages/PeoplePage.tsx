@@ -11,6 +11,7 @@ function PeoplePage({
   handleTagDelete,
   cardsLeft,
   cardsRight,
+  scrollRef,
 }: any) {
   return (
     <div className="main-page">
@@ -21,7 +22,12 @@ function PeoplePage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList isMine={false} cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList
+        isMine={false}
+        cardsLeft={cardsLeft}
+        cardsRight={cardsRight}
+        scrollRef={scrollRef}
+      />
     </div>
   );
 }
