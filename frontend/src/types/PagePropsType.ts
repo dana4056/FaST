@@ -64,6 +64,7 @@ export interface CardDetailPageProps extends CardDetailProps {
   commentInputRef: React.RefObject<HTMLInputElement>;
   // 댓글 전송 함수
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isDeleteOpen: boolean;
 }
 
 // 내 기록 페이지

@@ -13,7 +13,7 @@ import { userInfo } from '../atoms/userInfo';
 function CardDetailContainer() {
   const params = useParams();
   const navigate = useNavigate();
-  const { getArticle, downloadImages } = useArticleViewModel();
+  const { getArticle, downloadImages, deleteArticle } = useArticleViewModel();
   const { createComment, getComments } = useCommentViewModel();
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
@@ -32,6 +32,7 @@ function CardDetailContainer() {
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   // 댓글창이 열려있는지
   const [isCommentOpen, setisCommentOpen] = useState<boolean>(false);
   // 댓글 배열
@@ -113,8 +114,12 @@ function CardDetailContainer() {
   const handleModifyClick = () => {
     navigate(`/modify-article/${card.id}`);
   };
-  const handleDeleteClick = () => {
-    // test
+  const handleDeleteClick = async () => {
+    setIsDeleteOpen(true);
+    // const res: any = await deleteArticle(card.id, user.id);
+    // if (res.status === 200) {
+    //   navigate(-1);
+    // }
   };
   useEffect(() => {
     const getArticleData = async () => {
@@ -162,6 +167,7 @@ function CardDetailContainer() {
       handleCommentSubmit={handleCommentSubmit}
       handleModifyClick={handleModifyClick}
       handleDeleteClick={handleDeleteClick}
+      isDeleteOpen={isDeleteOpen}
     />
   );
 }

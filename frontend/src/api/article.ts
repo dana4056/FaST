@@ -121,6 +121,16 @@ export async function doSearchArticles(
   }
 }
 
+export async function doDeleteArticle(articleId: number, userId: number) {
+  try {
+    const res = await api.delete(`/article/${articleId}/${userId}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
 export async function doGetMyArticles(
   userId: number,
   size: number,
