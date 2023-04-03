@@ -82,8 +82,8 @@ function PeopleContainer() {
       setIsLoaded(true);
       const res: any = await getFollowArticles(user.id, size, offset);
       if (res.status === 200) {
-        const cardLeftList: any = [];
-        const cardRightList: any = [];
+        const cardLeftList: any = cardsLeft;
+        const cardRightList: any = cardsRight;
         if (res.data.length > 0) {
           await Promise.all(
             res.data.map(async (article: any, i: number) => {
