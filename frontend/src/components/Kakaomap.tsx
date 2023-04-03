@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import cardimg from '../assets/images/photocardimg.jpeg';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
+import { KakaoMapProps } from '../types/ComponentPropsType';
 
 declare global {
   interface Window {
@@ -9,7 +10,7 @@ declare global {
   }
 }
 
-function Kakaomap({ selectOption }: any) {
+function Kakaomap({ selectOption }: KakaoMapProps) {
   const markerDatas = [
     {
       pointX: 37.566826,
@@ -39,7 +40,7 @@ function Kakaomap({ selectOption }: any) {
 
     // console.log('aaaaaaaaaaa', selectOption);
     const map = new window.kakao.maps.Map(container, selectOption);
-    console.log(window.kakao);
+    // console.log(window.kakao);
     // 2. 마커 찍기
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
     const imageSrc = 'https://i1.daumcdn.net/dmaps/apis/n_local_blit_04.png';

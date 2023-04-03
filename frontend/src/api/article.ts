@@ -170,7 +170,7 @@ async function getMapArticle(
     const res = await api.get(`/article/area/${userId}/${size}/${offset}`, {
       params: { userId, size, offset, area },
     });
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);

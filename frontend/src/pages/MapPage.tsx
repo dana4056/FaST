@@ -13,6 +13,11 @@ function MapPage({
   setRef,
   isLoaded,
   isLimit,
+  cntData,
+  checkClicked,
+  clickRegion,
+  clickBack,
+  selectOption,
 }: MapPageProps) {
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
@@ -28,7 +33,13 @@ function MapPage({
       </div>
       <div className="mappage__map__container card">
         <div className="whole__map">
-          <KoreaMap />
+          <KoreaMap
+            cntData={cntData}
+            checkClicked={checkClicked}
+            clickRegion={clickRegion}
+            clickBack={clickBack}
+            selectOption={selectOption}
+          />
         </div>
       </div>
       <CardList
