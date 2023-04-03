@@ -4,7 +4,7 @@ import { CardListProps } from '../types/ComponentPropsType';
 
 import PhotoCard from './PhotoCard';
 
-function CardList({ isMine, cardsLeft, cardsRight }: CardListProps) {
+function CardList({ isMine, cardsLeft, cardsRight, scrollRef }: CardListProps) {
   return (
     <div className="card-list">
       <div className="card-list__column">
@@ -16,6 +16,9 @@ function CardList({ isMine, cardsLeft, cardsRight }: CardListProps) {
         {cardsRight.map((card: CardType) => (
           <PhotoCard isMine={isMine} card={card} key={card.id} />
         ))}
+      </div>
+      <div ref={scrollRef} className="card-list__footer">
+        스크롤sssssssssss
       </div>
     </div>
   );

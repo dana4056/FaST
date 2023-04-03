@@ -11,7 +11,6 @@ function Heart({ cardId }: HeartProps) {
 
   const likeData = async () => {
     const articleLikeData: any = await articleApi.articleLike(cardId, user.id);
-    console.log(articleLikeData.data);
     setLiked(articleLikeData.data);
   };
 
@@ -20,7 +19,7 @@ function Heart({ cardId }: HeartProps) {
     likeData();
   };
   useEffect(() => {
-    console.log('liked상태', liked);
+    // console.log('liked상태', liked);
   }, [liked]);
   return (
     <div onClick={handleLikeClick} role="presentation">

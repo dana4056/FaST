@@ -22,6 +22,7 @@ function MyRecordPage({
   handleKeywordChange,
   handleSearch,
   handleTagDelete,
+  scrollRef,
 }: MyRecordPageProps) {
   return (
     <div className="my-record-page">
@@ -41,7 +42,12 @@ function MyRecordPage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList isMine={isMine} cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList
+        isMine={isMine}
+        cardsLeft={cardsLeft}
+        cardsRight={cardsRight}
+        scrollRef={scrollRef}
+      />
     </div>
   );
 }
