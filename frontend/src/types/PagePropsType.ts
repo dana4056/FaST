@@ -9,6 +9,7 @@ import {
   InputProfileProps,
   UserProps,
   ProfileProps,
+  KoreaMapProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -70,14 +71,14 @@ export interface MyRecordPageProps
     CardListProps,
     ProfileProps {}
 
-export type MapPageProps = CardListProps;
+export interface MapPageProps extends CardListProps, KoreaMapProps {}
 
 interface Tag {
   tagName: string;
   color: string;
   index: number;
 }
-// 회원가입 페이지 Props=
+// 회원가입 페이지 Props
 export interface SignUpPageProps extends InputProfileProps {
   email: string;
   name: string;

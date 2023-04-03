@@ -184,3 +184,22 @@ export interface UserProps {
 export interface UserItemProps {
   user: UserProps;
 }
+
+export interface SelectRegionOptionType {
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  level: number;
+}
+
+export interface KakaoMapProps {
+  selectOption: SelectRegionOptionType;
+}
+
+export interface KoreaMapProps extends KakaoMapProps {
+  cntData: any;
+  checkClicked: string;
+  clickRegion: (e: React.MouseEvent<SVGPathElement>) => void;
+  clickBack: (e: React.MouseEvent<SVGPathElement>) => void;
+}

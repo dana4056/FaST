@@ -154,12 +154,33 @@ async function articleLike(articleId: number, userId: number) {
     // console.log(res);
     return res;
   } catch (error) {
+    // console.error(error);
+    return error;
+  }
+}
+
+// 지도기반 게시물 조회
+async function getMapArticle(
+  userId: number,
+  size: number,
+  offset: number,
+  area: string
+) {
+  try {
+    const res = await api.get(`/article/area/${userId}/${size}/${offset}`, {
+      params: { userId, size, offset, area },
+    });
+    // console.log(res);
+    return res;
+  } catch (error) {
     console.error(error);
     return error;
   }
 }
+
 export default {
   getUserArticle,
   userArticleLike,
   articleLike,
+  getMapArticle,
 };
