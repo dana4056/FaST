@@ -246,36 +246,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleSearchTag(int userId, int size, int offset, String tagName) {
-        Pageable pageable = PageRequest.of(offset, size);
-        List<ArticleListResponseDto> responseDto = null;
-
-        responseDto = articleRepository.ArticleListTagSearch(tagName, pageable)
-                .stream().map(x->ArticleListResponseDto.builder()
-                        .id(x.getId())
-                        .userId(x.getUser().getId())
-                        .nickName(userRepository.nickName(x.getUser().getId()))
-                        .imgPath(x.getImgPath())
-                        .createTime(x.getCreateTime())
-                        .area(x.getArea())
-                        .lat(x.getLat())
-                        .lng(x.getLng())
-                        .commentCount(commentRepository.countByArticleId(x.getId()))
-                        .likeCount(likesRepository.countByArticleId(x.getId()))
-                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
-                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
-                                .map(Tag->TagResponseDto.builder()
-                                        .tagId(Tag.getTag().getId())
-                                        .tagName(Tag.getTag().getName())
-                                        .build()).collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
-
-        return responseDto;
-    }
-
-
-    @Override
     public List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area) {
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
