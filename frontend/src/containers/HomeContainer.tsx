@@ -41,8 +41,6 @@ function HomeContainer() {
     } else {
       res = await getArticles(user.id, size, offset);
     }
-    console.log(offset);
-    console.log(res);
     if (res.status === 200) {
       const cardLeftList: any = [];
       const cardRightList: any = [];
@@ -106,7 +104,6 @@ function HomeContainer() {
         }
       } else if (res.data.length === 0) {
         setIsLimit(() => true);
-        setIsLoaded(false);
       }
     }
     setLoading(false);

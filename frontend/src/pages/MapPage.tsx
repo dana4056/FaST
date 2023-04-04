@@ -13,7 +13,8 @@ function MapPage({
   setRef,
   isLoaded,
   isLimit,
-}: MapPageProps) {
+  pageEnd,
+}: any) {
   return (
     <div className="map-page">
       <div className="map-page__header">
@@ -33,6 +34,7 @@ function MapPage({
         setRef={setRef}
         isLoaded={isLoaded}
         isLimit={isLimit}
+        pageEnd={pageEnd}
       />
     </div>
   );

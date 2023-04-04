@@ -12,7 +12,7 @@ function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
 
   const [isMine, setIsMine] = useState<boolean>(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const pageEnd = useRef<HTMLDivElement>(null);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
     {
@@ -112,6 +112,7 @@ function MapContainer() {
       setRef={null}
       isLoaded={false}
       isLimit={false}
+      pageEnd={pageEnd}
     />
   );
 }

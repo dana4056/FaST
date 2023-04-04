@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
+import { StereoEffect } from 'three-stdlib';
 import { CardType } from '../types/CardType';
 
 import PeoplePage from '../pages/PeoplePage';
 import { userInfo } from '../atoms/userInfo';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { TagType } from '../types/TagType';
-import useIntersect from '../utils/useIntersect';
+import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function PeopleContainer() {
   const size = 10;
-  let offset = 0;
 
   const [isMine, setIsMine] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   // 검색 키워드
   const [keyword, setKeyword] = useState<string>('');
+  const [offset, setOffset] = useState<number>(0);
+  const pageEnd = useRef<HTMLDivElement>(null);
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
   const user = useRecoilValue(userInfo);
@@ -78,69 +81,64 @@ function PeopleContainer() {
   };
 
   const getData = async () => {
-    if (!isLimit) {
-      setIsLoaded(true);
-      const res: any = await getFollowArticles(user.id, size, offset);
-      if (res.status === 200) {
-        const cardLeftList: any = cardsLeft;
-        const cardRightList: any = cardsRight;
-        if (res.data.length > 0) {
-          await Promise.all(
-            res.data.map(async (article: any, i: number) => {
-              if (i % 2 === 0) {
-                const leftArticleTags: any = [];
+    setLoading(true);
+    const res: any = await getFollowArticles(user.id, size, offset);
+    console.log(res);
+    if (res.status === 200) {
+      const cardLeftList: any = cardsLeft;
+      const cardRightList: any = cardsRight;
+      if (res.data.length > 0) {
+        await Promise.all(
+          res.data.map(async (article: any, i: number) => {
+            if (i % 2 === 0) {
+              const leftArticleTags: any = [];
+              article.tags.map((tag: any) =>
+                leftArticleTags.push({
+                  value: tag.tagName,
+                  className: 'tag-2 tag-small',
+                })
+              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
+              cardLeftList.push({
+                id: article?.id,
+                imageUrls: [sample1],
+                nickname: article.nickname,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.isLike,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: leftArticleTags,
+              });
+            } else {
+              const rightArticleTags: any = [];
+              await Promise.all(
                 article.tags.map((tag: any) =>
-                  leftArticleTags.push({
+                  rightArticleTags.push({
                     value: tag.tagName,
                     className: 'tag-2 tag-small',
                   })
-                );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
-                cardLeftList.push({
-                  id: article?.id,
-                  imageUrls,
-                  nickname: article.nickname,
-                  content: '',
-                  regTime: article?.createTime,
-                  isLike: article?.isLike,
-                  numLikes: article?.likeCount,
-                  numComments: article?.commentCount,
-                  tags: leftArticleTags,
-                });
-              } else {
-                const rightArticleTags: any = [];
-                await Promise.all(
-                  article.tags.map((tag: any) =>
-                    rightArticleTags.push({
-                      value: tag.tagName,
-                      className: 'tag-2 tag-small',
-                    })
-                  )
-                );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
-                cardRightList.push({
-                  id: article?.id,
-                  imageUrls,
-                  nickname: article.nickname,
-                  content: '',
-                  regTime: article?.createTime,
-                  isLike: article?.isLike,
-                  numLikes: article?.likeCount,
-                  numComments: article?.commentCount,
-                  tags: rightArticleTags,
-                });
-              }
-            })
-          );
-        } else {
-          setIsLimit(true);
-          setIsLoaded(false);
-          return;
-        }
+                )
+              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
+              cardRightList.push({
+                id: article?.id,
+                imageUrls: [sample1],
+                nickname: article.nickname,
+                content: '',
+                regTime: article?.createTime,
+                isLike: article?.isLike,
+                numLikes: article?.likeCount,
+                numComments: article?.commentCount,
+                tags: rightArticleTags,
+              });
+            }
+          })
+        );
         if (cardLeftList.length > 0) {
           setCardsLeft([
             ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
@@ -151,16 +149,32 @@ function PeopleContainer() {
             ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
           ]);
         }
+      } else {
+        setIsLimit(() => true);
       }
-      offset += 1;
-      setIsLoaded(false);
     }
+    setIsLoaded(false);
   };
 
-  const [, setRef] = useIntersect(getData, isLoaded);
   useEffect(() => {
     getData();
-  }, []);
+  }, [offset]);
+
+  const loadMore = () => {
+    setOffset((prev: number) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (!pageEnd.current) return;
+    const observer = new IntersectionObserver((entries: any) => {
+      if (entries[0].isIntersecting && !loading && !isLimit) {
+        loadMore();
+      }
+    });
+    observer.observe(pageEnd.current);
+    // eslint-disable-next-line consistent-return
+    return () => observer.disconnect();
+  }, [pageEnd, isLimit, loading]);
   return (
     <PeoplePage
       tags={tags}
@@ -173,7 +187,7 @@ function PeopleContainer() {
       isLimit={isLimit}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
-      setRef={setRef}
+      pageEnd={pageEnd}
     />
   );
 }

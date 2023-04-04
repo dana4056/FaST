@@ -5,14 +5,7 @@ import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 
 import PhotoCard from './PhotoCard';
 
-function CardList({
-  isMine,
-  cardsLeft,
-  cardsRight,
-  isLoaded,
-  isLimit,
-  pageEnd,
-}: any) {
+function CardList({ isMine, cardsLeft, cardsRight, isLimit, pageEnd }: any) {
   return (
     <div className="card-list">
       <div className="card-list__column">

@@ -14,8 +14,8 @@ function PeoplePage({
   cardsRight,
   isLoaded,
   isLimit,
-  setRef,
-}: HomePageProps) {
+  pageEnd,
+}: any) {
   return (
     <div className="main-page">
       <SearchBox
@@ -31,7 +31,7 @@ function PeoplePage({
         cardsRight={cardsRight}
         isLoaded={isLoaded}
         isLimit={isLimit}
-        setRef={setRef}
+        pageEnd={pageEnd}
       />
     </div>
   );
