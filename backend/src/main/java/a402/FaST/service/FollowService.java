@@ -13,10 +13,10 @@ public interface FollowService {
 
     boolean deleteFollow(FollowRequestDto requestDto);
 
-    UserFromToFollowResponseDto getfollow(FollowSearchRequestDto requestDto);
+    UserFromToFollowResponseDto getfollow(int userId);
 
     int cntFollower(int toId);
     int cntFollowing(int fromId);
 
-    List<UserNotFollowResponseDto> NotFollow(FollowSearchRequestDto requestDto);
+    List<UserNotFollowResponseDto> NotFollow(int userId);
 }

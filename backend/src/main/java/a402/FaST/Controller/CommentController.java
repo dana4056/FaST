@@ -60,6 +60,4 @@ public class CommentController {
     public List<CommentListResponseDto> commentList(@Valid @PathVariable("articleId") int articleId, @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset) {
         return commentService.commentList(articleId, userId, size, offset);
     }
-
-
 }
