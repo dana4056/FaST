@@ -31,13 +31,22 @@ function HomeContainer() {
 
   const { getArticles, downloadImages, searchArticles } = useViewModel();
 
+  const [load, setLoad] = useState<boolean>(false);
+
   const getData = async () => {
     setLoading(true);
+    console.log(offset, isSearch);
     let res: any;
     if (isSearch) {
       const searchTags: Array<string> = [];
       await Promise.all(tags.map((tag: any) => searchTags.push(tag.value)));
-      res = await searchArticles(user.id, size, offset, searchTags.join(','));
+      res = await searchArticles(
+        user.id,
+        size,
+        offset,
+        'A',
+        searchTags.join(',')
+      );
     } else {
       res = await getArticles(user.id, size, offset);
     }
@@ -105,6 +114,8 @@ function HomeContainer() {
       } else if (res.data.length === 0) {
         setIsLimit(() => true);
       }
+    } else {
+      setIsLimit(() => true);
     }
     setLoading(false);
   };
@@ -136,11 +147,8 @@ function HomeContainer() {
       setIsLimit(false);
       setCardsLeft([]);
       setCardsRight([]);
-      if (offset === 0) {
-        getData();
-      } else {
-        setOffset(0);
-      }
+      setOffset(0);
+      setLoad((prev: boolean) => !prev);
     }
 
     // 검색창 초기화
@@ -170,20 +178,18 @@ function HomeContainer() {
       setLoading(false);
       setCardsLeft([]);
       setCardsRight([]);
-      if (offset === 0) {
-        getData();
-      } else {
-        setOffset(0);
-      }
+      setOffset(0);
+      setLoad((prev: boolean) => !prev);
     }
   };
 
   useEffect(() => {
     getData();
-  }, [offset]);
+  }, [load]);
 
   const loadMore = () => {
     setOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
   };
 
   useEffect(() => {

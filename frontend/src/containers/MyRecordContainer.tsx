@@ -128,6 +128,7 @@ function MyRecordContainer() {
     if (!isLimit) {
       setIsLoaded(true);
       const res: any = await getMyArticles(userState, size, offset);
+      console.log(res);
       if (res.status === 200) {
         const cardLeftList: any = cardsLeft;
         const cardRightList: any = cardsRight;
@@ -192,6 +193,8 @@ function MyRecordContainer() {
         } else {
           setIsLimit(true);
         }
+      } else {
+        setIsLimit(true);
       }
     }
     setLoading(false);

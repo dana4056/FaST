@@ -109,12 +109,14 @@ export async function doSearchArticles(
   userId: number,
   size: number,
   offset: number,
+  flag: string,
   tags: string
 ) {
   try {
     const res = await api.get(
-      `/article/tag-searchAll/${userId}/${size}/${offset}?tagName=${tags}`
+      `/article/tag-searchAll/${userId}/${size}/${offset}?filter=${flag}&tagName=${tags}`
     );
+    console.log(res);
     return res;
   } catch (error) {
     console.error(error);

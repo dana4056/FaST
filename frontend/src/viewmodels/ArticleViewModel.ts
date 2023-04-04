@@ -103,9 +103,10 @@ const ArticleViewModel = () => {
     userId: number,
     size: number,
     offset: number,
+    flag: string,
     tags: string
   ) => {
-    const res = await doSearchArticles(userId, size, offset, tags);
+    const res = await doSearchArticles(userId, size, offset, flag, tags);
     return res;
   };
 

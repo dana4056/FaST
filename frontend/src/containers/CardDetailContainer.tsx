@@ -32,6 +32,7 @@ function CardDetailContainer() {
     regTime: '',
     tags: [],
     userId: 0,
+    profile: '',
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -74,7 +75,6 @@ function CardDetailContainer() {
   const getCommentsData = async () => {
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 10, 0);
-      console.log(res);
       if (res.status === 200) {
         const newComments: Array<CommentType> = [];
         await Promise.all(
@@ -135,9 +135,11 @@ function CardDetailContainer() {
     const getArticleData = async () => {
       if (params.cardId) {
         const res = await getArticle(params.cardId, user.id);
+        console.log(res);
         if (res.status === 200) {
           setImagePaths(res.data.imgPath.split(','));
           // const imageUrls = await downloadImages(res.data.imgPath.split(','));
+          // const profile = await downloadImages([res.data.user.profile]);
           const tags: any = [];
           res.data.tags.map((tag: any) =>
             tags.push({
@@ -156,6 +158,7 @@ function CardDetailContainer() {
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
             userId: res.data.user.id,
+            profile: '',
           });
         }
       }
