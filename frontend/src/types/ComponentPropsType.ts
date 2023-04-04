@@ -80,6 +80,9 @@ export interface CardDetailProps {
   handleMenuClick: () => void;
   // 댓글 클릭 함수
   handleCommentClick: () => void;
+  handleFollow: () => void;
+  handleUnfollow: () => void;
+  handleMoveUserPage: () => void;
 }
 
 // 댓글 Props
