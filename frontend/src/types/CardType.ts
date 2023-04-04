@@ -12,4 +12,5 @@ export interface CardType {
   regTime: string;
   userId: number;
   profile: string;
+  followingCheck: boolean;
 }

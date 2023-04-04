@@ -33,6 +33,7 @@ function CardDetailContainer() {
     tags: [],
     userId: 0,
     profile: '',
+    followingCheck: false,
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -159,6 +160,7 @@ function CardDetailContainer() {
             tags,
             userId: res.data.user.id,
             profile: '',
+            followingCheck: res.data.followingCheck,
           });
         }
       }

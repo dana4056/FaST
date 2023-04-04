@@ -26,6 +26,15 @@ function CardDetail({
           <CgProfile />
         </div>
         <div className="card-detail__profile-nickname">{card.nickname}</div>
+        {card.followingCheck ? (
+          <button type="button" className="card-detail__follow-button">
+            언팔로우
+          </button>
+        ) : (
+          <button type="button" className="card-detail__follow-button">
+            팔로우
+          </button>
+        )}
         {user.id === card.userId ? (
           <button
             type="button"
