@@ -24,20 +24,20 @@ function UserModifyContainer() {
   }, []);
 
   // 미리보기 이미지 url 저장 배열
-  const [imageUrl, setImageUrl] = useState<string>(sample1);
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [imgPath, setImgPath] = useState<string>('profiles/default.jpg');
   useEffect(() => {
     if (userData.imgPath?.substring(0, 4) === 'http') {
       setImageUrl(userData.imgPath);
       setImgPath(imageUrl);
     } else if (userData.imgPath) {
-      // const getProfileImage = async () => {
-      //   const imageRef = ref(storage, userData.imgPath);
-      //   const ret = await getDownloadURL(imageRef);
-      //   setImageUrl(ret);
-      //   setImgPath(`profiles/${userData.email}`);
-      // };
-      // getProfileImage();
+      const getProfileImage = async () => {
+        const imageRef = ref(storage, userData.imgPath);
+        const ret = await getDownloadURL(imageRef);
+        setImageUrl(ret);
+        setImgPath(`profiles/${userData.email}`);
+      };
+      getProfileImage();
     }
   }, [userData.imgPath]);
 
