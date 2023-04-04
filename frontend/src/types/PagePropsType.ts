@@ -202,5 +202,5 @@ interface LandmarkProps extends ModelType {
 }
 
 export interface StampPageProps {
-  models: Array<LandmarkProps>;
+  models: any;
 }

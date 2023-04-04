@@ -9,7 +9,7 @@ const api = axios.create({
 
 export default async function doGetLandmarks(userId: number) {
   try {
-    const res = await api.get(`/landmark/${userId}}`);
+    const res = await api.get(`/landmark/${userId}`);
     return res;
   } catch (error) {
     console.error(error);

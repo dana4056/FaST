@@ -16,3 +16,17 @@ export { default as Sungnyemun } from './Sungnyemun';
 export { default as Yisunshin } from './Yisunshin';
 
 export { default as NotBuilding63 } from './NotBuilding63';
+export { default as NotCheomseongdae } from './NotCheomseongdae';
+export { default as NotCheongwadae } from './NotCheongwadae';
+export { default as NotChinaTown } from './NotChinaTown';
+export { default as NotDolHareubang } from './NotDolHareubang';
+export { default as NotGwangandaegyo } from './NotGwangandaegyo';
+export { default as NotGwanghwamun } from './NotGwanghwamun';
+export { default as NotKingSejong } from './NotKingSejong';
+export { default as NotLotteTower } from './NotLotteTower';
+export { default as NotOlympicPark } from './NotOlympicPark';
+export { default as NotSeokguram } from './NotSeokguram';
+export { default as NotSeongsan } from './NotSeongsan';
+export { default as NotSeoulTower } from './NotSeoulTower';
+export { default as NotSungnyemun } from './NotSungnyemun';
+export { default as NotYisunshin } from './NotYisunshin';
