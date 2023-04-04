@@ -19,6 +19,8 @@ function MapPage({
   clickRegion,
   clickBack,
   selectOption,
+  positionData,
+  area,
 }: any) {
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
@@ -32,6 +34,9 @@ function MapPage({
       <div className="map-page__header">
         <MdArrowBack onClick={onClickBack} />
       </div>
+      <div className="map-page__area-box">
+        <span className="map-page__area-text">{area}</span>
+      </div>
       <div className="mappage__map__container card">
         <div className="whole__map">
           <KoreaMap
@@ -40,6 +45,7 @@ function MapPage({
             clickRegion={clickRegion}
             clickBack={clickBack}
             selectOption={selectOption}
+            positionData={positionData}
           />
         </div>
       </div>

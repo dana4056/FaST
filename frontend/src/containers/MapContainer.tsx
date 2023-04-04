@@ -21,26 +21,6 @@ function MapContainer() {
 
   const [articleData, setArticleData] = useState<any>();
 
-  const cntData = {
-    seoul_cnt: 4,
-    busan_cnt: 1,
-    daegu_cnt: 3,
-    incheon_cnt: 2,
-    gwangju_cnt: 1,
-    daejeon_cnt: 1,
-    ulsan_cnt: 4,
-    gyeonggi_cnt: 0,
-    gangwon_cnt: 1,
-    northChungcheong_cnt: 3,
-    southChungcheong_cnt: 4,
-    northJeolla_cnt: 5,
-    southJeolla_cnt: 1,
-    northGyeongsang_cnt: 2,
-    southGyeongsang_cnt: 4,
-    jeju_cnt: 3,
-    sejong_cnt: 6,
-  };
-
   const seoulOptions = {
     center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
     level: 9,
@@ -116,7 +96,7 @@ function MapContainer() {
   const [clicked, setClicked] = useState('before_click');
 
   const [clickedArea, setClickedArea] = useState<string>('');
-  const [area, setArea] = useState<string>('서울특별시');
+  const [area, setArea] = useState<string>('');
   const size = 20;
   const [loading, setLoading] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
@@ -124,7 +104,7 @@ function MapContainer() {
 
   const clickRegion = (e: React.MouseEvent<SVGPathElement>) => {
     const target = (e.target as Element).id;
-
+    setClickedArea(target);
     if (target === 'seoul') {
       setSelectOption(seoulOptions);
     } else if (target === 'busan') {
@@ -160,12 +140,10 @@ function MapContainer() {
     } else if (target === 'sejong') {
       setSelectOption(sejongOptions);
     }
-    console.log(target, selectOption);
-    setClickedArea(() => target);
+    // console.log(target, selectOption);
     setClicked('after_click');
-    console.log(clickedArea);
   };
-
+  // console.log(clickedArea);
   useEffect(() => {
     if (clickedArea === 'seoul') {
       setArea('서울특별시');
@@ -202,24 +180,87 @@ function MapContainer() {
     } else if (clickedArea === 'sejong') {
       setArea('세종시');
     }
+    console.log('clickedArea', clickedArea);
+    console.log('area', area);
   }, [clickedArea]);
 
   const clickBack = (e: React.MouseEvent<SVGPathElement>) => {
     setClicked('before_click');
+    setArea('');
+    setClickedArea('');
   };
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
+  const [seoulCnt, setSeoulCnt] = useState<number>(0);
+  const [busanCnt, setBusanCnt] = useState<number>(0);
+  const [daeguCnt, setDaeguCnt] = useState<number>(0);
+  const [incheonCnt, setIncheonCnt] = useState<number>(0);
+  const [gwangjuCnt, setGwangjuCnt] = useState<number>(0);
+  const [daejeonCnt, setDaejeonCnt] = useState<number>(0);
+  const [ulsanCnt, setUlsanCnt] = useState<number>(0);
+  const [gyeonggiCnt, setGyeonggiCnt] = useState<number>(0);
+  const [gangwonCnt, setGangwonCnt] = useState<number>(0);
+  const [northChungcheongCnt, setNorthChungcheongCnt] = useState<number>(0);
+  const [southChungcheongCnt, setSouthChungcheongCnt] = useState<number>(0);
+  const [northJeollaCnt, setNorthJeollaCnt] = useState<number>(0);
+  const [southJeollaCnt, setSouthJeollaCnt] = useState<number>(0);
+  const [northGyeongsangCnt, setNorthGyeongsangCnt] = useState<number>(0);
+  const [southGyeongsangCnt, setSouthGyeongsangCnt] = useState<number>(0);
+  const [jejuCnt, setJejuCnt] = useState<number>(0);
+  const [sejongCnt, setSejongCnt] = useState<number>(0);
+
   const getData = async () => {
     setLoading(true);
+
+    // 지역기반 게시물 데이터
     const mapData: any = await articleApi.getMapArticle(
       userState,
       size,
       offset,
       area
     );
-    console.log(mapData);
+
+    const mapCntData: any = await articleApi.getMapArticleCnt(userState);
+
+    for (let i = 0; i < mapCntData.data.length; i += 1) {
+      if (mapCntData.data[i].area === '서울특별시') {
+        setSeoulCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '세종특별자치시') {
+        setSejongCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '광주광역시') {
+        setGwangjuCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '대전광역시') {
+        setDaejeonCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '인천광역시') {
+        setIncheonCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '울산광역시') {
+        setUlsanCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '대구광역시') {
+        setDaeguCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '제주특별자치도') {
+        setJejuCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '부산광역시') {
+        setBusanCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '충청북도') {
+        setNorthChungcheongCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '강원도') {
+        setGangwonCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '충청남도') {
+        setSouthChungcheongCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '전라북도') {
+        setNorthJeollaCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '전라남도') {
+        setSouthJeollaCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '경상북도') {
+        setNorthGyeongsangCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '경상남도') {
+        setSouthGyeongsangCnt(mapCntData.data[i].cnt);
+      } else if (mapCntData.data[i].area === '경기도') {
+        setGyeonggiCnt(mapCntData.data[i].cnt);
+      }
+    }
 
     if (mapData.status === 200) {
       const cardLeftList: any = [];
@@ -293,9 +334,38 @@ function MapContainer() {
     setLoading(false);
   };
 
+  const cntData = {
+    seoul_cnt: seoulCnt,
+    busan_cnt: busanCnt,
+    daegu_cnt: daeguCnt,
+    incheon_cnt: incheonCnt,
+    gwangju_cnt: gwangjuCnt,
+    daejeon_cnt: daejeonCnt,
+    ulsan_cnt: ulsanCnt,
+    gyeonggi_cnt: gyeonggiCnt,
+    gangwon_cnt: gangwonCnt,
+    northChungcheong_cnt: northChungcheongCnt,
+    southChungcheong_cnt: southChungcheongCnt,
+    northJeolla_cnt: northJeollaCnt,
+    southJeolla_cnt: southJeollaCnt,
+    northGyeongsang_cnt: northGyeongsangCnt,
+    southGyeongsang_cnt: southGyeongsangCnt,
+    jeju_cnt: jejuCnt,
+    sejong_cnt: sejongCnt,
+  };
+
+  const [positionData, setPositionData] = useState<any>();
+  useEffect(() => {
+    const getMapPinData = async () => {
+      const pinData: any = await articleApi.getPinData(userState, area);
+      setPositionData(pinData.data);
+    };
+    getMapPinData();
+  }, [area]);
+
   useEffect(() => {
     getData();
-  }, [offset]);
+  }, [area, offset]);
 
   const loadMore = () => {
     setOffset((prev: number) => prev + 1);
@@ -327,6 +397,8 @@ function MapContainer() {
       clickRegion={clickRegion}
       clickBack={clickBack}
       selectOption={selectOption}
+      positionData={positionData}
+      area={area}
     />
   );
 }

@@ -196,6 +196,7 @@ export interface SelectRegionOptionType {
 
 export interface KakaoMapProps {
   selectOption: SelectRegionOptionType;
+  positionData: any;
 }
 
 export interface KoreaMapProps extends KakaoMapProps {
