@@ -139,7 +139,6 @@
         cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
       background-color: white;
       width: 60%;
-      font-size: 20px;
       display: flex;
       flex-direction: column;
 
@@ -155,7 +154,6 @@
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
         width: calc(100% + 2px);
-        // margin-top: auto;
         font-size: 20px;
         border: none;
         background-color: color.$color-4;

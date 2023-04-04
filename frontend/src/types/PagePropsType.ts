@@ -194,6 +194,8 @@ export interface ModelPageProps {
   model: ModelType | undefined;
   name: string;
   description: string;
+  isVisited: boolean;
+  moveBack: () => void;
 }
 
 interface LandmarkProps extends ModelType {
@@ -202,5 +204,5 @@ interface LandmarkProps extends ModelType {
 }
 
 export interface StampPageProps {
-  models: Array<LandmarkProps>;
+  models: any;
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, FollowPK> {
     boolean existsByFromIdAndToId(User fromId, User toId);
+    List<Follow> findAllByFromId_Id(int fromId);
     int countByToId(User toId);
     int countByFromId(User fromId);
 

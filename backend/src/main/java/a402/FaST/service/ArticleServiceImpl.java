@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,7 +192,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleUser(int userId, int loginUserId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
@@ -208,7 +209,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .lng(x.getLng())
                         .commentCount(commentRepository.countByArticleId(x.getId()))
                         .likeCount(likesRepository.countByArticleId(x.getId()))
-                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),loginUserId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
                                         .tagId(Tag.getTag().getId())
@@ -227,8 +228,8 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListFollow(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .userId(userId)
-                        .nickName(userRepository.nickName(userId))
+                        .userId(x.getUser().getId())
+                        .nickName(userRepository.nickName(x.getUser().getId()))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
                         .area(x.getArea())
@@ -279,38 +280,80 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, List<String> tags) {
+    public List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, String filer, List<String> tags) {
         Pageable pageable = PageRequest.of(offset, size);
-        List<ArticleListResponseDto> responseDto = new ArrayList<>();
-        Set<Integer> articleIds = new HashSet<>();
+        List<ArticleListResponseDto> responseDto = null;
+        List<Article> articleList = null;
 
-        for (String tagName : tags){
-            List<Integer> articles = articleRepository.ArticleListTagSearchAll(tagName, pageable);
-            for (int id : articles){
-                articleIds.add(id);
+        // 태그 이름 -> 태그 아이디 가져오기
+        List<Long> tagIds = new ArrayList<>();
+        for(Tag t : tagRepository.findAllByNameIn(tags)){
+            tagIds.add(t.getId());
+        }
+
+        if(filer.equals("A")){
+            articleList = articleRepository.findByTagIdsAll(tagIds, pageable);
+        }else if(filer.equals("M")){
+            articleList = articleRepository.findByTagIdsMy(tagIds, userId, pageable);
+        }else if(filer.equals("F")){
+            List<Follow> followList = followRepository.findAllByFromId_Id(userId);
+            List<Integer> followingIds = new ArrayList<>();
+            for(Follow f: followList){
+                followingIds.add(f.getToId().getId());
             }
+            articleList = articleRepository.findByTagIdsFollowing(tagIds, followingIds, pageable);
         }
 
+        responseDto = articleList
+            .stream().map(x->ArticleListResponseDto.builder()
+                .id(x.getId())
+                .userId(x.getUser().getId())
+                .nickName(userRepository.nickName(userId))
+                .imgPath(x.getImgPath())
+                .createTime(x.getCreateTime())
+                .area(x.getArea())
+                .lat(x.getLat())
+                .lng(x.getLng())
+                .commentCount(commentRepository.countByArticleId(x.getId()))
+                .likeCount(likesRepository.countByArticleId(x.getId()))
+                .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                    .map(Tag->TagResponseDto.builder()
+                        .tagId(Tag.getTag().getId())
+                        .tagName(Tag.getTag().getName())
+                        .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
 
-        for (int id : articleIds){
-            Article article = articleRepository.findById(id).get();
-            ArticleListResponseDto articleListResponseDto = ArticleListResponseDto.builder()
-                    .id(article.getId())
-                    .userId(userId)
-                    .nickName(userRepository.nickName(userId))
-                    .imgPath(article.getUser().getImgPath())
-                    .createTime(article.getCreateTime())
-                    .commentCount(commentRepository.countByArticleId(article.getId()))
-                    .likeCount(likesRepository.countByArticleId(article.getId()))
-                    .likeCheck(likesRepository.existsByArticleIdAndUserId(article.getId(),article.getUser().getId()))
-                    .tags(articleRepository.findById(article.getId()).get().getTags().stream()
-                            .map(Tag->TagResponseDto.builder()
-                                    .tagId(Tag.getTag().getId())
-                                    .tagName(Tag.getTag().getName())
-                                    .build()).collect(Collectors.toList()))
-                    .build();
-            responseDto.add(articleListResponseDto);
-        }
+
+        // Set<Integer> articleIds = new HashSet<>();
+        //
+        // for (String tagName : tags){
+        //     List<Integer> articles = articleRepository.ArticleListTagSearchAll(tagName, pageable);
+        //     for (int id : articles){
+        //         articleIds.add(id);
+        //     }
+        // }
+
+        // for (int id : articleIds){
+        //     Article article = articleRepository.findById(id).get();
+        //     ArticleListResponseDto articleListResponseDto = ArticleListResponseDto.builder()
+        //             .id(article.getId())
+        //             .userId(userId)
+        //             .nickName(userRepository.nickName(userId))
+        //             .imgPath(article.getUser().getImgPath())
+        //             .createTime(article.getCreateTime())
+        //             .commentCount(commentRepository.countByArticleId(article.getId()))
+        //             .likeCount(likesRepository.countByArticleId(article.getId()))
+        //             .likeCheck(likesRepository.existsByArticleIdAndUserId(article.getId(),article.getUser().getId()))
+        //             .tags(articleRepository.findById(article.getId()).get().getTags().stream()
+        //                     .map(Tag->TagResponseDto.builder()
+        //                             .tagId(Tag.getTag().getId())
+        //                             .tagName(Tag.getTag().getName())
+        //                             .build()).collect(Collectors.toList()))
+        //             .build();
+        //     responseDto.add(articleListResponseDto);
+        // }
 
         return responseDto;
     }
