@@ -7,8 +7,6 @@ import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-
 // ViewModel과 View를 연결하기 위한 Container
 function HomeContainer() {
   const size = 10;
@@ -63,12 +61,12 @@ function HomeContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardLeftList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article.nickName,
                 content: '',
                 regTime: article?.createTime,
@@ -87,12 +85,12 @@ function HomeContainer() {
                   })
                 )
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardRightList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article.nickName,
                 content: '',
                 regTime: article?.createTime,

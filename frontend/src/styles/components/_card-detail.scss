@@ -20,6 +20,13 @@
     .card-detail__profile-image {
       display: flex;
       align-items: center;
+      width: 48px;
+      height: 48px;
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
       font-size: 48px;
     }
     .card-detail__profile-nickname {

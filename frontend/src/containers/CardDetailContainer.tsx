@@ -154,11 +154,10 @@ function CardDetailContainer() {
     const getArticleData = async () => {
       if (params.cardId) {
         const res = await getArticle(params.cardId, user.id);
-        console.log(res);
         if (res.status === 200) {
           setImagePaths(res.data.imgPath.split(','));
-          // const imageUrls = await downloadImages(res.data.imgPath.split(','));
-          // const profile = await downloadImages([res.data.user.profile]);
+          const imageUrls = await downloadImages(res.data.imgPath.split(','));
+          const profile = await downloadImages([res.data.user.imgPath]);
           const tags: any = [];
           res.data.tags.map((tag: any) =>
             tags.push({
@@ -170,14 +169,14 @@ function CardDetailContainer() {
             id: res.data.id,
             nickname: res.data.user.nickname,
             content: res.data.content,
-            imageUrls: [sample1],
+            imageUrls,
             isLike: res.data.likeCheck,
             numLikes: res.data.likeCount,
             numComments: res.data.commentCount,
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
             userId: res.data.user.id,
-            profile: '',
+            profile: profile[0],
             followingCheck: res.data.followingCheck,
           });
         }

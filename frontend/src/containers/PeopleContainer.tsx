@@ -130,12 +130,12 @@ function PeopleContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardLeftList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article.nickname,
                 content: '',
                 regTime: article?.createTime,
@@ -154,12 +154,12 @@ function PeopleContainer() {
                   })
                 )
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardRightList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article.nickname,
                 content: '',
                 regTime: article?.createTime,

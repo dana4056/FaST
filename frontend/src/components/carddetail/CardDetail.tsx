@@ -30,7 +30,7 @@ function CardDetail({
           role="presentation"
           onClick={handleMoveUserPage}
         >
-          <CgProfile />
+          <img src={card.profile} alt="" />
         </div>
         <div
           className="card-detail__profile-nickname"

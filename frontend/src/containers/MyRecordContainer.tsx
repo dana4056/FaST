@@ -47,12 +47,12 @@ function MyRecordContainer() {
     if (userData.imgPath?.substring(0, 4) === 'http') {
       setImageUrl(userData.imgPath);
     } else if (userData.imgPath) {
-      // const getProfileImage = async () => {
-      //   const imageRef = ref(storage, userData.imgPath);
-      //   const ret = await getDownloadURL(imageRef);
-      //   setImageUrl(ret);
-      // };
-      // getProfileImage();
+      const getProfileImage = async () => {
+        const imageRef = ref(storage, userData.imgPath);
+        const ret = await getDownloadURL(imageRef);
+        setImageUrl(ret);
+      };
+      getProfileImage();
     }
   }, [userData.imgPath]);
 
@@ -89,12 +89,12 @@ function MyRecordContainer() {
                     className: 'tag-2 tag-small',
                   })
                 );
-                // const imageUrls = await downloadImages(
-                //   article.imgPath.split(',')
-                // );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
                 cardLeftList.push({
                   id: article?.id,
-                  imageUrls: [sample1],
+                  imageUrls,
                   nickname: article.nickname,
                   content: '',
                   regTime: article?.createTime,
@@ -113,12 +113,12 @@ function MyRecordContainer() {
                     })
                   )
                 );
-                // const imageUrls = await downloadImages(
-                //   article.imgPath.split(',')
-                // );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
                 cardRightList.push({
                   id: article?.id,
-                  imageUrls: [sample1],
+                  imageUrls,
                   nickname: article.nickname,
                   content: '',
                   regTime: article?.createTime,
