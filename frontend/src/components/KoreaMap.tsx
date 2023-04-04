@@ -199,7 +199,11 @@ function KoreaMap({
           />
           <span className="area-text">{area}</span>
 
-          <Kakaomap selectOption={selectOption} positionData={positionData} />
+          <Kakaomap
+            selectOption={selectOption}
+            positionData={positionData}
+            checkClicked={checkClicked}
+          />
         </div>
       </div>
     </div>
