@@ -1,5 +1,6 @@
 package a402.FaST.repository;
 
+import a402.FaST.model.dto.ArticleAreaCntDto;
 import a402.FaST.model.entity.Article;
 import a402.FaST.model.entity.User;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,12 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByUser(User userId, Pageable pageable);
 
     int countArticleByUser(User userId);
+
+
+    @Query(value = "select a.area, count(case when a.user_id = ? then 1 end) as cnt " +
+        "from article a " +
+        "group by a.area", nativeQuery = true)
+    List<ArticleAreaCntDto> findArticleAreaCntDtoBy (int userId);
 
 
 }

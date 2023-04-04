@@ -114,6 +114,14 @@ public class ArticleController {
         return articleService.listArticleArea(userId, size, offset, area);
     }
 
+    @GetMapping("/area")
+    @Operation(summary = "지역별 게시글 개수 조회 API =>  특정 유저가 작성한 게시글의 수를 지역별로 카운팅해서 반환합니다.",
+        description = "RequestParam 형식 데이터 (int : userId)" +
+            " => map (지역-카운팅수) 를 Return 해줍니다.")
+    public List<ArticleAreaCntDto> articleListArea (@RequestParam("userId") int userId) {
+        return articleService.numArticleArea(userId);
+    }
+
 
 
 }

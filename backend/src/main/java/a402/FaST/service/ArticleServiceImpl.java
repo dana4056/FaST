@@ -315,6 +315,12 @@ public class ArticleServiceImpl implements ArticleService {
         return responseDto;
     }
 
+    @Override
+    public List<ArticleAreaCntDto> numArticleArea(int userId) {
+        List<ArticleAreaCntDto> list = articleRepository.findArticleAreaCntDtoBy(userId);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+list);
+        return list;
+    }
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
