@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TagResponseDto {
-   private int tagId;
+   private Long tagId;
    private String tagName;
 
 }

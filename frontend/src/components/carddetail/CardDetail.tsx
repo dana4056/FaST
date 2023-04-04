@@ -61,7 +61,11 @@ function CardDetail({
       <div className="card-detail__footer">
         <div className="card-detail__sns">
           <div className="card-detail__like">
-            <Heart cardId={card.id} cntLike={card.numLikes} />
+            <Heart
+              cardId={card.id}
+              cntLike={card.numLikes}
+              isLike={card.isLike}
+            />
           </div>
           <button
             type="button"

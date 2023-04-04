@@ -29,7 +29,11 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
       />
       <div className="photo-card__row">
         <div className="photo-card__like">
-          <Heart cardId={card.id} cntLike={card.numLikes} />
+          <Heart
+            cardId={card.id}
+            cntLike={card.numLikes}
+            isLike={card.isLike}
+          />
         </div>
         {isMine ? (
           <div>{}</div>
