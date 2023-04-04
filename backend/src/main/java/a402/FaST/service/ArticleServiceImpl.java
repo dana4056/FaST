@@ -192,7 +192,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleUser(int userId, int loginUserId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
@@ -209,7 +209,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .lng(x.getLng())
                         .commentCount(commentRepository.countByArticleId(x.getId()))
                         .likeCount(likesRepository.countByArticleId(x.getId()))
-                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),loginUserId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
                                         .tagId(Tag.getTag().getId())
@@ -228,8 +228,8 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListFollow(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .userId(userId)
-                        .nickName(userRepository.nickName(userId))
+                        .userId(x.getUser().getId())
+                        .nickName(userRepository.nickName(x.getUser().getId()))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
                         .area(x.getArea())
