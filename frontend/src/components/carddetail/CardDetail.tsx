@@ -34,7 +34,7 @@ function CardDetail({
             className="card-detail__follow-button"
             onClick={handleUnfollow}
           >
-            언팔로우
+            팔로우 취소
           </button>
         ) : (
           <button
