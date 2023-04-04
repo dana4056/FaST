@@ -202,6 +202,7 @@ export interface KakaoMapProps {
 export interface KoreaMapProps extends KakaoMapProps {
   cntData: any;
   checkClicked: string;
+  area: string;
   clickRegion: (e: React.MouseEvent<SVGPathElement>) => void;
   clickBack: (e: React.MouseEvent<SVGPathElement>) => void;
 }
