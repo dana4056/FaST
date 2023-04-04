@@ -7,7 +7,7 @@ import doGetLandmarks from '../api/landmark';
 function LandmarkViewModel() {
   const getLandmarkData = async (landmark: string) => {
     const res = await api.crawling(landmark);
-    return res.data;
+    return res;
   };
   const getLandmarks = async (userId: number) => {
     const res = await doGetLandmarks(userId);

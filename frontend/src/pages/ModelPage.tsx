@@ -5,7 +5,13 @@ import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 import Landmark from '../components/Landmark';
 import { ModelPageProps } from '../types/PagePropsType';
 
-function ModelPage({ model, name, description }: ModelPageProps) {
+function ModelPage({
+  model,
+  name,
+  description,
+  isVisited,
+  moveBack,
+}: ModelPageProps) {
   return (
     <div className="model-page">
       <div className="model-page__header">
@@ -25,7 +31,20 @@ function ModelPage({ model, name, description }: ModelPageProps) {
         ) : null}
       </div>
       <div className="model-page__name">{name}</div>
-      <div className="model-page__description">{description}</div>
+      {isVisited ? (
+        <div className="model-page__description">{description}</div>
+      ) : (
+        <div className="model-page__modal card">
+          <div className="model-page__modal-content">권한이 없습니다.</div>
+          <button
+            type="button"
+            onClick={moveBack}
+            className="model-page__modal-button"
+          >
+            닫기
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -14,15 +14,20 @@ type GLTFResult = GLTF & {
   nodes: {
     Cube004: THREE.Mesh;
   };
+  materials: {
+    Material: THREE.MeshStandardMaterial;
+  };
 };
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes } = useGLTF('/models/NotBuilding63.glb') as GLTFResult;
+  const { nodes, materials } = useGLTF(
+    '/models/NotBuilding63.glb'
+  ) as GLTFResult;
   return (
     <group {...props} dispose={null} position={[0, -2, 0]} receiveShadow>
       <mesh
         geometry={nodes.Cube004.geometry}
-        material={nodes.Cube004.material}
+        material={materials.Material}
         rotation={[Math.PI, 0, Math.PI]}
         scale={[0.01, 0.03, 0.19]}
       />
