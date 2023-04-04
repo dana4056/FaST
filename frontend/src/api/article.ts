@@ -7,21 +7,6 @@ const api = axios.create({
   },
 });
 
-// 유저 게시물 조회
-async function getUserArticle(userId: number, size: number, offset: number) {
-  try {
-    const res = await api.get<number>(
-      `/article/user/${userId}/${size}/${offset}`,
-      { params: { userId, size, offset } }
-    );
-    // console.log(res);
-    return res;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-}
-
 export async function doWriteArticle(requestBody: any) {
   try {
     const res: AxiosResponse = await api.post(`/article`, requestBody);
@@ -134,11 +119,14 @@ export async function doDeleteArticle(articleId: number, userId: number) {
 
 export async function doGetMyArticles(
   userId: number,
+  loginId: number,
   size: number,
   offset: number
 ) {
   try {
-    const res = await api.get(`/article/user/${userId}/${size}/${offset}`);
+    const res = await api.get(
+      `/article/user/${userId}/${loginId}/${size}/${offset}`
+    );
     return res;
   } catch (error) {
     console.error(error);
@@ -179,9 +167,34 @@ async function getMapArticle(
   }
 }
 
+// 지역기반 게시물 수 조회
+async function getMapArticleCnt(userId: number) {
+  try {
+    const res = await api.get('/article/area', { params: { userId } });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+// 지역기반 핀 표시
+async function getPinData(userId: number, area: string) {
+  try {
+    const res = await api.get('/article', { params: { userId, area } });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
 export default {
-  getUserArticle,
   userArticleLike,
   articleLike,
   getMapArticle,
+  getMapArticleCnt,
+  getPinData,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { userInfo } from '../atoms/userInfo';
 
@@ -31,32 +31,23 @@ function Heart({ cardId, cntLike, isLike }: HeartProps) {
     if (liked !== undefined) {
       if (liked) {
         setLikeNum((prev) => prev + 1);
-        setLikeState(false);
+        setLikeState(true);
       } else {
         setLikeNum((prev) => prev - 1);
-        setLikeState(true);
+        setLikeState(false);
       }
     }
   }, [liked]);
 
-  // useEffect(() => {
-  //   if (liked) {
-  //     setLikeState(true);
-  //     console.log('aa', cardId, likeState);
-  //   } else {
-  //     setLikeState(false);
-  //     console.log('bb', cardId, likeState);
-  //   }
-  // }, []);
-
-  useEffect(() => {
+  useMemo(() => {
     setLikeState(isLike);
   }, [isLike]);
-  useEffect(() => {
-    if (liked !== undefined) {
-      setLikeState(liked);
-    }
-  }, [liked]);
+  // useEffect(() => {
+  //   if (liked !== undefined) {
+  //     setLikeState(liked);
+  //   }
+  // }, [liked]);
+
   return (
     <div role="presentation" onClick={handleLikeClick}>
       <div className="like-button-container">
