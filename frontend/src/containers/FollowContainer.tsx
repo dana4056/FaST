@@ -18,9 +18,6 @@ function FollowContainer() {
       setIsMine(false);
     }
   }, []);
-  console.log(user.id);
-  console.log(userState);
-  console.log(isMine);
 
   // 팔로우 목록 조회
   const [id, setId] = useState<number>(userState);
@@ -39,6 +36,7 @@ function FollowContainer() {
     const getData = async () => {
       const notFollowingList: any = await followApi.notFollowingList(userState);
       setNotFollowingData(notFollowingList.data);
+      console.log(notFollowingData);
     };
     getData();
   }, []);

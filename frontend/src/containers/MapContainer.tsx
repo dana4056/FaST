@@ -96,7 +96,7 @@ function MapContainer() {
   const [clicked, setClicked] = useState('before_click');
 
   const [clickedArea, setClickedArea] = useState<string>('');
-  const [area, setArea] = useState<string>('');
+  const [area, setArea] = useState<string>('전국');
   const size = 20;
   const [loading, setLoading] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
@@ -186,7 +186,7 @@ function MapContainer() {
 
   const clickBack = (e: React.MouseEvent<SVGPathElement>) => {
     setClicked('before_click');
-    setArea('');
+    setArea('전국');
     setClickedArea('');
   };
 

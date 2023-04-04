@@ -30,10 +30,10 @@ async function followFrom(fromId: number) {
 }
 
 // 팔로우 목록 조회
-async function followList(id: number) {
+async function followList(userId: number) {
   try {
-    const res = await api.post<number>('/follow/search', { id });
-    // console.log(res);
+    const res = await api.get<number>('/follow/search', { params: { userId } });
+    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -42,9 +42,11 @@ async function followList(id: number) {
 }
 
 // Not 팔로잉 목록 조회
-async function notFollowingList(id: number) {
+async function notFollowingList(userId: number) {
   try {
-    const res = await api.post<number>('/follow/not-follow', { id });
+    const res = await api.get<number>('/follow/not-follow', {
+      params: { userId },
+    });
     return res;
   } catch (error) {
     console.log(error);
