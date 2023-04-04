@@ -57,6 +57,13 @@ function StampContainer() {
       cameraPosition: [0, 0, 5],
       visited: false,
     },
+    gwanghwamun: {
+      model: NotGwanghwamun,
+      name: '광화문',
+      link: 'gwanghwamun',
+      cameraPosition: [0, 0, 9],
+      visited: false,
+    },
     seoultower: {
       model: NotSeoulTower,
       name: '남산타워',
