@@ -194,6 +194,8 @@ export interface ModelPageProps {
   model: ModelType | undefined;
   name: string;
   description: string;
+  isVisited: boolean;
+  moveBack: () => void;
 }
 
 interface LandmarkProps extends ModelType {

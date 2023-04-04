@@ -31,7 +31,12 @@ function ModelContainer() {
   const [description, setDescription] = useState<string>('');
   const { getLandmarkData, getLandmarks } = useViewModel();
   const user = useRecoilValue(userInfo);
+  const [isVisited, setIsVisited] = useState<boolean>(true);
   const navigate = useNavigate();
+
+  const moveBack = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     const getLandmarksData = async () => {
@@ -196,7 +201,7 @@ function ModelContainer() {
             });
             setName('청와대');
           } else {
-            navigate(-1);
+            setIsVisited(false);
           }
         }
       }
@@ -214,7 +219,15 @@ function ModelContainer() {
     }
   }, []);
 
-  return <ModelPage model={model} name={name} description={description} />;
+  return (
+    <ModelPage
+      model={model}
+      name={name}
+      description={description}
+      isVisited={isVisited}
+      moveBack={moveBack}
+    />
+  );
 }
 
 export default ModelContainer;
