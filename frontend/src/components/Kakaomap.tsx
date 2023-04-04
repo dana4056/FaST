@@ -3,6 +3,7 @@ import cardimg from '../assets/images/photocardimg.jpeg';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import { KakaoMapProps } from '../types/ComponentPropsType';
+import mappin from '../assets/images/mappin.png';
 
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
       pointImg: cardimg,
     },
   ];
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     // 1. 지도 표시하기
@@ -43,8 +45,8 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
     // console.log(window.kakao);
     // 2. 마커 찍기
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-    const imageSrc = 'https://i1.daumcdn.net/dmaps/apis/n_local_blit_04.png';
-    const imageSize = new window.kakao.maps.Size(32, 35); // 마커이미지의 크기입니다
+    const imageSrc = '/static/media/mappin.e77f3fbc9b915bd5989d.png';
+    const imageSize = new window.kakao.maps.Size(27, 35); // 마커이미지의 크기입니다
     const imageOption = {
       offset: new window.kakao.maps.Point(16, 34),
       alt: '마커이미지',
@@ -79,10 +81,12 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
       // 3. 마커 클릭 시 이미지 띄우기
       // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
       const iwContent =
-        '<div className="iwContentContainer">' +
-        `<img className="iwContentImg" style="width:150px" src=${markerDatas[i].pointImg} alt='test' />` +
-        '<div className="iwContentClose"  title="닫기" />' +
+        '<div className="iwContentContainer" style="border: 8px solid white; border-bottom: 30px solid white; background-color: white">' +
+        `<img className="iwContentImg" style="width:120px; " src=${markerDatas[i].pointImg} alt='test' />` +
+        '<div>주소</div>' +
+        '<div className="iwContentClose" onclick={} title="닫기" />' +
         '</div>';
+
       // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
       const iwRemoveable = true;
       // removeable 속성을 true 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
@@ -98,9 +102,10 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
       //   // 마커 위에 인포윈도우를 표시합니다
       //   infowindow.open(map, marker);
       // });
+
       // 커스텀 오버레이가 표시될 위치입니다
       const position = new window.kakao.maps.LatLng(
-        `${markerDatas[i].pointX + 0.017}`,
+        `${markerDatas[i].pointX + 0.02}`,
         `${markerDatas[i].pointY}`
       );
 
