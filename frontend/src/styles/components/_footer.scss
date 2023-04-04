@@ -45,6 +45,7 @@ $height: 65px;
   #one:checked ~ label.home {
     transform: translate(0px, -40px);
     color: color.$color-4;
+    
   }
   #two:checked ~ label.people {
     transform: translate(0px, -40px);
