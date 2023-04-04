@@ -5,15 +5,17 @@ import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 import Landmark from '../components/Landmark';
 import { StampPageProps } from '../types/PagePropsType';
 
-function StampPage({ models, moveStampPage }: any) {
+function StampPage({ models, moveStampPage, moveBack }: any) {
   return (
     <div className="stamp-page">
       <div className="stamp-page__header">
-        <Link to="/test">
-          <div className="stamp-page__button--back">
-            <MdArrowBack />
-          </div>
-        </Link>
+        <div
+          className="stamp-page__button--back"
+          role="presentation"
+          onClick={moveBack}
+        >
+          <MdArrowBack />
+        </div>
       </div>
       <div className="stamp-page__content">
         {Object.keys(models).map((key: string) => (

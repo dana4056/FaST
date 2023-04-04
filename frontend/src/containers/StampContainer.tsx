@@ -157,6 +157,10 @@ function StampContainer() {
     }
   };
 
+  const moveBack = () => {
+    navigate(-1);
+  };
+
   useEffect(() => {
     const getData = async () => {
       const newModels = models;
@@ -238,7 +242,13 @@ function StampContainer() {
     };
     getData();
   }, []);
-  return <StampPage models={models} moveStampPage={moveStampPage} />;
+  return (
+    <StampPage
+      models={models}
+      moveStampPage={moveStampPage}
+      moveBack={moveBack}
+    />
+  );
 }
 
 export default StampContainer;

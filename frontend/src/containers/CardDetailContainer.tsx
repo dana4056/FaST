@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import CardDetailPage from '../pages/CardDetailPage';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 import useCommentViewModel from '../viewmodels/CommentViewModel';
+import useFollowViewModel from '../viewmodels/FollowViewModel';
 
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
@@ -17,6 +18,7 @@ function CardDetailContainer() {
   const { getArticle, downloadImages, deleteArticle, deleteImage } =
     useArticleViewModel();
   const { createComment, getComments } = useCommentViewModel();
+  const { follow, unfollow } = useFollowViewModel();
   const [imagePaths, setImagePaths] = useState<Array<string>>([]);
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
@@ -32,6 +34,8 @@ function CardDetailContainer() {
     regTime: '',
     tags: [],
     userId: 0,
+    profile: '',
+    followingCheck: false,
   });
   // 메뉴가 열려있는지
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -86,7 +90,7 @@ function CardDetailContainer() {
               content: comment.content,
               regTime: new Date(comment.createTime).toDateString(),
               isLike: comment.likeCheck, // 좋아요 눌렀는지
-              numLikes: 0, // 좋아요 개수
+              numLikes: comment.likeCount, // 좋아요 개수
               numReplies: comment.commentReplyCount, // 답글 개수
             })
           )
@@ -131,13 +135,30 @@ function CardDetailContainer() {
       navigate(-1);
     }
   };
+  const handleFollow = async () => {
+    const res: any = await follow(user.id, card.userId);
+    if (res.status === 200) {
+      setCard({ ...card, followingCheck: true });
+    }
+  };
+  const handleUnfollow = async () => {
+    const res: any = await unfollow(user.id, card.userId);
+    if (res.status === 200) {
+      setCard({ ...card, followingCheck: false });
+    }
+  };
+  const handleMoveUserPage = () => {
+    navigate(`/record/${card.userId}`);
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
         const res = await getArticle(params.cardId, user.id);
+        console.log(res);
         if (res.status === 200) {
           setImagePaths(res.data.imgPath.split(','));
           // const imageUrls = await downloadImages(res.data.imgPath.split(','));
+          // const profile = await downloadImages([res.data.user.profile]);
           const tags: any = [];
           res.data.tags.map((tag: any) =>
             tags.push({
@@ -156,6 +177,8 @@ function CardDetailContainer() {
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
             userId: res.data.user.id,
+            profile: '',
+            followingCheck: res.data.followingCheck,
           });
         }
       }
@@ -181,6 +204,9 @@ function CardDetailContainer() {
       handleDeleteClose={handleDeleteClose}
       handleArticleDelete={handleArticleDelete}
       isDeleteOpen={isDeleteOpen}
+      handleFollow={handleFollow}
+      handleUnfollow={handleUnfollow}
+      handleMoveUserPage={handleMoveUserPage}
     />
   );
 }

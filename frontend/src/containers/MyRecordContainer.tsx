@@ -72,6 +72,7 @@ function MyRecordContainer() {
     setLoading(true);
     if (!isLimit) {
       setIsLoaded(true);
+
       const res: any = await getMyArticles(userState, user.id, size, offset);
       if (res.status === 200) {
         console.log(res);
@@ -138,11 +139,6 @@ function MyRecordContainer() {
         } else {
           setIsLimit(true);
         }
-        console.log(
-          'aaaaaaaaaaaaaaaaaa',
-          cardLeftList[0].id,
-          cardLeftList[0].isLike
-        );
       } else {
         setIsLimit(true);
       }

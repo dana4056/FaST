@@ -13,6 +13,7 @@ import sample1 from '../assets/images/sample-images/sample_1.jpg';
 function PeopleContainer() {
   const size = 10;
 
+  const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isMine, setIsMine] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
@@ -28,7 +29,8 @@ function PeopleContainer() {
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
-  const { getFollowArticles, downloadImages } = useViewModel();
+  const [load, setLoad] = useState<boolean>(false);
+  const { getFollowArticles, downloadImages, searchArticles } = useViewModel();
 
   // 검색 함수
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,6 +56,12 @@ function PeopleContainer() {
         return o1.value.length - o2.value.length;
       });
       setTags([...newTags]);
+      setIsSearch(true);
+      setIsLimit(false);
+      setCardsLeft([]);
+      setCardsRight([]);
+      setOffset(0);
+      setLoad((prev: boolean) => !prev);
     }
 
     // 검색창 초기화
@@ -77,13 +85,37 @@ function PeopleContainer() {
       // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
 
       setTags([...newTags]);
+
+      // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
+      if (newTags.length === 0) {
+        setIsSearch(false);
+      }
+      setTags([...newTags]);
+      setIsLimit(false);
+      setLoading(false);
+      setCardsLeft([]);
+      setCardsRight([]);
+      setOffset(0);
+      setLoad((prev: boolean) => !prev);
     }
   };
 
   const getData = async () => {
     setLoading(true);
-    const res: any = await getFollowArticles(user.id, size, offset);
-    console.log(res);
+    let res: any;
+    if (isSearch) {
+      const searchTags: Array<string> = [];
+      await Promise.all(tags.map((tag: any) => searchTags.push(tag.value)));
+      res = await searchArticles(
+        user.id,
+        size,
+        offset,
+        'F',
+        searchTags.join(',')
+      );
+    } else {
+      res = await getFollowArticles(user.id, size, offset);
+    }
     if (res.status === 200) {
       const cardLeftList: any = cardsLeft;
       const cardRightList: any = cardsRight;
@@ -153,15 +185,16 @@ function PeopleContainer() {
         setIsLimit(() => true);
       }
     }
-    setIsLoaded(false);
+    setLoading(false);
   };
 
   useEffect(() => {
     getData();
-  }, [offset]);
+  }, [load]);
 
   const loadMore = () => {
     setOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
   };
 
   useEffect(() => {

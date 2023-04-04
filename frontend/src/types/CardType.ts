@@ -11,4 +11,6 @@ export interface CardType {
   numComments: number;
   regTime: string;
   userId: number;
+  profile: string;
+  followingCheck: boolean;
 }
