@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TagRequestDto {
 
-   private int tagId;
+   private Long tagId;
    private int userId;
    private List<String> tags;
 

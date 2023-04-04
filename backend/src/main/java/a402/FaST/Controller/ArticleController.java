@@ -97,12 +97,12 @@ public class ArticleController {
 
 
     @GetMapping("/tag-searchAll/{userId}/{size}/{offset}")
-    @Operation(summary = "게시글 목록 조회 (태그 다중 검색 기반) API =>  게시글 목록 조회하는 API 입니다.",
-            description = "PathVariable 형식 데이터 (int : userId, int : size(받을 데이터 개수), int : offset(이에 따른 페이지 번호)" +
-                    "RequestParam 형식 데이터 (String : tagName)" +
+    @Operation(summary = "게시글 목록 조회 (태그 검색 기반) API =>  filter 범위 안에서 태그 기반으로 게시글 목록을 조회하는 API 입니다.",
+            description = "<b>[PathVariable 형식 데이터]</b><br>- int : userId <br>- int : size(받을 데이터 개수)<br>- int : offset(이에 따른 페이지 번호)<br><br>" +
+                    "<b>[RequestParam 형식 데이터]</b><br>- String : filter ('A': 모든 게시물 / 'F': 팔로잉 유저들의 게시물 / 'M': 내 게시물)<br>- String : tagName (ex: 산,바다,...)<br><br>" +
                     " => ArticleListResponseDto 를 Return 해줍니다.")
-    public List<ArticleListResponseDto> articleListSearchTagAll (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("tagName") List<String> tags) {
-        return articleService.listArticleSearchTagAll(userId, size, offset, tags);
+    public List<ArticleListResponseDto> articleListSearchTagAll (@Valid @PathVariable("userId") int userId, @PathVariable("size") int size, @PathVariable("offset") int offset, @RequestParam("filter") String filter, @RequestParam("tagName") List<String> tags) {
+        return articleService.listArticleSearchTagAll(userId, size, offset, filter, tags);
     }
 
     @GetMapping("/area/{userId}/{size}/{offset}")
