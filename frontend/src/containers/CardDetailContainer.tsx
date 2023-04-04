@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import CardDetailPage from '../pages/CardDetailPage';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 import useCommentViewModel from '../viewmodels/CommentViewModel';
+import useFollowViewModel from '../viewmodels/FollowViewModel';
 
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
@@ -17,6 +18,7 @@ function CardDetailContainer() {
   const { getArticle, downloadImages, deleteArticle, deleteImage } =
     useArticleViewModel();
   const { createComment, getComments } = useCommentViewModel();
+  const { follow, unfollow } = useFollowViewModel();
   const [imagePaths, setImagePaths] = useState<Array<string>>([]);
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
@@ -132,6 +134,18 @@ function CardDetailContainer() {
       navigate(-1);
     }
   };
+  const handleFollow = async () => {
+    const res: any = await follow(user.id, card.userId);
+    if (res.status === 200) {
+      setCard({ ...card, followingCheck: true });
+    }
+  };
+  const handleUnfollow = async () => {
+    const res: any = await unfollow(user.id, card.userId);
+    if (res.status === 200) {
+      setCard({ ...card, followingCheck: false });
+    }
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -186,6 +200,8 @@ function CardDetailContainer() {
       handleDeleteClose={handleDeleteClose}
       handleArticleDelete={handleArticleDelete}
       isDeleteOpen={isDeleteOpen}
+      handleFollow={handleFollow}
+      handleUnfollow={handleUnfollow}
     />
   );
 }

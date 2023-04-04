@@ -18,6 +18,8 @@ function CardDetail({
   handleMenuClick,
   handleCommentClick,
   handleDeleteOpen,
+  handleFollow,
+  handleUnfollow,
 }: CardDetailProps) {
   return (
     <div className="card card-detail">
@@ -27,11 +29,19 @@ function CardDetail({
         </div>
         <div className="card-detail__profile-nickname">{card.nickname}</div>
         {card.followingCheck ? (
-          <button type="button" className="card-detail__follow-button">
+          <button
+            type="button"
+            className="card-detail__follow-button"
+            onClick={handleUnfollow}
+          >
             언팔로우
           </button>
         ) : (
-          <button type="button" className="card-detail__follow-button">
+          <button
+            type="button"
+            className="card-detail__follow-button"
+            onClick={handleFollow}
+          >
             팔로우
           </button>
         )}
