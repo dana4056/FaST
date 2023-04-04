@@ -109,6 +109,7 @@ export interface CommentProps {
   isLike: boolean;
   // 좋아요 클릭 함수
   handleLikeClick: React.MouseEventHandler;
+  profile: string;
 }
 
 // 댓글 목록 Props
@@ -130,6 +131,7 @@ export interface HeartProps {
   cardId: number;
   cntLike: number;
   isLike: boolean;
+  type: string;
 }
 
 // 카드 목록의 카드 Props

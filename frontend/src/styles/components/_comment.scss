@@ -11,6 +11,13 @@
       justify-content: center;
       align-items: center;
       font-size: 36px;
+      width: 48px;
+      height: 48px;
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
     }
     .comment__profile-nickname {
       padding: 0 10px;
@@ -28,16 +35,24 @@
       width: 80%;
     }
     .comment__like {
-      width: 20%;
+      //   width: 20%;
       margin-left: auto;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      .comment__heart {
-        margin: 0 auto;
+      .like-button-container {
         display: flex;
-        font-size: 28px;
+        flex-direction: column;
+        svg {
+          width: 28px;
+          height: 28px;
+        }
       }
+      //   text-align: center;
+      //   font-size: 14px;
+      //   font-weight: bold;
+      //   .comment__heart {
+      //     margin: 0 auto;
+      //     display: flex;
+      //     font-size: 28px;
+      //   }
     }
   }
   .comment__form-reply {

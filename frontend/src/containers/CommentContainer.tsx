@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { userInfo } from '../atoms/userInfo';
 
@@ -7,6 +7,7 @@ import { CommentContinaerProps } from '../types/ComponentPropsType';
 import { ReplyType } from '../types/ReplyType';
 
 import useViewModel from '../viewmodels/CommentViewModel';
+import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
 function CommentContainer({ comment }: CommentContinaerProps) {
   const user = useRecoilValue(userInfo);
@@ -16,6 +17,7 @@ function CommentContainer({ comment }: CommentContinaerProps) {
   const [isWriteReplyOpen, setIsWriteReplyOpen] = useState<boolean>(false);
   // 답글이 보이는지
   const [isVisibleReplies, setIsVisibleReplies] = useState<boolean>(false);
+  const [profile, setProfile] = useState<string>('');
   // 답글 목록
   const [replies, setReplies] = useState<Array<ReplyType>>([
     // {
@@ -32,6 +34,7 @@ function CommentContainer({ comment }: CommentContinaerProps) {
   const [isLike, setIsLike] = useState<boolean>(comment.isLike);
 
   const { createCommentReply, getCommentReplies } = useViewModel();
+  const { downloadImages } = useArticleViewModel();
 
   // 좋아요 클릭 함수
   const handleLikeClick = () => {
@@ -90,6 +93,16 @@ function CommentContainer({ comment }: CommentContinaerProps) {
     setReply('');
     setIsVisibleReplies(true);
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      if (comment.profile) {
+        const res = await downloadImages([comment.profile]);
+        setProfile(res[0]);
+      }
+    };
+    getData();
+  }, []);
   return (
     <Comment
       comment={comment}
@@ -103,6 +116,7 @@ function CommentContainer({ comment }: CommentContinaerProps) {
       handleVisibleRepliesClick={handleVisibleRepliesClick}
       isLike={isLike}
       handleLikeClick={handleLikeClick}
+      profile={profile}
     />
   );
 }
