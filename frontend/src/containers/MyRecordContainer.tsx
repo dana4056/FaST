@@ -15,15 +15,19 @@ import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
 import useIntersect from '../utils/useIntersect';
 
+import sample1 from '../assets/images/sample-images/sample_1.jpg';
+
 function MyRecordContainer() {
   const size = 10;
-  let offset = 0;
   const params = useParams();
   const [user, setUser] = useRecoilState(userInfo);
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
+  const pageEnd = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
@@ -38,17 +42,17 @@ function MyRecordContainer() {
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
   // 미리보기 이미지 url 저장 배열
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>(sample1);
   useEffect(() => {
     if (userData.imgPath?.substring(0, 4) === 'http') {
       setImageUrl(userData.imgPath);
     } else if (userData.imgPath) {
-      const getProfileImage = async () => {
-        const imageRef = ref(storage, userData.imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setImageUrl(ret);
-      };
-      getProfileImage();
+      // const getProfileImage = async () => {
+      //   const imageRef = ref(storage, userData.imgPath);
+      //   const ret = await getDownloadURL(imageRef);
+      //   setImageUrl(ret);
+      // };
+      // getProfileImage();
     }
   }, [userData.imgPath]);
 
@@ -120,6 +124,7 @@ function MyRecordContainer() {
   const [followingNum, setFollowingNum] = useState<number>(0);
 
   const getArticleData = async () => {
+    setLoading(true);
     if (!isLimit) {
       setIsLoaded(true);
       const res: any = await getMyArticles(userState, size, offset);
@@ -137,12 +142,12 @@ function MyRecordContainer() {
                     className: 'tag-2 tag-small',
                   })
                 );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
+                // const imageUrls = await downloadImages(
+                //   article.imgPath.split(',')
+                // );
                 cardLeftList.push({
                   id: article?.id,
-                  imageUrls,
+                  imageUrls: [sample1],
                   nickname: article.nickname,
                   content: '',
                   regTime: article?.createTime,
@@ -161,12 +166,12 @@ function MyRecordContainer() {
                     })
                   )
                 );
-                const imageUrls = await downloadImages(
-                  article.imgPath.split(',')
-                );
+                // const imageUrls = await downloadImages(
+                //   article.imgPath.split(',')
+                // );
                 cardRightList.push({
                   id: article?.id,
-                  imageUrls,
+                  imageUrls: [sample1],
                   nickname: article.nickname,
                   content: '',
                   regTime: article?.createTime,
@@ -178,24 +183,19 @@ function MyRecordContainer() {
               }
             })
           );
+          if (cardLeftList.length > 0) {
+            setCardsLeft([...cardsLeft]);
+          }
+          if (cardRightList.length > 0) {
+            setCardsRight([...cardsRight]);
+          }
         } else {
           setIsLimit(true);
-          setIsLoaded(false);
-          return;
-        }
-        if (cardLeftList.length > 0) {
-          setCardsLeft([...cardsLeft]);
-        }
-        if (cardRightList.length > 0) {
-          setCardsRight([...cardsRight]);
         }
       }
-      offset += 1;
-      setIsLoaded(false);
     }
+    setLoading(false);
   };
-
-  const [, setRef] = useIntersect(getArticleData, isLoaded);
 
   useEffect(() => {
     if (user.id.toString() === userState.toString()) {
@@ -233,8 +233,26 @@ function MyRecordContainer() {
     };
 
     getData();
-    getArticleData();
   }, []);
+  useEffect(() => {
+    getArticleData();
+  }, [offset]);
+
+  const loadMore = () => {
+    setOffset((prev: number) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (!pageEnd.current) return;
+    const observer = new IntersectionObserver((entries: any) => {
+      if (entries[0].isIntersecting && !loading && !isLimit) {
+        loadMore();
+      }
+    });
+    observer.observe(pageEnd.current);
+    // eslint-disable-next-line consistent-return
+    return () => observer.disconnect();
+  }, [pageEnd, isLimit, loading]);
 
   return (
     <MyRecordPage
@@ -252,9 +270,9 @@ function MyRecordContainer() {
       handleKeywordChange={handleKeywordChange}
       handleSearch={handleSearch}
       handleTagDelete={handleTagDelete}
-      setRef={setRef}
       isLoaded={isLoaded}
       isLimit={isLimit}
+      pageEnd={pageEnd}
     />
   );
 }

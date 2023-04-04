@@ -1,4 +1,3 @@
-import { kill } from 'process';
 import { useState, useEffect, useCallback } from 'react';
 
 function useIntersect(getMoreItem: any, isLoaded: any) {

@@ -15,8 +15,8 @@ function HomePage({
   handleTagDelete,
   isLoaded,
   isLimit,
-  setRef,
-}: HomePageProps) {
+  pageEnd,
+}: any) {
   return (
     <div className="main-page">
       <SearchBox
@@ -32,7 +32,7 @@ function HomePage({
         cardsRight={cardsRight}
         isLoaded={isLoaded}
         isLimit={isLimit}
-        setRef={setRef}
+        pageEnd={pageEnd}
       />
     </div>
   );
