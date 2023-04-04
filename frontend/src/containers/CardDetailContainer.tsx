@@ -9,6 +9,7 @@ import useCommentViewModel from '../viewmodels/CommentViewModel';
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
 import { userInfo } from '../atoms/userInfo';
+import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function CardDetailContainer() {
   const params = useParams();
@@ -73,9 +74,8 @@ function CardDetailContainer() {
   const getCommentsData = async () => {
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 10, 0);
+      console.log(res);
       if (res.status === 200) {
-        // console.log(res.data);
-
         const newComments: Array<CommentType> = [];
         await Promise.all(
           res.data.map((comment: any) =>
@@ -137,7 +137,7 @@ function CardDetailContainer() {
         const res = await getArticle(params.cardId, user.id);
         if (res.status === 200) {
           setImagePaths(res.data.imgPath.split(','));
-          const imageUrls = await downloadImages(res.data.imgPath.split(','));
+          // const imageUrls = await downloadImages(res.data.imgPath.split(','));
           const tags: any = [];
           res.data.tags.map((tag: any) =>
             tags.push({
@@ -147,15 +147,15 @@ function CardDetailContainer() {
           );
           setCard({
             id: res.data.id,
-            nickname: res.data.nickName,
+            nickname: res.data.user.nickname,
             content: res.data.content,
-            imageUrls,
+            imageUrls: [sample1],
             isLike: res.data.likeCheck,
             numLikes: res.data.likeCount,
             numComments: res.data.commentCount,
             regTime: new Date(res.data.createTime).toDateString(),
             tags,
-            userId: res.data.userId,
+            userId: res.data.user.id,
           });
         }
       }
