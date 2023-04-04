@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 
 import KoreaMap from '../components/KoreaMap';
@@ -14,17 +14,33 @@ function MapPage({
   isLoaded,
   isLimit,
   pageEnd,
+  cntData,
+  checkClicked,
+  clickRegion,
+  clickBack,
+  selectOption,
 }: any) {
+  const params = useParams();
+  const [user, setUser] = useState<any>(params.userId);
+  const navigate = useNavigate();
+
+  const onClickBack = () => {
+    navigate(`/record/${user}`);
+  };
   return (
     <div className="map-page">
       <div className="map-page__header">
-        <Link to="/myrecord">
-          <MdArrowBack />
-        </Link>
+        <MdArrowBack onClick={onClickBack} />
       </div>
       <div className="mappage__map__container card">
         <div className="whole__map">
-          <KoreaMap />
+          <KoreaMap
+            cntData={cntData}
+            checkClicked={checkClicked}
+            clickRegion={clickRegion}
+            clickBack={clickBack}
+            selectOption={selectOption}
+          />
         </div>
       </div>
       <CardList

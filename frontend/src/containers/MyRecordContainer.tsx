@@ -127,7 +127,7 @@ function MyRecordContainer() {
     setLoading(true);
     if (!isLimit) {
       setIsLoaded(true);
-      const res: any = await getMyArticles(user.id, size, offset);
+      const res: any = await getMyArticles(userState, size, offset);
       if (res.status === 200) {
         const cardLeftList: any = cardsLeft;
         const cardRightList: any = cardsRight;

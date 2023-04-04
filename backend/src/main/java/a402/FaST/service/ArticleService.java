@@ -20,9 +20,7 @@ public interface ArticleService {
 
     int articleCnt(int userId);
 
-    List<ArticleListResponseDto> listArticleSearchTag(int userId, int size, int offset, String tagName);
-
-	List<ArticleListResponseDto> listArticleArea(int userId, String area);
+	List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area);
 
     List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, List<String> tags);
 }

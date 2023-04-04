@@ -10,6 +10,7 @@ function Heart({ cardId, cntLike }: HeartProps) {
   const [user, setUser] = useRecoilState(userInfo);
   const [likeNum, setLikeNum] = useState<number>(cntLike);
 
+  // console.log(cntLike);
   const likeData = async () => {
     const articleLikeData: any = await articleApi.articleLike(cardId, user.id);
     setLiked(articleLikeData.data);
