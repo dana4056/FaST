@@ -23,6 +23,7 @@ function CardDetailPage({
   handleArticleDelete,
   handleFollow,
   handleUnfollow,
+  handleMoveUserPage,
 }: CardDetailPageProps) {
   return (
     <div className="card-detail-page">
@@ -41,6 +42,7 @@ function CardDetailPage({
           handleDeleteOpen={handleDeleteOpen}
           handleFollow={handleFollow}
           handleUnfollow={handleUnfollow}
+          handleMoveUserPage={handleMoveUserPage}
         />
         <Comments
           comments={comments}

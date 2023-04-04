@@ -20,14 +20,25 @@ function CardDetail({
   handleDeleteOpen,
   handleFollow,
   handleUnfollow,
+  handleMoveUserPage,
 }: CardDetailProps) {
   return (
     <div className="card card-detail">
       <div className="card-detail__header">
-        <div className="card-detail__profile-image">
+        <div
+          className="card-detail__profile-image"
+          role="presentation"
+          onClick={handleMoveUserPage}
+        >
           <CgProfile />
         </div>
-        <div className="card-detail__profile-nickname">{card.nickname}</div>
+        <div
+          className="card-detail__profile-nickname"
+          role="presentation"
+          onClick={handleMoveUserPage}
+        >
+          {card.nickname}
+        </div>
         {card.followingCheck ? (
           <button
             type="button"

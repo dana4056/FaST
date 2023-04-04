@@ -147,6 +147,9 @@ function CardDetailContainer() {
       setCard({ ...card, followingCheck: false });
     }
   };
+  const handleMoveUserPage = () => {
+    navigate(`/record/${card.userId}`);
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -203,6 +206,7 @@ function CardDetailContainer() {
       isDeleteOpen={isDeleteOpen}
       handleFollow={handleFollow}
       handleUnfollow={handleUnfollow}
+      handleMoveUserPage={handleMoveUserPage}
     />
   );
 }

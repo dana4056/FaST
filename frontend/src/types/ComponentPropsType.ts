@@ -82,6 +82,7 @@ export interface CardDetailProps {
   handleCommentClick: () => void;
   handleFollow: () => void;
   handleUnfollow: () => void;
+  handleMoveUserPage: () => void;
 }
 
 // 댓글 Props
