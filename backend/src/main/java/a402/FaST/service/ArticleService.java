@@ -15,7 +15,7 @@ public interface ArticleService {
     ArticleDetailResponseDto detail(int id, int userId);
 
     List<ArticleListResponseDto> listArticleUserTag(int userId, int size, int offset);
-    List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset);
+    List<ArticleListResponseDto> listArticleUser(int userId, int loginUserId, int size, int offset);
     List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset);
 
     int articleCnt(int userId);
