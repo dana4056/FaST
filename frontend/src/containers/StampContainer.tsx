@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { useRecoilValue } from 'recoil';
 import StampPage from '../pages/StampPage';
 import {
   LotteTower,
@@ -13,16 +14,21 @@ import {
   Sungnyemun,
   OlympicPark,
   Building63,
+  NotBuilding63,
   Yisunshin,
   ChinaTown,
   Cheongwadae,
   Cheomseongdae,
 } from '../components/models';
+import { userInfo } from '../atoms/userInfo';
+import useViewModel from '../viewmodels/LandmarkViewModel';
 
 function StampContainer() {
+  const user = useRecoilValue(userInfo);
+  const { getLandmarks } = useViewModel();
   const models = [
     {
-      model: Building63,
+      model: NotBuilding63,
       name: '63빌딩',
       link: 'building63',
       cameraPosition: [0, 0, 7],
@@ -100,18 +106,27 @@ function StampContainer() {
       cameraPosition: [0, 0, 15],
     },
     {
-      model: Cheongwadae,
-      name: '청와대',
-      link: 'cheongwadae',
-      cameraPosition: [0, 0, 15],
-    },
-    {
       model: Cheomseongdae,
       name: '첨성대',
       link: 'cheomseongdae',
       cameraPosition: [0, 0, 5],
     },
+    {
+      model: Cheongwadae,
+      name: '청와대',
+      link: 'cheongwadae',
+      cameraPosition: [0, 0, 15],
+    },
   ];
+  useEffect(() => {
+    const getData = async () => {
+      const res: any = await getLandmarks(user.id);
+      if (res.status === 200) {
+        console.log(res.data);
+      }
+    };
+    getData();
+  }, []);
   return <StampPage models={models} />;
 }
 

@@ -315,6 +315,28 @@ public class ArticleServiceImpl implements ArticleService {
         return responseDto;
     }
 
+    @Override
+    public List<ArticleAreaCntDto> numArticleArea(int userId) {
+        return articleRepository.findArticleAreaCntDtoBy(userId);
+    }
+
+    @Override
+    public List<ArticleCompactResponseDto> listArticleAreaAndUser(int userId, String area) {
+
+        List<ArticleCompactResponseDto> list = null;
+
+        list = articleRepository.findAllByUser_IdAndArea(userId, area)
+            .stream().map(x -> ArticleCompactResponseDto.builder()
+                .id(x.getId())
+                .userId(x.getUser().getId())
+                .imgPath(x.getImgPath())
+                .lat(x.getLat())
+                .lng(x.getLng())
+                .build())
+            .collect(Collectors.toList());
+        return list;
+    }
+
 
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {

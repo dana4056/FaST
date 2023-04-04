@@ -23,4 +23,8 @@ public interface ArticleService {
 	List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area);
 
     List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, List<String> tags);
+
+    List<ArticleAreaCntDto> numArticleArea(int userId);
+
+    List<ArticleCompactResponseDto> listArticleAreaAndUser(int userId, String area);
 }

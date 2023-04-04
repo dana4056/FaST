@@ -23,7 +23,7 @@ public class LandMarkController {
 
     private final LandMarkServiceImpl landMarkService;
 
-    @GetMapping("/{userId}}")
+    @GetMapping("/{userId}")
     @Operation(summary = "사용자 랜드마크 조회 API =>  사용자가 랜드마크깨기에 성공한 랜드마크 정보 돌려주는 API 입니다.",
             description = "PathVariable 형식 데이터 -> (int : userId)" +
                     " => 사용자가 랜드마크깨기에 성공한 랜드마크 정보 제공")
