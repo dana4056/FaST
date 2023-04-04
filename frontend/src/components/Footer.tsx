@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import { BsPeople } from '@react-icons/all-files/bs/BsPeople';
 import { FaPlus } from '@react-icons/all-files/fa/FaPlus';
-import { AiOutlineCamera } from '@react-icons/all-files/ai/AiOutlineCamera';
+import { CgPolaroid } from '@react-icons/all-files/cg/CgPolaroid';
 import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline';
 import { useNavigate } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
@@ -46,7 +46,7 @@ function Footer() {
       </label>
       <input type="radio" id="four" name="buttons" onClick={onClickMyrecord} />
       <label htmlFor="four" className="icons myrecord">
-        <AiOutlineCamera />
+        <CgPolaroid />
         {}
       </label>
       <input type="radio" id="five" name="buttons" onClick={onClickMyPage} />
