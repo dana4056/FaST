@@ -33,13 +33,14 @@ function MapPage({
     <div className="map-page">
       <div className="map-page__header">
         <MdArrowBack onClick={onClickBack} />
-      </div>
-      <div className="map-page__area-box">
-        <span className="map-page__area-text">{area}</span>
+        <div className="map-page__area-box">
+          <span className="map-page__area-text">지도</span>
+        </div>
       </div>
       <div className="mappage__map__container card">
         <div className="whole__map">
           <KoreaMap
+            area={area}
             cntData={cntData}
             checkClicked={checkClicked}
             clickRegion={clickRegion}

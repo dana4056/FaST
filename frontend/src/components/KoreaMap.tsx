@@ -6,6 +6,7 @@ import Kakaomap from './Kakaomap';
 import { KoreaMapProps } from '../types/ComponentPropsType';
 
 function KoreaMap({
+  area,
   cntData,
   checkClicked,
   clickRegion,
@@ -196,6 +197,8 @@ function KoreaMap({
             size="50"
             onClick={clickBack}
           />
+          <span className="area-text">{area}</span>
+
           <Kakaomap selectOption={selectOption} positionData={positionData} />
         </div>
       </div>
