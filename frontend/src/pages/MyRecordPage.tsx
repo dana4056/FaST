@@ -15,13 +15,8 @@ function MyRecordPage({
   followingNum,
   articleNum,
   myTag,
-  tags,
   cardsLeft,
   cardsRight,
-  keyword,
-  handleKeywordChange,
-  handleSearch,
-  handleTagDelete,
   setRef,
   isLoaded,
   isLimit,
@@ -38,13 +33,6 @@ function MyRecordPage({
         myTag={myTag}
       />
       <MoveToMap />
-      <SearchBox
-        tags={tags}
-        keyword={keyword}
-        handleKeywordChange={handleKeywordChange}
-        handleSearch={handleSearch}
-        handleTagDelete={handleTagDelete}
-      />
       <CardList
         isMine={isMine}
         cardsLeft={cardsLeft}

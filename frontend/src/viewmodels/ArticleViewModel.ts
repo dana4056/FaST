@@ -92,10 +92,11 @@ const ArticleViewModel = () => {
 
   const getMyArticles = async (
     userId: number,
+    loginId: number,
     size: number,
     offset: number
   ) => {
-    const res = await doGetMyArticles(userId, size, offset);
+    const res = await doGetMyArticles(userId, loginId, size, offset);
     return res;
   };
 

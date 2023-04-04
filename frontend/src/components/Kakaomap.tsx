@@ -11,29 +11,23 @@ declare global {
   }
 }
 
-function Kakaomap({ selectOption }: KakaoMapProps) {
-  const markerDatas = [
-    {
-      pointX: 37.566826,
-      pointY: 126.9786567,
-      pointImg: cardimg,
-    },
-    {
-      pointX: 37.545926,
-      pointY: 126.9786567,
-      pointImg: sample1,
-    },
-    {
-      pointX: 37.525926,
-      pointY: 126.9586567,
-      pointImg: sample2,
-    },
-    {
-      pointX: 37.485926,
-      pointY: 126.9586567,
-      pointImg: cardimg,
-    },
-  ];
+export interface PinType {
+  pointX: number;
+  pointY: number;
+  pointImg: any;
+}
+
+function Kakaomap({ selectOption, positionData }: KakaoMapProps) {
+  const markerDatas: PinType[] = [];
+  if (positionData !== undefined) {
+    for (let i = 0; i < positionData.length; i += 1) {
+      markerDatas.push({
+        pointX: positionData[i].lat,
+        pointY: positionData[i].lng,
+        pointImg: sample1,
+      });
+    }
+  }
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -86,7 +80,6 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
         '<div>주소</div>' +
         '<div className="iwContentClose" onclick={} title="닫기" />' +
         '</div>';
-
       // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
       const iwRemoveable = true;
       // removeable 속성을 true 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
@@ -105,7 +98,7 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
 
       // 커스텀 오버레이가 표시될 위치입니다
       const position = new window.kakao.maps.LatLng(
-        `${markerDatas[i].pointX + 0.02}`,
+        `${markerDatas[i].pointX}`,
         `${markerDatas[i].pointY}`
       );
 
@@ -121,6 +114,9 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
       customOverlay.setMap(null);
       window.kakao.maps.event.addListener(marker, 'click', function () {
         customOverlay.setMap(map);
+        console.log('test');
+        console.log(customOverlay);
+        console.log(iwContent);
       });
 
       // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
@@ -128,7 +124,7 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
         customOverlay.setMap(null);
       };
     }
-  }, [selectOption]);
+  }, [selectOption, markerDatas]);
   return (
     <div>
       <div
@@ -140,6 +136,7 @@ function Kakaomap({ selectOption }: KakaoMapProps) {
           borderRadius: '10px',
         }}
       />
+      {/* <img src={mappin} alt="aa" /> */}
     </div>
   );
 }

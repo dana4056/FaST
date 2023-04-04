@@ -11,6 +11,7 @@ function KoreaMap({
   clickRegion,
   clickBack,
   selectOption,
+  positionData,
 }: KoreaMapProps) {
   type regionsType = {
     [index: string]: string;
@@ -195,7 +196,7 @@ function KoreaMap({
             size="50"
             onClick={clickBack}
           />
-          <Kakaomap selectOption={selectOption} />
+          <Kakaomap selectOption={selectOption} positionData={positionData} />
         </div>
       </div>
     </div>
