@@ -40,5 +40,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
         "group by a.area", nativeQuery = true)
     List<ArticleAreaCntDto> findArticleAreaCntDtoBy (int userId);
 
+    List<Article> findAllByUser_IdAndArea(int user_id, String area);
+
 
 }
