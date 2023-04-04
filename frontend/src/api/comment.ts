@@ -80,3 +80,30 @@ export async function doCreateCommentReply(
     return error;
   }
 }
+
+// 게시물 좋아요 api
+export async function commentLike(commentId: number, userId: number) {
+  try {
+    const res = await api.get(`/likes/comment`, {
+      params: { commentId, userId },
+    });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    // console.error(error);
+    return error;
+  }
+}
+// 게시물 좋아요 api
+export async function commentReplyLike(commentReplyId: number, userId: number) {
+  try {
+    const res = await api.get(`/likes/comment`, {
+      params: { commentReplyId, userId },
+    });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    // console.error(error);
+    return error;
+  }
+}

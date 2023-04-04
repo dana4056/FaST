@@ -69,12 +69,12 @@ async function followDelete(fromId: number, toId: number) {
 }
 
 // 팔로우 추가
-async function followAdd(fromId: number, toId: number) {
+async function followAdd(fromId: number, toId: number): Promise<AxiosResponse> {
   try {
     const res = await api.post<number>('/follow', { fromId, toId });
     console.log(res);
     return res;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return error;
   }

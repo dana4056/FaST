@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { AxiosResponse } from 'axios';
 
 import CardDetailPage from '../pages/CardDetailPage';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
@@ -78,7 +79,6 @@ function CardDetailContainer() {
   const getCommentsData = async () => {
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 10, 0);
-      console.log(res);
       if (res.status === 200) {
         const newComments: Array<CommentType> = [];
         await Promise.all(
@@ -86,7 +86,7 @@ function CardDetailContainer() {
             newComments.push({
               id: comment.id,
               nickname: comment.nickName,
-              profile: 'profile/default.jpg',
+              profile: comment.imgPath,
               content: comment.content,
               regTime: new Date(comment.createTime).toDateString(),
               isLike: comment.likeCheck, // 좋아요 눌렀는지
@@ -136,7 +136,7 @@ function CardDetailContainer() {
     }
   };
   const handleFollow = async () => {
-    const res: any = await follow(user.id, card.userId);
+    const res: AxiosResponse<any> = await follow(user.id, card.userId);
     if (res.status === 200) {
       setCard({ ...card, followingCheck: true });
     }

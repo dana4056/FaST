@@ -2,7 +2,7 @@ import React from 'react';
 import { BsPerson } from '@react-icons/all-files/bs/BsPerson';
 import { FcLike } from '@react-icons/all-files/fc/FcLike';
 import { FcLikePlaceholder } from '@react-icons/all-files/fc/FcLikePlaceholder';
-
+import Heart from '../Heart';
 import { CommentProps } from '../../types/ComponentPropsType';
 
 function Comment({
@@ -17,12 +17,14 @@ function Comment({
   handleVisibleRepliesClick,
   isLike,
   handleLikeClick,
+  profile,
 }: CommentProps) {
+  console.log(comment);
   return (
     <div className="comment card">
       <div className="comment__header">
         <div className="comment__profile-image">
-          <BsPerson />
+          <img src={profile} alt="" />
         </div>
         <div className="comment__profile-nickname">{comment.nickname}</div>
         <div className="comment__reg-time">{comment.regTime}</div>
@@ -30,14 +32,12 @@ function Comment({
       <div className="comment__content">
         {comment.content}
         <div className="comment__like">
-          <button
-            type="button"
-            className="comment__heart transparent-button"
-            onClick={handleLikeClick}
-          >
-            {isLike ? <FcLike /> : <FcLikePlaceholder />}
-          </button>
-          {comment.numLikes} Likes
+          <Heart
+            cardId={comment.id}
+            cntLike={comment.numLikes}
+            isLike={comment.isLike}
+            type="comment"
+          />
         </div>
       </div>
       <div className="comment__footer">
@@ -53,7 +53,7 @@ function Comment({
           className="comment__button--show-reply transparent-button"
           onClick={handleVisibleRepliesClick}
         >
-          답글 {replies.length}개 보기
+          답글 {comment.numReplies}개 보기
         </button>
       </div>
       <form
@@ -111,7 +111,12 @@ function Comment({
                   type="button"
                   className="comment__reply-heart transparent-button"
                 >
-                  {item.isLike ? <FcLike /> : <FcLikePlaceholder />}
+                  <Heart
+                    cardId={comment.id}
+                    cntLike={comment.numLikes}
+                    isLike={comment.isLike}
+                    type="article"
+                  />
                 </button>
                 <div className="comment__reply-num-likes">
                   {item.numLikes} Likes

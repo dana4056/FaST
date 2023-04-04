@@ -33,6 +33,7 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
             cardId={card.id}
             cntLike={card.numLikes}
             isLike={card.isLike}
+            type="article"
           />
         </div>
         {isMine ? (
