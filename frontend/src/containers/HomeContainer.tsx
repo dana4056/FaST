@@ -35,7 +35,6 @@ function HomeContainer() {
 
   const getData = async () => {
     setLoading(true);
-    console.log(offset, isSearch);
     let res: any;
     if (isSearch) {
       const searchTags: Array<string> = [];
