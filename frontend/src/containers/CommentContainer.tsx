@@ -18,15 +18,15 @@ function CommentContainer({ comment }: CommentContinaerProps) {
   const [isVisibleReplies, setIsVisibleReplies] = useState<boolean>(false);
   // 답글 목록
   const [replies, setReplies] = useState<Array<ReplyType>>([
-    {
-      id: 0,
-      nickname: '',
-      profile: '',
-      content: '',
-      regTime: '',
-      isLike: false, // 좋아요 눌렀는지
-      numLikes: 0, // 좋아요 개수
-    },
+    // {
+    //   id: 0,
+    //   nickname: '',
+    //   profile: '',
+    //   content: '',
+    //   regTime: '',
+    //   isLike: false, // 좋아요 눌렀는지
+    //   numLikes: 0, // 좋아요 개수
+    // },
   ]);
   // 사용자가 이 댓글에 좋아요 표시를 했는지
   const [isLike, setIsLike] = useState<boolean>(comment.isLike);

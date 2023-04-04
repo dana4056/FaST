@@ -78,6 +78,7 @@ function CardDetailContainer() {
   const getCommentsData = async () => {
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 10, 0);
+      console.log(res);
       if (res.status === 200) {
         const newComments: Array<CommentType> = [];
         await Promise.all(
@@ -89,7 +90,7 @@ function CardDetailContainer() {
               content: comment.content,
               regTime: new Date(comment.createTime).toDateString(),
               isLike: comment.likeCheck, // 좋아요 눌렀는지
-              numLikes: 0, // 좋아요 개수
+              numLikes: comment.likeCount, // 좋아요 개수
               numReplies: comment.commentReplyCount, // 답글 개수
             })
           )
