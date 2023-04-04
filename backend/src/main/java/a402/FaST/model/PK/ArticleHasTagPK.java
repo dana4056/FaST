@@ -9,6 +9,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ArticleHasTagPK implements Serializable {
 
-    private int tag;
+    private Long tag;
     private int article;
 }

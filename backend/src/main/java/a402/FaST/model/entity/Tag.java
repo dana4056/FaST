@@ -11,13 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = {CascadeType.REMOVE}, orphanRemoval = true)

@@ -13,5 +13,5 @@ import java.io.Serializable;
 public class TagHasUserPK implements Serializable {
 
     private int user;
-    private int tag;
+    private Long tag;
 }
