@@ -14,3 +14,5 @@ export { default as Seongsan } from './Seongsan';
 export { default as SeoulTower } from './SeoulTower';
 export { default as Sungnyemun } from './Sungnyemun';
 export { default as Yisunshin } from './Yisunshin';
+
+export { default as NotBuilding63 } from './NotBuilding63';
