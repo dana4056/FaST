@@ -36,6 +36,7 @@ function Kakaomap({ selectOption, positionData }: KakaoMapProps) {
 
     // console.log('aaaaaaaaaaa', selectOption);
     const map = new window.kakao.maps.Map(container, selectOption);
+
     // console.log(window.kakao);
     // 2. 마커 찍기
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -136,7 +137,7 @@ function Kakaomap({ selectOption, positionData }: KakaoMapProps) {
           borderRadius: '10px',
         }}
       />
-      {/* <img src={mappin} alt="aa" /> */}
+      <img className="mappin" src={mappin} alt="aa" />
     </div>
   );
 }

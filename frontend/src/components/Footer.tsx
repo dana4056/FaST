@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import { BsPeople } from '@react-icons/all-files/bs/BsPeople';
+import { HiHome } from '@react-icons/all-files/hi/HiHome';
+import { BsPeopleFill } from '@react-icons/all-files/bs/BsPeopleFill';
 import { FaPlus } from '@react-icons/all-files/fa/FaPlus';
 import { CgPolaroid } from '@react-icons/all-files/cg/CgPolaroid';
-import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline';
+import { MdSettings } from '@react-icons/all-files/md/MdSettings';
 import { useNavigate } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
 
@@ -32,11 +32,11 @@ function Footer() {
       <input type="radio" id="one" name="buttons" onClick={onClickHome} />
       <label htmlFor="one" className="icons home">
         {}
-        <VscHome />
+        <HiHome />
       </label>
       <input type="radio" id="two" name="buttons" onClick={onClickPeople} />
       <label htmlFor="two" className="icons people">
-        <BsPeople />
+        <BsPeopleFill />
         {}
       </label>
       <input type="radio" id="three" name="buttons" onClick={onClickNewCard} />
@@ -51,7 +51,7 @@ function Footer() {
       </label>
       <input type="radio" id="five" name="buttons" onClick={onClickMyPage} />
       <label htmlFor="five" className="icons mypage">
-        <IoSettingsOutline />
+        <MdSettings />
         {}
       </label>
       <span className="title home">Home</span>
