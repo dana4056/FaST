@@ -49,15 +49,19 @@ function Heart({ cardId, cntLike, isLike }: HeartProps) {
   //   }
   // }, []);
 
-  console.log(likeState);
   useEffect(() => {
-    setLikeState(!likeState);
-  }, []);
+    setLikeState(isLike);
+  }, [isLike]);
+  useEffect(() => {
+    if (liked !== undefined) {
+      setLikeState(liked);
+    }
+  }, [liked]);
   return (
     <div role="presentation" onClick={handleLikeClick}>
       <div className="like-button-container">
         <button
-          className={`like-button ${likeState ? ' unliked' : ' liked'}`}
+          className={`like-button ${likeState ? ' liked' : ' unliked'}`}
           type="button"
         >
           <div className="like-wrapper">
