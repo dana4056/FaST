@@ -7,14 +7,16 @@ import { CardType } from '../types/CardType';
 import { SelectRegionOptionType } from '../types/ComponentPropsType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import articleApi from '../api/article';
+import sample1 from '../assets/images/sample-images/sample_1.jpg';
 import useIntersect from '../utils/useIntersect';
 
 function MapContainer() {
   const [user, setUser] = useRecoilState(userInfo);
+
+  const pageEnd = useRef<HTMLDivElement>(null);
   const params = useParams();
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const { downloadImages } = useViewModel();
 
   const [articleData, setArticleData] = useState<any>();
@@ -117,7 +119,9 @@ function MapContainer() {
   const [clickedOption, setClickedOption] = useState<any>();
   const [area, setArea] = useState<string>('');
   const size = 20;
-  const offset = 0;
+  const [loading, setLoading] = useState<boolean>(false);
+  const [offset, setOffset] = useState<number>(0);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
 
   const clickRegion = (e: React.MouseEvent<SVGPathElement>) => {
     const target = (e.target as Element).id;
@@ -205,32 +209,26 @@ function MapContainer() {
   const clickBack = (e: React.MouseEvent<SVGPathElement>) => {
     setClicked('before_click');
   };
-  useEffect(() => {
-    const getData = async () => {
-      // 지역 기반 데이터 조회
-      const mapData: any = await articleApi.getMapArticle(
-        userState,
-        size,
-        offset,
-        area
-      );
-      setArticleData(mapData.data);
-    };
-    getData();
-  }, [area]);
-
-  // console.log(articleData);
 
   const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
-  useEffect(() => {
-    const setData = async () => {
+  const getData = async () => {
+    setLoading(true);
+    const mapData: any = await articleApi.getMapArticle(
+      userState,
+      size,
+      offset,
+      area
+    );
+    console.log(mapData);
+
+    if (mapData.status === 200) {
       const cardLeftList: any = [];
       const cardRightList: any = [];
-      if (articleData?.length > 0) {
+      if (mapData.data.length > 0) {
         await Promise.all(
-          articleData.map(async (article: any, i: number) => {
+          mapData.data.map(async (article: any, i: number) => {
             if (i % 2 === 0) {
               const leftArticleTags: any = [];
               article.tags.map((tag: any) =>
@@ -239,12 +237,12 @@ function MapContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
               cardLeftList.push({
                 id: article?.id,
-                imageUrls,
+                imageUrls: [sample1],
                 nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
@@ -263,12 +261,12 @@ function MapContainer() {
                   })
                 )
               );
-              const imageUrls = await downloadImages(
-                article.imgPath.split(',')
-              );
+              // const imageUrls = await downloadImages(
+              //   article.imgPath.split(',')
+              // );
               cardRightList.push({
                 id: article?.id,
-                imageUrls,
+                imageUrls: [sample1],
                 nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
@@ -280,20 +278,43 @@ function MapContainer() {
             }
           })
         );
+        if (cardLeftList.length > 0) {
+          setCardsLeft([
+            ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
+          ]);
+        }
+        if (cardRightList.length > 0) {
+          setCardsRight([
+            ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
+          ]);
+        }
+      } else {
+        setIsLimit(() => true);
       }
-      if (cardLeftList.length > 0) {
-        setCardsLeft([
-          ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
-        ]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getData();
+  }, [offset]);
+
+  const loadMore = () => {
+    setOffset((prev: number) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (!pageEnd.current) return;
+    const observer = new IntersectionObserver((entries: any) => {
+      if (entries[0].isIntersecting && !loading && !isLimit) {
+        loadMore();
       }
-      if (cardRightList.length > 0) {
-        setCardsRight([
-          ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
-        ]);
-      }
-    };
-    setData();
-  }, [articleData]);
+    });
+    observer.observe(pageEnd.current);
+    // eslint-disable-next-line consistent-return
+    return () => observer.disconnect();
+  }, [pageEnd, isLimit, loading]);
+
   return (
     <MapPage
       cardsLeft={cardsLeft}
@@ -301,7 +322,8 @@ function MapContainer() {
       isMine={isMine}
       setRef={null}
       isLoaded={false}
-      isLimit={false}
+      isLimit={isLimit}
+      pageEnd={pageEnd}
       cntData={cntData}
       checkClicked={clicked}
       clickRegion={clickRegion}

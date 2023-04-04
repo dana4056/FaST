@@ -14,6 +14,7 @@ import {
   doGetFollowArticles,
   doGetMyArticles,
   doDeleteArticle,
+  doSearchArticles,
 } from '../api/article';
 import uuid from '../utils/uuid';
 import doGetAutoTags from '../api/tag';
@@ -98,6 +99,16 @@ const ArticleViewModel = () => {
     return res;
   };
 
+  const searchArticles = async (
+    userId: number,
+    size: number,
+    offset: number,
+    tags: string
+  ) => {
+    const res = await doSearchArticles(userId, size, offset, tags);
+    return res;
+  };
+
   return {
     uploadImages,
     writeArticle,
@@ -110,6 +121,7 @@ const ArticleViewModel = () => {
     deleteImage,
     deleteArticle,
     getMyArticles,
+    searchArticles,
   };
 };
 

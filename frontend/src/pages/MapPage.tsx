@@ -13,12 +13,13 @@ function MapPage({
   setRef,
   isLoaded,
   isLimit,
+  pageEnd,
   cntData,
   checkClicked,
   clickRegion,
   clickBack,
   selectOption,
-}: MapPageProps) {
+}: any) {
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function MapPage({
         setRef={setRef}
         isLoaded={isLoaded}
         isLimit={isLimit}
+        pageEnd={pageEnd}
       />
     </div>
   );

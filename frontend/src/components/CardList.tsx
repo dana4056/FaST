@@ -5,14 +5,7 @@ import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 
 import PhotoCard from './PhotoCard';
 
-function CardList({
-  isMine,
-  cardsLeft,
-  cardsRight,
-  isLoaded,
-  isLimit,
-  setRef,
-}: CardListProps) {
+function CardList({ isMine, cardsLeft, cardsRight, isLimit, pageEnd }: any) {
   return (
     <div className="card-list">
       <div className="card-list__column">
@@ -25,8 +18,10 @@ function CardList({
           <PhotoCard isMine={isMine} card={card} key={card.id} />
         ))}
       </div>
-      {isLoaded || isLimit ? null : (
-        <div ref={setRef} className="card-list__footer">
+      {isLimit ? (
+        <div>더 이상 글이 없음</div>
+      ) : (
+        <div ref={pageEnd} className="card-list__footer">
           <Spin />
         </div>
       )}

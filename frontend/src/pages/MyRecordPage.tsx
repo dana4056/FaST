@@ -25,7 +25,8 @@ function MyRecordPage({
   setRef,
   isLoaded,
   isLimit,
-}: MyRecordPageProps) {
+  pageEnd,
+}: any) {
   return (
     <div className="my-record-page">
       <Profile
@@ -51,6 +52,7 @@ function MyRecordPage({
         setRef={setRef}
         isLoaded={isLoaded}
         isLimit={isLimit}
+        pageEnd={pageEnd}
       />
     </div>
   );
