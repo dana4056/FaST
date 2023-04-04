@@ -17,7 +17,12 @@ export interface PinType {
   pointImg: any;
 }
 
-function Kakaomap({ selectOption, positionData, checkClicked }: any) {
+function Kakaomap({
+  selectOption,
+  positionData,
+  checkClicked,
+  clickBack,
+}: any) {
   const markerDatas: PinType[] = [];
   if (positionData !== undefined) {
     for (let i = 0; i < positionData.length; i += 1) {
@@ -35,13 +40,18 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
   useEffect(() => {
     if (container.current && checkClicked === 'after_click') {
       const options = {
-        center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-        level: 9,
+        center: new window.kakao.maps.LatLng(
+          selectOption.center.Ma,
+          selectOption.center.La
+        ),
+        level: selectOption.level,
       };
       const map = new window.kakao.maps.Map(container.current, options);
       setKakaoMap(map);
+    } else if (checkClicked === 'before_click') {
+      setKakaoMap(null);
     }
-  }, [container, checkClicked]);
+  }, [container, checkClicked, selectOption]);
 
   useEffect(() => {
     // 2. 마커 찍기
@@ -133,11 +143,12 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
         };
       }
     }
-  }, [container, checkClicked, markerDatas]);
+  }, [selectOption, markerDatas]);
   return (
     <div>
       <div
         id="map"
+        ref={container}
         style={{
           width: '100%',
           height: '400px',

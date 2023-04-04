@@ -203,6 +203,7 @@ function KoreaMap({
             selectOption={selectOption}
             positionData={positionData}
             checkClicked={checkClicked}
+            clickBack={clickBack}
           />
         </div>
       </div>
