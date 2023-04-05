@@ -95,6 +95,7 @@ function CardDetail({
               cardId={card.id}
               cntLike={card.numLikes}
               isLike={card.isLike}
+              type="article"
             />
           </div>
           <button

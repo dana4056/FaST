@@ -4,8 +4,9 @@ import { userInfo } from '../atoms/userInfo';
 
 import { HeartProps } from '../types/ComponentPropsType';
 import articleApi from '../api/article';
+import { commentLike, commentReplyLike } from '../api/comment';
 
-function Heart({ cardId, cntLike, isLike }: HeartProps) {
+function Heart({ cardId, cntLike, isLike, type }: HeartProps) {
   const [user, setUser] = useRecoilState(userInfo);
   // 좋아요 버튼 누르는 것
   const [liked, setLiked] = useState<boolean>();
@@ -15,8 +16,25 @@ function Heart({ cardId, cntLike, isLike }: HeartProps) {
   const [likeState, setLikeState] = useState<boolean>(isLike);
 
   const likeData = async () => {
-    const articleLikeData: any = await articleApi.articleLike(cardId, user.id);
-    setLiked(articleLikeData.data);
+    if (type === 'article') {
+      const articleLikeData: any = await articleApi.articleLike(
+        cardId,
+        user.id
+      );
+      if (articleLikeData.status === 200) {
+        setLiked(articleLikeData.data);
+      }
+    } else if (type === 'comment') {
+      const commentLikeData: any = await commentLike(cardId, user.id);
+      if (commentLikeData.status === 200) {
+        setLiked(commentLikeData.data);
+      }
+    } else if (type === 'commentReply') {
+      const commentReplyLikeData: any = await commentReplyLike(cardId, user.id);
+      if (commentReplyLikeData.status === 200) {
+        setLiked(commentReplyLikeData.data);
+      }
+    }
   };
   const handleLikeClick = (event: any) => {
     event.stopPropagation();
@@ -107,8 +125,7 @@ function Heart({ cardId, cntLike, isLike }: HeartProps) {
             </div>
           </div>
         </button>
-        <span className="cnt__article-like">{likeNum} </span>
-        <span>Likes</span>
+        <span className="cnt__article-like">{likeNum} Likes </span>
       </div>
     </div>
   );
