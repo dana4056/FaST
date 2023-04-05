@@ -8,6 +8,7 @@ import NewCardPage from '../pages/NewCardPage';
 import { TagType } from '../types/TagType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { userInfo } from '../atoms/userInfo';
+import { decryptToken } from '../utils/passwordEncryption';
 
 declare global {
   interface Window {
@@ -156,23 +157,29 @@ function NewCardContainer() {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
-    const imgPath = await uploadImages(images);
-
-    const res = await writeArticle({
-      area: loc,
-      autoTags,
-      content: textareaRef.current?.value,
-      imgPath: imgPath.join(','),
-      lat: la,
-      lng: lo,
-      tags: customTags,
-      userId: user.id,
-    });
-    if (res === 200) {
-      setIsSuccess(true);
-    } else {
-      setIsFail(true);
+    console.log(images[0].name.slice(-4));
+    if (localStorage.getItem('token') !== null) {
+      console.log(
+        decryptToken(String(localStorage.getItem('token')), user.email)
+      );
     }
+    // const imgPath = await uploadImages(images);
+
+    // const res = await writeArticle({
+    //   area: loc,
+    //   autoTags,
+    //   content: textareaRef.current?.value,
+    //   imgPath: imgPath.join(','),
+    //   lat: la,
+    //   lng: lo,
+    //   tags: customTags,
+    //   userId: user.id,
+    // });
+    // if (res === 200) {
+    //   setIsSuccess(true);
+    // } else {
+    //   setIsFail(true);
+    // }
   };
 
   useEffect(() => {

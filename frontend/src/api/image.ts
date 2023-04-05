@@ -11,7 +11,6 @@ async function upload(image: File, dir: string) {
   try {
     const formData = new FormData();
     formData.append('image', image);
-    formData.append('dir', dir);
     const res = await api.post(`/upload/${dir}`, formData);
 
     console.log(res.status);
@@ -21,7 +20,6 @@ async function upload(image: File, dir: string) {
     return error;
   }
 }
-
 export default {
   upload,
 };

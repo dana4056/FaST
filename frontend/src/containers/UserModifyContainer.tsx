@@ -32,10 +32,10 @@ function UserModifyContainer() {
       setImgPath(imageUrl);
     } else if (userData.imgPath) {
       const getProfileImage = async () => {
-        const imageRef = ref(storage, userData.imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setImageUrl(ret);
-        setImgPath(`profiles/${userData.email}`);
+        // const imageRef = ref(storage, userData.imgPath);
+        // const ret = await getDownloadURL(imageRef);
+        // setImageUrl(ret);
+        // setImgPath(`profiles/${userData.email}`);
       };
       getProfileImage();
     }

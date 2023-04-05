@@ -49,8 +49,8 @@ function MyRecordContainer() {
     } else if (userData.imgPath) {
       const getProfileImage = async () => {
         const imageRef = ref(storage, userData.imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setImageUrl(ret);
+        // const ret = await getDownloadURL(imageRef);
+        // setImageUrl(ret);
       };
       getProfileImage();
     }

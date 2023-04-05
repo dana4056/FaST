@@ -43,7 +43,7 @@ const ArticleViewModel = () => {
     return ret;
   };
   const deleteImage = async (imageUrl: string) => {
-    await deleteObject(ref(storage, imageUrl));
+    // await deleteObject(ref(storage, imageUrl));
   };
   const writeArticle = async (requestBody: any) => {
     const res = await doWriteArticle(requestBody);

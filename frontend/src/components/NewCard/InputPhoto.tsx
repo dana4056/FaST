@@ -24,7 +24,7 @@ function InputPhoto({
           type="file"
           className="input-photo__file"
           id="input-photo"
-          accept="image/*"
+          accept="image/jpg, image/jpeg, image/png"
           multiple
           onChange={handleImageChange}
         />
