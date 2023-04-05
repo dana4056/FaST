@@ -12,6 +12,21 @@ const __dirname = path.resolve();
 
 app.use(cors.default());
 
+const fileFilter = (req: any, file: any, cb: any) => {
+  // 확장자 필터링
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true); // 해당 mimetype만 받겠다는 의미
+  } else {
+    // 다른 mimetype은 저장되지 않음
+    req.fileValidationError = 'jpg,jpeg,png,gif,webp 파일만 업로드 가능합니다.';
+    cb(null, false);
+  }
+};
+
 const profileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log(req);
@@ -31,8 +46,16 @@ const articleStorage = multer.diskStorage({
   },
 });
 
-const profileUpload = multer({ storage: profileStorage });
-const articleUpload = multer({ storage: articleStorage });
+const profileUpload = multer({
+  storage: profileStorage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 30 * 1024 * 1024 },
+});
+const articleUpload = multer({
+  storage: articleStorage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 30 * 1024 * 1024 },
+});
 
 app.post('/upload/profile', profileUpload.single('image'), (req: Request, res: Response) => {
   const file = req.file;
