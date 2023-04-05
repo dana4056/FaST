@@ -25,3 +25,4 @@ yarn-error.log*
 
 /storage/images
 /storage/src/config
+/crawling/src/config
