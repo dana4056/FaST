@@ -5,6 +5,7 @@ import { AxiosResponse } from 'axios';
 import imageCompression from 'browser-image-compression';
 import SignUpPage from '../pages/SignUpPage';
 // import { storage } from '../utils/firebase';
+import imageApi from '../api/image';
 import api from '../api/signUp';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 import Header from '../components/Header';
@@ -330,25 +331,11 @@ function SignUpContainer() {
       const salt = createSalt();
       const pwd = createHashedPassword(password, salt);
 
-      // 파이어베이스에 사용자 프로필 사진 등록
-      const uploadImage = async (img: File | undefined) => {
-        // if (img === undefined) {
-        //   return;
-        // }
-        // const result = await uploadBytes(
-        //   ref(storage, `profiles/${email}`),
-        //   img
-        // );
-        // console.log(result);
-      };
-
-      uploadImage(image);
-
       if (image === undefined) {
-        setImgPath(() => '/profiles/default.jpg');
+        setImgPath(() => 'profiles/default.jpg');
         const res = await api.signUp(
           email,
-          '/profiles/default.jpg',
+          'profiles/default.jpg',
           name,
           pwd,
           salt
@@ -365,23 +352,31 @@ function SignUpContainer() {
         //   alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
         // }
       } else {
-        setImgPath(() => `/profiles/${email}`);
-        const res = await api.signUp(
-          email,
-          `/profiles/${email}`,
-          name,
-          pwd,
-          salt
+        const imgRes: any = await imageApi.uploadImage(
+          image,
+          'profile',
+          `profile/${email}`,
+          email
         );
-        if (res.status === 200) {
-          // db에 있는 사용자 pk값 저장
-          setIdPk(res.data.id);
+        if (imgRes.status === 200) {
+          setImgPath(() => `profiles/${email}`);
+          const res = await api.signUp(
+            email,
+            `profiles/${email}`,
+            name,
+            pwd,
+            salt
+          );
+          if (res.status === 200) {
+            // db에 있는 사용자 pk값 저장
+            setIdPk(res.data.id);
 
-          setIsOpen(() => true);
-        } else if (res.status === 409) {
-          alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
-        } else {
-          alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+            setIsOpen(() => true);
+          } else if (res.status === 409) {
+            alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+          } else {
+            alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+          }
         }
       }
     }

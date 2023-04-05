@@ -52,8 +52,6 @@ const jwtFilter = (req: any, res: any, next: any) => {
   });
 };
 
-app.use(jwtFilter);
-
 const profileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, `images/profiles/`);
@@ -92,6 +90,7 @@ app.post('/upload/profile', profileUpload.single('image'), (req: Request, res: R
     res.status(200).json({ imagePath });
   }
 });
+app.use(jwtFilter);
 app.post('/upload/article', articleUpload.single('image'), (req: Request, res: Response) => {
   const file = req.file;
 

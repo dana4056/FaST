@@ -8,24 +8,30 @@ import Modal from '../components/Modal';
 import { userInfo } from '../atoms/userInfo';
 import { TagType } from '../types/TagType';
 import modifyApi from '../api/user';
+import imageApi from '../api/image';
+import useViewModel from '../viewmodels/ArticleViewModel';
 import { storage } from '../utils/firebase';
 import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function UserModifyContainer() {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userInfo);
+  const { downloadImages } = useViewModel();
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
+
+  // 미리보기 이미지 url 저장 배열
+  const [imageUrl, setImageUrl] = useState<string>('');
   useEffect(() => {
     const getData = async () => {
       const myData: any = await modifyApi.getMyData(user.id);
+      const imagePath = await downloadImages([myData.data.imgPath]);
+      setImageUrl(imagePath[0]);
+
       setUserData(myData.data);
     };
     getData();
   }, []);
-
-  // 미리보기 이미지 url 저장 배열
-  const [imageUrl, setImageUrl] = useState<string>('');
   const [imgPath, setImgPath] = useState<string>('profiles/default.jpg');
   useEffect(() => {
     if (userData.imgPath?.substring(0, 4) === 'http') {
@@ -187,33 +193,32 @@ function UserModifyContainer() {
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
     if (image === undefined) {
-      setImgPath(() => '/profiles/default.jpg');
+      setImgPath(() => 'profiles/default.jpg');
     }
 
-    // 파이어베이스에 사용자 프로필 사진 등록
-    const uploadImage = async (img: File | undefined) => {
-      if (img === undefined) {
-        setImgPath(() => '/profiles/default.jpg');
-      }
-      // const result = await uploadBytes(ref(storage, `profiles/${email}`), img);
-      // console.log(result);
-    };
-
-    uploadImage(image);
-
-    const newData: any = await modifyApi.modifyData(
-      user.id,
-      imgPath,
-      nickname,
-      tagList
-    );
-    console.log(newData.status);
-    if (newData.status === 200) {
-      onClickSaveModal();
+    if (image === undefined) {
+      setImgPath(() => 'profiles/default.jpg');
     } else {
-      console.log('에러');
+      const result: any = await imageApi.uploadImage(
+        image,
+        'profile',
+        `profiles/${user.email}`,
+        user.email
+      );
+      if (result.status === 200) {
+        const newData: any = await modifyApi.modifyData(
+          user.id,
+          `profiles/${user.email}`,
+          nickname,
+          tagList
+        );
+        if (newData.status === 200) {
+          onClickSaveModal();
+        } else {
+          console.log('에러');
+        }
+      }
     }
-    return newData;
   };
 
   // 비밀번호 변경하러 가기
