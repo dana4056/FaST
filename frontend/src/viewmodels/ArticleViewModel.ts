@@ -34,7 +34,7 @@ const ArticleViewModel = () => {
     const ret: Array<string> = [];
     await Promise.all(
       images.map(async (image: string) => {
-        const url = `http://localhost:6060/images/${image}`;
+        const url = `https://j8a402.p.ssafy.io:6060/images/${image}`;
         ret.push(url);
       })
     );
