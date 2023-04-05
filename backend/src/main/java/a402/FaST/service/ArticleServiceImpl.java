@@ -375,6 +375,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .imgPath(x.getImgPath())
                 .lat(x.getLat())
                 .lng(x.getLng())
+                .createTime(x.getCreateTime())
                 .build())
             .collect(Collectors.toList());
         return list;

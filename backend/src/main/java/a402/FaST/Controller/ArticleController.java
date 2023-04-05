@@ -125,7 +125,7 @@ public class ArticleController {
     @GetMapping()
     @Operation(summary = "사용자, 지역별 게시글 개수 조회 API =>  특정 유저가 작성한 특정 지역의 게시물을 반환",
         description = "RequestParam 형식 데이터 (int : userId, String : area)" +
-            " => map (지역-카운팅수) Return")
+            " =>ArticleCompactResponseDto Return")
     public List<ArticleCompactResponseDto> articleListAreaAndUser (@RequestParam("userId") int userId, @RequestParam("area") String area) {
         return articleService.listArticleAreaAndUser(userId, area);
     }
