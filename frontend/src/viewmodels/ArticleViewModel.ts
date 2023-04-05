@@ -22,24 +22,24 @@ import doGetAutoTags from '../api/tag';
 const ArticleViewModel = () => {
   const uploadImages = async (images: Array<File>) => {
     const paths: Array<string> = [];
-    await Promise.all(
-      images.map(async (image: File) => {
-        const path = `article/${uuid()}`;
-        await uploadBytes(ref(storage, path), image);
-        paths.push(path);
-      })
-    );
+    // await Promise.all(
+    //   images.map(async (image: File) => {
+    //     const path = `article/${uuid()}`;
+    //     await uploadBytes(ref(storage, path), image);
+    //     paths.push(path);
+    //   })
+    // );
     return paths;
   };
   const downloadImages = async (images: Array<string>) => {
     const ret: Array<string> = [];
 
-    await Promise.all(
-      images.map(async (image: string) => {
-        const url = await getDownloadURL(ref(storage, image));
-        ret.push(url);
-      })
-    );
+    // await Promise.all(
+    //   images.map(async (image: string) => {
+    //     const url = await getDownloadURL(ref(storage, image));
+    //     ret.push(url);
+    //   })
+    // );
     return ret;
   };
   const deleteImage = async (imageUrl: string) => {
