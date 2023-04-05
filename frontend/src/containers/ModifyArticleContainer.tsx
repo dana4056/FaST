@@ -161,10 +161,12 @@ function ModifyArticleContainer() {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
-    const imgPath = await uploadImages(images);
+    const imgPath = await uploadImages(images, 'article', user.email);
 
     await Promise.all(
-      prevImagePaths.map((prevImagePath: string) => deleteImage(prevImagePath))
+      prevImagePaths.map((prevImagePath: string) =>
+        deleteImage(prevImagePath, user.email)
+      )
     );
     const res: any = await modifyArticle({
       area: loc,

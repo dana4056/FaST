@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { useNavigate, Link } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
+import useViewModel from '../viewmodels/ArticleViewModel';
 
 import followApi from '../api/follow';
 
@@ -12,6 +12,8 @@ function FollowItem({ following, isMine }: any) {
   const [user, setUser] = useRecoilState(userInfo);
 
   const navigate = useNavigate();
+
+  const { downloadImages } = useViewModel();
 
   const onClickMoveRecord = (id: number) => {
     navigate(`/record/${id}`);
@@ -22,9 +24,8 @@ function FollowItem({ following, isMine }: any) {
       setProfileImg(following.toUser.imgPath);
     } else {
       const getProfileImage = async () => {
-        const imageRef = ref(storage, following.toUser.imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setProfileImg(ret);
+        const ret = await downloadImages([following.toUser.imgPath]);
+        setProfileImg(ret[0]);
       };
       getProfileImage();
     }

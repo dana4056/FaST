@@ -15,7 +15,7 @@ import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
 import useIntersect from '../utils/useIntersect';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
+// import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function MyRecordContainer() {
   const size = 10;
@@ -42,7 +42,7 @@ function MyRecordContainer() {
   const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
 
   // 미리보기 이미지 url 저장 배열
-  const [imageUrl, setImageUrl] = useState<string>(sample1);
+  const [imageUrl, setImageUrl] = useState<string>('');
   useEffect(() => {
     if (userData.imgPath?.substring(0, 4) === 'http') {
       setImageUrl(userData.imgPath);
@@ -75,7 +75,6 @@ function MyRecordContainer() {
 
       const res: any = await getMyArticles(userState, user.id, size, offset);
       if (res.status === 200) {
-        console.log(res);
         const cardLeftList: any = cardsLeft;
         const cardRightList: any = cardsRight;
         if (res.data.length > 0) {

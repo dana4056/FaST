@@ -172,28 +172,34 @@ function NewCardContainer() {
           compressedImage.push(compressedFile);
         })
       );
-      setImages([...compressedImage]);
+      const imgPath = await uploadImages(
+        compressedImage,
+        'article',
+        user.email
+      );
+      console.log(imgPath);
+      if (imgPath.length === 0) {
+        setIsFail(true);
+        return;
+      }
+      const res = await writeArticle({
+        area: loc,
+        autoTags,
+        content: textareaRef.current?.value,
+        imgPath: imgPath.join(','),
+        lat: la,
+        lng: lo,
+        tags: customTags,
+        userId: user.id,
+      });
+      if (res === 200) {
+        setIsSuccess(true);
+      } else {
+        setIsFail(true);
+      }
     } catch (error) {
       console.log(error);
     }
-
-    // const imgPath = await uploadImages(images);
-
-    // const res = await writeArticle({
-    //   area: loc,
-    //   autoTags,
-    //   content: textareaRef.current?.value,
-    //   imgPath: imgPath.join(','),
-    //   lat: la,
-    //   lng: lo,
-    //   tags: customTags,
-    //   userId: user.id,
-    // });
-    // if (res === 200) {
-    //   setIsSuccess(true);
-    // } else {
-    //   setIsFail(true);
-    // }
   };
 
   useEffect(() => {
