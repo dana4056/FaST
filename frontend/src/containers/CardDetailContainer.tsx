@@ -47,6 +47,7 @@ function CardDetailContainer() {
   const [comments, setComments] = useState<Array<CommentType>>([
     {
       id: 0,
+      userId: 0,
       nickname: '',
       profile: '',
       content: '',
@@ -85,6 +86,7 @@ function CardDetailContainer() {
           res.data.map((comment: any) =>
             newComments.push({
               id: comment.id,
+              userId: comment.userId,
               nickname: comment.nickName,
               profile: comment.imgPath,
               content: comment.content,
@@ -117,6 +119,7 @@ function CardDetailContainer() {
       commentInputRef.current.value = '';
     }
   };
+
   const handleModifyClick = () => {
     navigate(`/modify-article/${card.id}`);
   };

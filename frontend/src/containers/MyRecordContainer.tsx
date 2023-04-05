@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
-import { userInfo } from '../atoms/userInfo';
 import { storage } from '../utils/firebase';
+import { userInfo } from '../atoms/userInfo';
 import userApi from '../api/user';
 import articleApi from '../api/article';
 

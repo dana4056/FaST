@@ -2,6 +2,8 @@
 export interface ReplyType {
   // 답글 id
   id: number;
+  // 답글작성자 id
+  userId: number;
   // 닉네임
   nickname: string;
   // 프로필 이미지 경로
