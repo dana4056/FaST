@@ -28,12 +28,39 @@
       color: color.$gray;
       font-size: 12px;
     }
+    .comment__update-btn {
+      margin-left: auto;
+    }
+    .comment__delete-btn {
+      margin-left: 5px;
+    }
   }
   .comment__content {
     display: flex;
-    .comment__comment {
+    .comment__update-box {
+      width: 80%;
+      .comment__update-input {
+        width: 75%;
+        border: 0px;
+        border-bottom: 1px solid black;
+        font-size: 17px;
+        margin-right: 5%;
+      }
+      .comment__update-btn {
+        font-size: 17px;
+        background-color: color.$color-4;
+        padding: 5px 9px;
+        color: white;
+        border: 0px;
+      }
+    }
+    .comment__text {
+      margin-top: 5px;
+      margin-left: 2px;
+      font-size: 17px;
       width: 80%;
     }
+
     .comment__like {
       //   width: 20%;
       margin-left: auto;
@@ -115,7 +142,7 @@
         .comment__reply-like {
           width: 20%;
           .comment__reply-heart {
-            font-size: 24px;
+            font-size: 13px;
             display: flex;
             justify-content: center;
             align-items: center;

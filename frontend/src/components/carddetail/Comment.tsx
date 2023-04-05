@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { BsPerson } from '@react-icons/all-files/bs/BsPerson';
 import { FcLike } from '@react-icons/all-files/fc/FcLike';
 import { FcLikePlaceholder } from '@react-icons/all-files/fc/FcLikePlaceholder';
+import { userInfo } from '../../atoms/userInfo';
 import Heart from '../Heart';
 import { CommentProps } from '../../types/ComponentPropsType';
 
@@ -18,8 +20,27 @@ function Comment({
   isLike,
   handleLikeClick,
   profile,
+  handleDeleteComment,
+  openUpdateComment,
+  commentContent,
+  handleUpdateCommentOpenClick,
+  onChangeComment,
+  handleUpdateComment,
+  handleReplyLike,
 }: CommentProps) {
-  console.log(comment);
+  const [user, setUser] = useRecoilState(userInfo);
+  console.log(user.id);
+
+  console.log(comment.userId);
+
+  const [isMine, setIsMine] = useState<boolean>(false);
+  useEffect(() => {
+    if (user.id === comment.userId) {
+      setIsMine(true);
+    } else {
+      setIsMine(false);
+    }
+  }, [comment.userId, user.id]);
   return (
     <div className="comment card">
       <div className="comment__header">
@@ -28,9 +49,45 @@ function Comment({
         </div>
         <div className="comment__profile-nickname">{comment.nickname}</div>
         <div className="comment__reg-time">{comment.regTime}</div>
+        {isMine ? (
+          <>
+            <div
+              className="comment__update-btn"
+              onClick={handleUpdateCommentOpenClick}
+              role="presentation"
+            >
+              수정
+            </div>
+            <div
+              className="comment__delete-btn"
+              onClick={handleDeleteComment}
+              role="presentation"
+            >
+              삭제
+            </div>
+          </>
+        ) : null}
       </div>
       <div className="comment__content">
-        {comment.content}
+        {openUpdateComment ? (
+          <div className="comment__update-box">
+            <input
+              type="text"
+              defaultValue={commentContent}
+              onChange={onChangeComment}
+              className="comment__update-input"
+            />
+            <button
+              type="button"
+              className="comment__update-btn card"
+              onClick={handleUpdateComment}
+            >
+              저장
+            </button>
+          </div>
+        ) : (
+          <div className="comment__text">{commentContent}</div>
+        )}
         <div className="comment__like">
           <Heart
             cardId={comment.id}
@@ -110,17 +167,15 @@ function Comment({
                 <button
                   type="button"
                   className="comment__reply-heart transparent-button"
+                  onClick={() => handleReplyLike(item.id)}
                 >
                   <Heart
-                    cardId={comment.id}
-                    cntLike={comment.numLikes}
-                    isLike={comment.isLike}
+                    cardId={item.id}
+                    cntLike={item.numLikes}
+                    isLike={item.isLike}
                     type="article"
                   />
                 </button>
-                <div className="comment__reply-num-likes">
-                  {item.numLikes} Likes
-                </div>
               </div>
             </div>
           </div>

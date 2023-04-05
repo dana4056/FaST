@@ -1,6 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { decryptToken } from '../utils/passwordEncryption';
 
+const api = axios.create({
+  baseURL: 'https://localhost:6060',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 async function uploadImage(
   image: File,
   dir: string,

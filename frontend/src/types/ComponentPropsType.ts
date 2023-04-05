@@ -110,6 +110,18 @@ export interface CommentProps {
   // 좋아요 클릭 함수
   handleLikeClick: React.MouseEventHandler;
   profile: string;
+  // 댓글 삭제 함수
+  handleDeleteComment: React.FormEventHandler;
+  openUpdateComment: boolean;
+  // 댓글 수정칸 여는 함수
+  handleUpdateCommentOpenClick: React.MouseEventHandler;
+  // 댓글 수정칸 변화 감지 함수
+  commentContent: string;
+  onChangeComment: React.ChangeEventHandler;
+  // 댓글 수정 함수
+  handleUpdateComment: React.FormEventHandler;
+  // 답글 좋아요 함수
+  handleReplyLike: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // 댓글 목록 Props
@@ -121,7 +133,7 @@ export interface CommentsProps {
 }
 
 // 댓글 컨테이너 Props
-export interface CommentContinaerProps {
+export interface CommentContainerProps {
   // 댓글
   comment: CommentType;
 }
