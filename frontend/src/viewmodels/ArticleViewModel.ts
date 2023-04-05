@@ -21,18 +21,21 @@ import doGetAutoTags from '../api/tag';
 import api from '../api/image';
 
 const ArticleViewModel = () => {
-  const uploadImages = async (images: Array<File>, dir: string) => {
+  const uploadImages = async (
+    images: Array<File>,
+    dir: string,
+    email: string
+  ) => {
     const paths: Array<string> = [];
     await Promise.all(
       images.map(async (image: File) => {
         const name = uuid();
-        const res: any = await api.upload(image, dir, name);
+        const res: any = await api.upload(image, dir, name, email);
         if (res.status === 200) {
           paths.push(`${dir}s/${name}`);
         }
       })
     );
-    console.log(paths);
     return paths;
   };
   const downloadImages = async (images: Array<string>) => {

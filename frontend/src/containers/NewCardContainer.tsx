@@ -172,7 +172,16 @@ function NewCardContainer() {
           compressedImage.push(compressedFile);
         })
       );
-      const imgPath = await uploadImages(compressedImage, 'article');
+      const imgPath = await uploadImages(
+        compressedImage,
+        'article',
+        user.email
+      );
+      console.log(imgPath);
+      if (imgPath.length === 0) {
+        setIsFail(true);
+        return;
+      }
       const res = await writeArticle({
         area: loc,
         autoTags,
