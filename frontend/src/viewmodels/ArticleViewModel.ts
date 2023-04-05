@@ -1,12 +1,4 @@
 import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from 'firebase/storage';
-
-import { storage } from '../utils/firebase';
-import {
   doWriteArticle,
   doGetArticles,
   doGetArticle,
@@ -30,7 +22,7 @@ const ArticleViewModel = () => {
     await Promise.all(
       images.map(async (image: File) => {
         const name = uuid();
-        const res: any = await api.upload(image, dir, name, email);
+        const res: any = await api.uploadImage(image, dir, name, email);
         if (res.status === 200) {
           paths.push(`${dir}s/${name}`);
         }
@@ -40,7 +32,6 @@ const ArticleViewModel = () => {
   };
   const downloadImages = async (images: Array<string>) => {
     const ret: Array<string> = [];
-
     await Promise.all(
       images.map(async (image: string) => {
         const url = `http://localhost:6060/images/${image}`;
@@ -49,8 +40,9 @@ const ArticleViewModel = () => {
     );
     return ret;
   };
-  const deleteImage = async (imageUrl: string) => {
-    // await deleteObject(ref(storage, imageUrl));
+  const deleteImage = async (imagePath: string, email: string) => {
+    const res = await api.deleteImage(imagePath, email);
+    return res;
   };
   const writeArticle = async (requestBody: any) => {
     const res = await doWriteArticle(requestBody);

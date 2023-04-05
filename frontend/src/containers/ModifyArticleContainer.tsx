@@ -164,7 +164,9 @@ function ModifyArticleContainer() {
     const imgPath = await uploadImages(images, 'article', user.email);
 
     await Promise.all(
-      prevImagePaths.map((prevImagePath: string) => deleteImage(prevImagePath))
+      prevImagePaths.map((prevImagePath: string) =>
+        deleteImage(prevImagePath, user.email)
+      )
     );
     const res: any = await modifyArticle({
       area: loc,

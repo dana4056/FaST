@@ -130,7 +130,9 @@ function CardDetailContainer() {
     const res: any = await deleteArticle(card.id, user.id);
     if (res.status === 200) {
       await Promise.all(
-        imagePaths.map((imagePath: string) => deleteImage(imagePath))
+        imagePaths.map((imagePath: string) =>
+          deleteImage(imagePath, user.email)
+        )
       );
       navigate(-1);
     }

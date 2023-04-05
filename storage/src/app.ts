@@ -29,6 +29,8 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(null, false);
   }
 };
+app.use('/images/articles', express.static('images/articles'));
+app.use('/images/profiles', express.static('images/profiles'));
 
 const jwtFilter = (req: any, res: any, next: any) => {
   const token = req.header('Authorization')?.substring(7);
@@ -114,8 +116,6 @@ app.delete('/delete/profile/:fileName', async (req: Request, res: Response) => {
     }
   });
 });
-app.use('/images/articles', express.static('images/articles'));
-app.use('/images/profiles', express.static('images/profiles'));
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).send('hello');
