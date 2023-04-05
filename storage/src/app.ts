@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import * as cors from 'cors';
 
@@ -9,9 +11,9 @@ const app: Express = express();
 
 const port = 6060;
 
-const __dirname = path.resolve();
-
 app.use(cors.default());
+
+dotenv.config();
 
 const fileFilter = (req: any, file: any, cb: any) => {
   // 확장자 필터링
@@ -27,6 +29,22 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(null, false);
   }
 };
+
+const jwtFilter = (req: any, res: any, next: any) => {
+  const token = req.header('Authorization')?.substring(7);
+  if (!token) {
+    return res.status(401).json({ message: '인증되지 않은 사용자' });
+  }
+  const secret = process.env.JWT_SECRET;
+  jwt.verify(token, Buffer.from(String(secret), 'base64'), (error: any, decode: any) => {
+    if (error) {
+      return res.status(401).json({ message: '인증되지 않은 사용자' });
+    }
+    next();
+  });
+};
+
+app.use(jwtFilter);
 
 const profileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -57,18 +75,6 @@ const articleUpload = multer({
 });
 
 app.post('/upload/profile', profileUpload.single('image'), (req: Request, res: Response) => {
-  res.header('Access-Control-Allow-Headers', 'Authorization');
-  console.log(req.file);
-  const file = req.file;
-  if (!file) {
-    res.status(400).json({ message: '이미지를 업로드해주세요.' });
-  } else {
-    const imagePath = file.path;
-    res.status(200).json({ imagePath });
-  }
-});
-app.post('/upload/article', articleUpload.single('image'), (req: Request, res: Response) => {
-  res.header('Access-Control-Allow-Headers', 'Authorization');
   const file = req.file;
 
   if (!file) {
@@ -78,6 +84,17 @@ app.post('/upload/article', articleUpload.single('image'), (req: Request, res: R
     res.status(200).json({ imagePath });
   }
 });
+app.post('/upload/article', articleUpload.single('image'), (req: Request, res: Response) => {
+  const file = req.file;
+
+  if (!file) {
+    res.status(400).json({ message: '이미지를 업로드해주세요.' });
+  } else {
+    const imagePath = file.path;
+    res.status(200).json({ imagePath });
+  }
+});
+
 app.delete('/delete/article/:fileName', (req: Request, res: Response) => {
   if (fs.existsSync(`/images/articles/${req.params.fileName}`)) {
     try {
