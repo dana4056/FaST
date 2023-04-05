@@ -9,11 +9,15 @@ import * as cors from 'cors';
 
 const app: Express = express();
 
-const port = 6060;
+app.set('port', 6200);
 
 app.use(cors.default());
 
 dotenv.config();
+
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).send('hello');
+});
 
 const fileFilter = (req: any, file: any, cb: any) => {
   // 확장자 필터링
@@ -117,10 +121,6 @@ app.delete('/delete/profile/:fileName', async (req: Request, res: Response) => {
   });
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('hello');
-});
-
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+app.listen(app.get('port'), () => {
+  console.log(`Listening on port ${app.get('port')}`);
 });
