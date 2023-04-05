@@ -18,28 +18,32 @@ import {
 } from '../api/article';
 import uuid from '../utils/uuid';
 import doGetAutoTags from '../api/tag';
+import api from '../api/image';
 
 const ArticleViewModel = () => {
-  const uploadImages = async (images: Array<File>) => {
+  const uploadImages = async (images: Array<File>, dir: string) => {
     const paths: Array<string> = [];
-    // await Promise.all(
-    //   images.map(async (image: File) => {
-    //     const path = `article/${uuid()}`;
-    //     await uploadBytes(ref(storage, path), image);
-    //     paths.push(path);
-    //   })
-    // );
+    await Promise.all(
+      images.map(async (image: File) => {
+        const name = uuid();
+        const res: any = await api.upload(image, dir, name);
+        if (res.status === 200) {
+          paths.push(`${dir}s/${name}`);
+        }
+      })
+    );
+    console.log(paths);
     return paths;
   };
   const downloadImages = async (images: Array<string>) => {
     const ret: Array<string> = [];
 
-    // await Promise.all(
-    //   images.map(async (image: string) => {
-    //     const url = await getDownloadURL(ref(storage, image));
-    //     ret.push(url);
-    //   })
-    // );
+    await Promise.all(
+      images.map(async (image: string) => {
+        const url = `http://localhost:6060/images/${image}`;
+        ret.push(url);
+      })
+    );
     return ret;
   };
   const deleteImage = async (imageUrl: string) => {

@@ -11,10 +11,6 @@ const port = 6060;
 
 const __dirname = path.resolve();
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-};
-
 app.use(cors.default());
 
 const fileFilter = (req: any, file: any, cb: any) => {
@@ -61,6 +57,8 @@ const articleUpload = multer({
 });
 
 app.post('/upload/profile', profileUpload.single('image'), (req: Request, res: Response) => {
+  res.header('Access-Control-Allow-Headers', 'Authorization');
+  console.log(req.file);
   const file = req.file;
   if (!file) {
     res.status(400).json({ message: '이미지를 업로드해주세요.' });
@@ -70,7 +68,9 @@ app.post('/upload/profile', profileUpload.single('image'), (req: Request, res: R
   }
 });
 app.post('/upload/article', articleUpload.single('image'), (req: Request, res: Response) => {
+  res.header('Access-Control-Allow-Headers', 'Authorization');
   const file = req.file;
+
   if (!file) {
     res.status(400).json({ message: '이미지를 업로드해주세요.' });
   } else {
@@ -88,19 +88,15 @@ app.delete('/delete/article/:fileName', (req: Request, res: Response) => {
     }
   }
 });
-app.delete(
-  '/delete/profile/:fileName',
-  cors.default(corsOptions),
-  async (req: Request, res: Response) => {
-    fs.unlink(`./images/profiles/${req.params.fileName}`, (error) => {
-      if (error) {
-        res.status(500).send('Fail');
-      } else {
-        res.status(200).send('Success');
-      }
-    });
-  }
-);
+app.delete('/delete/profile/:fileName', async (req: Request, res: Response) => {
+  fs.unlink(`./images/profiles/${req.params.fileName}`, (error) => {
+    if (error) {
+      res.status(500).send('Fail');
+    } else {
+      res.status(200).send('Success');
+    }
+  });
+});
 app.use('/images/articles', express.static('images/articles'));
 app.use('/images/profiles', express.static('images/profiles'));
 
