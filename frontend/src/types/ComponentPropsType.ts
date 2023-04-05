@@ -120,8 +120,6 @@ export interface CommentProps {
   onChangeComment: React.ChangeEventHandler;
   // 댓글 수정 함수
   handleUpdateComment: React.FormEventHandler;
-  // 답글 좋아요 함수
-  handleReplyLike: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // 댓글 목록 Props

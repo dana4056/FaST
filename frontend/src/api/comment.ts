@@ -109,7 +109,6 @@ export async function doCreateCommentReply(
   }
 }
 
-// 게시물 좋아요 api
 export async function commentLike(commentId: number, userId: number) {
   try {
     const res = await api.get(`/likes/comment`, {
@@ -122,16 +121,47 @@ export async function commentLike(commentId: number, userId: number) {
     return error;
   }
 }
-// 게시물 좋아요 api
 export async function commentReplyLike(commentReplyId: number, userId: number) {
   try {
-    const res = await api.get(`/likes/comment`, {
+    const res = await api.get(`/likes/commentReply`, {
       params: { commentReplyId, userId },
     });
     // console.log(res);
     return res;
   } catch (error) {
     // console.error(error);
+    return error;
+  }
+}
+
+export async function doDeleteReply(id: number, userId: number) {
+  try {
+    const res = await api.delete(`/commentReply/${id}/${userId}`, {
+      params: { id, userId },
+    });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function doUpdateReply(
+  commentReplyId: number,
+  content: string,
+  userId: number
+) {
+  try {
+    const res = await api.put(`/commentReply/modify-commentReply`, {
+      commentReplyId,
+      content,
+      userId,
+    });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.error('aaaaaaaaaa', error);
     return error;
   }
 }

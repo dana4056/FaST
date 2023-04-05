@@ -37,7 +37,6 @@ function CommentContainer({ comment }: CommentContainerProps) {
     updateComment,
     createCommentReply,
     getCommentReplies,
-    likeCommentReply,
   } = useViewModel();
   const { downloadImages } = useArticleViewModel();
 
@@ -135,16 +134,7 @@ function CommentContainer({ comment }: CommentContainerProps) {
     setIsVisibleReplies(true);
   };
 
-  // 답글 좋아요 함수
-  const [pickReply, setPickRePly] = useState<number>(0);
-  const replyLike = async (replyId: number) => {
-    const res = await likeCommentReply(replyId, user.id);
-    return res;
-  };
-  const handleReplyLike = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    replyLike(pickReply);
-  };
+  console.log(reply);
 
   useEffect(() => {
     const getData = async () => {
@@ -175,7 +165,6 @@ function CommentContainer({ comment }: CommentContainerProps) {
       handleUpdateCommentOpenClick={handleUpdateCommentOpenClick}
       onChangeComment={onChangeComment}
       handleUpdateComment={handleUpdateComment}
-      handleReplyLike={handleReplyLike}
     />
   );
 }

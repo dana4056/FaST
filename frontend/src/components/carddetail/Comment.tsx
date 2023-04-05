@@ -5,6 +5,7 @@ import { FcLike } from '@react-icons/all-files/fc/FcLike';
 import { FcLikePlaceholder } from '@react-icons/all-files/fc/FcLikePlaceholder';
 import { userInfo } from '../../atoms/userInfo';
 import Heart from '../Heart';
+import CommentReply from './CommentReply';
 import { CommentProps } from '../../types/ComponentPropsType';
 
 function Comment({
@@ -26,13 +27,8 @@ function Comment({
   handleUpdateCommentOpenClick,
   onChangeComment,
   handleUpdateComment,
-  handleReplyLike,
 }: CommentProps) {
   const [user, setUser] = useRecoilState(userInfo);
-  console.log(user.id);
-
-  console.log(comment.userId);
-
   const [isMine, setIsMine] = useState<boolean>(false);
   useEffect(() => {
     if (user.id === comment.userId) {
@@ -152,33 +148,8 @@ function Comment({
               }
         }
       >
-        {replies.map((item: any) => (
-          <div className="comment__reply" key={item.id}>
-            <div className="comment__reply-header">
-              <div className="comment__reply-profile">
-                <BsPerson />
-              </div>
-              <div className="comment__reply-nickname">{item.nickname}</div>
-              <div className="comment__reply-reg-time">{item.regTime}</div>
-            </div>
-            <div className="comment__reply-content">
-              <div className="comment__reply-reply">{item.content}</div>
-              <div className="comment__reply-like">
-                <button
-                  type="button"
-                  className="comment__reply-heart transparent-button"
-                  onClick={() => handleReplyLike(item.id)}
-                >
-                  <Heart
-                    cardId={item.id}
-                    cntLike={item.numLikes}
-                    isLike={item.isLike}
-                    type="article"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+        {replies.map((commentReply: any) => (
+          <CommentReply commentReply={commentReply} key={commentReply.id} />
         ))}
       </div>
     </div>

@@ -131,26 +131,56 @@
           font-size: 12px;
           color: color.$gray;
         }
+        .comment__reply-update-btn {
+          font-size: 14px;
+          margin-left: auto;
+        }
+        .comment__reply-delete-btn {
+          font-size: 14px;
+          margin-left: 5px;
+        }
       }
       .comment__reply-content {
         width: 95%;
         margin-left: auto;
         display: flex;
-        .comment__reply-reply {
+        .comment__reply-update-box {
+          width: 100%;
+          display: flex;
+          .comment__reply-update-input {
+            width: 80%;
+            border: 0px;
+            border-bottom: 1px solid black;
+            font-size: 17px;
+            margin-right: 5%;
+          }
+          .comment__reply-update-btn {
+            width: 22%;
+            font-size: 15px;
+            background-color: color.$color-4;
+            padding: 5px 9px;
+            color: white;
+            border: 0px;
+          }
+        }
+        .comment__reply-text {
+          margin-top: 4px;
+          margin-left: 2px;
+          font-size: 17px;
           width: 80%;
         }
+        .comment__reply-reply {
+          width: 70%;
+        }
         .comment__reply-like {
-          width: 20%;
-          .comment__reply-heart {
-            font-size: 13px;
+          margin-left: auto;
+          .like-button-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-          }
-          .comment__reply-num-likes {
-            font-size: 12px;
-            text-align: center;
+            flex-direction: row;
+            svg {
+              width: 20px;
+              height: 20px;
+            }
           }
         }
       }

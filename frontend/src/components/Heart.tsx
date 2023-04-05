@@ -26,11 +26,14 @@ function Heart({ cardId, cntLike, isLike, type }: HeartProps) {
       }
     } else if (type === 'comment') {
       const commentLikeData: any = await commentLike(cardId, user.id);
+      console.log(cardId, user.id);
       if (commentLikeData.status === 200) {
         setLiked(commentLikeData.data);
       }
     } else if (type === 'commentReply') {
       const commentReplyLikeData: any = await commentReplyLike(cardId, user.id);
+      console.log(cardId, user.id);
+      console.log(commentReplyLikeData);
       if (commentReplyLikeData.status === 200) {
         setLiked(commentReplyLikeData.data);
       }

@@ -4,7 +4,9 @@ import {
   doCreateComment,
   doGetComments,
   doDeleteComment,
+  doDeleteReply,
   doUpdateComment,
+  doUpdateReply,
   doGetCommentReplies,
   doCreateCommentReply,
   commentReplyLike,
@@ -35,12 +37,26 @@ function CommentViewModel() {
     return res;
   };
 
+  const deleteReply = async (commentReplyId: number, userId: number) => {
+    const res = await doDeleteReply(commentReplyId, userId);
+    return res;
+  };
+
   const updateComment = async (
     commentId: number,
     content: string,
     userId: number
   ) => {
     const res = await doUpdateComment(commentId, content, userId);
+    return res;
+  };
+
+  const updateReply = async (
+    commentReplyId: number,
+    content: string,
+    userId: number
+  ) => {
+    const res = await doUpdateReply(commentReplyId, content, userId);
     return res;
   };
 
@@ -69,7 +85,9 @@ function CommentViewModel() {
     createComment,
     getComments,
     deleteComment,
+    deleteReply,
     updateComment,
+    updateReply,
     getCommentReplies,
     createCommentReply,
     likeCommentReply,
