@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { encryptToken } from '../utils/passwordEncryption';
 
 const api = axios.create({
-  baseURL: 'http://j8a402.p.ssafy.io:8080',
+  baseURL: 'https://j8a402.p.ssafy.io:8080',
   headers: {
     'Content-Type': 'application/json',
   },
