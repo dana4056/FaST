@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { useNavigate, Link } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
@@ -7,6 +6,7 @@ import { storage } from '../utils/firebase';
 
 import Modal from './Modal';
 import followApi from '../api/follow';
+import useViewModel from '../viewmodels/ArticleViewModel';
 
 function FollowItem({ follower, isMine }: any) {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ function FollowItem({ follower, isMine }: any) {
   const onClickMoveRecord = (id: number) => {
     navigate(`/record/${id}`);
   };
+  const { downloadImages } = useViewModel();
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const onClickToggleModal = useCallback(() => {
@@ -27,9 +28,9 @@ function FollowItem({ follower, isMine }: any) {
       setProfileImg(follower.fromUser.imgPath);
     } else {
       const getProfileImage = async () => {
-        const imageRef = ref(storage, follower.fromUser.imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setProfileImg(ret);
+        console.log(follower);
+        const ret = await downloadImages([follower.fromUser.imgPath]);
+        setProfileImg(ret[0]);
       };
       getProfileImage();
     }

@@ -1,6 +1,7 @@
 package a402.FaST.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -11,6 +12,7 @@ import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.*;
+import a402.FaST.repository.CommentReplyRepository;
 import a402.FaST.repository.TagHasUserRepository;
 import a402.FaST.repository.TagRepository;
 import a402.FaST.repository.UserRepository;
@@ -39,6 +41,7 @@ import javax.mail.internet.MimeMessage;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+    private final CommentReplyRepository commentReplyRepository;
     private final TagRepository tagRepository;
     private final TagHasUserRepository tagHasUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -126,6 +129,10 @@ public class UserServiceImpl implements UserService {
         if(!userRepository.existsById(id)){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
+            List<CommentReply> replyList = commentReplyRepository.findAllByUser_Id(id);
+            if(replyList != null){
+                commentReplyRepository.deleteAll(replyList);
+            }
             userRepository.deleteById(id);
             return true;
         }

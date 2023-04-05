@@ -10,6 +10,7 @@ import java.util.List;
 public interface CommentReplyRepository extends JpaRepository<CommentReply, Integer> {
 
     int countByCommentId(int commentId);
-
     List<CommentReply> findAllByCommentIdOrderByCreateTime(int commentId, Pageable pageable);
+    List<CommentReply> findAllByComment_Id(int commentId);
+    List<CommentReply> findAllByUser_Id(int userId);
 }
