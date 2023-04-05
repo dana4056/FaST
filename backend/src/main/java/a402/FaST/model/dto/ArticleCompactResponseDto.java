@@ -15,10 +15,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleCompactResponseDto {
-   private int id; //
-   private int userId; //
-   private String imgPath; //
-   private String lat; //
-   private String lng; //
+   private int id;
+   private int userId;
+   private String imgPath;
+   private String lat;
+   private String lng;
+   private LocalDateTime createTime;
 
 }
