@@ -21,6 +21,10 @@ async function uploadImage(
       baseURL: 'https://j8a402.p.ssafy.io:6060',
       headers: {
         'Content-Type': 'multipart/form-data',
+        Authorization: decryptToken(
+          String(localStorage.getItem('token')),
+          email
+        ),
       },
     });
 
