@@ -6,8 +6,8 @@ import crawlingRouter from './routers/crawling.js';
 import * as cors from 'cors';
 
 const options = {
-  key: fs.readFileSync('src/config/cert.key'),
-  cert: fs.readFileSync('src/config/cert.crt'),
+  key: fs.readFileSync('src/config/privkey3.pem'),
+  cert: fs.readFileSync('src/config/fullchain3.pem'),
 };
 
 const app = express();
