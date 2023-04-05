@@ -4,6 +4,7 @@ import a402.FaST.Controller.UserController;
 import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.Article;
 import a402.FaST.model.entity.Comment;
+import a402.FaST.model.entity.CommentReply;
 import a402.FaST.model.entity.User;
 import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -62,10 +64,15 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public boolean deleteComment(int id, int userId) throws Exception {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("없는 댓글입니다."));
+
         if (comment.getUser().getId() != userId){
             throw new Exception("작성자가 아닙니다");
         }else{
+            List<CommentReply> replyList = commentReplyRepository.findAllByComment_Id(id);
+
+            commentReplyRepository.deleteAll(replyList);
+
             commentRepository.deleteById(id);
             return true;
         }
