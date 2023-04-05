@@ -1,11 +1,17 @@
 import express, { Express, Request, Response } from 'express';
 import multer from 'multer';
+import https from 'https';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
 
 import * as cors from 'cors';
 
 const app = express();
+
+const options = {
+  key: fs.readFileSync('src/config/cert.key'),
+  cert: fs.readFileSync('src/config/cert.crt'),
+};
 
 app.set('port', 6060);
 
@@ -117,6 +123,6 @@ app.delete('/delete/profile/:fileName', async (req: Request, res: Response) => {
   });
 });
 
-app.listen(app.get('port'), () => {
+https.createServer(options, app).listen(app.get('port'), () => {
   console.log(`Listening on port ${app.get('port')}`);
 });
