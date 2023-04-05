@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+// import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import imageCompression from 'browser-image-compression';
 import UserModifyPage from '../pages/UserModifyPage';
 import Modal from '../components/Modal';
 import { userInfo } from '../atoms/userInfo';
@@ -49,17 +50,21 @@ function UserModifyContainer() {
   ) => {
     if (event.target.files) {
       const { files } = event.target;
-      const newImages: Array<File> = [];
-      const newImageUrls: Array<string> = [];
-
-      // 입력한 파일을 순회하며 state에 추가
-      for (let i = 0; i < files.length; i += 1) {
-        newImages[i] = files[i];
-        newImageUrls[i] = URL.createObjectURL(files[i]);
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthORHeight: 640,
+        useWebWorker: true,
+      };
+      try {
+        const compressedImage = await imageCompression(files[0], options);
+        setImage(compressedImage);
+        setImageUrl(URL.createObjectURL(compressedImage));
+        setImgPath(`profiles/${userData.email}`);
+        console.log(`사용자 이미지 입력 : ${imgPath}`);
+      } catch (error) {
+        console.log(error);
       }
-      setImage(newImages[0]);
-      setImageUrl(newImageUrls[0]);
-      setImgPath(`profiles/${userData.email}`);
+      // 입력한 파일을 순회하며 state에 추가
 
       // 입력 초기화
       event.target.value = ''; // eslint-disable-line no-param-reassign
@@ -189,10 +194,9 @@ function UserModifyContainer() {
     const uploadImage = async (img: File | undefined) => {
       if (img === undefined) {
         setImgPath(() => '/profiles/default.jpg');
-        return;
       }
-      const result = await uploadBytes(ref(storage, `profiles/${email}`), img);
-      console.log(result);
+      // const result = await uploadBytes(ref(storage, `profiles/${email}`), img);
+      // console.log(result);
     };
 
     uploadImage(image);

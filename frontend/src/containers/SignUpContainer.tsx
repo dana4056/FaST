@@ -2,8 +2,9 @@ import { ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
+import imageCompression from 'browser-image-compression';
 import SignUpPage from '../pages/SignUpPage';
-import { storage } from '../utils/firebase';
+// import { storage } from '../utils/firebase';
 import api from '../api/signUp';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 import Header from '../components/Header';
@@ -158,18 +159,29 @@ function SignUpContainer() {
       const newImageUrls: Array<string> = [];
 
       // 입력한 파일을 순회하며 state에 추가
-      for (let i = 0; i < files.length; i += 1) {
-        newImages[i] = files[i];
-        newImageUrls[i] = URL.createObjectURL(files[i]);
+      // for (let i = 0; i < files.length; i += 1) {
+      //   newImages[i] = files[i];
+      //   newImageUrls[i] = URL.createObjectURL(files[i]);
+      // }
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthORHeight: 640,
+        useWebWorker: true,
+      };
+      try {
+        const compressedImage = await imageCompression(files[0], options);
+        setImage(compressedImage);
+        setImageUrl(URL.createObjectURL(compressedImage));
+        setImgPath(`profiles/${email}`);
+        console.log(`사용자 이미지 입력 : ${imgPath}`);
+      } catch (error) {
+        console.log(error);
       }
-      setImage(newImages[0]);
-      setImageUrl(newImageUrls[0]);
-      setImgPath(`profiles/${email}`);
-      console.log(`사용자 이미지 입력 : ${imgPath}`);
       // 입력 초기화
       // event.target.value = ''; // eslint-disable-line no-param-reassign
     }
   };
+
   // 입력한 이미지 삭제
   const handleImageDelete = () => {
     setImageUrl('');
@@ -320,14 +332,14 @@ function SignUpContainer() {
 
       // 파이어베이스에 사용자 프로필 사진 등록
       const uploadImage = async (img: File | undefined) => {
-        if (img === undefined) {
-          return;
-        }
-        const result = await uploadBytes(
-          ref(storage, `profiles/${email}`),
-          img
-        );
-        console.log(result);
+        // if (img === undefined) {
+        //   return;
+        // }
+        // const result = await uploadBytes(
+        //   ref(storage, `profiles/${email}`),
+        //   img
+        // );
+        // console.log(result);
       };
 
       uploadImage(image);

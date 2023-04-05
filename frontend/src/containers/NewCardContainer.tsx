@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
+import imageCompression from 'browser-image-compression';
 
 import { AxiosResponse } from 'axios';
 import NewCardPage from '../pages/NewCardPage';
@@ -157,12 +158,25 @@ function NewCardContainer() {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
-    console.log(images[0].name.slice(-4));
-    if (localStorage.getItem('token') !== null) {
-      console.log(
-        decryptToken(String(localStorage.getItem('token')), user.email)
+
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthORHeight: 640,
+      useWebWorker: true,
+    };
+    try {
+      const compressedImage: Array<File> = [];
+      await Promise.all(
+        images.map(async (image: File) => {
+          const compressedFile = await imageCompression(image, options);
+          compressedImage.push(compressedFile);
+        })
       );
+      setImages([...compressedImage]);
+    } catch (error) {
+      console.log(error);
     }
+
     // const imgPath = await uploadImages(images);
 
     // const res = await writeArticle({
