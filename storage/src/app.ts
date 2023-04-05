@@ -1,19 +1,15 @@
 import express, { Express, Request, Response } from 'express';
-import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
 import * as cors from 'cors';
 
-const app: Express = express();
+const app = express();
 
-app.set('port', 6200);
+app.set('port', 6060);
 
 app.use(cors.default());
-
-dotenv.config();
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).send('hello');
