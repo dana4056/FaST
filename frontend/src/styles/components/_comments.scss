@@ -3,6 +3,8 @@
 .comments {
   flex: none;
   display: flex;
+  width: 100%;
+  margin: 0 auto;
   flex-direction: column;
   .comments__header {
     display: flex;
@@ -14,6 +16,7 @@
       align-items: center;
     }
     .comments__form {
+      width: 100%;
       margin-left: auto;
       display: flex;
       align-items: center;
@@ -23,8 +26,10 @@
         border: none;
         outline: none;
         padding: 4px;
+        width: 80%;
       }
       .comments__submit {
+        width: 20%;
         font-size: 20px;
         border: none;
         background-color: color.$color-4;
@@ -37,9 +42,13 @@
   }
   .comments__content {
     margin: 0 auto;
-    width: 90%;
+    width: 100%;
     overflow: auto;
     max-height: 100%;
+    scrollbar-width: 0px;
+  }
+  .comments__content::-webkit-scrollbar {
+    display: hidden;
   }
   .comments__footer {
     display: flex;

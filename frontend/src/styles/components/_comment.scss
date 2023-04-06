@@ -2,7 +2,9 @@
 
 .comment {
   padding: 10px;
+  margin: 0 auto;
   margin-bottom: 20px;
+  width: calc(90% - 20px);
   .comment__header {
     display: flex;
     align-items: center;
@@ -38,39 +40,43 @@
   .comment__content {
     display: flex;
     .comment__update-box {
-      width: 80%;
+      display: flex;
+      width: 85%;
       .comment__update-input {
-        width: 75%;
+        width: 80%;
         border: 0px;
         border-bottom: 1px solid black;
         font-size: 17px;
-        margin-right: 5%;
+        // margin-right: 5%;
       }
       .comment__update-btn {
         font-size: 17px;
         background-color: color.$color-4;
-        padding: 5px 9px;
+        // padding: 5px 9px;
         color: white;
         border: 0px;
+        margin-left: auto;
       }
     }
     .comment__text {
       margin-top: 5px;
-      margin-left: 2px;
+      // margin-left: 2px;
+      max-width: 85%;
       font-size: 17px;
-      width: 80%;
+      word-wrap: break-word;
     }
 
     .comment__like {
-      //   width: 20%;
       margin-left: auto;
       .like-button-container {
         display: flex;
         flex-direction: column;
         svg {
-          width: 28px;
-          height: 28px;
+          width: 24px;
+          height: 24px;
         }
+        margin: 0;
+        font-size: 12px;
       }
       //   text-align: center;
       //   font-size: 14px;
@@ -92,7 +98,7 @@
     justify-content: center;
     overflow: hidden;
     .comment__input-reply {
-      padding: 8px;
+      // padding: 8px;
       width: 70%;
       border: none;
     }
@@ -107,7 +113,7 @@
   }
   .comment__replies {
     transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-    overflow: hidden;
+    overflow-y: hidden;
     .comment__reply {
       padding: 10px 0;
       border-bottom: 0.5px solid color.$gray;
@@ -137,50 +143,48 @@
         }
         .comment__reply-delete-btn {
           font-size: 14px;
-          margin-left: 5px;
+          // margin-left: 5px;
         }
       }
       .comment__reply-content {
+        margin: 0 auto;
         width: 95%;
-        margin-left: auto;
         display: flex;
         .comment__reply-update-box {
-          width: 100%;
+          margin-top: 4px;
+          width: 80%;
+          flex: none;
           display: flex;
           .comment__reply-update-input {
-            width: 80%;
             border: 0px;
+            width: 80%;
             border-bottom: 1px solid black;
-            font-size: 17px;
-            margin-right: 5%;
+            box-sizing: border-box;
           }
           .comment__reply-update-btn {
-            width: 22%;
-            font-size: 15px;
             background-color: color.$color-4;
-            padding: 5px 9px;
             color: white;
             border: 0px;
+            margin-left: auto;
           }
         }
         .comment__reply-text {
           margin-top: 4px;
-          margin-left: 2px;
           font-size: 17px;
-          width: 80%;
+          max-width: 85%;
+          word-wrap: break-word;
         }
-        .comment__reply-reply {
-          width: 70%;
-        }
+
         .comment__reply-like {
           margin-left: auto;
           .like-button-container {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             svg {
               width: 20px;
               height: 20px;
             }
+            font-size: 12px;
           }
         }
       }

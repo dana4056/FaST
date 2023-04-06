@@ -4,7 +4,7 @@
   margin: 20px 5%;
   flex: none;
   width: 90%;
-  max-height: fit-content;
+  height: fit-content;
   .card-detail__header {
     position: relative;
     display: flex;
@@ -61,7 +61,9 @@
   }
 
   .card-detail__footer {
-    padding: 10px;
+    padding: 10px 0;
+    width: 80%;
+    margin: 0 auto;
     .card-detail__sns {
       display: flex;
       .card-detail__like {
@@ -85,17 +87,21 @@
         align-items: center;
         font-size: 28px;
         span {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: bold;
           padding-left: 6px;
         }
       }
-    }
-    .card-detail__info {
-      display: flex;
-      .card-detail__info-data {
-        padding: 6px 10px;
+      .card-detail__reg-time {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        font-size: 14px;
       }
+    }
+    .card-detail__content {
+      width: 100%;
+      word-wrap: break-word;
     }
   }
 }

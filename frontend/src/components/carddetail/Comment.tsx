@@ -66,21 +66,17 @@ function Comment({
       </div>
       <div className="comment__content">
         {openUpdateComment ? (
-          <div className="comment__update-box">
+          <form className="comment__update-box" onSubmit={handleUpdateComment}>
             <input
               type="text"
               defaultValue={commentContent}
               onChange={onChangeComment}
               className="comment__update-input"
             />
-            <button
-              type="button"
-              className="comment__update-btn card"
-              onClick={handleUpdateComment}
-            >
+            <button type="submit" className="comment__update-btn card">
               저장
             </button>
-          </div>
+          </form>
         ) : (
           <div className="comment__text">{commentContent}</div>
         )}
@@ -149,7 +145,11 @@ function Comment({
         }
       >
         {replies.map((commentReply: any) => (
-          <CommentReply commentReply={commentReply} key={commentReply.id} />
+          <CommentReply
+            commentReply={commentReply}
+            key={commentReply.id}
+            isVisibleReplies={isVisibleReplies}
+          />
         ))}
       </div>
     </div>

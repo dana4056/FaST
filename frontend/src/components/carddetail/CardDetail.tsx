@@ -22,6 +22,7 @@ function CardDetail({
   handleUnfollow,
   handleMoveUserPage,
 }: CardDetailProps) {
+  console.log(card);
   return (
     <div className="card card-detail">
       <div className="card-detail__header">
@@ -106,11 +107,7 @@ function CardDetail({
             <BiComment />
             <span>{card.numComments} 개</span>
           </button>
-        </div>
-        <div className="card-detail__info">
-          <div className="card-detail__info-data">{card.nickname}</div>
-          <div className="card-detail__info-data">{card.regTime}</div>
-          <div className="card-detail__info-data">{card.content}</div>
+          <div className="card-detail__reg-time">{card.regTime}</div>
         </div>
         <div className="card-detail__tags">
           {card.tags.map((tag: TagType) => (
@@ -123,6 +120,7 @@ function CardDetail({
             </Tag>
           ))}
         </div>
+        <div className="card-detail__content">{card.content}</div>
       </div>
     </div>
   );

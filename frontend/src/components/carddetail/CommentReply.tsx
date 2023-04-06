@@ -44,12 +44,11 @@ function CommentReply({ commentReply }: any) {
     const res = await updateReply(commentReply.id, replyContent, user.id);
     return res;
   };
-  const handleUpdateReply = async (event: React.MouseEvent) => {
+  const handleUpdateReply = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     updateReplyData();
     setOpenUpdateReply(false);
   };
-  console.log(replyContent);
   return (
     <div className="comment__reply">
       <div className="comment__reply-header">
@@ -78,27 +77,24 @@ function CommentReply({ commentReply }: any) {
         ) : null}
       </div>
       <div className="comment__reply-content">
-        <div className="comment__reply-reply">
-          {openUpdateReply ? (
-            <div className="comment__reply-update-box">
-              <input
-                type="text"
-                defaultValue={replyContent}
-                onChange={onChangeReply}
-                className="comment__reply-update-input"
-              />
-              <button
-                type="button"
-                className="comment__reply-update-btn card"
-                onClick={handleUpdateReply}
-              >
-                저장
-              </button>
-            </div>
-          ) : (
-            <div className="comment__reply-text">{replyContent}</div>
-          )}
-        </div>
+        {openUpdateReply ? (
+          <form
+            className="comment__reply-update-box"
+            onSubmit={handleUpdateReply}
+          >
+            <input
+              type="text"
+              defaultValue={replyContent}
+              onChange={onChangeReply}
+              className="comment__reply-update-input"
+            />
+            <button type="submit" className="comment__reply-update-btn card">
+              저장
+            </button>
+          </form>
+        ) : (
+          <div className="comment__reply-text">{replyContent}</div>
+        )}
         <div className="comment__reply-like">
           <Heart
             cardId={commentReply.id}
