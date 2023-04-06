@@ -49,7 +49,7 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
     });
     localStorage.setItem(
       'token',
-      'Bearer '.concat(encryptToken(token, res.data.email))
+      encryptToken('Bearer '.concat(token), res.data.email)
     );
     // console.log(res.headers.authorization);
     return res;
