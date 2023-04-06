@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { AiFillCheckCircle } from '@react-icons/all-files/ai/AiFillCheckCircle';
+import Modal from '../components/Modal';
 import InputProfile from '../components/SignUp/InputProfile';
 import { SignUpPageProps } from '../types/PagePropsType';
 
@@ -12,6 +13,8 @@ export default function SignUpPage({
   emailMessage,
   passwordMessage,
   passwordConfirmMessage,
+  openSendModal,
+  openAuthModal,
   isEmail,
   isCheckEmail,
   isName,
@@ -35,9 +38,11 @@ export default function SignUpPage({
   onClickNext,
   onClickComplete,
   onClickTag,
+  onClickSendModal,
+  onClickAuthdModal,
 }: SignUpPageProps) {
   useEffect(() => {
-    console.log(selectedTag);
+    // console.log(selectedTag);
   }, [selectedTag]);
 
   return (
@@ -86,6 +91,34 @@ export default function SignUpPage({
               type="password"
               disabled={!isEmail}
             />
+            {openSendModal && (
+              <Modal onClickToggleModal={onClickSendModal}>
+                <div className="follow_delete_modal">
+                  <h3 className="follow_delete_text">전송되었습니다.</h3>
+                  <button
+                    className="follow_delete_btn"
+                    type="button"
+                    onClick={onClickSendModal}
+                  >
+                    닫기
+                  </button>
+                </div>
+              </Modal>
+            )}
+            {openAuthModal && (
+              <Modal onClickToggleModal={onClickAuthdModal}>
+                <div className="follow_delete_modal">
+                  <h3 className="follow_delete_text">인증되었습니다.</h3>
+                  <button
+                    className="follow_delete_btn"
+                    type="button"
+                    onClick={onClickAuthdModal}
+                  >
+                    닫기
+                  </button>
+                </div>
+              </Modal>
+            )}
             {isSend === true ? (
               <button
                 className="card sign-up-page__button"
