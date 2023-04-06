@@ -12,10 +12,10 @@ async function getSalt(email: string): Promise<AxiosResponse> {
   try {
     const res = await api.get<any>(`/user/salt/${email}`);
 
-    console.log(res.status);
+    // console.log(res.status);
     return res;
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 }
@@ -36,7 +36,7 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
     // console.log(res.headers.authorization);
     return res;
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 }
@@ -51,7 +51,7 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
     // console.log(res.headers.authorization);
     return res;
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 }
@@ -64,7 +64,7 @@ async function registerTag(tags: Array<string>, userId: number) {
     });
     return res.status;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 }

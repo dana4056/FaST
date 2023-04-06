@@ -133,6 +133,8 @@ export interface LoginPageProps {
   goNaverLogin: () => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isFail: boolean;
+  handleModalClose: () => void;
 }
 
 // 회원정보수정 페이지 props
