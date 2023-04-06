@@ -44,7 +44,7 @@ function FollowList({ following, notFollowing, isMine }: any) {
           <input
             type="text"
             className="ui_text"
-            placeholder="검색"
+            placeholder="팔로잉 검색 & 추가"
             onChange={getValue}
             value={userInput}
           />
@@ -70,6 +70,19 @@ function FollowList({ following, notFollowing, isMine }: any) {
                   isMine={isMine}
                 />
               ))}
+        </div>
+        <div className="follow__message">
+          {userInput === '' && following?.length === 0 ? (
+            <div>
+              아직 팔로잉한 친구가 없어요 :( <br />
+              <br /> 친구의 닉네임을 검색해보세요
+            </div>
+          ) : null}
+          {userInput !== '' &&
+          searchedFollowing?.length === 0 &&
+          searchedNotFollowing?.length === 0
+            ? `${userInput}님을 찾을 수 없어요 :(`
+            : null}
         </div>
         {userInput && (
           <div>

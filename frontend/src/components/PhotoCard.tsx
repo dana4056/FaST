@@ -38,7 +38,7 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
           <div className="photo-card__comments_icon">
             <BiCommentDetail />
           </div>
-          {card.numComments} Comments
+          {card.numComments} 개
         </div>
       </div>
       <div className="photo-card__tags">

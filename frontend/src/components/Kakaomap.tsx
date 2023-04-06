@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../utils/firebase';
-import sample2 from '../assets/images/sample-images/sample_2.jpg';
+import { HiOutlineLocationMarker } from '@react-icons/all-files/hi/HiOutlineLocationMarker';
 import kakaomappin from '../assets/images/kakaomappin.png';
-import kakaomappin2 from '../assets/images/kakaomapppin2.png';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
 declare global {
@@ -152,7 +149,7 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
           borderRadius: '10px',
         }}
       />
-      <img className="mappin" src={kakaomappin2} alt="aa" />
+      <img className="mappin" src={kakaomappin} alt="aa" />
     </div>
   );
 }

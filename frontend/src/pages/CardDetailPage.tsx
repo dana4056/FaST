@@ -25,6 +25,7 @@ function CardDetailPage({
   handleUnfollow,
   handleMoveUserPage,
 }: CardDetailPageProps) {
+  console.log(comments);
   return (
     <div className="card-detail-page">
       <div
