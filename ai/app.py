@@ -175,4 +175,4 @@ if __name__ == '__main__':
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     print(ssl_context)
     ssl_context.load_cert_chain(certfile='cert.pem', keyfile='privkey.pem', password='a402')
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', ssl_context=context)
