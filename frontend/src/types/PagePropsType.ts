@@ -42,6 +42,8 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleCustomTagDelete: (i: number) => void;
   handleAutoTagDelete: (i: number) => void;
   handlePageMove: () => void;
+  handleTextareaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  tagInputRef: React.RefObject<HTMLInputElement>;
 }
 
 export interface ModifyArticlePageProps extends NewCardPageProps {

@@ -36,6 +36,7 @@ function NewCardContainer() {
   const [isFail, setIsFail] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
+  const tagInputRef = useRef<HTMLInputElement>(null);
 
   const user = useRecoilValue(userInfo);
 
@@ -62,6 +63,11 @@ function NewCardContainer() {
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
+  useEffect(() => {
+    if (isModalOpen && tagInputRef.current) {
+      tagInputRef.current.focus();
+    }
+  }, [isModalOpen]);
   const handleModalClose = () => {
     setCustomTag('');
     setIsModalOpen(false);
@@ -151,6 +157,15 @@ function NewCardContainer() {
     setLoc('');
     setLo('');
     setLa('');
+  };
+
+  const handleTextareaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   // 카드 생성 함수
@@ -295,6 +310,8 @@ function NewCardContainer() {
       handleCustomTagDelete={handleCustomTagDelete}
       handleAutoTagDelete={handleAutoTagDelete}
       handlePageMove={handlePageMove}
+      handleTextareaChange={handleTextareaChange}
+      tagInputRef={tagInputRef}
     />
   );
 }

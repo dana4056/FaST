@@ -55,9 +55,8 @@
       textarea {
         display: block;
         width: 90%;
-        resize: none;
         margin: 10px auto;
-        height: 160px;
+        min-height: 130px;
         outline: none;
         border: none;
         font-size: 20px;

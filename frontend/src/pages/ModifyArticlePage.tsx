@@ -28,6 +28,7 @@ function ModifyArticlePage({
   handleCustomTagDelete,
   handleAutoTagDelete,
   handlePageMove,
+  tagInputRef,
 }: ModifyArticlePageProps) {
   return (
     <div className="new-card-page">
@@ -66,7 +67,11 @@ function ModifyArticlePage({
           </button>
         </div>
         <div className="new-card-page__description card">
-          <textarea placeholder="추억을 남겨보세요" ref={textareaRef} />
+          <textarea
+            placeholder="추억을 남겨보세요"
+            ref={textareaRef}
+            maxLength={100}
+          />
         </div>
         <div className="new-card-page__row">
           <button type="submit" className="new-card-page__submit card">
@@ -93,6 +98,8 @@ function ModifyArticlePage({
               onChange={handleCustomTagInputChange}
               className="new-card-page__input"
               value={customTag}
+              maxLength={10}
+              ref={tagInputRef}
             />
             <button type="submit" className="new-card-page__modal-submit card">
               입력

@@ -28,6 +28,8 @@ function NewCardPage({
   handleCustomTagDelete,
   handleAutoTagDelete,
   handlePageMove,
+  handleTextareaChange,
+  tagInputRef,
 }: NewCardPageProps) {
   return (
     <div className="new-card-page">
@@ -66,7 +68,13 @@ function NewCardPage({
           </button>
         </div>
         <div className="new-card-page__description card">
-          <textarea placeholder="추억을 남겨보세요" ref={textareaRef} />
+          <textarea
+            placeholder="추억을 남겨보세요"
+            ref={textareaRef}
+            maxLength={100}
+            rows={1}
+            onChange={handleTextareaChange}
+          />
         </div>
         <div className="new-card-page__row">
           <button type="submit" className="new-card-page__submit card">
@@ -83,7 +91,7 @@ function NewCardPage({
           <form
             onSubmit={handleCustomTagAdd}
             role="presentation"
-            className="new-card-page__modal-form"
+            className="new-card-page__modal-form card"
             onClick={(event: React.MouseEvent<HTMLFormElement>) =>
               event.stopPropagation()
             }
@@ -91,7 +99,9 @@ function NewCardPage({
             <input
               type="text"
               onChange={handleCustomTagInputChange}
+              ref={tagInputRef}
               className="new-card-page__input"
+              maxLength={10}
               value={customTag}
             />
             <button type="submit" className="new-card-page__modal-submit card">
