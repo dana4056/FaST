@@ -46,6 +46,8 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleTextareaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   tagInputRef: React.RefObject<HTMLInputElement>;
   errorMessage: string;
+  isNoTags: boolean;
+  handleNoTagsModalClose: () => void;
 }
 
 export interface ModifyArticlePageProps extends NewCardPageProps {
