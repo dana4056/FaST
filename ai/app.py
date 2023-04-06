@@ -15,6 +15,7 @@ from model import DistributedModel
 
 import warnings
 import csv
+import ssl
 
 tf.get_logger().setLevel(logging.ERROR)
 np.set_printoptions(threshold=np.inf, linewidth=np.inf)  # inf = infinity
@@ -52,6 +53,11 @@ else:
 app = Flask(__name__)
 
 cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
+
+
+@app.route('/', methods=['GET'])
+def test():
+    return "https 성공"
 
 
 @app.route('/article/image', methods=['POST'])
@@ -165,4 +171,8 @@ def read_classes(area):
     return classes
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # print(ssl_context)
+    # ssl_context.load_cert_chain(certfile='fullchain.pem', keyfile='privkey.pem')
+    app.run(host='0.0.0.0', ssl_context=('fullchain.pem', 'privkey.pem'))
