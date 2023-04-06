@@ -49,15 +49,17 @@ function Footer() {
         plusRef.current.checked = true;
       }
     } else if (path === 'record') {
-      if (recordRef.current) {
-        recordRef.current.checked = true;
+      if (location.pathname.split('/')[2] === String(user.id)) {
+        if (recordRef.current) {
+          recordRef.current.checked = true;
+        }
       }
     } else if (path === 'mypage') {
       if (mypageRef.current) {
         mypageRef.current.checked = true;
       }
     }
-  }, []);
+  }, [location]);
 
   return (
     <div className="footer">
