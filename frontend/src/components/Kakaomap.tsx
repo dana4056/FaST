@@ -2,13 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../utils/firebase';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
-import mappin from '../assets/images/mappin.png';
-import flag from '../assets/images/flag.png';
-import pin2 from '../assets/images/pin2.png';
-import pin3 from '../assets/images/pin3.png';
-
-import pin4 from '../assets/images/pin4.png';
-import pin5 from '../assets/images/pin5.png';
 import kakaomappin from '../assets/images/kakaomappin.png';
 import kakaomappin2 from '../assets/images/kakaomapppin2.png';
 
@@ -22,6 +15,7 @@ export interface PinType {
   pointX: number;
   pointY: number;
   pointImg: any;
+  pointTime: string;
 }
 
 function Kakaomap({ selectOption, positionData, checkClicked }: any) {
@@ -34,18 +28,30 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
         const imageRef = ref(storage, positionData[i].imgPath);
         const ret = await getDownloadURL(imageRef);
         setImageUrl(ret);
+        console.log(imageUrl);
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
       };
       getImage();
+      const date = new Date(positionData[i].createTime);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const formmatedDate = `${year}.${month}.${day}`;
+      console.log(imageUrl);
+      console.log(sample2);
       markerDatas.push({
         pointX: positionData[i].lat,
         pointY: positionData[i].lng,
-        // pointImg, imageUrl,
-        pointImg: sample2,
+        pointImg: imageUrl,
+        // pointImg: sample2,
+        pointTime: formmatedDate,
       });
     }
   }
   const container = useRef<HTMLDivElement>(null);
   const [kakaoMap, setKakaoMap] = useState<any>(null);
+
+  console.log(positionData);
 
   useEffect(() => {
     if (container.current && checkClicked === 'after_click') {
@@ -66,12 +72,7 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
     console.log(kakaomappin);
     if (kakaoMap) {
-      // const imageSrc = '/static/media/flag.9a05ea6e2fc27aed904d.png';
-      // const imageSrc = '/static/media/pin2.7295d41ad48ac72fe225.png';
-      // const imageSrc = '/static/media/pin3.e2790ebf2839a776235d.png';
       const imageSrc = '/static/media/kakaomappin.e5e2f1a6ce9b49cbeaf9.png';
-      // const imageSrc = '/static/media/kakaomapppin2.7e5c5b4ffb8055c94145.png';
-      // const imageSrc = '/static/media/pin5.090db1df04fe6172dff5.png';
 
       const imageSize = new window.kakao.maps.Size(30, 30); // 마커이미지의 크기입니다
       const imageOption = {
@@ -106,7 +107,7 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
         const iwContent =
           '<div className="iwContentContainer" style="border: 8px solid white; border-bottom: 30px solid white; background-color: white">' +
           `<img className="iwContentImg" style="width:120px; " src=${markerDatas[i].pointImg} alt='test' />` +
-          '<div>주소</div>' +
+          `<div>${markerDatas[i].pointTime}</div>` +
           '</div>';
 
         // 커스텀 오버레이가 표시될 위치입니다
@@ -147,11 +148,7 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
           borderRadius: '10px',
         }}
       />
-      <img className="mappin" src={kakaomappin} alt="aa" />
       <img className="mappin" src={kakaomappin2} alt="aa" />
-      <img className="mappin" src={pin3} alt="aa" />
-      <img className="mappin" src={pin4} alt="aa" />
-      <img className="mappin" src={pin5} alt="aa" />
     </div>
   );
 }

@@ -57,7 +57,7 @@ const ArticleViewModel = () => {
     await Promise.all(
       images.map(async (image: File) => {
         const res = await doGetAutoTags(image, area);
-        if (res.data.length > 0) {
+        if (res.data) {
           ret = ret.concat(res.data);
         }
       })

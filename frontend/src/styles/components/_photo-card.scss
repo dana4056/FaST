@@ -27,16 +27,23 @@
       font-size: 12px;
       float: left;
       svg {
-        width: 25px;
-        height: 25px;
+        width: 24px;
+        height: 24px;
       }
       span {
-        font-size: 14px;
+        font-size: 10px;
       }
     }
-    .photo-card__nickname {
+    .photo-card__comments {
       float: right;
-      margin-right: 4px;
+      display: flex;
+      align-items: center;
+
+      .photo-card__comments_icon {
+        margin-right: 2px;
+        font-size: 22px;
+      }
+      font-size: 10px;
     }
   }
   .photo-card__tags {
