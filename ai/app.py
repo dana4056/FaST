@@ -55,6 +55,11 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/article/*": {"origins": "*"}})
 
 
+@app.route('/', methods=['GET'])
+def test():
+    return "https 성공"
+
+
 @app.route('/article/image', methods=['POST'])
 def index():
 
