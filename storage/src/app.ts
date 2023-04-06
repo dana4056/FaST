@@ -13,7 +13,7 @@ const options = {
   cert: fs.readFileSync('src/config/fullchain3.pem'),
 };
 
-app.set('port', 6060);
+app.set('port', 4041);
 
 app.use(cors.default());
 
