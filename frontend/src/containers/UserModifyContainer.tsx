@@ -208,19 +208,17 @@ function UserModifyContainer() {
       }
     } else {
       const deleteRes: any = await deleteImage(userData.imgPath, user.email);
-      if (deleteRes.status === 200) {
-        const path = await uploadImages([image], 'profile', user.email);
-        const newData: any = await modifyApi.modifyData(
-          user.id,
-          path[0],
-          nickname,
-          tagList
-        );
-        if (newData.status === 200) {
-          onClickSaveModal();
-        } else {
-          console.log('에러');
-        }
+      const path = await uploadImages([image], 'profile', user.email);
+      const newData: any = await modifyApi.modifyData(
+        user.id,
+        path[0],
+        nickname,
+        tagList
+      );
+      if (newData.status === 200) {
+        onClickSaveModal();
+      } else {
+        console.log('에러');
       }
     }
   };
