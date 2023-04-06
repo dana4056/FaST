@@ -36,6 +36,10 @@ function NewCardContainer() {
   const [isFail, setIsFail] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>(
+    '내부서버오류 \n 잠시 후에 다시 시도해주세요,'
+  );
+  const tagInputRef = useRef<HTMLInputElement>(null);
 
   const user = useRecoilValue(userInfo);
 
@@ -62,12 +66,17 @@ function NewCardContainer() {
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
+  useEffect(() => {
+    if (isModalOpen && tagInputRef.current) {
+      tagInputRef.current.focus();
+    }
+  }, [isModalOpen]);
   const handleModalClose = () => {
     setCustomTag('');
     setIsModalOpen(false);
   };
   const handlePageMove = () => {
-    navigate('/home');
+    navigate(`/record/${user.id}`);
   };
   const handleFailModalClose = () => {
     setIsFail(false);
@@ -75,8 +84,10 @@ function NewCardContainer() {
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const newCustomTags = customTags;
     newCustomTags.push(customTag);
+
     setCustomTags([...newCustomTags]);
     setCustomTag('');
     handleModalClose();
@@ -97,7 +108,6 @@ function NewCardContainer() {
       filesArray.forEach((file: any, i: number) => {
         EXIF.getData(file, () => {
           const meta = EXIF.getAllTags(file);
-          console.log(meta);
           if (la.length === 0 && meta && meta.GPSLatitudeRef) {
             if (meta.GPSLatitudeRef === 'S') {
               setLa(
@@ -148,9 +158,19 @@ function NewCardContainer() {
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
+    setCustomTags([]);
     setLoc('');
     setLo('');
     setLa('');
+  };
+
+  const handleTextareaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   // 카드 생성 함수
@@ -177,7 +197,6 @@ function NewCardContainer() {
         'article',
         user.email
       );
-      console.log(imgPath);
       if (imgPath.length === 0) {
         setIsFail(true);
         return;
@@ -215,7 +234,6 @@ function NewCardContainer() {
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
-            console.log(region);
             if (region === '서울') {
               setLoc('서울특별시');
             } else if (region === '인천') {
@@ -226,6 +244,30 @@ function NewCardContainer() {
               setLoc('제주특별자치도');
             } else if (region === '경기') {
               setLoc('경기도');
+            } else if (region === '세종특별자치시') {
+              setLoc('세종특별자치시');
+            } else if (region === '광주') {
+              setLoc('광주광역시');
+            } else if (region === '대전') {
+              setLoc('대전광역시');
+            } else if (region === '울산') {
+              setLoc('울산광역시');
+            } else if (region === '대구') {
+              setLoc('대구광역시');
+            } else if (region === '부산') {
+              setLoc('부산광역시');
+            } else if (region === '충북') {
+              setLoc('충청북도');
+            } else if (region === '강원') {
+              setLoc('강원도');
+            } else if (region === '충남') {
+              setLoc('충청남도');
+            } else if (region === '전북') {
+              setLoc('전라북도');
+            } else if (region === '경남') {
+              setLoc('경상남도');
+            } else if (region === '전남') {
+              setLoc('전라남도');
             }
           }
         };
@@ -241,7 +283,9 @@ function NewCardContainer() {
       const newAutoTags: Array<string> = [];
       if (res.length > 0) {
         res.forEach((tag: string) => {
-          newAutoTags.push(tag);
+          if (customTag.length + newAutoTags.length < 10) {
+            newAutoTags.push(tag);
+          }
         });
       }
       setAutoTags([...newAutoTags]);
@@ -272,6 +316,9 @@ function NewCardContainer() {
       handleCustomTagDelete={handleCustomTagDelete}
       handleAutoTagDelete={handleAutoTagDelete}
       handlePageMove={handlePageMove}
+      handleTextareaChange={handleTextareaChange}
+      tagInputRef={tagInputRef}
+      errorMessage={errorMessage}
     />
   );
 }

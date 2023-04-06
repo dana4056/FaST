@@ -43,6 +43,9 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleCustomTagDelete: (i: number) => void;
   handleAutoTagDelete: (i: number) => void;
   handlePageMove: () => void;
+  handleTextareaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  tagInputRef: React.RefObject<HTMLInputElement>;
+  errorMessage: string;
 }
 
 export interface ModifyArticlePageProps extends NewCardPageProps {
@@ -91,6 +94,8 @@ export interface SignUpPageProps extends InputProfileProps {
   passwordMessage: string;
   passwordConfirmMessage: string;
 
+  openSendModal: boolean;
+  openAuthModal: boolean;
   isEmail: boolean;
   isCheckEmail: boolean;
   isName: boolean;
@@ -113,6 +118,8 @@ export interface SignUpPageProps extends InputProfileProps {
   onClickNext: () => void;
   onClickComplete: () => void;
   onClickTag: (e: number, row: number) => void;
+  onClickSendModal: () => void;
+  onClickAuthdModal: () => void;
 }
 
 export interface LoginPageProps {

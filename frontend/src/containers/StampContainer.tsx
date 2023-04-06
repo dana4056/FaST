@@ -158,7 +158,7 @@ function StampContainer() {
   };
 
   const moveBack = () => {
-    navigate(-1);
+    navigate(`/record/${user.id}`);
   };
 
   useEffect(() => {
@@ -210,11 +210,11 @@ function StampContainer() {
                 newModels.chinatown.model = ChinaTown;
                 newModels.chinatown.visited = true;
                 break;
-              case '첨성대':
+              case '경주첨성대':
                 newModels.cheomseongdae.model = Cheomseongdae;
                 newModels.cheomseongdae.visited = true;
                 break;
-              case '석굴암':
+              case '경주석굴암':
                 newModels.seokguram.model = Seokguram;
                 newModels.seokguram.visited = true;
                 break;
