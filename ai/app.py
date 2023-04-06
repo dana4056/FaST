@@ -15,6 +15,7 @@ from model import DistributedModel
 
 import warnings
 import csv
+import ssl
 
 tf.get_logger().setLevel(logging.ERROR)
 np.set_printoptions(threshold=np.inf, linewidth=np.inf)  # inf = infinity
@@ -165,4 +166,6 @@ def read_classes(area):
     return classes
 
 if __name__ == '__main__':
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    ssl_context.load_cert_chain(certfile='fullchain.pem', keyfile='privkey.pem', password='a402')
     app.run(host='0.0.0.0', debug=True)
