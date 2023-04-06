@@ -22,6 +22,8 @@ function MapPage({
   positionData,
   area,
 }: any) {
+  console.log(cardsLeft, cardsRight);
+
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
   const navigate = useNavigate();
