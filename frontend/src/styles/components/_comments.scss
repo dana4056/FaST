@@ -2,7 +2,8 @@
 
 .comments {
   flex: none;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   .comments__header {
     display: flex;
     align-content: center;
@@ -37,6 +38,8 @@
   .comments__content {
     margin: 0 auto;
     width: 90%;
+    overflow: auto;
+    height: 100%;
   }
   .comments__footer {
     display: flex;

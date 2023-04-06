@@ -80,7 +80,6 @@ function UserModifyContainer() {
     setImageUrl('');
     setImage(undefined);
     setImgPath('profiles/default.jpg');
-    console.log(imgPath);
   };
 
   const [nickname, setNickname] = useState<string>('');
@@ -194,10 +193,9 @@ function UserModifyContainer() {
     console.log(image);
 
     if (image === undefined) {
-      setImgPath(() => 'profiles/default.jpg');
       const newData: any = await modifyApi.modifyData(
         user.id,
-        userData.imgPath,
+        imgPath,
         nickname,
         tagList
       );
