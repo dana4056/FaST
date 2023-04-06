@@ -76,7 +76,7 @@ function NewCardContainer() {
     setIsModalOpen(false);
   };
   const handlePageMove = () => {
-    navigate('/home');
+    navigate(`/record/${user.id}`);
   };
   const handleFailModalClose = () => {
     setIsFail(false);
