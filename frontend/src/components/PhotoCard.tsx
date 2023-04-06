@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { BsPencil } from '@react-icons/all-files/bs/BsPencil';
-import { BsTrash } from '@react-icons/all-files/bs/BsTrash';
+import { BiCommentDetail } from '@react-icons/all-files/bi/BiCommentDetail';
 import { useNavigate } from 'react-router-dom';
 
 import Heart from './Heart';
@@ -15,7 +14,6 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
   const onClickMoveDetail = (id: number) => {
     navigate(`/article/${id}`);
   };
-
   return (
     <div
       className="photo-card card"
@@ -36,11 +34,12 @@ function PhotoCard({ isMine, card }: PhotoCardProps) {
             type="article"
           />
         </div>
-        {isMine ? (
-          <div>{}</div>
-        ) : (
-          <div className="photo-card__nickname">{card.nickname}</div>
-        )}
+        <div className="photo-card__comments">
+          <div className="photo-card__comments_icon">
+            <BiCommentDetail />
+          </div>
+          {card.numComments} Comments
+        </div>
       </div>
       <div className="photo-card__tags">
         {card.tags.map((tag: TagType) => (

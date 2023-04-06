@@ -34,7 +34,7 @@ const ArticleViewModel = () => {
     const ret: Array<string> = [];
     await Promise.all(
       images.map(async (image: string) => {
-        const url = `https://j8a402.p.ssafy.io:6060/images/${image}`;
+        const url = `https://j8a402.p.ssafy.io:4041/images/${image}`;
         ret.push(url);
       })
     );
@@ -57,7 +57,7 @@ const ArticleViewModel = () => {
     await Promise.all(
       images.map(async (image: File) => {
         const res = await doGetAutoTags(image, area);
-        if (res.data.length > 0) {
+        if (res.data) {
           ret = ret.concat(res.data);
         }
       })
