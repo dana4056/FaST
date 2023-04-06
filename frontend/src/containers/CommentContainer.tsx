@@ -39,15 +39,11 @@ function CommentContainer({ comment }: CommentContainerProps) {
   };
 
   // 댓글 삭제 함수
-  const deleteCommentData = async () => {
-    const res = await deleteComment(comment.id, user.id);
-    return res;
-  };
   const handleDeleteComment = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    deleteCommentData();
+    await deleteComment(comment.id, user.id);
   };
 
   // 댓글 수정칸 여는 함수
