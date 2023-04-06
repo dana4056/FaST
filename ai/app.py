@@ -171,8 +171,8 @@ def read_classes(area):
     return classes
 
 if __name__ == '__main__':
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print(ssl_context)
-    ssl_context.load_cert_chain(certfile='fullchain.pem', keyfile='privkey.pem', password='a402')
-    app.run(host='0.0.0.0', ssl_context=context)
+    # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # print(ssl_context)
+    # ssl_context.load_cert_chain(certfile='fullchain.pem', keyfile='privkey.pem')
+    app.run(host='0.0.0.0', ssl_context=('fullchain.pem', 'privkey.pem'))
