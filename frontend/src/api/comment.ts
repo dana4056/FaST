@@ -30,7 +30,6 @@ export async function doDeleteComment(id: number, userId: number) {
     const res = await api.delete(`/comment/${id}/${userId}`, {
       params: { id, userId },
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -49,7 +48,6 @@ export async function doUpdateComment(
       content,
       userId,
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -139,7 +137,6 @@ export async function doDeleteReply(id: number, userId: number) {
     const res = await api.delete(`/commentReply/${id}/${userId}`, {
       params: { id, userId },
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -158,7 +155,6 @@ export async function doUpdateReply(
       content,
       userId,
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.error('aaaaaaaaaa', error);

@@ -97,7 +97,7 @@ function CommentContainer({ comment }: CommentContainerProps) {
             nickname: item.nickName,
             profile: 'profile/default',
             content: item.content,
-            regTime: new Date(item.createTime).toDateString(),
+            regTime: new Date(item.createTime).toLocaleDateString(),
             isLike: item.likeCheck,
             numLikes: item.likeCount,
           })
@@ -133,8 +133,6 @@ function CommentContainer({ comment }: CommentContainerProps) {
     setReply('');
     setIsVisibleReplies(true);
   };
-
-  console.log(reply);
 
   useEffect(() => {
     const getData = async () => {

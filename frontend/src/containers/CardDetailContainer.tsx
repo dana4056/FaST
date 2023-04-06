@@ -90,7 +90,7 @@ function CardDetailContainer() {
               nickname: comment.nickName,
               profile: comment.imgPath,
               content: comment.content,
-              regTime: new Date(comment.createTime).toDateString(),
+              regTime: new Date(comment.createTime).toLocaleDateString(),
               isLike: comment.likeCheck, // 좋아요 눌렀는지
               numLikes: comment.likeCount, // 좋아요 개수
               numReplies: comment.commentReplyCount, // 답글 개수
@@ -178,7 +178,7 @@ function CardDetailContainer() {
             isLike: res.data.likeCheck,
             numLikes: res.data.likeCount,
             numComments: res.data.commentCount,
-            regTime: new Date(res.data.createTime).toDateString(),
+            regTime: new Date(res.data.createTime).toLocaleDateString(),
             tags,
             userId: res.data.user.id,
             profile: profile[0],
