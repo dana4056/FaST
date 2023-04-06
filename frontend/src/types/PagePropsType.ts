@@ -90,6 +90,8 @@ export interface SignUpPageProps extends InputProfileProps {
   passwordMessage: string;
   passwordConfirmMessage: string;
 
+  openSendModal: boolean;
+  openAuthModal: boolean;
   isEmail: boolean;
   isCheckEmail: boolean;
   isName: boolean;
@@ -112,6 +114,8 @@ export interface SignUpPageProps extends InputProfileProps {
   onClickNext: () => void;
   onClickComplete: () => void;
   onClickTag: (e: number, row: number) => void;
+  onClickSendModal: () => void;
+  onClickAuthdModal: () => void;
 }
 
 export interface LoginPageProps {

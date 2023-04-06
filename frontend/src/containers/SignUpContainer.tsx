@@ -38,6 +38,18 @@ function SignUpContainer() {
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState<string>('');
 
+  // 인증번호 전송 모달 띄우기
+  const [openSendModal, setOpenSendModal] = useState<boolean>(false);
+  const onClickSendModal = useCallback(() => {
+    setOpenSendModal(!openSendModal);
+  }, [openSendModal]);
+
+  // 인증번호 인증 확인 모달 띄우기
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
+  const onClickAuthdModal = useCallback(() => {
+    setOpenAuthModal(!openAuthModal);
+  }, [openAuthModal]);
+
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
   // 이미지 파일 저장 배열
@@ -193,8 +205,9 @@ function SignUpContainer() {
   // 사용자 이메일로 인증번호 전송
   const onClickSend = async () => {
     console.log('사용자 이메일로 인증번호 전송!');
-    if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
+    // if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
     setIsSend(true);
+    onClickSendModal();
     // 이메일 인증번호 전송 api 연결
     const status = await api.sendEmail(email);
     if (status === 200) {
@@ -210,7 +223,8 @@ function SignUpContainer() {
     console.log('이메일 인증번호 확인 중!');
     const status = await api.checkEmail(email, auth);
     if (status === 200) {
-      alert('인증번호 확인이 완료됐습니다 :)');
+      onClickAuthdModal();
+      // alert('인증번호 확인이 완료됐습니다 :)');
     } else {
       alert('인증번호 확인에 실패했습니다.');
     }
@@ -409,6 +423,8 @@ function SignUpContainer() {
         emailMessage={emailMessage}
         passwordMessage={passwordMessage}
         passwordConfirmMessage={passwordConfirmMessage}
+        openSendModal={openSendModal}
+        openAuthModal={openAuthModal}
         isEmail={isEmail}
         isCheckEmail={isCheckEmail}
         isName={isName}
@@ -432,6 +448,8 @@ function SignUpContainer() {
         onClickNext={onClickNext}
         onClickComplete={onClickComplete}
         onClickTag={onClickTag}
+        onClickSendModal={onClickSendModal}
+        onClickAuthdModal={onClickAuthdModal}
       />
     </>
   );
