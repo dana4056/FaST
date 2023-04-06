@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -36,6 +37,10 @@ public class CommentReplyServiceImpl implements CommentReplyService{
 
     @Override
     public CommentReplyResponseDto create(CommentReplyRequestDto requestDto) {
+        if(requestDto.getContent().trim().equals("")){
+            throw new NoSuchElementException("댓글 내용을 입력해주세요");
+        }
+
         User user = userRepository.findById(requestDto.getUserId()).get();
         Comment comment = commentRepository.findById(requestDto.getCommentId()).get();
 
@@ -80,6 +85,9 @@ public class CommentReplyServiceImpl implements CommentReplyService{
         if (commentReply.getUser().getId() != modifyDto.getUserId()){
             throw new Exception("작성자가 아닙니다!");
         }else{
+            if(modifyDto.getContent().trim().equals("")){
+                throw new NoSuchElementException("댓글 내용을 입력해주세요");
+            }
             commentReply.setContent(modifyDto.getContent());
             responseDto = CommentReplyResponseDto.builder()
                     .id(commentReply.getId())
