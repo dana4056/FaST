@@ -29,6 +29,7 @@ function ModifyArticlePage({
   handleAutoTagDelete,
   handlePageMove,
   tagInputRef,
+  errorMessage,
 }: ModifyArticlePageProps) {
   return (
     <div className="new-card-page">
@@ -57,14 +58,16 @@ function ModifyArticlePage({
               {tag}
             </Tag>
           ))}
-          <button
-            type="button"
-            className="new-card-page__add-tag"
-            onClick={handleModalOpen}
-          >
-            <AiFillPlusCircle className="new-card-page__add-icon" />
-            태그 추가하기
-          </button>
+          {customTags.length + autoTags.length >= 10 ? null : (
+            <button
+              type="button"
+              className="new-card-page__add-tag"
+              onClick={handleModalOpen}
+            >
+              <AiFillPlusCircle className="new-card-page__add-icon" />
+              태그 추가하기
+            </button>
+          )}
         </div>
         <div className="new-card-page__description card">
           <textarea
@@ -131,11 +134,7 @@ function ModifyArticlePage({
       {isFail ? (
         <div className="new-card-page__modal">
           <div className="new-card-page__success card">
-            <div className="new-card-page__success-content">
-              내부 서버 오류
-              <br />
-              잠시 후 다시 시도해주세요.
-            </div>
+            <div className="new-card-page__success-content">{errorMessage}</div>
             <button
               type="button"
               className="new-card-page__success-button"

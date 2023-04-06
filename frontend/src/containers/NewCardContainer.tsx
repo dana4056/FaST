@@ -36,6 +36,9 @@ function NewCardContainer() {
   const [isFail, setIsFail] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>(
+    '내부서버오류 \n 잠시 후에 다시 시도해주세요,'
+  );
   const tagInputRef = useRef<HTMLInputElement>(null);
 
   const user = useRecoilValue(userInfo);
@@ -81,8 +84,10 @@ function NewCardContainer() {
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const newCustomTags = customTags;
     newCustomTags.push(customTag);
+
     setCustomTags([...newCustomTags]);
     setCustomTag('');
     handleModalClose();
@@ -103,7 +108,6 @@ function NewCardContainer() {
       filesArray.forEach((file: any, i: number) => {
         EXIF.getData(file, () => {
           const meta = EXIF.getAllTags(file);
-          console.log(meta);
           if (la.length === 0 && meta && meta.GPSLatitudeRef) {
             if (meta.GPSLatitudeRef === 'S') {
               setLa(
@@ -154,6 +158,7 @@ function NewCardContainer() {
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
+    setCustomTags([]);
     setLoc('');
     setLo('');
     setLa('');
@@ -192,7 +197,6 @@ function NewCardContainer() {
         'article',
         user.email
       );
-      console.log(imgPath);
       if (imgPath.length === 0) {
         setIsFail(true);
         return;
@@ -279,7 +283,9 @@ function NewCardContainer() {
       const newAutoTags: Array<string> = [];
       if (res.length > 0) {
         res.forEach((tag: string) => {
-          newAutoTags.push(tag);
+          if (customTag.length + newAutoTags.length < 10) {
+            newAutoTags.push(tag);
+          }
         });
       }
       setAutoTags([...newAutoTags]);
@@ -312,6 +318,7 @@ function NewCardContainer() {
       handlePageMove={handlePageMove}
       handleTextareaChange={handleTextareaChange}
       tagInputRef={tagInputRef}
+      errorMessage={errorMessage}
     />
   );
 }

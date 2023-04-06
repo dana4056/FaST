@@ -33,7 +33,9 @@ function ModifyArticleContainer() {
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
   const tagInputRef = useRef<HTMLInputElement>(null);
-
+  const [errorMessage, setErrorMessage] = useState<string>(
+    '내부 서버 오류 \n 잠시 후에 다시 시도해주세요.'
+  );
   const user = useRecoilValue(userInfo);
 
   const navigate = useNavigate();
@@ -83,8 +85,10 @@ function ModifyArticleContainer() {
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const newCustomTags = customTags;
     newCustomTags.push(customTag);
+
     setCustomTags([...newCustomTags]);
     setCustomTag('');
     handleModalClose();
@@ -157,7 +161,8 @@ function ModifyArticleContainer() {
     setImageUrls([]);
     setImages([]);
     setAutoTags([]);
-    setLoc('서울특별시');
+    setCustomTags([]);
+    setLoc('');
     setLo('');
     setLa('');
   };
@@ -247,11 +252,9 @@ function ModifyArticleContainer() {
       if (params.articleId) {
         const res = await getArticle(params.articleId, user.id);
         if (res.status === 200) {
-          console.log(res.data);
           if (user.id !== res.data.user.id) {
             setIsNotAuth(true);
           } else {
-            console.log(res);
             const tags: Array<string> = [];
             await Promise.all(
               res.data.tags.map((tag: any) => tags.push(tag.tagName))
@@ -299,6 +302,7 @@ function ModifyArticleContainer() {
       handlePageMove={handlePageMove}
       handleTextareaChange={handleTextareaChange}
       tagInputRef={tagInputRef}
+      errorMessage={errorMessage}
     />
   );
 }
