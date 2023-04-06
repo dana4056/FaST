@@ -73,7 +73,7 @@ function CardDetailContainer() {
       const res = await getComments(params.cardId, user.id, 5, commentOffset);
       if (res.status === 200) {
         if (res.data.length > 0) {
-          const newComments: Array<CommentType> = [];
+          const newComments: Array<CommentType> = comments;
           await Promise.all(
             res.data.map((comment: any) =>
               newComments.push({
@@ -90,7 +90,7 @@ function CardDetailContainer() {
             )
           );
           newComments.sort((o1: CommentType, o2: CommentType) => o2.id - o1.id);
-          setComments((prev: Array<CommentType>) => [...prev, ...newComments]);
+          setComments([...newComments]);
         } else {
           setIsLimit(true);
         }
@@ -111,6 +111,8 @@ function CardDetailContainer() {
       );
       if (res.status === 200) {
         setCommentOffset(0);
+        setIsLimit(false);
+        setComments([]);
         setLoad((prev: boolean) => !prev);
       }
       commentInputRef.current.value = '';
