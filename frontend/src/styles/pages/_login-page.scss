@@ -115,8 +115,8 @@
   }
 
   .login-page__social-button {
-    max-width: fit-content;
-    max-height: fit-content;
+    // max-width: fit-content;
+    // max-height: fit-content;
     margin: 0 5px;
     padding: 10px;
     color: white;
@@ -131,6 +131,7 @@
   }
   .login-page__social--naver {
     background-color: #2db400;
+    padding: 10px 14px;
   }
   .login-page__social--kakao {
     background-color: #f7e600;

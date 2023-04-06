@@ -102,6 +102,8 @@ function UserModifyContainer() {
   const [keyword, setKeyword] = useState<string>('');
   // 태그를 저장할 배열
   const [tags, setTags] = useState<Array<TagType>>([]);
+  // 이미 있는 태그를 추가하는 경우 모달로 알람
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     // 이미 등록된 관심태그
@@ -125,17 +127,19 @@ function UserModifyContainer() {
   }, [userData]);
 
   // 검색 함수
+  const searchIndex = tags.findIndex((tag: TagType) => keyword === tag.value);
+  const [submit, setSubmit] = useState<boolean>(false);
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    setSubmit(true);
+    console.log(searchIndex);
+    const newTags = tags;
     // 새로고침 방지
     event.preventDefault();
 
     // 전에 검색하지 않은 키워드만 검색하도록 index를 찾음
-    const index = tags.findIndex((tag: TagType) => keyword === tag.value);
-
-    const newTags = tags;
 
     // 빈 문자열이 아니고 없는 키워드일 경우 검색
-    if (keyword.trim().length !== 0 && index === -1) {
+    if (keyword.trim().length !== 0 && searchIndex === -1) {
       // 배열에 추가
       newTags.push({
         className: `tag-${Math.floor(Math.random() * 4) + 1}`,
@@ -277,6 +281,8 @@ function UserModifyContainer() {
         goModifyPwd={goModifyPwd}
         goLogout={goLogout}
         doWithdraw={doWithdraw}
+        index={searchIndex}
+        submit={submit}
       />
     </div>
   );
