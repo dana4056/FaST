@@ -215,7 +215,6 @@ function NewCardContainer() {
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
-            console.log(region);
             if (region === '서울') {
               setLoc('서울특별시');
             } else if (region === '인천') {
@@ -226,6 +225,30 @@ function NewCardContainer() {
               setLoc('제주특별자치도');
             } else if (region === '경기') {
               setLoc('경기도');
+            } else if (region === '세종특별자치시') {
+              setLoc('세종특별자치시');
+            } else if (region === '광주') {
+              setLoc('광주광역시');
+            } else if (region === '대전') {
+              setLoc('대전광역시');
+            } else if (region === '울산') {
+              setLoc('울산광역시');
+            } else if (region === '대구') {
+              setLoc('대구광역시');
+            } else if (region === '부산') {
+              setLoc('부산광역시');
+            } else if (region === '충북') {
+              setLoc('충청북도');
+            } else if (region === '강원') {
+              setLoc('강원도');
+            } else if (region === '충남') {
+              setLoc('충청남도');
+            } else if (region === '전북') {
+              setLoc('전라북도');
+            } else if (region === '경남') {
+              setLoc('경상남도');
+            } else if (region === '전남') {
+              setLoc('전라남도');
             }
           }
         };

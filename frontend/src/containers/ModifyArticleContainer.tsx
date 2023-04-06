@@ -232,7 +232,8 @@ function ModifyArticleContainer() {
       if (params.articleId) {
         const res = await getArticle(params.articleId, user.id);
         if (res.status === 200) {
-          if (user.id !== res.data.userId) {
+          console.log(res.data);
+          if (user.id !== res.data.user.id) {
             setIsNotAuth(true);
           } else {
             console.log(res);
