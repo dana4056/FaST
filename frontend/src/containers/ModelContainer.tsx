@@ -107,7 +107,9 @@ function ModelContainer() {
             setName('롯데타워');
           } else if (
             params.model === 'seokguram' &&
-            res.data.find((landmark: any) => landmark.landMarkName === '석굴암')
+            res.data.find(
+              (landmark: any) => landmark.landMarkName === '경주석굴암'
+            )
           ) {
             setModel({
               model: Seokguram,
@@ -183,7 +185,9 @@ function ModelContainer() {
             setName('차이나타운');
           } else if (
             params.model === 'cheomseongdae' &&
-            res.data.find((landmark: any) => landmark.landMarkName === '첨성대')
+            res.data.find(
+              (landmark: any) => landmark.landMarkName === '경주첨성대'
+            )
           ) {
             setModel({
               model: Cheomseongdae,
