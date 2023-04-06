@@ -51,14 +51,14 @@ function LoginContainer() {
   const goKakaoLogin = () => {
     // navigate('/oauth2/authorization/kakao');
     window.location.href =
-      'http://j8a402.p.ssafy.io:8080/oauth2/authorization/kakao';
+      'https://j8a402.p.ssafy.io:8080/oauth2/authorization/kakao';
   };
 
   // 네이버 로그인 하러가기
   const goNaverLogin = () => {
     // navigate('/oauth2/authorization/naver');
     window.location.href =
-      'http://j8a402.p.ssafy.io:8080/oauth2/authorization/naver';
+      'https://j8a402.p.ssafy.io:8080/oauth2/authorization/naver';
   };
 
   return (

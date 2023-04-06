@@ -33,7 +33,6 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
       encryptToken(res.headers.authorization, email)
     );
 
-    console.log(res);
     // console.log(res.headers.authorization);
     return res;
   } catch (error: any) {
@@ -48,8 +47,6 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
     const res = await api.post(`/user/token`, {
       token,
     });
-    console.log(res.status);
-    console.log(res.data);
     localStorage.setItem('token', encryptToken(token, res.data.email));
     // console.log(res.headers.authorization);
     return res;
@@ -65,7 +62,6 @@ async function registerTag(tags: Array<string>, userId: number) {
       tags,
       userId,
     });
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);

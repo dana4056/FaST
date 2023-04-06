@@ -1,107 +1,111 @@
 @use '../color';
 
-.card-detail {
-  margin: 20px 5%;
+.card-detail-container {
   flex: none;
-  width: 90%;
-  height: fit-content;
-  .card-detail__header {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 10px 10px 0 10px;
-    .card-detail__follow-button {
-      border-radius: 4px;
-      border: 0.5px solid color.$color-4;
-      padding: 4px 10px;
-      font-size: 16px;
-      background-color: white;
-      color: color.$color-4;
-    }
-    .card-detail__profile-image {
+  width: 100%;
+  overflow: auto;
+  .card-detail {
+    margin: 20px 5%;
+    width: 90%;
+    height: fit-content;
+    .card-detail__header {
+      position: relative;
       display: flex;
       align-items: center;
-      width: 48px;
-      height: 48px;
-      img {
-        border-radius: 50%;
-        width: 100%;
-        height: 100%;
-      }
-      font-size: 48px;
-    }
-    .card-detail__profile-nickname {
-      padding: 0 10px;
-      font-size: 20px;
-    }
-    .card-detail__menu-button {
-      margin-left: auto;
-      color: color.$color-4;
-      font-size: 36px;
-    }
-    .card-detail__menu {
-      background-color: white;
-      position: absolute;
-      right: -10px;
-      top: 50px;
-      border-radius: 10px;
-      border: 0.5px solid color.$gray;
-      padding: 10px 0;
-      font-size: 20px;
-      z-index: 1;
-      .card-detail__modify {
-        padding: 0 20px;
+      padding: 10px 10px 0 10px;
+      .card-detail__follow-button {
+        border-radius: 4px;
+        border: 0.5px solid color.$color-4;
+        padding: 4px 10px;
+        font-size: 16px;
+        background-color: white;
         color: color.$color-4;
       }
-      .card-detail__remove {
-        padding: 0 20px;
-        color: red;
-      }
-    }
-  }
-
-  .card-detail__footer {
-    padding: 10px 0;
-    width: 80%;
-    margin: 0 auto;
-    .card-detail__sns {
-      display: flex;
-      .card-detail__like {
+      .card-detail__profile-image {
         display: flex;
         align-items: center;
-        padding: 0 4px;
-        font-size: 24px;
-        svg {
-          width: 32px;
-          height: 32px;
+        width: 48px;
+        height: 48px;
+        img {
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
         }
-        span {
-          font-size: 16px;
-          font-weight: bold;
-          padding-left: 6px;
-        }
+        font-size: 48px;
       }
-      .card-detail__comment {
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        font-size: 28px;
-        span {
-          font-size: 14px;
-          font-weight: bold;
-          padding-left: 6px;
-        }
+      .card-detail__profile-nickname {
+        padding: 0 10px;
+        font-size: 20px;
       }
-      .card-detail__reg-time {
-        display: flex;
-        align-items: center;
+      .card-detail__menu-button {
         margin-left: auto;
-        font-size: 14px;
+        color: color.$color-4;
+        font-size: 36px;
+      }
+      .card-detail__menu {
+        background-color: white;
+        position: absolute;
+        right: -10px;
+        top: 50px;
+        border-radius: 10px;
+        border: 0.5px solid color.$gray;
+        padding: 10px 0;
+        font-size: 20px;
+        z-index: 1;
+        .card-detail__modify {
+          padding: 0 20px;
+          color: color.$color-4;
+        }
+        .card-detail__remove {
+          padding: 0 20px;
+          color: red;
+        }
       }
     }
-    .card-detail__content {
-      width: 100%;
-      word-wrap: break-word;
+
+    .card-detail__footer {
+      padding: 10px 0;
+      width: 80%;
+      margin: 0 auto;
+      .card-detail__sns {
+        display: flex;
+        .card-detail__like {
+          display: flex;
+          align-items: center;
+          padding: 0 4px;
+          font-size: 24px;
+          svg {
+            width: 32px;
+            height: 32px;
+          }
+          span {
+            font-size: 16px;
+            font-weight: bold;
+            padding-left: 6px;
+          }
+        }
+        .card-detail__comment {
+          margin: 0 10px;
+          display: flex;
+          align-items: center;
+          font-size: 28px;
+          span {
+            font-size: 14px;
+            font-weight: bold;
+            padding-left: 6px;
+          }
+        }
+        .card-detail__reg-time {
+          display: flex;
+          align-items: center;
+          margin-left: auto;
+          font-size: 14px;
+        }
+      }
+      .card-detail__content {
+        width: 100%;
+        word-wrap: break-word;
+      }
     }
   }
 }
