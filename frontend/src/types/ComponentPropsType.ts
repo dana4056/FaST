@@ -17,6 +17,24 @@ export interface SearchBoxProps {
   handleTagDelete: (value: string) => void;
 }
 
+// 내 관심태그 추가 Props
+export interface AddPersonalTagProps {
+  // 입력한 태그 배열
+  tags: Array<TagType>;
+  // 검색 키워드
+  keyword: string;
+  // 검색 키워드 변경 함수
+  handleKeywordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // 검색 함수
+  handleSearch: (event: React.FormEvent<HTMLFormElement>) => void;
+  // 태그 배열에서 태그 삭제 함수
+  handleTagDelete: (value: string) => void;
+  // 태그 인덱스
+  index: number;
+  // 제출 여부
+  submit: boolean;
+}
+
 // 태그 props
 export interface TagProps {
   // 태그 내용
@@ -120,6 +138,8 @@ export interface CommentProps {
   onChangeComment: React.ChangeEventHandler;
   // 댓글 수정 함수
   handleUpdateComment: React.FormEventHandler;
+  isLimit: boolean;
+  handleRepliesLoad: () => void;
 }
 
 // 댓글 목록 Props
@@ -128,6 +148,8 @@ export interface CommentsProps {
   handleCommentClick: React.MouseEventHandler;
   commentInputRef: React.RefObject<HTMLInputElement>;
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
 }
 
 // 댓글 컨테이너 Props

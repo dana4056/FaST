@@ -33,6 +33,7 @@ function ModifyArticleContainer() {
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
   const tagInputRef = useRef<HTMLInputElement>(null);
+  const [isNoTags, setIsNoTags] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>(
     '내부 서버 오류 \n 잠시 후에 다시 시도해주세요.'
   );
@@ -81,6 +82,10 @@ function ModifyArticleContainer() {
   };
   const handleFailModalClose = () => {
     setIsFail(false);
+  };
+  const handleNoTagsModalClose = () => {
+    setErrorMessage('내부서버오류 \n 잠시 후에 다시 시도해주세요,');
+    setIsNoTags(false);
   };
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
@@ -219,10 +224,41 @@ function ModifyArticleContainer() {
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             const region = result[0].address.region_1depth_name;
+
             if (region === '서울') {
               setLoc('서울특별시');
             } else if (region === '인천') {
               setLoc('인천광역시');
+            } else if (region === '경북') {
+              setLoc('경상북도');
+            } else if (region === '제주특별자치도') {
+              setLoc('제주특별자치도');
+            } else if (region === '경기') {
+              setLoc('경기도');
+            } else if (region === '세종특별자치시') {
+              setLoc('세종특별자치시');
+            } else if (region === '광주') {
+              setLoc('광주광역시');
+            } else if (region === '대전') {
+              setLoc('대전광역시');
+            } else if (region === '울산') {
+              setLoc('울산광역시');
+            } else if (region === '대구') {
+              setLoc('대구광역시');
+            } else if (region === '부산') {
+              setLoc('부산광역시');
+            } else if (region === '충북') {
+              setLoc('충청북도');
+            } else if (region === '강원') {
+              setLoc('강원도');
+            } else if (region === '충남') {
+              setLoc('충청남도');
+            } else if (region === '전북') {
+              setLoc('전라북도');
+            } else if (region === '경남') {
+              setLoc('경상남도');
+            } else if (region === '전남') {
+              setLoc('전라남도');
             }
           }
         };
@@ -232,21 +268,27 @@ function ModifyArticleContainer() {
   }, [lo]);
 
   useEffect(() => {
-    const getTags = async () => {
-      setIsLoading(true);
-      const res = await createAutoTags(images, loc);
-      const newAutoTags: Array<string> = [];
-      if (res.length > 0) {
-        res.forEach((tag: string) => {
-          newAutoTags.push(tag);
-        });
-      }
-      setAutoTags([...newAutoTags]);
-      setIsLoading(false);
-    };
-    getTags();
-    // }
-  }, [images]);
+    if (loc) {
+      const getTags = async () => {
+        setIsLoading(true);
+        const res = await createAutoTags(images, loc);
+        const newAutoTags: Array<string> = [];
+        if (res.length > 0) {
+          res.forEach((tag: string) => {
+            newAutoTags.push(tag);
+          });
+        } else {
+          setErrorMessage(
+            '생성된 태그가 없습니다. \n 다른 사진으로 다시 시도해보세요.'
+          );
+          setIsNoTags(true);
+        }
+        setAutoTags([...newAutoTags]);
+        setIsLoading(false);
+      };
+      getTags();
+    }
+  }, [loc]);
   useEffect(() => {
     const getData = async () => {
       if (params.articleId) {
@@ -303,6 +345,8 @@ function ModifyArticleContainer() {
       handleTextareaChange={handleTextareaChange}
       tagInputRef={tagInputRef}
       errorMessage={errorMessage}
+      isNoTags={isNoTags}
+      handleNoTagsModalClose={handleNoTagsModalClose}
     />
   );
 }

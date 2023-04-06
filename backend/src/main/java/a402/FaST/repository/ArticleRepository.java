@@ -54,7 +54,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findAllByUserAndArea(User user, String Area, Pageable pageable);
 
-    List<Article> findByUser(User userId, Pageable pageable);
+    List<Article> findAllByUser(User userId, Pageable pageable);
 
     int countArticleByUser(User userId);
 

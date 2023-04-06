@@ -18,18 +18,11 @@ function CommentContainer({ comment }: CommentContainerProps) {
   // 답글이 보이는지
   const [isVisibleReplies, setIsVisibleReplies] = useState<boolean>(false);
   const [profile, setProfile] = useState<string>('');
+  const [replyOffset, setReplyOffset] = useState<number>(0);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
+  const [load, setLoad] = useState<boolean>(false);
   // 답글 목록
-  const [replies, setReplies] = useState<Array<ReplyType>>([
-    // {
-    //   id: 0,
-    //   nickname: '',
-    //   profile: '',
-    //   content: '',
-    //   regTime: '',
-    //   isLike: false, // 좋아요 눌렀는지
-    //   numLikes: 0, // 좋아요 개수
-    // },
-  ]);
+  const [replies, setReplies] = useState<Array<ReplyType>>([]);
   // 사용자가 이 댓글에 좋아요 표시를 했는지
   const [isLike, setIsLike] = useState<boolean>(comment.isLike);
   const {
@@ -86,24 +79,29 @@ function CommentContainer({ comment }: CommentContainerProps) {
   };
 
   const getCommentRepliesData = async () => {
-    const res = await getCommentReplies(comment.id, user.id, 20, 0);
+    const res = await getCommentReplies(comment.id, user.id, 3, replyOffset);
     if (res.status === 200) {
-      const newReplies: Array<ReplyType> = [];
-      await Promise.all(
-        res.data.map((item: any) =>
-          newReplies.push({
-            id: item.id,
-            userId: item.userId,
-            nickname: item.nickName,
-            profile: 'profile/default',
-            content: item.content,
-            regTime: new Date(item.createTime).toLocaleDateString(),
-            isLike: item.likeCheck,
-            numLikes: item.likeCount,
-          })
-        )
-      );
-      setReplies([...newReplies]);
+      if (res.data.length > 0) {
+        const newReplies: Array<ReplyType> = replies;
+        await Promise.all(
+          res.data.map((item: any) =>
+            newReplies.push({
+              id: item.id,
+              userId: item.userId,
+              nickname: item.nickName,
+              profile: 'profile/default',
+              content: item.content,
+              regTime: new Date(item.createTime).toLocaleDateString(),
+              isLike: item.likeCheck,
+              numLikes: item.likeCount,
+            })
+          )
+        );
+        newReplies.sort((o1: ReplyType, o2: ReplyType) => o2.id - o1.id);
+        setReplies([...newReplies]);
+      } else {
+        setIsLimit(true);
+      }
     }
   };
   // 답글 작성 함수
@@ -116,7 +114,6 @@ function CommentContainer({ comment }: CommentContainerProps) {
   // 답글 목록 여는 함수
   const handleVisibleRepliesClick = async () => {
     setIsVisibleReplies((prev: boolean) => !prev);
-    await getCommentRepliesData();
   };
 
   // 작성한 답글 제출 함수
@@ -127,11 +124,19 @@ function CommentContainer({ comment }: CommentContainerProps) {
     // 이 자리에 api 함수 들어감
     const res = await createCommentReply(comment.id, reply, user.id);
     if (res.status === 200) {
-      getCommentRepliesData();
+      setReplies([]);
+      setReplyOffset(0);
+      setIsLimit(false);
+      setLoad((prev: boolean) => !prev);
     }
     // 작성 답글 초기화
     setReply('');
     setIsVisibleReplies(true);
+  };
+
+  const handleRepliesLoad = () => {
+    setReplyOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
   };
 
   useEffect(() => {
@@ -143,6 +148,10 @@ function CommentContainer({ comment }: CommentContainerProps) {
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    getCommentRepliesData();
+  }, [load]);
   return (
     <Comment
       comment={comment}
@@ -163,6 +172,8 @@ function CommentContainer({ comment }: CommentContainerProps) {
       handleUpdateCommentOpenClick={handleUpdateCommentOpenClick}
       onChangeComment={onChangeComment}
       handleUpdateComment={handleUpdateComment}
+      isLimit={isLimit}
+      handleRepliesLoad={handleRepliesLoad}
     />
   );
 }

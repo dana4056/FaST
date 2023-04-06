@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { storage } from '../utils/firebase';
 import { userInfo } from '../atoms/userInfo';
 import userApi from '../api/user';
@@ -20,6 +20,7 @@ import useIntersect from '../utils/useIntersect';
 function MyRecordContainer() {
   const size = 10;
   const params = useParams();
+  const location = useLocation();
   const [user, setUser] = useRecoilState(userInfo);
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(false);
@@ -35,6 +36,8 @@ function MyRecordContainer() {
   const [myTag, setMyTag] = useState<any>([]);
   // 게시글 수
   const [articleNum, setArticleNum] = useState<number>(0);
+
+  const [load, setLoad] = useState<boolean>(false);
 
   const { downloadImages, getMyArticles } = useViewModel();
 
@@ -130,10 +133,14 @@ function MyRecordContainer() {
             })
           );
           if (cardLeftList.length > 0) {
-            setCardsLeft([...cardsLeft]);
+            setCardsLeft([
+              ...cardsLeft.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
           }
           if (cardRightList.length > 0) {
-            setCardsRight([...cardsRight]);
+            setCardsRight([
+              ...cardsRight.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
           }
         } else {
           setIsLimit(true);
@@ -169,7 +176,16 @@ function MyRecordContainer() {
       setArticleNum(cntArticle.data);
     };
     getData();
-  }, []);
+  }, [userState]);
+
+  useEffect(() => {
+    setUserState(params.userId);
+    setCardsLeft([]);
+    setCardsRight([]);
+    setIsLimit(false);
+    setOffset(0);
+    setLoad((prev: boolean) => !prev);
+  }, [location.pathname]);
 
   useEffect(() => {
     const getData = async () => {
@@ -181,13 +197,15 @@ function MyRecordContainer() {
     };
 
     getData();
-  }, []);
+  }, [userState]);
+
   useEffect(() => {
     getArticleData();
-  }, [offset]);
+  }, [load]);
 
   const loadMore = () => {
     setOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
   };
 
   useEffect(() => {

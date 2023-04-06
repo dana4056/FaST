@@ -12,6 +12,7 @@ function LoginContainer() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [salt, setSalt] = useState<string>('');
+  const [isFail, setIsFail] = useState<boolean>(false);
   // 이메일
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,21 +30,25 @@ function LoginContainer() {
     },
     []
   );
+  const handleModalClose = () => {
+    setIsFail(false);
+  };
   // 로그인 하러가기
   const goLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const saltRes = await api.getSalt(email);
-    // console.log(saltRes);
     if (saltRes.status === 200) {
       const pwd = createHashedPassword(password, saltRes.data);
-      // console.log(saltRes.data);
-      // console.log(pwd);
       const res = await api.login(email, pwd);
       if (res.status === 200) {
         // recoil-persist로 localstorage에 user 정보 저장
         setUser(res.data);
         navigate('/home');
+      } else {
+        setIsFail(true);
       }
+    } else {
+      setIsFail(true);
     }
   };
 
@@ -68,6 +73,8 @@ function LoginContainer() {
       goNaverLogin={goNaverLogin}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
+      isFail={isFail}
+      handleModalClose={handleModalClose}
     />
   );
 }

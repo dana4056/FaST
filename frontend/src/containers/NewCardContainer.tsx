@@ -34,6 +34,7 @@ function NewCardContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isFail, setIsFail] = useState<boolean>(false);
+  const [isNoTags, setIsNoTags] = useState<boolean>(false);
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>(
@@ -80,6 +81,11 @@ function NewCardContainer() {
   };
   const handleFailModalClose = () => {
     setIsFail(false);
+  };
+
+  const handleNoTagsModalClose = () => {
+    setErrorMessage('내부서버오류 \n 잠시 후에 다시 시도해주세요,');
+    setIsNoTags(false);
   };
 
   const handleCustomTagAdd = (event: React.FormEvent<HTMLFormElement>) => {
@@ -277,22 +283,28 @@ function NewCardContainer() {
   }, [lo]);
 
   useEffect(() => {
-    const getTags = async () => {
-      setIsLoading(true);
-      const res = await createAutoTags(images, loc);
-      const newAutoTags: Array<string> = [];
-      if (res.length > 0) {
-        res.forEach((tag: string) => {
-          if (customTag.length + newAutoTags.length < 10) {
-            newAutoTags.push(tag);
-          }
-        });
-      }
-      setAutoTags([...newAutoTags]);
-      setIsLoading(false);
-    };
-    getTags();
-    // }
+    if (loc.length > 0) {
+      const getTags = async () => {
+        setIsLoading(true);
+        const res = await createAutoTags(images, loc);
+        const newAutoTags: Array<string> = [];
+        if (res.length > 0) {
+          res.forEach((tag: string) => {
+            if (customTag.length + newAutoTags.length < 10) {
+              newAutoTags.push(tag);
+            }
+          });
+        } else {
+          setErrorMessage(
+            '생성된 태그가 없습니다. \n 다른 사진으로 다시 시도해보세요.'
+          );
+          setIsNoTags(true);
+        }
+        setAutoTags([...newAutoTags]);
+        setIsLoading(false);
+      };
+      getTags();
+    }
   }, [loc]);
   return (
     <NewCardPage
@@ -319,6 +331,8 @@ function NewCardContainer() {
       handleTextareaChange={handleTextareaChange}
       tagInputRef={tagInputRef}
       errorMessage={errorMessage}
+      isNoTags={isNoTags}
+      handleNoTagsModalClose={handleNoTagsModalClose}
     />
   );
 }

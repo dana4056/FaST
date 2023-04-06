@@ -27,6 +27,8 @@ function Comment({
   handleUpdateCommentOpenClick,
   onChangeComment,
   handleUpdateComment,
+  isLimit,
+  handleRepliesLoad,
 }: CommentProps) {
   const [user, setUser] = useRecoilState(userInfo);
   const [isMine, setIsMine] = useState<boolean>(false);
@@ -144,6 +146,17 @@ function Comment({
               }
         }
       >
+        {isLimit ? (
+          <div className="comment__additional">모든 답글을 확인했습니다.</div>
+        ) : (
+          <div
+            className="comment__additional"
+            role="presentation"
+            onClick={handleRepliesLoad}
+          >
+            답글 불러오기
+          </div>
+        )}
         {replies.map((commentReply: any) => (
           <CommentReply
             commentReply={commentReply}

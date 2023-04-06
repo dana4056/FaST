@@ -24,6 +24,8 @@ function CardDetailPage({
   handleFollow,
   handleUnfollow,
   handleMoveUserPage,
+  isLimit,
+  handleCommentsLoad,
 }: CardDetailPageProps) {
   return (
     <div className="card-detail-page">
@@ -49,6 +51,8 @@ function CardDetailPage({
           handleCommentClick={handleCommentClick}
           commentInputRef={commentInputRef}
           handleCommentSubmit={handleCommentSubmit}
+          isLimit={isLimit}
+          handleCommentsLoad={handleCommentsLoad}
         />
       </div>
       {isDeleteOpen ? (

@@ -13,6 +13,8 @@ export default function LoginPage({
   goNaverLogin,
   onChangeEmail,
   onChangePassword,
+  isFail,
+  handleModalClose,
 }: LoginPageProps) {
   return (
     <div className="login-page">
@@ -91,6 +93,20 @@ export default function LoginPage({
           </button>
         </div>
       </div>
+      {isFail ? (
+        <div className="login-page__modal card">
+          <div className="login-page__modal-content">
+            아이디, 비밀번호를 확인해주세요.
+          </div>
+          <button
+            type="button"
+            className="login-page__modal-button"
+            onClick={handleModalClose}
+          >
+            닫기
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

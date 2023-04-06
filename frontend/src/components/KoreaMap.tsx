@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { callEnvironmentData } from '../utils/callEnvironmentData';
 import { IoArrowBackCircle } from '@react-icons/all-files/io5/IoArrowBackCircle';
 import SouthKorea from '../assets/images/south-korea.svg';
 import Kakaomap from './Kakaomap';
@@ -198,18 +197,12 @@ function KoreaMap({
             onClick={clickBack}
           />
           <span className="area-text">{area}</span>
-
           <Kakaomap
             selectOption={selectOption}
             positionData={positionData}
             checkClicked={checkClicked}
           />
         </div>
-        {/* <Kakaomap
-          selectOption={selectOption}
-          positionData={positionData}
-          checkClicked={checkClicked}
-        /> */}
       </div>
     </div>
   );

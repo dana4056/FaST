@@ -31,6 +31,8 @@ function NewCardPage({
   handleTextareaChange,
   tagInputRef,
   errorMessage,
+  isNoTags,
+  handleNoTagsModalClose,
 }: NewCardPageProps) {
   return (
     <div className="new-card-page">
@@ -143,6 +145,20 @@ function NewCardPage({
               type="button"
               className="new-card-page__success-button"
               onClick={handleFailModalClose}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {isNoTags ? (
+        <div className="new-card-page__modal">
+          <div className="new-card-page__success card">
+            <div className="new-card-page__success-content">{errorMessage}</div>
+            <button
+              type="button"
+              className="new-card-page__success-button"
+              onClick={handleNoTagsModalClose}
             >
               닫기
             </button>
