@@ -16,7 +16,7 @@ import sample1 from '../assets/images/sample-images/sample_1.jpg';
 function UserModifyContainer() {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userInfo);
-  const { downloadImages } = useViewModel();
+  const { downloadImages, uploadImages, deleteImage } = useViewModel();
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
 
@@ -39,10 +39,9 @@ function UserModifyContainer() {
       setImgPath(imageUrl);
     } else if (userData.imgPath) {
       const getProfileImage = async () => {
-        // const imageRef = ref(storage, userData.imgPath);
-        // const ret = await getDownloadURL(imageRef);
-        // setImageUrl(ret);
-        // setImgPath(`profiles/${userData.email}`);
+        const image = await downloadImages([userData.imgPath]);
+        setImageUrl(image[0]);
+        setImgPath(`profiles/${userData.email}`);
       };
       getProfileImage();
     }
@@ -192,23 +191,28 @@ function UserModifyContainer() {
 
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
-    if (image === undefined) {
-      setImgPath(() => 'profiles/default.jpg');
-    }
+    console.log(image);
 
     if (image === undefined) {
       setImgPath(() => 'profiles/default.jpg');
-    } else {
-      const result: any = await imageApi.uploadImage(
-        image,
-        'profile',
-        `profiles/${user.email}`,
-        user.email
+      const newData: any = await modifyApi.modifyData(
+        user.id,
+        userData.imgPath,
+        nickname,
+        tagList
       );
-      if (result.status === 200) {
+      if (newData.status === 200) {
+        onClickSaveModal();
+      } else {
+        console.log('에러');
+      }
+    } else {
+      const deleteRes: any = await deleteImage(userData.imgPath, user.email);
+      if (deleteRes.status === 200) {
+        const path = await uploadImages([image], 'profile', user.email);
         const newData: any = await modifyApi.modifyData(
           user.id,
-          `profiles/${user.email}`,
+          path[0],
           nickname,
           tagList
         );
