@@ -11,5 +11,9 @@ $height: 64px;
   background-color: white;
   .header__logo {
     margin: 0 20px;
+    width: fit-content;
+    a {
+      text-decoration: none;
+    }
   }
 }

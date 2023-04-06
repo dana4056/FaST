@@ -138,6 +138,8 @@ export interface CommentProps {
   onChangeComment: React.ChangeEventHandler;
   // 댓글 수정 함수
   handleUpdateComment: React.FormEventHandler;
+  isLimit: boolean;
+  handleRepliesLoad: () => void;
 }
 
 // 댓글 목록 Props
@@ -146,6 +148,8 @@ export interface CommentsProps {
   handleCommentClick: React.MouseEventHandler;
   commentInputRef: React.RefObject<HTMLInputElement>;
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
 }
 
 // 댓글 컨테이너 Props

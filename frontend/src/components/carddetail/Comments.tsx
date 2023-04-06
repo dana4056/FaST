@@ -10,6 +10,8 @@ function Comments({
   handleCommentClick,
   commentInputRef,
   handleCommentSubmit,
+  isLimit,
+  handleCommentsLoad,
 }: CommentsProps) {
   return (
     <div className="comments">
@@ -37,6 +39,17 @@ function Comments({
         {comments.map((comment: CommentType) => (
           <CommentContainer comment={comment} key={comment.id} />
         ))}
+        {isLimit ? (
+          <div className="comments__footer">모든 댓글을 확인했습니다.</div>
+        ) : (
+          <div
+            className="comments__footer"
+            role="presentation"
+            onClick={handleCommentsLoad}
+          >
+            댓글 불러오기
+          </div>
+        )}
       </div>
     </div>
   );

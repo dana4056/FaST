@@ -21,6 +21,9 @@ function CardDetailContainer() {
   const { createComment, getComments } = useCommentViewModel();
   const { follow, unfollow } = useFollowViewModel();
   const [imagePaths, setImagePaths] = useState<Array<string>>([]);
+  const [commentOffset, setCommentOffset] = useState<number>(0);
+  const [load, setLoad] = useState<boolean>(false);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
   const user = useRecoilValue(userInfo);
   // 입력 댓글 input을 다루기 위한 ref
   const commentInputRef = useRef<HTMLInputElement>(null);
@@ -44,19 +47,7 @@ function CardDetailContainer() {
   // 댓글창이 열려있는지
   const [isCommentOpen, setisCommentOpen] = useState<boolean>(false);
   // 댓글 배열
-  const [comments, setComments] = useState<Array<CommentType>>([
-    {
-      id: 0,
-      userId: 0,
-      nickname: '',
-      profile: '',
-      content: '',
-      regTime: '',
-      isLike: false, // 좋아요 눌렀는지
-      numLikes: 0, // 좋아요 개수
-      numReplies: 0, // 답글 개수
-    },
-  ]);
+  const [comments, setComments] = useState<Array<CommentType>>([]);
 
   // 메뉴 토글 버튼 클릭 함수
   const handleMenuClick = () => {
@@ -79,25 +70,30 @@ function CardDetailContainer() {
 
   const getCommentsData = async () => {
     if (params.cardId) {
-      const res = await getComments(params.cardId, user.id, 10, 0);
+      const res = await getComments(params.cardId, user.id, 5, commentOffset);
       if (res.status === 200) {
-        const newComments: Array<CommentType> = [];
-        await Promise.all(
-          res.data.map((comment: any) =>
-            newComments.push({
-              id: comment.id,
-              userId: comment.userId,
-              nickname: comment.nickName,
-              profile: comment.imgPath,
-              content: comment.content,
-              regTime: new Date(comment.createTime).toLocaleDateString(),
-              isLike: comment.likeCheck, // 좋아요 눌렀는지
-              numLikes: comment.likeCount, // 좋아요 개수
-              numReplies: comment.commentReplyCount, // 답글 개수
-            })
-          )
-        );
-        setComments([...newComments]);
+        if (res.data.length > 0) {
+          const newComments: Array<CommentType> = comments;
+          await Promise.all(
+            res.data.map((comment: any) =>
+              newComments.push({
+                id: comment.id,
+                userId: comment.userId,
+                nickname: comment.nickName,
+                profile: comment.imgPath,
+                content: comment.content,
+                regTime: new Date(comment.createTime).toLocaleDateString(),
+                isLike: comment.likeCheck, // 좋아요 눌렀는지
+                numLikes: comment.likeCount, // 좋아요 개수
+                numReplies: comment.commentReplyCount, // 답글 개수
+              })
+            )
+          );
+          newComments.sort((o1: CommentType, o2: CommentType) => o2.id - o1.id);
+          setComments([...newComments]);
+        } else {
+          setIsLimit(true);
+        }
       }
     }
   };
@@ -114,7 +110,10 @@ function CardDetailContainer() {
         user.id
       );
       if (res.status === 200) {
-        getCommentsData();
+        setCommentOffset(0);
+        setIsLimit(false);
+        setComments([]);
+        setLoad((prev: boolean) => !prev);
       }
       commentInputRef.current.value = '';
     }
@@ -155,6 +154,10 @@ function CardDetailContainer() {
   const handleMoveUserPage = () => {
     navigate(`/record/${card.userId}`);
   };
+  const handleCommentsLoad = () => {
+    setCommentOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
+  };
   useEffect(() => {
     const getArticleData = async () => {
       if (params.cardId) {
@@ -188,8 +191,11 @@ function CardDetailContainer() {
       }
     };
     getArticleData();
-    getCommentsData();
   }, []);
+
+  useEffect(() => {
+    getCommentsData();
+  }, [load]);
 
   return (
     <CardDetailPage
@@ -211,6 +217,8 @@ function CardDetailContainer() {
       handleFollow={handleFollow}
       handleUnfollow={handleUnfollow}
       handleMoveUserPage={handleMoveUserPage}
+      isLimit={isLimit}
+      handleCommentsLoad={handleCommentsLoad}
     />
   );
 }

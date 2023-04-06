@@ -11,6 +11,7 @@ import {
   ProfileProps,
   KoreaMapProps,
   AddPersonalTagProps,
+  CommentsProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -46,6 +47,8 @@ export interface NewCardPageProps extends InputPhotoProps {
   handleTextareaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   tagInputRef: React.RefObject<HTMLInputElement>;
   errorMessage: string;
+  isNoTags: boolean;
+  handleNoTagsModalClose: () => void;
 }
 
 export interface ModifyArticlePageProps extends NewCardPageProps {
@@ -67,6 +70,8 @@ export interface CardDetailPageProps extends CardDetailProps {
   handleDeleteOpen: () => void;
   handleDeleteClose: () => void;
   handleArticleDelete: () => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
 }
 
 // 내 기록 페이지
@@ -128,6 +133,8 @@ export interface LoginPageProps {
   goNaverLogin: () => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isFail: boolean;
+  handleModalClose: () => void;
 }
 
 // 회원정보수정 페이지 props

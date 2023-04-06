@@ -16,7 +16,6 @@ function AddPersonalTag({
   index,
   submit,
 }: AddPersonalTagProps) {
-  console.log(index);
   const [openTagModal, setOpenTagModal] = useState<boolean>(false);
 
   useEffect(() => {
