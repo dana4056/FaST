@@ -19,7 +19,6 @@
     display: flex;
     align-items: center;
     padding: 2px 10px;
-    justify-content: space-between;
 
     .photo-card__like {
       display: flex;
@@ -35,11 +34,11 @@
       }
     }
     .photo-card__comments {
-      float: right;
       display: flex;
       align-items: center;
 
       .photo-card__comments_icon {
+        margin-left: 3px;
         margin-right: 2px;
         font-size: 22px;
       }

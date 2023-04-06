@@ -58,7 +58,7 @@ function Footer() {
       <span className="title people">People</span>
       <span className="title plus">Plus</span>
       <span className="title myrecord">MyRecord</span>
-      <span className="title mypage">MyPage</span>
+      <span className="title mypage">Setting</span>
       <div className="border">
         <div className="footer__circle" />
       </div>

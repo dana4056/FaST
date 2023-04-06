@@ -13,10 +13,8 @@ function FollowList({ follower, isMine }: any) {
         user.fromUser.nickname.toLowerCase().includes(userInput)
       )
     : [];
-
   const deleteInput = (e: React.MouseEvent<SVGAElement>) => {
     setUserInput('');
-    console.log(userInput);
   };
 
   return (
@@ -26,7 +24,7 @@ function FollowList({ follower, isMine }: any) {
           <input
             type="text"
             className="ui_text"
-            placeholder="검색"
+            placeholder="팔로워 검색"
             onChange={getValue}
             value={userInput}
           />
@@ -51,6 +49,16 @@ function FollowList({ follower, isMine }: any) {
                   isMine={isMine}
                 />
               ))}
+          <div className="follow__message">
+            {searchedFollower.length === 0 && userInput !== ''
+              ? `팔로워 중에 ${userInput}님은 없어요 :(`
+              : null}
+          </div>
+          <div className="follow__message">
+            {userInput === '' &&
+              follower?.length === 0 &&
+              `아직 팔로워가 없어요 :(`}
+          </div>
         </div>
       </div>
     </div>

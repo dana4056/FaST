@@ -19,7 +19,13 @@ function CardList({ isMine, cardsLeft, cardsRight, isLimit, pageEnd }: any) {
         ))}
       </div>
       {isLimit ? (
-        <div>더 이상 글이 없음</div>
+        <div className="card-list__page-end">
+          <div className="card-list__page-end-mark-container">
+            <div className="card-list__page-end-mark" />
+            <div className="card-list__page-end-mark" />
+            <div className="card-list__page-end-mark" />
+          </div>
+        </div>
       ) : (
         <div ref={pageEnd} className="card-list__footer">
           <Spin />
