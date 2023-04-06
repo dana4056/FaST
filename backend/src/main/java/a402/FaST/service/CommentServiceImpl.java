@@ -38,6 +38,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public CommentResponseDto create(CommentRequestDto requestDto) {
+        if(requestDto.getContent().trim().equals("")){
+            throw new NoSuchElementException("댓글 내용을 입력해주세요");
+        }
+
         User user = userRepository.findById(requestDto.getUserId()).get();
         Article article = articleRepository.findById(requestDto.getArticleId()).get();
 
@@ -83,9 +87,14 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(modifyDto.getCommentId()).get();
         CommentResponseDto responseDto;
 
+
         if (comment.getUser().getId() != modifyDto.getUserId()){
             throw new Exception("작성자가 아닙니다!");
         }else{
+            if(modifyDto.getContent().trim().equals("")){
+                throw new NoSuchElementException("댓글 내용을 입력해주세요");
+            }
+
             comment.setContent(modifyDto.getContent());
             responseDto = CommentResponseDto.builder()
                     .id(comment.getId())

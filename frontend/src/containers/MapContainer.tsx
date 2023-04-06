@@ -17,7 +17,7 @@ function MapContainer() {
   const params = useParams();
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(true);
-  const { downloadImages } = useViewModel();
+  const { downloadImages, getMyArticles } = useViewModel();
 
   const [articleData, setArticleData] = useState<any>();
 
@@ -263,6 +263,9 @@ function MapContainer() {
     }
 
     if (mapData.status === 200) {
+      console.log(mapData.config.params.area);
+      console.log(mapData.data);
+
       const cardLeftList: any = [];
       const cardRightList: any = [];
       if (mapData.data.length > 0) {
@@ -276,12 +279,12 @@ function MapContainer() {
                   className: 'tag-2 tag-small',
                 })
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardLeftList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
@@ -300,12 +303,12 @@ function MapContainer() {
                   })
                 )
               );
-              // const imageUrls = await downloadImages(
-              //   article.imgPath.split(',')
-              // );
+              const imageUrls = await downloadImages(
+                article.imgPath.split(',')
+              );
               cardRightList.push({
                 id: article?.id,
-                imageUrls: [sample1],
+                imageUrls,
                 nickname: article?.nickName,
                 content: '',
                 regTime: article?.createTime,
@@ -317,15 +320,21 @@ function MapContainer() {
             }
           })
         );
+        console.log(cardLeftList, cardRightList);
         if (cardLeftList.length > 0) {
+          console.log(cardLeftList.length);
           setCardsLeft([
             ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
           ]);
+        } else if (cardLeftList.length === 0) {
+          setCardsLeft([]);
         }
         if (cardRightList.length > 0) {
           setCardsRight([
             ...cardRightList.sort((o1: any, o2: any) => o2.id - o1.id),
           ]);
+        } else if (cardRightList.length === 0) {
+          setCardsRight([]);
         }
       } else {
         setIsLimit(() => true);

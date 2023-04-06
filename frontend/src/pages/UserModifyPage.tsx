@@ -4,7 +4,7 @@ import Modal from '../components/Modal';
 import InputProfile from '../components/SignUp/InputProfile';
 import { InputProfileProps } from '../types/ComponentPropsType';
 import { UserModifyProps } from '../types/PagePropsType';
-import SearchBox from '../components/SearchBox';
+import AddPersonalTag from '../components/AddPersonalTag';
 
 function UserModifyPage({
   tags,
@@ -24,6 +24,8 @@ function UserModifyPage({
   goModifyPwd,
   goLogout,
   doWithdraw,
+  index,
+  submit,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -46,12 +48,14 @@ function UserModifyPage({
       <div className="modify__container">
         <span className="modify__tag__text">내 관심태그</span>
       </div>
-      <SearchBox
+      <AddPersonalTag
         tags={tags}
         keyword={keyword}
         handleKeywordChange={handleKeywordChange}
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
+        index={index}
+        submit={submit}
       />
       <div className="modify__container">
         <div className="modify__email__container">

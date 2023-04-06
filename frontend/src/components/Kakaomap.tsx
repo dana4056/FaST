@@ -4,6 +4,7 @@ import { storage } from '../utils/firebase';
 import sample2 from '../assets/images/sample-images/sample_2.jpg';
 import kakaomappin from '../assets/images/kakaomappin.png';
 import kakaomappin2 from '../assets/images/kakaomapppin2.png';
+import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
 declare global {
   interface Window {
@@ -19,39 +20,43 @@ export interface PinType {
 }
 
 function Kakaomap({ selectOption, positionData, checkClicked }: any) {
-  const markerDatas: PinType[] = [];
-  const [imageUrl, setImageUrl] = useState<string>(sample2);
-  if (positionData !== undefined) {
-    console.log(positionData[0]);
-    for (let i = 0; i < positionData.length; i += 1) {
-      const getImage = async () => {
-        const imageRef = ref(storage, positionData[i].imgPath);
-        const ret = await getDownloadURL(imageRef);
-        setImageUrl(ret);
-        console.log(imageUrl);
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+  const { downloadImages } = useArticleViewModel();
+
+  const [markerDatas, setMarkerDatas] = useState<Array<PinType>>([]);
+  const [imageUrl, setImageUrl] = useState<string>('');
+  useEffect(() => {
+    if (positionData !== undefined) {
+      const getData = async () => {
+        const newMarkerDatas: Array<PinType> = [];
+        await Promise.all(
+          positionData.map(async (positionPin: any) => {
+            const getImage = async () => {
+              const imagePath = await downloadImages(
+                positionPin.imgPath.split(',')
+              );
+              const date = new Date(positionPin.createTime);
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const day = String(date.getDate()).padStart(2, '0');
+              const formmatedDate = `${year}.${month}.${day}`;
+              newMarkerDatas.push({
+                pointX: positionPin.lat,
+                pointY: positionPin.lng,
+                pointImg: imagePath[0],
+                // pointImg: sample2,
+                pointTime: formmatedDate,
+              });
+            };
+            await getImage();
+          })
+        );
+        setMarkerDatas(newMarkerDatas);
       };
-      getImage();
-      const date = new Date(positionData[i].createTime);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const formmatedDate = `${year}.${month}.${day}`;
-      console.log(imageUrl);
-      console.log(sample2);
-      markerDatas.push({
-        pointX: positionData[i].lat,
-        pointY: positionData[i].lng,
-        pointImg: imageUrl,
-        // pointImg: sample2,
-        pointTime: formmatedDate,
-      });
+      getData();
     }
-  }
+  }, [positionData]);
   const container = useRef<HTMLDivElement>(null);
   const [kakaoMap, setKakaoMap] = useState<any>(null);
-
-  console.log(positionData);
 
   useEffect(() => {
     if (container.current && checkClicked === 'after_click') {
@@ -70,7 +75,6 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
   useEffect(() => {
     // 2. 마커 찍기
     // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-    console.log(kakaomappin);
     if (kakaoMap) {
       const imageSrc = '/static/media/kakaomappin.e5e2f1a6ce9b49cbeaf9.png';
 
@@ -105,9 +109,9 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
         // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
 
         const iwContent =
-          '<div className="iwContentContainer" style="border: 8px solid white; border-bottom: 30px solid white; background-color: white">' +
+          '<div className="iwContentContainer" style="border: 8px solid white; border-bottom: 8px solid white; background-color: white">' +
           `<img className="iwContentImg" style="width:120px; " src=${markerDatas[i].pointImg} alt='test' />` +
-          `<div>${markerDatas[i].pointTime}</div>` +
+          `<div style="text-align:right; font-size:13px; margin-top:10px; margin-bottom:5px">${markerDatas[i].pointTime}</div>` +
           '</div>';
 
         // 커스텀 오버레이가 표시될 위치입니다

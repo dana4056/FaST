@@ -197,7 +197,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
 
-        responseDto = articleRepository.findByUser(user, pageable)
+        responseDto = articleRepository.findAllByUser(user, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
                         .userId(userId)
@@ -252,10 +252,16 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area) {
         List<ArticleListResponseDto> responseDto = null;
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
-
+        List<Article> articleList = null;
         Pageable pageable = PageRequest.of(offset, size);
 
-        responseDto = articleRepository.findAllByUserAndArea(user, area, pageable)
+        if(area.equals("전국")){
+            articleList = articleRepository.findAllByUser(user, pageable);
+        }else{
+            articleList = articleRepository.findAllByUserAndArea(user, area, pageable);
+        }
+
+        responseDto = articleList
             .stream().map(x->ArticleListResponseDto.builder()
                 .id(x.getId())
                 .userId(userId)

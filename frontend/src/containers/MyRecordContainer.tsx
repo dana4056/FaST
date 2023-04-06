@@ -130,10 +130,14 @@ function MyRecordContainer() {
             })
           );
           if (cardLeftList.length > 0) {
-            setCardsLeft([...cardsLeft]);
+            setCardsLeft([
+              ...cardsLeft.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
           }
           if (cardRightList.length > 0) {
-            setCardsRight([...cardsRight]);
+            setCardsRight([
+              ...cardsRight.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
           }
         } else {
           setIsLimit(true);

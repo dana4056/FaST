@@ -10,6 +10,7 @@ import {
   UserProps,
   ProfileProps,
   KoreaMapProps,
+  AddPersonalTagProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -93,6 +94,8 @@ export interface SignUpPageProps extends InputProfileProps {
   passwordMessage: string;
   passwordConfirmMessage: string;
 
+  openSendModal: boolean;
+  openAuthModal: boolean;
   isEmail: boolean;
   isCheckEmail: boolean;
   isName: boolean;
@@ -115,6 +118,8 @@ export interface SignUpPageProps extends InputProfileProps {
   onClickNext: () => void;
   onClickComplete: () => void;
   onClickTag: (e: number, row: number) => void;
+  onClickSendModal: () => void;
+  onClickAuthdModal: () => void;
 }
 
 export interface LoginPageProps {
@@ -126,7 +131,9 @@ export interface LoginPageProps {
 }
 
 // 회원정보수정 페이지 props
-export interface UserModifyProps extends InputProfileProps, SearchBoxProps {
+export interface UserModifyProps
+  extends InputProfileProps,
+    AddPersonalTagProps {
   // 회원정보 수정 저장
   goModifyPwd: () => void;
   goLogout: () => void;
