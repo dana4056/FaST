@@ -13,7 +13,7 @@ const options = {
   cert: fs.readFileSync('src/config/fullchain3.pem'),
 };
 
-app.set('port', 6060);
+app.set('port', 4041);
 
 app.use(cors.default());
 
@@ -102,24 +102,15 @@ app.post('/upload/article', articleUpload.single('image'), (req: Request, res: R
   }
 });
 
-app.delete('/delete/article/:fileName', (req: Request, res: Response) => {
-  if (fs.existsSync(`/images/articles/${req.params.fileName}`)) {
+app.delete('/delete/:imagePath', (req: Request, res: Response) => {
+  if (fs.existsSync(`/images/${req.params.fileName}`)) {
     try {
-      fs.unlinkSync(`/images/articles/${req.params.fileName}`);
+      fs.unlinkSync(`/images/${req.params.fileName}`);
       res.status(200);
     } catch (error) {
       res.status(500);
     }
   }
-});
-app.delete('/delete/profile/:fileName', async (req: Request, res: Response) => {
-  fs.unlink(`./images/profiles/${req.params.fileName}`, (error) => {
-    if (error) {
-      res.status(500).send('Fail');
-    } else {
-      res.status(200).send('Success');
-    }
-  });
 });
 
 https.createServer(options, app).listen(app.get('port'), () => {
