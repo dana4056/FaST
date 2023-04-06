@@ -11,6 +11,7 @@ import {
   ProfileProps,
   KoreaMapProps,
   AddPersonalTagProps,
+  CommentsProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
 import { CardType } from './CardType';
@@ -69,6 +70,8 @@ export interface CardDetailPageProps extends CardDetailProps {
   handleDeleteOpen: () => void;
   handleDeleteClose: () => void;
   handleArticleDelete: () => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
 }
 
 // 내 기록 페이지

@@ -22,7 +22,6 @@ function CardDetail({
   handleUnfollow,
   handleMoveUserPage,
 }: CardDetailProps) {
-  console.log(card);
   return (
     <div className="card-detail-container">
       <div className="card card-detail">

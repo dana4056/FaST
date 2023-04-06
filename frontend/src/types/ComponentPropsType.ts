@@ -146,6 +146,8 @@ export interface CommentsProps {
   handleCommentClick: React.MouseEventHandler;
   commentInputRef: React.RefObject<HTMLInputElement>;
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
 }
 
 // 댓글 컨테이너 Props
