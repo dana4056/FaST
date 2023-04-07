@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { HiOutlineLocationMarker } from '@react-icons/all-files/hi/HiOutlineLocationMarker';
 import kakaomappin from '../assets/images/kakaomappin.png';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
@@ -132,7 +131,6 @@ function Kakaomap({ selectOption, positionData, checkClicked }: any) {
         // 지도를 클릭했을 때 커스텀 오버레이를 닫습니다.
         window.kakao.maps.event.addListener(kakaoMap, 'click', function () {
           customOverlay.setMap(null);
-          console.log(customOverlay);
         });
       }
     }

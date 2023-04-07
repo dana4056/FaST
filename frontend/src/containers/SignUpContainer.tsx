@@ -1,10 +1,7 @@
-import { ref, uploadBytes } from 'firebase/storage';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
 import imageCompression from 'browser-image-compression';
 import SignUpPage from '../pages/SignUpPage';
-// import { storage } from '../utils/firebase';
 import imageApi from '../api/image';
 import api from '../api/signUp';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
@@ -186,7 +183,6 @@ function SignUpContainer() {
         setImage(compressedImage);
         setImageUrl(URL.createObjectURL(compressedImage));
         setImgPath(`profiles/${email}`);
-        console.log(`사용자 이미지 입력 : ${imgPath}`);
       } catch (error) {
         console.log(error);
       }
@@ -204,23 +200,23 @@ function SignUpContainer() {
 
   // 사용자 이메일로 인증번호 전송
   const onClickSend = async () => {
-    console.log('사용자 이메일로 인증번호 전송!');
+    // console.log('사용자 이메일로 인증번호 전송!');
     // if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
     setIsSend(true);
     onClickSendModal();
     // 이메일 인증번호 전송 api 연결
     const status = await api.sendEmail(email);
     if (status === 200) {
-      console.log('인증번호 전송 성공!');
+      // console.log('인증번호 전송 성공!');
     } else {
       alert('인증번호 전송에 실패했습니다.');
     }
-    console.log(status);
+    // console.log(status);
   };
 
   // 인증번호 확인
   const onClickCheckEmailCode = async () => {
-    console.log('이메일 인증번호 확인 중!');
+    // console.log('이메일 인증번호 확인 중!');
     const status = await api.checkEmail(email, auth);
     if (status === 200) {
       onClickAuthdModal();
@@ -228,7 +224,7 @@ function SignUpContainer() {
     } else {
       alert('인증번호 확인에 실패했습니다.');
     }
-    console.log(status);
+    // console.log(status);
     setIsCheckEmail(true);
   };
   // 닉네임
@@ -311,12 +307,12 @@ function SignUpContainer() {
 
   // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
   const onClickTag = (e: number, row: number) => {
-    console.log(`관심 태그 선택!!${e}`);
+    // console.log(`관심 태그 선택!!${e}`);
     const favoritTag = tag[row][e].tagName;
-    console.log(tag[row][e]);
+    // console.log(tag[row][e]);
     const { index } = tag[row][e];
-    console.log(index);
-    console.log(isChecked[index]);
+    // console.log(index);
+    // console.log(isChecked[index]);
 
     if (!isChecked[index]) {
       // 태그가 선택되어 있지 않았다면
@@ -334,7 +330,7 @@ function SignUpContainer() {
 
       // 선택된 해당 태그 삭제 후 재할당
       const idx = selectedTag.indexOf(favoritTag);
-      console.log(idx);
+      // console.log(idx);
       setSelectedTag(selectedTag.filter((t) => t !== favoritTag));
     }
   };
@@ -354,7 +350,7 @@ function SignUpContainer() {
           pwd,
           salt
         );
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           // db에 있는 사용자 pk값 저장
           setIdPk(res.data.id);
@@ -400,7 +396,7 @@ function SignUpContainer() {
 
   // 관심 태그 선택까지 모두 마쳤다면
   const onClickComplete = async () => {
-    console.log('완료 버튼 클릭!!!');
+    // console.log('완료 버튼 클릭!!!');
     if (selectedTag.length === 0) {
       alert('관심 태그를 선택해주세요!');
     }

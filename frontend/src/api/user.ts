@@ -13,7 +13,6 @@ const api = axios.create({
 async function getMyData(id: number) {
   try {
     const res = await api.get<number>(`/user/${id}`, { params: { id } });
-    // console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
@@ -27,7 +26,6 @@ async function countArticle(id: number) {
     const res = await api.get<number>(`/article/${id}`, {
       params: { id },
     });
-    // console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -48,7 +46,6 @@ async function modifyData(
       nickName,
       tags,
     });
-    console.log(res.data);
     return res;
   } catch (error: any) {
     if (error.response.status === 409) {

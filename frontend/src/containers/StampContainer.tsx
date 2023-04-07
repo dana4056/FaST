@@ -166,7 +166,7 @@ function StampContainer() {
       const newModels = models;
       const res: any = await getLandmarks(user.id);
       if (res.status === 200 && res.data) {
-        console.log(res.data);
+        // console.log(res.data);
         await Promise.all(
           res.data.map((landmark: any) => {
             switch (landmark.landMarkName) {

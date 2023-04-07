@@ -1,6 +1,4 @@
-import { AxiosResponse } from 'axios';
 import React from 'react';
-
 import api from '../api/crawling';
 import doGetLandmarks from '../api/landmark';
 

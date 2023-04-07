@@ -13,7 +13,6 @@ function HomeContainer() {
   const user = useRecoilValue(userInfo);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isMine, setIsMine] = useState<boolean>(true);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);

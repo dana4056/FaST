@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { BsBookmarkPlus } from '@react-icons/all-files/bs/BsBookmarkPlus';
 
 import Tag from './Tag';
@@ -38,7 +37,6 @@ function AddPersonalTag({
               type="button"
               onClick={() => {
                 setOpenTagModal(!openTagModal);
-                console.log(openTagModal);
               }}
             >
               확인

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
   baseURL: 'https://j8a402.p.ssafy.io:8080',
@@ -31,8 +31,6 @@ export async function sendEmail(email: string) {
     const res = await api.post(`/user/send-email`, {
       email,
     });
-
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -54,7 +52,6 @@ export async function userArticleLike(articleId: number, userId: number) {
     const res = await api.get('/likes/article', {
       params: { articleId, userId },
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -101,7 +98,6 @@ export async function doSearchArticles(
     const res = await api.get(
       `/article/tag-searchAll/${userId}/${size}/${offset}?filter=${flag}&tagName=${tags}`
     );
-    console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -142,7 +138,6 @@ async function articleLike(articleId: number, userId: number) {
     const res = await api.get(`/likes/article`, {
       params: { articleId, userId },
     });
-    // console.log(res);
     return res;
   } catch (error) {
     // console.error(error);
@@ -161,7 +156,6 @@ async function getMapArticle(
     const res = await api.get(`/article/area/${userId}/${size}/${offset}`, {
       params: { userId, size, offset, area },
     });
-    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -173,7 +167,6 @@ async function getMapArticle(
 async function getMapArticleCnt(userId: number) {
   try {
     const res = await api.get('/article/area', { params: { userId } });
-    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);
@@ -185,7 +178,6 @@ async function getMapArticleCnt(userId: number) {
 async function getPinData(userId: number, area: string) {
   try {
     const res = await api.get('/article', { params: { userId, area } });
-    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);

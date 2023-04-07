@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Suspense } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { ImBubble } from '@react-icons/all-files/im/ImBubble';
 import {} from '@react-icons/all-files/';
 import { Canvas } from '@react-three/fiber';
 import { LoginPageProps } from '../types/PagePropsType';
-import Header from '../components/Header';
 import Model from '../components/models/Logo';
 
 export default function LoginPage({

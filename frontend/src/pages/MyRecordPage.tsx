@@ -1,11 +1,7 @@
 import React from 'react';
-
-import Card from '../components/PhotoCard';
 import Profile from '../components/Profile';
-import SearchBox from '../components/SearchBox';
 import MoveToMap from '../components/MoveToMap';
 import CardList from '../components/CardList';
-import { MyRecordPageProps } from '../types/PagePropsType';
 
 function MyRecordPage({
   isMine,

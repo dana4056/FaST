@@ -11,7 +11,6 @@ function LoginContainer() {
   const [user, setUser] = useRecoilState(userInfo);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [salt, setSalt] = useState<string>('');
   const [isFail, setIsFail] = useState<boolean>(false);
   // 이메일
   const onChangeEmail = useCallback(

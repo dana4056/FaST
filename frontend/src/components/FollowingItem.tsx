@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
-import { storage } from '../utils/firebase';
 import useViewModel from '../viewmodels/ArticleViewModel';
 
 import followApi from '../api/follow';

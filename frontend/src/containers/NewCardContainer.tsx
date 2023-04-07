@@ -4,12 +4,9 @@ import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
 import imageCompression from 'browser-image-compression';
 
-import { AxiosResponse } from 'axios';
 import NewCardPage from '../pages/NewCardPage';
-import { TagType } from '../types/TagType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { userInfo } from '../atoms/userInfo';
-import { decryptToken } from '../utils/passwordEncryption';
 
 declare global {
   interface Window {

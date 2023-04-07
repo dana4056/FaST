@@ -12,8 +12,6 @@ async function sendEmail(email: string) {
     const res = await api.post(`/user/send-email`, {
       email,
     });
-
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -27,7 +25,6 @@ async function checkEmail(email: string, code: string) {
       code,
       email,
     });
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -50,13 +47,9 @@ async function signUp(
       password,
       salt,
     });
-    console.log(res);
-    console.log(res.status);
-    console.log(res.data.id);
     return res;
   } catch (error: any) {
     console.log(error);
-    console.log(error.response.data.status);
     if (error.response.data.status) {
       alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
     }

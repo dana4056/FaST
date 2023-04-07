@@ -112,10 +112,9 @@ export async function commentLike(commentId: number, userId: number) {
     const res = await api.get(`/likes/comment`, {
       params: { commentId, userId },
     });
-    // console.log(res);
     return res;
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return error;
   }
 }
@@ -124,10 +123,9 @@ export async function commentReplyLike(commentReplyId: number, userId: number) {
     const res = await api.get(`/likes/commentReply`, {
       params: { commentReplyId, userId },
     });
-    // console.log(res);
     return res;
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return error;
   }
 }
