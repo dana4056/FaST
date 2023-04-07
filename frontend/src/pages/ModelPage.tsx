@@ -30,9 +30,27 @@ function ModelPage({
           />
         ) : null}
       </div>
-      <div className="model-page__name">{name}</div>
+      {/* <div className="model-page__text-container card"> */}
+      {/* <div className="model-page__name">{name}</div> */}
       {isVisited ? (
-        <div className="model-page__description">{description}</div>
+        <div className="model-page__text-box">
+          <div className="scene">
+            <div className="box">
+              <div className="box__face box__face--front">
+                <div className="model-page__name">{name}</div>
+                <div className="model-page__description">{description}</div>
+              </div>
+              <div className="box__face box__face--back">
+                <div className="model-page__name">{name}</div>
+                <div className="model-page__description">{description}</div>
+              </div>
+              <div className="box__face box__face--right" />
+              <div className="box__face box__face--left" />
+              <div className="box__face box__face--top" />
+              <div className="box__face box__face--bottom" />
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="model-page__modal card">
           <div className="model-page__modal-content">권한이 없습니다.</div>
@@ -45,6 +63,7 @@ function ModelPage({
           </button>
         </div>
       )}
+      {/* </div> */}
     </div>
   );
 }

@@ -191,3 +191,8 @@
     }
   }
 }
+
+.comment__delete-btn:checked ~ div.comment {
+  transform: translate(100px, 100px);
+  opacity: 1;
+}

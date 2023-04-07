@@ -28,6 +28,7 @@ function CardDetailPage({
   handleCommentsLoad,
   handleCommentDelete,
 }: CardDetailPageProps) {
+  console.log(comments);
   return (
     <div className="card-detail-page">
       <div
