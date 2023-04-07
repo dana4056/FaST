@@ -59,6 +59,9 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<CommentReply> commentReplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
 
