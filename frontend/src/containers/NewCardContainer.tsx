@@ -187,12 +187,19 @@ function NewCardContainer() {
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
 
+    if (textareaRef.current?.value.length === 0 || images.length === 0) {
+      setErrorMessage('사진, 글을 넣어주세요.');
+      setIsFail(true);
+      return;
+    }
+
     const options = {
       maxSizeMB: 0.2,
       maxWidthORHeight: 640,
       useWebWorker: true,
     };
     try {
+      setIsLoading(true);
       const compressedImage: Array<File> = [];
       await Promise.all(
         images.map(async (image: File) => {
@@ -225,8 +232,9 @@ function NewCardContainer() {
         setIsFail(true);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {

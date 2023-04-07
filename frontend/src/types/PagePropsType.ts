@@ -72,6 +72,7 @@ export interface CardDetailPageProps extends CardDetailProps {
   handleArticleDelete: () => void;
   isLimit: boolean;
   handleCommentsLoad: () => void;
+  handleCommentDelete: () => void;
 }
 
 // 내 기록 페이지

@@ -29,6 +29,7 @@ function Comment({
   handleUpdateComment,
   isLimit,
   handleRepliesLoad,
+  handleRepliesReload,
 }: CommentProps) {
   const [user, setUser] = useRecoilState(userInfo);
   const [isMine, setIsMine] = useState<boolean>(false);
@@ -161,7 +162,7 @@ function Comment({
           <CommentReply
             commentReply={commentReply}
             key={commentReply.id}
-            isVisibleReplies={isVisibleReplies}
+            handleRepliesReload={handleRepliesReload}
           />
         ))}
       </div>

@@ -12,6 +12,7 @@ function Comments({
   handleCommentSubmit,
   isLimit,
   handleCommentsLoad,
+  handleCommentDelete,
 }: CommentsProps) {
   return (
     <div className="comments">
@@ -37,7 +38,11 @@ function Comments({
       </div>
       <div className="comments__content">
         {comments.map((comment: CommentType) => (
-          <CommentContainer comment={comment} key={comment.id} />
+          <CommentContainer
+            comment={comment}
+            key={comment.id}
+            handleCommentDelete={handleCommentDelete}
+          />
         ))}
         {isLimit ? (
           <div className="comments__footer">모든 댓글을 확인했습니다.</div>

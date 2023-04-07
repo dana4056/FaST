@@ -140,6 +140,7 @@ export interface CommentProps {
   handleUpdateComment: React.FormEventHandler;
   isLimit: boolean;
   handleRepliesLoad: () => void;
+  handleRepliesReload: () => void;
 }
 
 // 댓글 목록 Props
@@ -150,12 +151,14 @@ export interface CommentsProps {
   handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   isLimit: boolean;
   handleCommentsLoad: () => void;
+  handleCommentDelete: () => void;
 }
 
 // 댓글 컨테이너 Props
 export interface CommentContainerProps {
   // 댓글
   comment: CommentType;
+  handleCommentDelete: () => void;
 }
 
 // 좋아요 하트 Props

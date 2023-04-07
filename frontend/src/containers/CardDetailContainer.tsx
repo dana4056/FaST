@@ -69,6 +69,7 @@ function CardDetailContainer() {
   };
 
   const getCommentsData = async () => {
+    console.log(commentOffset);
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 5, commentOffset);
       if (res.status === 200) {
@@ -117,6 +118,13 @@ function CardDetailContainer() {
       }
       commentInputRef.current.value = '';
     }
+  };
+
+  const handleCommentDelete = () => {
+    setCommentOffset(0);
+    setIsLimit(false);
+    setComments([]);
+    setLoad((prev: boolean) => !prev);
   };
 
   const handleModifyClick = () => {
@@ -220,6 +228,7 @@ function CardDetailContainer() {
       handleMoveUserPage={handleMoveUserPage}
       isLimit={isLimit}
       handleCommentsLoad={handleCommentsLoad}
+      handleCommentDelete={handleCommentDelete}
     />
   );
 }
