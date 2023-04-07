@@ -25,7 +25,8 @@ public class Comment {
 
     @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
-
+    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<CommentReply> commentReplies = new ArrayList<>();
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
