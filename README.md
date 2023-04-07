@@ -29,4 +29,3 @@
 ![data2](https://user-images.githubusercontent.com/50287759/222605853-cb03756f-3c6a-4593-bd80-c11234695eeb.png)
 ****
 ![시나리오](https://user-images.githubusercontent.com/50287759/222605856-930b8ccf-0092-4c1c-ac12-c2698fb2097a.png)
-
