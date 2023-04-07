@@ -197,6 +197,7 @@ function NewCardContainer() {
       useWebWorker: true,
     };
     try {
+      setIsLoading(true);
       const compressedImage: Array<File> = [];
       await Promise.all(
         images.map(async (image: File) => {
@@ -231,6 +232,7 @@ function NewCardContainer() {
     } catch (error) {
       // console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
