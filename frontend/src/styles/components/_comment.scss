@@ -88,111 +88,107 @@
       //   }
     }
   }
-  .comment__form-reply {
-    transition: 0.2s;
-    margin: 4px;
-    border-radius: 10px;
-    border: 0.5px solid gray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    .comment__input-reply {
-      // padding: 8px;
-      width: 70%;
-      border: none;
-    }
-    .comment__submit-reply {
-      background-color: color.$color-4;
-      border-radius: 10px;
-      width: 20%;
-      padding: 4px 0;
-      border: none;
-      color: white;
-    }
+}
+.comment__form-reply {
+  transition: 0.2s;
+  margin: 4px;
+  border-radius: 10px;
+  border: 0.5px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  .comment__input-reply {
+    // padding: 8px;
+    width: 70%;
+    border: none;
   }
-  .comment__replies {
-    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-    overflow-y: hidden;
-    .comment__reply {
-      padding: 10px 0;
-      border-bottom: 0.5px solid color.$gray;
-      display: flex;
-      flex-wrap: wrap;
-      .comment__reply-header {
-        display: flex;
-        margin-left: auto;
-        width: 95%;
-        align-items: center;
-        .comment__reply-profile {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 24px;
-        }
-        .comment__reply-nickname {
-          margin: 0 10px;
-        }
-        .comment__reply-reg-time {
-          font-size: 12px;
-          color: color.$gray;
-        }
-        .comment__reply-update-btn {
-          font-size: 14px;
-          margin-left: auto;
-        }
-        .comment__reply-delete-btn {
-          font-size: 14px;
-          // margin-left: 5px;
-        }
-      }
-      .comment__reply-content {
-        margin: 0 auto;
-        width: 95%;
-        display: flex;
-        .comment__reply-update-box {
-          margin-top: 4px;
-          width: 80%;
-          flex: none;
-          display: flex;
-          .comment__reply-update-input {
-            border: 0px;
-            width: 80%;
-            border-bottom: 1px solid black;
-            box-sizing: border-box;
-          }
-          .comment__reply-update-btn {
-            background-color: color.$color-4;
-            color: white;
-            border: 0px;
-            margin-left: auto;
-          }
-        }
-        .comment__reply-text {
-          margin-top: 4px;
-          font-size: 17px;
-          max-width: 85%;
-          word-wrap: break-word;
-        }
-
-        .comment__reply-like {
-          margin-left: auto;
-          .like-button-container {
-            display: flex;
-            flex-direction: column;
-            svg {
-              width: 20px;
-              height: 20px;
-            }
-            font-size: 12px;
-          }
-        }
-      }
-    }
+  .comment__submit-reply {
+    background-color: color.$color-4;
+    border-radius: 10px;
+    width: 20%;
+    padding: 4px 0;
+    border: none;
+    color: white;
   }
 }
+.comment__replies {
+  transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+  overflow-y: hidden;
+  .comment__reply {
+    padding: 10px 0;
+    border-bottom: 0.5px solid color.$gray;
+    display: flex;
+    flex-wrap: wrap;
+    .comment__reply-header {
+      display: flex;
+      margin-left: auto;
+      width: 95%;
+      align-items: center;
+      .comment__reply-profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+      }
+      .comment__reply-nickname {
+        margin: 0 10px;
+      }
+      .comment__reply-reg-time {
+        font-size: 12px;
+        color: color.$gray;
+      }
+      .comment__reply-update-btn {
+        font-size: 14px;
+        margin-left: auto;
+      }
+      .comment__reply-delete-btn {
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+    .comment__reply-content {
+      margin: 0 auto;
+      width: 95%;
+      display: flex;
+      .comment__reply-update-box {
+        margin-top: 4px;
+        width: 80%;
+        flex: none;
+        display: flex;
+        .comment__reply-update-input {
+          border: 0px;
+          width: 80%;
+          border-bottom: 1px solid black;
+          box-sizing: border-box;
+          font-size: 18px;
+        }
+        .comment__reply-update-btn {
+          background-color: color.$color-4;
+          color: white;
+          border: 0px;
+          margin-left: auto;
+        }
+      }
+      .comment__reply-text {
+        margin-top: 4px;
+        font-size: 17px;
+        max-width: 85%;
+        word-wrap: break-word;
+      }
 
-.comment__delete-btn:checked ~ div.comment {
-  transform: translate(100px, 100px);
-  opacity: 1;
+      .comment__reply-like {
+        margin-left: auto;
+        .like-button-container {
+          display: flex;
+          flex-direction: column;
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }

@@ -38,7 +38,8 @@ function NewCardContainer() {
   const [customTags, setCustomTags] = useState<Array<string>>([]);
   const [customTag, setCustomTag] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>(
-    '내부서버오류 \n 잠시 후에 다시 시도해주세요,'
+    `내부서버오류 \r
+    잠시 후에 다시 시도해주세요.`
   );
   const tagInputRef = useRef<HTMLInputElement>(null);
 
@@ -84,7 +85,8 @@ function NewCardContainer() {
   };
 
   const handleNoTagsModalClose = () => {
-    setErrorMessage('내부서버오류 \n 잠시 후에 다시 시도해주세요,');
+    setErrorMessage(`내부서버오류 \n
+    잠시 후에 다시 시도해주세요`);
     setIsNoTags(false);
   };
 

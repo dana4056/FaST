@@ -131,6 +131,7 @@ function CardDetailContainer() {
   const handleArticleDelete = async () => {
     const res: any = await deleteArticle(card.id, user.id);
     if (res.status === 200) {
+      console.log(res);
       await Promise.all(
         imagePaths.map((imagePath: string) =>
           deleteImage(imagePath, user.email)
