@@ -9,7 +9,10 @@ import { ReplyType } from '../types/ReplyType';
 import useViewModel from '../viewmodels/CommentViewModel';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
-function CommentContainer({ comment }: CommentContainerProps) {
+function CommentContainer({
+  comment,
+  handleCommentDelete,
+}: CommentContainerProps) {
   const user = useRecoilValue(userInfo);
   // 현재 작성 중인 답글
   const [reply, setReply] = useState<string>('');
@@ -38,12 +41,11 @@ function CommentContainer({ comment }: CommentContainerProps) {
     setIsLike((prev: boolean) => !prev);
   };
 
-  // 댓글 삭제 함수
-  const handleDeleteComment = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-    await deleteComment(comment.id, user.id);
+  const handleDeleteComment = async () => {
+    const res: any = await deleteComment(comment.id, user.id);
+    if (res.status === 200) {
+      handleCommentDelete();
+    }
   };
 
   // 댓글 수정칸 여는 함수
@@ -68,7 +70,6 @@ function CommentContainer({ comment }: CommentContainerProps) {
     updateCommentData();
     setOpenUpdateComment(false);
   };
-  console.log(comment);
 
   // 답글 작성칸 여는 함수
   const handleWriteOpenClick = () => {
@@ -136,6 +137,13 @@ function CommentContainer({ comment }: CommentContainerProps) {
     setLoad((prev: boolean) => !prev);
   };
 
+  const handleRepliesReload = () => {
+    setReplies([]);
+    setReplyOffset(0);
+    setIsLimit(false);
+    setLoad((prev: boolean) => !prev);
+  };
+
   useEffect(() => {
     const getData = async () => {
       if (comment.profile) {
@@ -171,6 +179,7 @@ function CommentContainer({ comment }: CommentContainerProps) {
       handleUpdateComment={handleUpdateComment}
       isLimit={isLimit}
       handleRepliesLoad={handleRepliesLoad}
+      handleRepliesReload={handleRepliesReload}
     />
   );
 }

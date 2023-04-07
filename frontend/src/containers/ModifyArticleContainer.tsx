@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import EXIF from 'exif-js';
+import imageCompression from 'browser-image-compression';
 
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { userInfo } from '../atoms/userInfo';
@@ -186,29 +187,62 @@ function ModifyArticleContainer() {
     // 새로고침 방지
     event.preventDefault();
     // 서버에 업로드하는 함수는 여기에
-    const imgPath = await uploadImages(images, 'article', user.email);
+    if (textareaRef.current?.value.length === 0 || images.length === 0) {
+      setErrorMessage('사진, 글을 넣어주세요.');
+      setIsFail(true);
+      return;
+    }
+
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthORHeight: 640,
+      useWebWorker: true,
+    };
 
     await Promise.all(
       prevImagePaths.map((prevImagePath: string) =>
         deleteImage(prevImagePath, user.email)
       )
     );
-    const res: any = await modifyArticle({
-      area: loc,
-      autoTags,
-      articleId: params.articleId,
-      content: textareaRef.current?.value,
-      imgPath: imagePaths.concat(imgPath).join(','),
-      lat: la,
-      lng: lo,
-      tags: customTags,
-      userId: user.id,
-    });
-    if (res.status === 200) {
-      setIsSuccess(true);
-    } else {
-      setIsFail(true);
+    try {
+      setIsLoading(true);
+      const compressedImage: Array<File> = [];
+      await Promise.all(
+        images.map(async (image: File) => {
+          const compressedFile = await imageCompression(image, options);
+          compressedImage.push(compressedFile);
+        })
+      );
+      const imgPath = await uploadImages(
+        compressedImage,
+        'article',
+        user.email
+      );
+      if (imgPath.length === 0) {
+        setIsFail(true);
+        return;
+      }
+      const res: any = await modifyArticle({
+        area: loc,
+        autoTags,
+        articleId: params.articleId,
+        content: textareaRef.current?.value,
+        imgPath: imagePaths.concat(imgPath).join(','),
+        lat: la,
+        lng: lo,
+        tags: customTags,
+        userId: user.id,
+      });
+      if (res.status === 200) {
+        setIsSuccess(true);
+      } else {
+        setIsFail(true);
+      }
+    } catch (error: any) {
+      // console.error(error);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -271,19 +305,21 @@ function ModifyArticleContainer() {
     if (loc) {
       const getTags = async () => {
         setIsLoading(true);
-        const res = await createAutoTags(images, loc);
-        const newAutoTags: Array<string> = [];
-        if (res.length > 0) {
-          res.forEach((tag: string) => {
-            newAutoTags.push(tag);
-          });
-        } else {
-          setErrorMessage(
-            '생성된 태그가 없습니다. \n 다른 사진으로 다시 시도해보세요.'
-          );
-          setIsNoTags(true);
+        if (images.length > 0) {
+          const res = await createAutoTags(images, loc);
+          const newAutoTags: Array<string> = [];
+          if (res.length > 0) {
+            res.forEach((tag: string) => {
+              newAutoTags.push(tag);
+            });
+          } else {
+            setErrorMessage(
+              '생성된 태그가 없습니다. \n 다른 사진으로 다시 시도해보세요.'
+            );
+            setIsNoTags(true);
+          }
+          setAutoTags([...newAutoTags]);
         }
-        setAutoTags([...newAutoTags]);
         setIsLoading(false);
       };
       getTags();
