@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
-
 import KoreaMap from '../components/KoreaMap';
 import CardList from '../components/CardList';
-import { MapPageProps } from '../types/PagePropsType';
 
 function MapPage({
   isMine,
@@ -22,8 +20,6 @@ function MapPage({
   positionData,
   area,
 }: any) {
-  console.log(cardsLeft, cardsRight);
-
   const params = useParams();
   const [user, setUser] = useState<any>(params.userId);
   const navigate = useNavigate();

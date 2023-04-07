@@ -1,6 +1,5 @@
 import { GroupProps } from '@react-three/fiber';
 
-import { TagType } from './TagType';
 import {
   CardDetailProps,
   CardListProps,
@@ -11,10 +10,8 @@ import {
   ProfileProps,
   KoreaMapProps,
   AddPersonalTagProps,
-  CommentsProps,
 } from './ComponentPropsType';
 import { CommentType } from './CommentType';
-import { CardType } from './CardType';
 
 // 메인 페이지 Props
 export interface HomePageProps extends SearchBoxProps, CardListProps {}

@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { userInfo } from '../atoms/userInfo';
-import { storage } from '../utils/firebase';
-
 import Modal from './Modal';
 import followApi from '../api/follow';
 import useViewModel from '../viewmodels/ArticleViewModel';
@@ -28,7 +26,6 @@ function FollowItem({ follower, isMine }: any) {
       setProfileImg(follower.fromUser.imgPath);
     } else {
       const getProfileImage = async () => {
-        console.log(follower);
         const ret = await downloadImages([follower.fromUser.imgPath]);
         setProfileImg(ret[0]);
       };
@@ -41,7 +38,6 @@ function FollowItem({ follower, isMine }: any) {
   const onClickDelete = async (followerId: number) => {
     const followerDelete: any = await followApi.followDelete(followerId, toId);
     setOpenModal(!openModal);
-    console.log(toId, followerId);
     window.location.reload();
     return followerDelete;
   };
@@ -79,7 +75,8 @@ function FollowItem({ follower, isMine }: any) {
               <button
                 className="follow_delete_btn"
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setOpenModal(!openModal);
                 }}
               >

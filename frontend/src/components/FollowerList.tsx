@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { TiDelete } from '@react-icons/all-files/ti/TiDelete';
 import { BsSearch } from '@react-icons/all-files/bs/BsSearch';
 import FollowItem from './FollowerItem';

@@ -11,7 +11,6 @@ import useFollowViewModel from '../viewmodels/FollowViewModel';
 import { CommentType } from '../types/CommentType';
 import { CardType } from '../types/CardType';
 import { userInfo } from '../atoms/userInfo';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function CardDetailContainer() {
   const params = useParams();
@@ -69,7 +68,6 @@ function CardDetailContainer() {
   };
 
   const getCommentsData = async () => {
-    console.log(commentOffset);
     if (params.cardId) {
       const res = await getComments(params.cardId, user.id, 5, commentOffset);
       if (res.status === 200) {
@@ -139,7 +137,6 @@ function CardDetailContainer() {
   const handleArticleDelete = async () => {
     const res: any = await deleteArticle(card.id, user.id);
     if (res.status === 200) {
-      console.log(res);
       await Promise.all(
         imagePaths.map((imagePath: string) =>
           deleteImage(imagePath, user.email)

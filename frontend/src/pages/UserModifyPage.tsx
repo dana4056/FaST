@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
 import InputProfile from '../components/SignUp/InputProfile';
-import { InputProfileProps } from '../types/ComponentPropsType';
 import { UserModifyProps } from '../types/PagePropsType';
 import AddPersonalTag from '../components/AddPersonalTag';
 

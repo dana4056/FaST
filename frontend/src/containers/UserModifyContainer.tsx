@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-// import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import imageCompression from 'browser-image-compression';
 import UserModifyPage from '../pages/UserModifyPage';
 import Modal from '../components/Modal';
 import { userInfo } from '../atoms/userInfo';
 import { TagType } from '../types/TagType';
 import modifyApi from '../api/user';
-import imageApi from '../api/image';
 import useViewModel from '../viewmodels/ArticleViewModel';
-import { storage } from '../utils/firebase';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function UserModifyContainer() {
   const navigate = useNavigate();
@@ -65,7 +61,7 @@ function UserModifyContainer() {
         setImage(compressedImage);
         setImageUrl(URL.createObjectURL(compressedImage));
         setImgPath(`profiles/${userData.email}`);
-        console.log(`사용자 이미지 입력 : ${imgPath}`);
+        // console.log(`사용자 이미지 입력 : ${imgPath}`);
       } catch (error) {
         console.log(error);
       }
@@ -131,7 +127,6 @@ function UserModifyContainer() {
   const [submit, setSubmit] = useState<boolean>(false);
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     setSubmit(true);
-    console.log(searchIndex);
     const newTags = tags;
     // 새로고침 방지
     event.preventDefault();
@@ -194,8 +189,6 @@ function UserModifyContainer() {
 
   // 변경사항 저장 api
   const handleSaveModifyData = async () => {
-    console.log(image);
-
     if (image === undefined) {
       const newData: any = await modifyApi.modifyData(
         user.id,

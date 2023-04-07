@@ -2,7 +2,6 @@ import React from 'react';
 
 import SearchBox from '../components/SearchBox';
 import CardList from '../components/CardList';
-import { HomePageProps } from '../types/PagePropsType';
 
 function HomePage({
   isMine,

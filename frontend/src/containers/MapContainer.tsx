@@ -1,25 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
-import { userInfo } from '../atoms/userInfo';
 import MapPage from '../pages/MapPage';
 import { CardType } from '../types/CardType';
 import { SelectRegionOptionType } from '../types/ComponentPropsType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import articleApi from '../api/article';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import useIntersect from '../utils/useIntersect';
 
 function MapContainer() {
-  const [user, setUser] = useRecoilState(userInfo);
-
   const pageEnd = useRef<HTMLDivElement>(null);
   const params = useParams();
   const [userState, setUserState] = useState<any>(params.userId);
   const [isMine, setIsMine] = useState<boolean>(true);
   const { downloadImages, getMyArticles } = useViewModel();
-
-  const [articleData, setArticleData] = useState<any>();
 
   const seoulOptions = {
     center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
@@ -140,10 +132,8 @@ function MapContainer() {
     } else if (target === 'sejong') {
       setSelectOption(sejongOptions);
     }
-    // console.log(target, selectOption);
     setClicked('after_click');
   };
-  // console.log(clickedArea);
   useEffect(() => {
     if (clickedArea === 'seoul') {
       setArea('서울특별시');
@@ -180,8 +170,6 @@ function MapContainer() {
     } else if (clickedArea === 'sejong') {
       setArea('세종시');
     }
-    console.log('clickedArea', clickedArea);
-    console.log('area', area);
   }, [clickedArea]);
 
   const clickBack = (e: React.MouseEvent<SVGPathElement>) => {
@@ -263,9 +251,6 @@ function MapContainer() {
     }
 
     if (mapData.status === 200) {
-      console.log(mapData.config.params.area);
-      console.log(mapData.data);
-
       const cardLeftList: any = [];
       const cardRightList: any = [];
       if (mapData.data.length > 0) {
@@ -320,9 +305,7 @@ function MapContainer() {
             }
           })
         );
-        console.log(cardLeftList, cardRightList);
         if (cardLeftList.length > 0) {
-          console.log(cardLeftList.length);
           setCardsLeft([
             ...cardLeftList.sort((o1: any, o2: any) => o2.id - o1.id),
           ]);

@@ -33,7 +33,6 @@ async function followFrom(fromId: number) {
 async function followList(userId: number) {
   try {
     const res = await api.get<number>('/follow/search', { params: { userId } });
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -60,7 +59,6 @@ async function followDelete(fromId: number, toId: number) {
     const res = await api.delete<number>('/follow', {
       data: { fromId, toId },
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -72,7 +70,6 @@ async function followDelete(fromId: number, toId: number) {
 async function followAdd(fromId: number, toId: number): Promise<AxiosResponse> {
   try {
     const res = await api.post<number>('/follow', { fromId, toId });
-    console.log(res);
     return res;
   } catch (error: any) {
     console.log(error);

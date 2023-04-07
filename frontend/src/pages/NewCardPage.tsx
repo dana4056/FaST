@@ -3,7 +3,6 @@ import { AiFillPlusCircle } from '@react-icons/all-files/ai/AiFillPlusCircle';
 
 import InputPhoto from '../components/NewCard/InputPhoto';
 import Tag from '../components/Tag';
-import { TagType } from '../types/TagType';
 import { NewCardPageProps } from '../types/PagePropsType';
 import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 

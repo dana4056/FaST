@@ -11,8 +11,6 @@ const api = axios.create({
 async function getSalt(email: string): Promise<AxiosResponse> {
   try {
     const res = await api.get<any>(`/user/salt/${email}`);
-
-    console.log(res.status);
     return res;
   } catch (error: any) {
     console.log(error);
@@ -32,8 +30,6 @@ async function modifyPwd(
       password,
       salt,
     });
-    console.log(res.status);
-    console.log(res.data);
     return res.status;
   } catch (error) {
     console.log(error);

@@ -1,19 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { BsSearch } from '@react-icons/all-files/bs/BsSearch';
 import { TiDelete } from '@react-icons/all-files/ti/TiDelete';
-import { getDownloadURL, ref } from 'firebase/storage';
 import FollowingItem from './FollowingItem';
 import NotFollowingItem from './NotFollowingItem';
-import { storage } from '../utils/firebase';
-import Modal from './Modal';
-import cardimg from '../assets/images/photocardimg.jpeg';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import {
-  UserProps,
-  UserItemProps,
-  FollowProps,
-} from '../types/ComponentPropsType';
-import followApi from '../api/follow';
 
 function FollowList({ following, notFollowing, isMine }: any) {
   const [userInput, setUserInput] = useState('');

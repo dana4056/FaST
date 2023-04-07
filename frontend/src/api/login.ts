@@ -11,8 +11,6 @@ const api = axios.create({
 async function getSalt(email: string): Promise<AxiosResponse> {
   try {
     const res = await api.get<any>(`/user/salt/${email}`);
-
-    // console.log(res.status);
     return res;
   } catch (error: any) {
     // console.log(error);
@@ -32,8 +30,6 @@ async function login(email: string, password: string): Promise<AxiosResponse> {
       'token',
       encryptToken(res.headers.authorization, email)
     );
-
-    // console.log(res.headers.authorization);
     return res;
   } catch (error: any) {
     // console.log(error);
@@ -51,7 +47,6 @@ async function fastLogin(token: string): Promise<AxiosResponse> {
       'token',
       encryptToken('Bearer '.concat(token), res.data.email)
     );
-    // console.log(res.headers.authorization);
     return res;
   } catch (error: any) {
     // console.log(error);

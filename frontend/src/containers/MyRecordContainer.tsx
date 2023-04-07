@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { useLocation, useParams } from 'react-router-dom';
-import { storage } from '../utils/firebase';
 import { userInfo } from '../atoms/userInfo';
 import userApi from '../api/user';
-import articleApi from '../api/article';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
@@ -13,7 +10,6 @@ import { TagType } from '../types/TagType';
 import { CardType } from '../types/CardType';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
-import useIntersect from '../utils/useIntersect';
 
 // import sample1 from '../assets/images/sample-images/sample_1.jpg';
 

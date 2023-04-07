@@ -1,6 +1,5 @@
 import React from 'react';
 import { CardType } from '../types/CardType';
-import { CardListProps } from '../types/ComponentPropsType';
 import { ReactComponent as Spin } from '../assets/images/Spinner.svg';
 
 import PhotoCard from './PhotoCard';

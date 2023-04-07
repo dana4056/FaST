@@ -1,5 +1,4 @@
-import React, { Suspense } from 'react';
-
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { MdArrowBack } from '@react-icons/all-files/md/MdArrowBack';
 import Landmark from '../components/Landmark';

@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
-import { StereoEffect } from 'three-stdlib';
 import { CardType } from '../types/CardType';
 
 import PeoplePage from '../pages/PeoplePage';
 import { userInfo } from '../atoms/userInfo';
 import useViewModel from '../viewmodels/ArticleViewModel';
 import { TagType } from '../types/TagType';
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
 
 function PeopleContainer() {
   const size = 10;
 
   const [isSearch, setIsSearch] = useState<boolean>(false);
-  const [isMine, setIsMine] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLimit, setIsLimit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

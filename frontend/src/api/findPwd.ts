@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'https://j8a402.p.ssafy.io:8080',
@@ -13,7 +13,6 @@ async function sendEmail(email: string) {
       email,
     });
 
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -27,7 +26,6 @@ async function checkEmail(email: string, code: string) {
       code,
       email,
     });
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);
@@ -42,7 +40,6 @@ async function findPwd(email: string, password: string, salt: string) {
       password,
       salt,
     });
-    console.log(res.status);
     return res.status;
   } catch (error) {
     console.log(error);

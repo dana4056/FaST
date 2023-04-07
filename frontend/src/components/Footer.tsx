@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useEffect, useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import { HiHome } from '@react-icons/all-files/hi/HiHome';
 import { BsPeopleFill } from '@react-icons/all-files/bs/BsPeopleFill';
 import { FaPlus } from '@react-icons/all-files/fa/FaPlus';

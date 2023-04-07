@@ -36,7 +36,6 @@ function FollowContainer() {
     const getData = async () => {
       const notFollowingList: any = await followApi.notFollowingList(userState);
       setNotFollowingData(notFollowingList.data);
-      console.log(notFollowingData);
     };
     getData();
   }, []);
