@@ -9,7 +9,10 @@ import { ReplyType } from '../types/ReplyType';
 import useViewModel from '../viewmodels/CommentViewModel';
 import useArticleViewModel from '../viewmodels/ArticleViewModel';
 
-function CommentContainer({ comment }: CommentContainerProps) {
+function CommentContainer({
+  comment,
+  handleCommentDelete,
+}: CommentContainerProps) {
   const user = useRecoilValue(userInfo);
   // 현재 작성 중인 답글
   const [reply, setReply] = useState<string>('');
@@ -40,8 +43,10 @@ function CommentContainer({ comment }: CommentContainerProps) {
 
   // 댓글 삭제 함수
   const deleteCommentData = async () => {
-    const res = await deleteComment(comment.id, user.id);
-    return res;
+    const res: any = await deleteComment(comment.id, user.id);
+    if (res.status === 200) {
+      handleCommentDelete();
+    }
   };
   const handleDeleteComment = async (
     event: React.FormEvent<HTMLFormElement>
