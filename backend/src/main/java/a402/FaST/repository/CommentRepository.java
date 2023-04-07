@@ -9,5 +9,5 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     int countByArticleId(int articleId);
 
-    List<Comment> findAllByArticleIdOrderByCreateTime(int article_id, Pageable pageable);
+    List<Comment> findAllByArticleIdOrderByCreateTimeDesc(int article_id, Pageable pageable);
 }

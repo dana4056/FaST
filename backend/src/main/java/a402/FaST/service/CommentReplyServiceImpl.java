@@ -107,7 +107,7 @@ public class CommentReplyServiceImpl implements CommentReplyService{
         Pageable pageable = PageRequest.of(offset, size);
         List<CommentReplyListResponseDto> responseDto = null;
 
-        responseDto = commentReplyRepository.findAllByCommentIdOrderByCreateTime(commentId, pageable)
+        responseDto = commentReplyRepository.findAllByCommentIdOrderByCreateTimeDesc(commentId, pageable)
                 .stream().map(x->CommentReplyListResponseDto.builder()
                         .id(x.getId())
                         .userId(x.getUser().getId())
