@@ -6,6 +6,7 @@
   column-gap: 10px;
   margin-left: 25px;
   margin-right: 25px;
+  margin-bottom: 8px;
   .move-map-btn {
     grid-column: 2;
     width: 100%;
@@ -14,7 +15,7 @@
     border: 0px;
     background-color: color.$color-1;
     color: white;
-    font-size: 30px;
+    font-size: 6vw;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
   .move-stamp-btn {
@@ -25,7 +26,7 @@
     border: 0px;
     background-color: color.$color-1;
     color: white;
-    font-size: 30px;
+    font-size: 6vw;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 }

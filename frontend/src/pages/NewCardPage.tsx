@@ -107,7 +107,7 @@ function NewCardPage({
               onChange={handleCustomTagInputChange}
               ref={tagInputRef}
               className="new-card-page__input"
-              maxLength={10}
+              maxLength={15}
               value={customTag}
             />
             <button type="submit" className="new-card-page__modal-submit card">
