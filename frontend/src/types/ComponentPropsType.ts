@@ -140,6 +140,7 @@ export interface CommentProps {
   handleUpdateComment: React.FormEventHandler;
   isLimit: boolean;
   handleRepliesLoad: () => void;
+  handleRepliesReload: () => void;
 }
 
 // 댓글 목록 Props

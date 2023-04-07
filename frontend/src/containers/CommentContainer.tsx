@@ -144,6 +144,13 @@ function CommentContainer({
     setLoad((prev: boolean) => !prev);
   };
 
+  const handleRepliesReload = () => {
+    setReplies([]);
+    setReplyOffset(0);
+    setIsLimit(false);
+    setLoad((prev: boolean) => !prev);
+  };
+
   useEffect(() => {
     const getData = async () => {
       if (comment.profile) {
@@ -179,6 +186,7 @@ function CommentContainer({
       handleUpdateComment={handleUpdateComment}
       isLimit={isLimit}
       handleRepliesLoad={handleRepliesLoad}
+      handleRepliesReload={handleRepliesReload}
     />
   );
 }

@@ -6,7 +6,7 @@ import Heart from '../Heart';
 import useViewModel from '../../viewmodels/CommentViewModel';
 import { CommentProps } from '../../types/ComponentPropsType';
 
-function CommentReply({ commentReply }: any) {
+function CommentReply({ commentReply, handleRepliesReload }: any) {
   const [user, setUser] = useRecoilState(userInfo);
   const [isMine, setIsMine] = useState<boolean>(false);
   const { deleteReply, updateReply } = useViewModel();
@@ -20,8 +20,10 @@ function CommentReply({ commentReply }: any) {
 
   // 답글 삭제 함수
   const deleteReplyData = async () => {
-    const res = await deleteReply(commentReply.id, user.id);
-    return res;
+    const res: any = await deleteReply(commentReply.id, user.id);
+    if (res.status === 200) {
+      handleRepliesReload();
+    }
   };
   const handleDeleteReply = async (event: React.MouseEvent) => {
     event.preventDefault();
