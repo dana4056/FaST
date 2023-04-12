@@ -91,4 +91,4 @@ NginX Docker AWS EC2 jenkins
 ![model](https://user-images.githubusercontent.com/50287759/222605834-d81982d6-5817-499f-b298-cf7cca787913.png)
 
 
-📃 <b>[학습 기록 보러가기](https://www.notion.so/c224a9fa213940e58b3e409228b4b9e7?v=e17dd98b34fd4f0d8f66fcc87930eedb)</b>
+📃 <b>[학습 기록 보러가기](https://clammy-opossum-12e.notion.site/FaST-a16de228d5544c0da9528aa06fa9c351)</b>
