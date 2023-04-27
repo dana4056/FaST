@@ -25,35 +25,35 @@ public class FollowController {
 
     @PostMapping("")
     @Operation(summary = "팔로우 추가 API =>  유저 ID(fromId)와 팔로잉할 ID(toId)를 입력받아 팔로우 추가하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : fromId, int : toId) " +
-            " => True or error 를 반환 해줍니다")
+            description = "<b>[json 형식 데이터]</b><br>{ int : fromId, int : toId }<br><br> " +
+            " => True or error return")
     public ResponseEntity insertFollow(@Valid @RequestBody FollowRequestDto requestDto) {
         boolean check = followService.insertFollow(requestDto);
         return ResponseEntity.ok(check);
     }
 
     @DeleteMapping("")
-    @Operation(summary = "팔로우 삭제 API =>  필로우 삭제하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : fromId, int : toId)" +
-                    " => 검증 결과에 따라 True or error 를 Return 해줍니다.")
+    @Operation(summary = "팔로우 삭제 API",
+            description = "<b>[json 형식 데이터]</b><br>{ int : fromId, int : toId}<br><br>" +
+                    " => 검증 결과에 따라 True or error Return")
     public ResponseEntity deleteFollow(@Valid @RequestBody FollowRequestDto requestDto)  {
         boolean check = followService.deleteFollow(requestDto);
         return ResponseEntity.ok(check);
     }
 
-    @PostMapping("/search")
-    @Operation(summary = "팔로우 조회 API =>  유저 ID로 해당 유저의 Follower, Following 유저 검색하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : id)" +
-                    " => UserFollowResponseDto Return 해줍니다.")
-    public ResponseEntity<UserFromToFollowResponseDto> findUser(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
+    @GetMapping("/search")
+    @Operation(summary = "팔로우 조회 API =>  유저 ID로 해당 유저의 Follower, Following 유저 검색",
+            description = "<b>[RequestParam 형식 데이터]</b><br>- int : userId (기준 유저 id)<br><br>" +
+                    " => UserFollowResponseDto Return")
+    public ResponseEntity<UserFromToFollowResponseDto> findUser(@Valid @RequestParam("userId") int userId) throws Exception {
         UserFromToFollowResponseDto userFromToFollowResponseDto = null;
-        userFromToFollowResponseDto = followService.getfollow(requestDto);
+        userFromToFollowResponseDto = followService.getfollow(userId);
         return ResponseEntity.ok(userFromToFollowResponseDto);
     }
 
     @GetMapping("/to")
     @Operation(summary = "팔로워 조회 API =>  필로워 수 조회하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int toId)" +
+            description = "RequestParam 형식 데이터 -> (int : toId)" +
                     " => 팔로워 수를 Return 해줍니다.")
     public ResponseEntity cntFollower(@Valid @RequestParam int toId)  {
         int cnt = followService.cntFollower(toId);
@@ -62,20 +62,20 @@ public class FollowController {
 
     @GetMapping("/from")
     @Operation(summary = "팔로잉 조회 API =>  필로잉 수 조회하는 API 입니다.",
-            description = "RequestParam 형식 데이터 -> (int fromId)" +
+            description = "RequestParam 형식 데이터 -> (int : fromId)" +
                     " => 팔로잉 수를 Return 해줍니다.")
     public ResponseEntity cntFollowing(@Valid @RequestParam int fromId)  {
         int cnt = followService.cntFollowing(fromId);
         return ResponseEntity.ok(cnt);
     }
 
-    @PostMapping("/not-follow")
-    @Operation(summary = "NOT 팔로워 조회 API =>  유저 ID로 해당 유저를 팔로워 하지 않는 유저 정보를 조회하는 API 입니다.",
-            description = "json 형식 데이터 -> (int : id)" +
-                    " => UserFromFollowResponseDto Return 해줍니다.")
-    public ResponseEntity<List<UserNotFollowResponseDto>> NotFollow(@Valid @RequestBody FollowSearchRequestDto requestDto) throws Exception {
+    @GetMapping("/not-follow")
+    @Operation(summary = "NOT 팔로워 조회 API =>  유저 ID로 해당 유저를 팔로워 하지 않는 유저 정보를 조회",
+            description = "<b>[RequestParam 형식 데이터]</b><br>- int : userId (기준 유저 id)<br><br>" +
+                    " => UserFromFollowResponseDto Return")
+    public ResponseEntity<List<UserNotFollowResponseDto>> NotFollow(@Valid @RequestParam("userId") int userId) throws Exception {
         List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
-        userNotFollowResponseDtoList = followService.NotFollow(requestDto);
+        userNotFollowResponseDtoList = followService.NotFollow(userId);
         return ResponseEntity.ok(userNotFollowResponseDtoList);
     }
 

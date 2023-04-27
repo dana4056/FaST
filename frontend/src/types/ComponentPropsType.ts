@@ -17,6 +17,24 @@ export interface SearchBoxProps {
   handleTagDelete: (value: string) => void;
 }
 
+// 내 관심태그 추가 Props
+export interface AddPersonalTagProps {
+  // 입력한 태그 배열
+  tags: Array<TagType>;
+  // 검색 키워드
+  keyword: string;
+  // 검색 키워드 변경 함수
+  handleKeywordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // 검색 함수
+  handleSearch: (event: React.FormEvent<HTMLFormElement>) => void;
+  // 태그 배열에서 태그 삭제 함수
+  handleTagDelete: (value: string) => void;
+  // 태그 인덱스
+  index: number;
+  // 제출 여부
+  submit: boolean;
+}
+
 // 태그 props
 export interface TagProps {
   // 태그 내용
@@ -67,16 +85,22 @@ export interface ImageSliderProps extends ImageSliderContainerProps {
 
 // 카드 상세 props
 export interface CardDetailProps {
+  user: any;
   // 카드 정보
   card: CardType;
   // 좋아요 클릭 함수
   handleLikeClick: () => void;
+  handleModifyClick: () => void;
+  handleDeleteOpen: () => void;
   // 메뉴 상태
   isMenuOpen: boolean;
   // 메뉴 클릭 함수
   handleMenuClick: () => void;
   // 댓글 클릭 함수
   handleCommentClick: () => void;
+  handleFollow: () => void;
+  handleUnfollow: () => void;
+  handleMoveUserPage: () => void;
 }
 
 // 댓글 Props
@@ -103,24 +127,53 @@ export interface CommentProps {
   isLike: boolean;
   // 좋아요 클릭 함수
   handleLikeClick: React.MouseEventHandler;
+  profile: string;
+  // 댓글 삭제 함수
+  handleDeleteComment: React.FormEventHandler;
+  openUpdateComment: boolean;
+  // 댓글 수정칸 여는 함수
+  handleUpdateCommentOpenClick: React.MouseEventHandler;
+  // 댓글 수정칸 변화 감지 함수
+  commentContent: string;
+  onChangeComment: React.ChangeEventHandler;
+  // 댓글 수정 함수
+  handleUpdateComment: React.FormEventHandler;
+  isLimit: boolean;
+  handleRepliesLoad: () => void;
+  handleRepliesReload: () => void;
 }
 
 // 댓글 목록 Props
 export interface CommentsProps {
   comments: Array<CommentType>;
   handleCommentClick: React.MouseEventHandler;
+  commentInputRef: React.RefObject<HTMLInputElement>;
+  handleCommentSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isLimit: boolean;
+  handleCommentsLoad: () => void;
+  handleCommentDelete: () => void;
 }
 
 // 댓글 컨테이너 Props
-export interface CommentContinaerProps {
+export interface CommentContainerProps {
   // 댓글
   comment: CommentType;
+  handleCommentDelete: () => void;
+}
+
+// 좋아요 하트 Props
+export interface HeartProps {
+  cardId: number;
+  cntLike: number;
+  isLike: boolean;
+  type: string;
 }
 
 // 카드 목록의 카드 Props
 export interface PhotoCardProps {
   // 카드
   card: CardType;
+  isMine: boolean;
 }
 
 // 카드 목록의 Props
@@ -129,6 +182,10 @@ export interface CardListProps {
   cardsLeft: Array<CardType>;
   // 오른쪽 컬럼
   cardsRight: Array<CardType>;
+  isMine: boolean;
+  isLoaded: boolean;
+  isLimit: boolean;
+  setRef: any;
 }
 
 // 프로필 사진 입력 Props
@@ -143,8 +200,10 @@ export interface InputProfileProps {
 
 // 프로필 박스
 export interface ProfileProps {
+  nickname: string;
   followerNum: number;
   followingNum: number;
+  articleNum: number;
   imageUrl: string;
   myTag: Array<TagType>;
 }
@@ -165,4 +224,25 @@ export interface UserProps {
 
 export interface UserItemProps {
   user: UserProps;
+}
+
+export interface SelectRegionOptionType {
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  level: number;
+}
+
+export interface KakaoMapProps {
+  selectOption: SelectRegionOptionType;
+  positionData: any;
+}
+
+export interface KoreaMapProps extends KakaoMapProps {
+  cntData: any;
+  checkClicked: string;
+  area: string;
+  clickRegion: (e: React.MouseEvent<SVGPathElement>) => void;
+  clickBack: (e: React.MouseEvent<SVGPathElement>) => void;
 }

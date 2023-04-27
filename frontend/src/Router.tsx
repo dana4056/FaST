@@ -11,9 +11,11 @@ import MyRecordContainer from './containers/MyRecordContainer';
 import MapContainer from './containers/MapContainer';
 import FollowContainer from './containers/FollowContainer';
 import UserModifyContainer from './containers/UserModifyContainer';
-import FindPwdContainer from './containers/FindPwdContainer';
 
 import './styles/main.scss';
+import ModifyPwdContainer from './containers/ModifyPwdContainer';
+import ModifyArticleContainer from './containers/ModifyArticleContainer';
+import PeopleContainer from './containers/PeopleContainer';
 
 function Router() {
   return (
@@ -23,13 +25,18 @@ function Router() {
         <Routes>
           <Route path="/home" element={<HomeContainer />} />
           <Route path="/newcard" element={<NewCardContainer />} />
-          <Route path="/card/:cardId" element={<CardDetailContainer />} />
-          <Route path="/myrecord" element={<MyRecordContainer />} />
-          <Route path="/map" element={<MapContainer />} />
-          <Route path="/follow" element={<FollowContainer />} />
+          <Route
+            path="/modify-article/:articleId"
+            element={<ModifyArticleContainer />}
+          />
+          <Route path="/article/:cardId" element={<CardDetailContainer />} />
+          <Route path="/record/:userId" element={<MyRecordContainer />} />
+          <Route path="/map/:userId" element={<MapContainer />} />
+          <Route path="/follow/:userId" element={<FollowContainer />} />
           <Route path="/stamp" element={<StampContainer />} />
           <Route path="/mypage" element={<UserModifyContainer />} />
-          {/* <Route path="/find-pwd" element={<FindPwdContainer />} /> */}
+          <Route path="/modify-pwd" element={<ModifyPwdContainer />} />
+          <Route path="/people" element={<PeopleContainer />} />
         </Routes>
       </div>
       <Footer />

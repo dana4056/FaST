@@ -1,7 +1,6 @@
 package a402.FaST.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,15 +19,13 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(length = 500)
     private String imgPath;
     private String content;
-    private LocalDateTime createTime;  ;
-    @ColumnDefault("0")
-    private int likeCount;
-    @ColumnDefault("0")
-    private int commentCount;
-    private String let;
+    private LocalDateTime createTime;
+    private String lat;
     private String lng;
+    private String area;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<ArticleHasTag> tags = new ArrayList<>();
@@ -36,8 +33,8 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//    private List<Like> likes = new ArrayList<>();
+   @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+   private List<Likes> likes = new ArrayList<>();
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")

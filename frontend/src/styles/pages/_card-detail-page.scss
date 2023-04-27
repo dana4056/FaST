@@ -1,8 +1,78 @@
+@use '../color';
+
+@keyframes new-card-slide-in-bottom {
+  0% {
+    -webkit-transform: translate(-50%, 1000px);
+    transform: translate(-50%, 1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
 .card-detail-page {
+  height: 100%;
   overflow: hidden;
   .card-detail-page__wrapper {
     width: 100%;
     transition: 0.2s;
     display: flex;
+    height: 100%;
+  }
+  .card-detail-page__delete {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -webkit-animation: new-card-slide-in-bottom 0.7s
+      cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    animation: new-card-slide-in-bottom 0.7s
+      cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    background-color: white;
+    width: 60%;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: end;
+    padding: 10px;
+    box-shadow: 5px 8px 5px rgba(30, 30, 30, 0.185);
+    .card-detail-page__delete-content {
+      padding: 0px 10px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+    }
+    .card-detail-page__delete-buttons {
+      display: flex;
+      justify-content: center;
+      margin: 15px;
+      .card-detail-page__delete-button--yes {
+        background-color: color.$red;
+        color: white;
+        border: 0px;
+        border-radius: 15px;
+        padding: 10px 15px;
+        margin-right: 20px;
+        margin-top: 10px;
+        box-shadow: 4px 5px 0px red;
+        width: 80px;
+      }
+      .card-detail-page__delete-button--no {
+        background-color: color.$color-2;
+        color: white;
+        border: 0px;
+        width: 80px;
+        border-radius: 15px;
+        padding: 0px 15px;
+        margin-right: 20px;
+        margin-top: 10px;
+        box-shadow: 4px 5px 0px color.$color-3;
+        flex: none;
+      }
+    }
   }
 }

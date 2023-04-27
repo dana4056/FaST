@@ -1,9 +1,9 @@
-import React, { useEffect, useState, Suspense } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { SiNaver, SiKakaotalk } from 'react-icons/si';
+import React, { Suspense } from 'react';
+import { Link } from 'react-router-dom';
+import { ImBubble } from '@react-icons/all-files/im/ImBubble';
+import {} from '@react-icons/all-files/';
 import { Canvas } from '@react-three/fiber';
 import { LoginPageProps } from '../types/PagePropsType';
-import Header from '../components/Header';
 import Model from '../components/models/Logo';
 
 export default function LoginPage({
@@ -12,6 +12,8 @@ export default function LoginPage({
   goNaverLogin,
   onChangeEmail,
   onChangePassword,
+  isFail,
+  handleModalClose,
 }: LoginPageProps) {
   return (
     <div className="login-page">
@@ -75,7 +77,7 @@ export default function LoginPage({
             onClick={goNaverLogin}
             className="card login-page__social-button login-page__social--naver"
           >
-            <SiNaver className="login-page__social-logo" />
+            <span className="login-page__social-logo">N</span>
             {/* <a href="http://localhost:8080/oauth2/authorization/naver"> */}
             {/* </a> */}
           </button>
@@ -84,12 +86,26 @@ export default function LoginPage({
             onClick={goKakaoLogin}
             className="card login-page__social-button login-page__social--kakao"
           >
-            <SiKakaotalk className="login-page__social-logo" />
+            <ImBubble className="login-page__social-logo" />
             {/* <a href="http://localhost:8080/oauth2/authorization/kakao"> */}
             {/* </a> */}
           </button>
         </div>
       </div>
+      {isFail ? (
+        <div className="login-page__modal card">
+          <div className="login-page__modal-content">
+            아이디, 비밀번호를 확인해주세요.
+          </div>
+          <button
+            type="button"
+            className="login-page__modal-button"
+            onClick={handleModalClose}
+          >
+            닫기
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

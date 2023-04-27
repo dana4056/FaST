@@ -12,6 +12,7 @@ public class UserModifyPasswordRequestDto {
 
    private String password;
    private String newPassword;
+   private String salt;
 
 
 }

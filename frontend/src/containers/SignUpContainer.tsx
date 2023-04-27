@@ -1,9 +1,8 @@
-import { ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
+import imageCompression from 'browser-image-compression';
 import SignUpPage from '../pages/SignUpPage';
-import { storage } from '../utils/firebase';
+import imageApi from '../api/image';
 import api from '../api/signUp';
 import { createSalt, createHashedPassword } from '../utils/passwordEncryption';
 import Header from '../components/Header';
@@ -35,6 +34,18 @@ function SignUpContainer() {
   const [passwordMessage, setPasswordMessage] = useState<string>('');
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState<string>('');
+
+  // 인증번호 전송 모달 띄우기
+  const [openSendModal, setOpenSendModal] = useState<boolean>(false);
+  const onClickSendModal = useCallback(() => {
+    setOpenSendModal(!openSendModal);
+  }, [openSendModal]);
+
+  // 인증번호 인증 확인 모달 띄우기
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
+  const onClickAuthdModal = useCallback(() => {
+    setOpenAuthModal(!openAuthModal);
+  }, [openAuthModal]);
 
   // 미리보기 이미지 url 저장 배열
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -158,17 +169,28 @@ function SignUpContainer() {
       const newImageUrls: Array<string> = [];
 
       // 입력한 파일을 순회하며 state에 추가
-      for (let i = 0; i < files.length; i += 1) {
-        newImages[i] = files[i];
-        newImageUrls[i] = URL.createObjectURL(files[i]);
+      // for (let i = 0; i < files.length; i += 1) {
+      //   newImages[i] = files[i];
+      //   newImageUrls[i] = URL.createObjectURL(files[i]);
+      // }
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthORHeight: 640,
+        useWebWorker: true,
+      };
+      try {
+        const compressedImage = await imageCompression(files[0], options);
+        setImage(compressedImage);
+        setImageUrl(URL.createObjectURL(compressedImage));
+        setImgPath(`profiles/${email}`);
+      } catch (error) {
+        console.log(error);
       }
-      setImage(newImages[0]);
-      setImageUrl(newImageUrls[0]);
-      setImgPath(`profiles/${email}`);
       // 입력 초기화
-      event.target.value = ''; // eslint-disable-line no-param-reassign
+      // event.target.value = ''; // eslint-disable-line no-param-reassign
     }
   };
+
   // 입력한 이미지 삭제
   const handleImageDelete = () => {
     setImageUrl('');
@@ -178,29 +200,31 @@ function SignUpContainer() {
 
   // 사용자 이메일로 인증번호 전송
   const onClickSend = async () => {
-    console.log('사용자 이메일로 인증번호 전송!');
-    if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
+    // console.log('사용자 이메일로 인증번호 전송!');
+    // if (isEmail) alert('이메일로 인증번호를 전송했습니다 :)');
     setIsSend(true);
+    onClickSendModal();
     // 이메일 인증번호 전송 api 연결
     const status = await api.sendEmail(email);
     if (status === 200) {
-      console.log('인증번호 전송 성공!');
+      // console.log('인증번호 전송 성공!');
     } else {
       alert('인증번호 전송에 실패했습니다.');
     }
-    console.log(status);
+    // console.log(status);
   };
 
   // 인증번호 확인
   const onClickCheckEmailCode = async () => {
-    console.log('이메일 인증번호 확인 중!');
+    // console.log('이메일 인증번호 확인 중!');
     const status = await api.checkEmail(email, auth);
     if (status === 200) {
-      alert('인증번호 확인이 완료됐습니다 :)');
+      onClickAuthdModal();
+      // alert('인증번호 확인이 완료됐습니다 :)');
     } else {
       alert('인증번호 확인에 실패했습니다.');
     }
-    console.log(status);
+    // console.log(status);
     setIsCheckEmail(true);
   };
   // 닉네임
@@ -283,12 +307,12 @@ function SignUpContainer() {
 
   // 사용자가 관심 태그를 선택할 때마다 실행되는 함수
   const onClickTag = (e: number, row: number) => {
-    console.log(`관심 태그 선택!!${e}`);
+    // console.log(`관심 태그 선택!!${e}`);
     const favoritTag = tag[row][e].tagName;
-    console.log(tag[row][e]);
+    // console.log(tag[row][e]);
     const { index } = tag[row][e];
-    console.log(index);
-    console.log(isChecked[index]);
+    // console.log(index);
+    // console.log(isChecked[index]);
 
     if (!isChecked[index]) {
       // 태그가 선택되어 있지 않았다면
@@ -306,7 +330,7 @@ function SignUpContainer() {
 
       // 선택된 해당 태그 삭제 후 재할당
       const idx = selectedTag.indexOf(favoritTag);
-      console.log(idx);
+      // console.log(idx);
       setSelectedTag(selectedTag.filter((t) => t !== favoritTag));
     }
   };
@@ -314,35 +338,56 @@ function SignUpContainer() {
   // 다음 버튼 클릭 시 관심 태그 설정하러 이동 & 회원가입 api 연결
   const onClickNext = async () => {
     if (isEmail && isCheckEmail && isName && isPassword && isPasswordConfirm) {
-      console.log('회원가입 api 통신할 때 보낼 데이터 : ');
       const salt = createSalt();
       const pwd = createHashedPassword(password, salt);
-      console.log(`email : ${email}`); // 이메일
-      console.log(`nickname : ${name}`); // 닉네임
-      console.log(`password : ${password}`); // 비밀번호
-      console.log(`암호화된 password : ${pwd}`); // 암호화된 password
-      const res = await api.signUp(email, imgPath, name, pwd, salt);
-      console.log(`signUpContainer res :${res}`);
-      if (res.status === 200) {
-        // db에 있는 사용자 pk값 저장
-        setIdPk(res.data.id);
-        // 파이어베이스에 사용자 프로필 사진 등록
-        const uploadImage = async (img: File | undefined) => {
-          if (img === undefined) {
-            return;
-          }
-          const result = await uploadBytes(
-            ref(storage, `profiles/${email}`),
-            img
-          );
-          console.log(result);
-        };
-        uploadImage(image);
-        setIsOpen(() => true);
-      } else if (res.status === 409) {
-        alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+
+      if (image === undefined) {
+        setImgPath(() => 'profiles/default.jpg');
+        const res = await api.signUp(
+          email,
+          'profiles/default.jpg',
+          name,
+          pwd,
+          salt
+        );
+        // console.log(res);
+        if (res.status === 200) {
+          // db에 있는 사용자 pk값 저장
+          setIdPk(res.data.id);
+          setIsOpen(() => true);
+        }
+        // else if (res.status === 409) {
+        //   alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+        // } else {
+        //   alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        // }
       } else {
-        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        const imgRes: any = await imageApi.uploadImage(
+          image,
+          'profile',
+          `profile/${email}`,
+          email
+        );
+        if (imgRes.status === 200) {
+          setImgPath(() => `profiles/${email}`);
+          const res = await api.signUp(
+            email,
+            `profiles/${email}`,
+            name,
+            pwd,
+            salt
+          );
+          if (res.status === 200) {
+            // db에 있는 사용자 pk값 저장
+            setIdPk(res.data.id);
+
+            setIsOpen(() => true);
+          } else if (res.status === 409) {
+            alert('이미 존재하는 이메일 입니다. 다시 시도해 주세요.');
+          } else {
+            alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+          }
+        }
       }
     }
     // eslint-disable-next-line no-alert
@@ -351,8 +396,10 @@ function SignUpContainer() {
 
   // 관심 태그 선택까지 모두 마쳤다면
   const onClickComplete = async () => {
-    console.log('완료 버튼 클릭!!!');
-
+    // console.log('완료 버튼 클릭!!!');
+    if (selectedTag.length === 0) {
+      alert('관심 태그를 선택해주세요!');
+    }
     const res = await api.registerTag(selectedTag, idPk);
 
     if (res === 200) {
@@ -372,6 +419,8 @@ function SignUpContainer() {
         emailMessage={emailMessage}
         passwordMessage={passwordMessage}
         passwordConfirmMessage={passwordConfirmMessage}
+        openSendModal={openSendModal}
+        openAuthModal={openAuthModal}
         isEmail={isEmail}
         isCheckEmail={isCheckEmail}
         isName={isName}
@@ -395,6 +444,8 @@ function SignUpContainer() {
         onClickNext={onClickNext}
         onClickComplete={onClickComplete}
         onClickTag={onClickTag}
+        onClickSendModal={onClickSendModal}
+        onClickAuthdModal={onClickAuthdModal}
       />
     </>
   );

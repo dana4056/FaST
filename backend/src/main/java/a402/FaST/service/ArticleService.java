@@ -12,13 +12,19 @@ public interface ArticleService {
 
     ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception;
 
-    ArticleCommentResponseDto detail(int id, int userId);
+    ArticleDetailResponseDto detail(int id, int userId);
 
-    List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset);
-    List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset);
+    List<ArticleListResponseDto> listArticleUserTag(int userId, int size, int offset);
+    List<ArticleListResponseDto> listArticleUser(int userId, int loginUserId, int size, int offset);
     List<ArticleListResponseDto> listArticleFollow(int userId, int size, int offset);
 
     int articleCnt(int userId);
 
-    List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName);
+	List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area);
+
+    List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset,String filer, List<String> tags);
+
+    List<ArticleAreaCntDto> numArticleArea(int userId);
+
+    List<ArticleCompactResponseDto> listArticleAreaAndUser(int userId, String area);
 }

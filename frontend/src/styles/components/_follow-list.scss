@@ -101,10 +101,9 @@
     color: white;
     border: 0px;
     border-radius: 15px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 8px 10px;
     margin-right: 20px;
+    margin-top: 10px;
     box-shadow: 4px 5px 0px color.$color-3;
   }
   .follow_delete_btn_clicked {
@@ -138,4 +137,10 @@
   margin: auto;
   padding-bottom: 10px;
   padding-top: 15px;
+}
+
+.follow__message {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 25px;
 }

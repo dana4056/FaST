@@ -1,7 +1,5 @@
 @charset "UTF-8";
-*,
-*:before,
-*:after {
+* {
   position: relative;
   box-sizing: 10px;
 }
@@ -36,86 +34,14 @@
   transition: transform var(--duration) var(--easing),
     -webkit-transform var(--duration) var(--easing);
   cursor: pointer;
-  &.liked {
-    svg.heart {
-      fill: var(--color-heart);
-    }
-  }
 }
-.like-button:before {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  -webkit-transition: inherit;
-  transition: inherit;
+
+.liked .heart > path {
+  fill: var(--color-heart);
 }
-.like-button:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  border-radius: inherit;
-  z-index: -1;
-}
-.like-button:active:before {
-  -webkit-animation: depress-shadow var(--duration) var(--easing) both;
-  animation: depress-shadow var(--duration) var(--easing) both;
-}
-.like-button:focus:after {
-  -webkit-animation: depress var(--duration) var(--easing) both;
-  animation: depress var(--duration) var(--easing) both;
-}
-@-webkit-keyframes depress {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-    transform: translateY(5%) scale(0.9);
-  }
-}
-@keyframes depress {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-    transform: translateY(5%) scale(0.9);
-  }
-}
-@-webkit-keyframes depress-shadow {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
-  }
-}
-@keyframes depress-shadow {
-  from,
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
-  }
+
+.unliked .heart > path {
+  fill: var(white);
 }
 .like-wrapper {
   display: grid;
@@ -137,9 +63,6 @@
   -webkit-transform-origin: center 80%;
   transform-origin: center 80%;
   fill: #fff;
-  &.liked {
-    fill: var(--color-heart);
-  }
 }
 .heart > path {
   stroke: var(--color-heart);
@@ -148,10 +71,9 @@
   -webkit-transition: fill var(--duration) var(--easing);
   transition: fill var(--duration) var(--easing);
 }
-.like-button:focus .heart > path {
-  fill: var(--color-heart);
-}
-.like-button:focus .heart {
+
+// 박동 움직임
+.liked .heart {
   -webkit-animation: heart-bounce var(--duration) var(--easing);
   animation: heart-bounce var(--duration) var(--easing);
 }
@@ -179,6 +101,8 @@
     transform: scale(1);
   }
 }
+
+// 파티클
 /* Added wrapper to prevent layout jank with resizing particles */
 .particles {
   width: 1px;
@@ -201,7 +125,7 @@
   -webkit-transition: all var(--duration) var(--easing);
   transition: all var(--duration) var(--easing);
 }
-.like-button:focus .particle {
+.liked .particle {
   -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing)
     forwards;
   animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
@@ -246,52 +170,17 @@
     transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
   }
 }
-.ripple {
-  height: 1em;
-  width: 1em;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 1;
-}
-.ripple:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0.4em solid var(--color-heart);
-  border-radius: inherit;
-  -webkit-transform: scale(0);
-  transform: scale(0);
-}
-.like-button:focus .ripple:before {
-  -webkit-animation: ripple-out var(--duration) var(--easing);
-  animation: ripple-out var(--duration) var(--easing);
-}
-@-webkit-keyframes ripple-out {
-  from {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  to {
-    -webkit-transform: scale(5);
-    transform: scale(5);
-  }
-}
-@keyframes ripple-out {
-  from {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  to {
-    -webkit-transform: scale(5);
-    transform: scale(5);
-  }
-}
 
 /* Reset the animation when clicking again! */
 .like-button:focus {
   pointer-events: none;
   cursor: normal;
+}
+
+.like-button-container {
+  display: flex;
+  align-items: center;
+  .cnt__article-like {
+    margin-right: 3px;
+  }
 }

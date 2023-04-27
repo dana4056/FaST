@@ -8,13 +8,16 @@ import a402.FaST.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -28,27 +31,47 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ArticleHasTagRepository articleHasTagRepository;
+    private final FollowRepository followRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
+    private final UserHasLandMarkRepository userHasLandMarkRepository;
+    private final LandMarkRepository landMarkRepository;
 
 
     @Override
     public ArticleResponseDto create(ArticleRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).get();
+
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
+
+        ArticleResponseDto responseDto = null;
 
         Article article = Article.builder()
                 .imgPath(requestDto.getImgPath())
                 .content(requestDto.getContent())
                 .createTime(LocalDateTime.now())
-                .let(requestDto.getLet())
+                .lat(requestDto.getLat())
                 .lng(requestDto.getLng())
+                .area(requestDto.getArea())
                 .user(user)
                 .build();
 
         articleRepository.save(article);
         TagAdd(article, requestDto.getTags());
+        autoTagAdd(article, user.getId(), requestDto.getAutoTags());
 
-        ArticleResponseDto responseDto = ArticleResponseDto.from(article);
+        responseDto = ArticleResponseDto.builder()
+                .id(article.getId())
+                .imgPath(article.getImgPath())
+                .content(article.getContent())
+                .createTime(article.getCreateTime())
+                .commentCount(commentRepository.countByArticleId(article.getId()))
+                .likeCount(likesRepository.countByArticleId(article.getId()))
+                .lat(article.getLat())
+                .lng(article.getLng())
+                .area(article.getArea())
+                .userId(requestDto.getUserId())
+                .build();
+
         return responseDto;
     }
 
@@ -66,37 +89,65 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResponseDto modify(ArticleModifyDto modifyDto) throws Exception {
         Article article = articleRepository.findById(modifyDto.getArticleId()).get();
-        ArticleResponseDto responseDto;
+        ArticleResponseDto responseDto = null;
 
         if (article.getUser().getId() != modifyDto.getUserId()){
             throw new Exception("작성자가 아닙니다!");
         }else{
             article.setImgPath(modifyDto.getImgPath());
             article.setContent(modifyDto.getContent());
-            article.setLet(modifyDto.getLet());
+            article.setLat(modifyDto.getLat());
             article.setLng(modifyDto.getLng());
+            article.setArea(modifyDto.getArea());
 
             articleHasTagRepository.deleteAllByArticleId(modifyDto.getArticleId());
             TagAdd(article, modifyDto.getTags());
-            responseDto = ArticleResponseDto.from(article);
+
+            responseDto = ArticleResponseDto.builder()
+                    .id(article.getId())
+                    .imgPath(article.getImgPath())
+                    .content(article.getContent())
+                    .createTime(article.getCreateTime())
+                    .commentCount(commentRepository.countByArticleId(article.getId()))
+                    .likeCount(likesRepository.countByArticleId(article.getId()))
+                    .lat(article.getLat())
+                    .lng(article.getLng())
+                    .area(article.getArea())
+                    .userId(modifyDto.getUserId())
+                    .build();
+
         }
 
         return responseDto;
     }
 
     @Override
-    public ArticleCommentResponseDto detail(int id, int userId) {
-        ArticleCommentResponseDto responseDto = null;
+    public ArticleDetailResponseDto detail(int id, int userId) {
+        ArticleDetailResponseDto responseDto = null;
 
-        Article article = articleRepository.findById(id).get();
-        article.setLikeCount(likesRepository.countByArticleId(id));
-        article.setCommentCount(commentRepository.countByArticleId(id));
-        responseDto = ArticleCommentResponseDto.from(article);
+        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException("없는 게시물입니다."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("없는 유저입니다. "));
 
-        Boolean check = likesRepository.existsByIdAndUserId(id,userId);
-        if (check){
-            responseDto.setLikeCheck(true);
-        }
+        responseDto = ArticleDetailResponseDto.builder()
+            .id(article.getId())
+            .user(new UserProfileDto(article.getUser()))
+            .followingCheck(followRepository.existsByFromIdAndToId(user, article.getUser()))
+            .imgPath(article.getImgPath())
+            .content(article.getContent())
+            .createTime(article.getCreateTime())
+            .lat(article.getLat())
+            .lng(article.getLng())
+            .area(article.getArea())
+            .commentCount(commentRepository.countByArticleId(id))
+            .likeCount(likesRepository.countByArticleId(id))
+            .likeCheck(likesRepository.existsByArticleIdAndUserId(id,userId))
+            .tags(article.getTags().stream()
+                    .map((Tag -> TagResponseDto.builder()
+                            .tagId(Tag.getTag().getId())
+                            .tagName(Tag.getTag().getName())
+                            .build()))
+                    .collect(Collectors.toList()))
+            .build();
 
         return responseDto;
     }
@@ -113,18 +164,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleTag(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleUserTag(int userId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
 
         responseDto = articleRepository.ArticleListTag(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .imgPath(x.getImg_path())
-                        .createTime(x.getCreate_Time())
+                        .userId(userId)
                         .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
-                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .imgPath(x.getImgPath())
+                        .createTime(x.getCreateTime())
+                        .area(x.getArea())
+                        .lat(x.getLat())
+                        .lng(x.getLng())
+                        .commentCount(commentRepository.countByArticleId(x.getId()))
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
+                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
                                         .tagId(Tag.getTag().getId())
@@ -136,19 +192,24 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleUser(int userId, int size, int offset) {
+    public List<ArticleListResponseDto> listArticleUser(int userId, int loginUserId, int size, int offset) {
         Pageable pageable = PageRequest.of(offset, size);
         List<ArticleListResponseDto> responseDto = null;
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
 
-        responseDto = articleRepository.findByUser(user, pageable)
+        responseDto = articleRepository.findAllByUser(user, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
+                        .userId(userId)
+                        .nickName(userRepository.nickName(userId))
                         .imgPath(x.getImgPath())
                         .createTime(x.getCreateTime())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLikeCount())
-                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .area(x.getArea())
+                        .lat(x.getLat())
+                        .lng(x.getLng())
+                        .commentCount(commentRepository.countByArticleId(x.getId()))
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
+                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),loginUserId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
                                         .tagId(Tag.getTag().getId())
@@ -167,11 +228,16 @@ public class ArticleServiceImpl implements ArticleService {
         responseDto = articleRepository.ArticleListFollow(userId, pageable)
                 .stream().map(x->ArticleListResponseDto.builder()
                         .id(x.getId())
-                        .imgPath(x.getImg_path())
-                        .createTime(x.getCreate_Time())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
-                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
+                        .userId(x.getUser().getId())
+                        .nickName(userRepository.nickName(x.getUser().getId()))
+                        .imgPath(x.getImgPath())
+                        .createTime(x.getCreateTime())
+                        .area(x.getArea())
+                        .lat(x.getLat())
+                        .lng(x.getLng())
+                        .commentCount(commentRepository.countByArticleId(x.getId()))
+                        .likeCount(likesRepository.countByArticleId(x.getId()))
+                        .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
                         .tags(articleRepository.findById(x.getId()).get().getTags().stream()
                                 .map(Tag->TagResponseDto.builder()
                                         .tagId(Tag.getTag().getId())
@@ -183,31 +249,151 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListResponseDto> listArticleTagSearch(int userId, int size, int offset, String tagName) {
-        Pageable pageable = PageRequest.of(offset, size);
+    public List<ArticleListResponseDto> listArticleArea(int userId, int size, int offset, String area) {
         List<ArticleListResponseDto> responseDto = null;
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
+        List<Article> articleList = null;
+        Pageable pageable = PageRequest.of(offset, size);
 
-        responseDto = articleRepository.ArticleListTagSearch(tagName, pageable)
-                .stream().map(x->ArticleListResponseDto.builder()
-                        .id(x.getId())
-                        .imgPath(x.getImg_path())
-                        .createTime(x.getCreate_Time())
-                        .nickName(userRepository.nickName(userId))
-                        .likeCount(x.getLike_Count())
-                        .likeCheck(likesRepository.existsByIdAndUserId(x.getId(),userId))
-                        .tags(articleRepository.findById(x.getId()).get().getTags().stream()
-                                .map(Tag->TagResponseDto.builder()
-                                        .tagId(Tag.getTag().getId())
-                                        .tagName(Tag.getTag().getName())
-                                        .build()).collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
+        if(area.equals("전국")){
+            articleList = articleRepository.findAllByUser(user, pageable);
+        }else{
+            articleList = articleRepository.findAllByUserAndArea(user, area, pageable);
+        }
+
+        responseDto = articleList
+            .stream().map(x->ArticleListResponseDto.builder()
+                .id(x.getId())
+                .userId(userId)
+                .nickName(userRepository.nickName(userId))
+                .imgPath(x.getImgPath())
+                .createTime(x.getCreateTime())
+                .area(x.getArea())
+                .lat(x.getLat())
+                .lng(x.getLng())
+                .commentCount(commentRepository.countByArticleId(x.getId()))
+                .likeCount(likesRepository.countByArticleId(x.getId()))
+                .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                    .map(Tag->TagResponseDto.builder()
+                        .tagId(Tag.getTag().getId())
+                        .tagName(Tag.getTag().getName())
+                        .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
 
         return responseDto;
     }
 
+    @Override
+    public List<ArticleListResponseDto> listArticleSearchTagAll(int userId, int size, int offset, String filer, List<String> tags) {
+        Pageable pageable = PageRequest.of(offset, size);
+        List<ArticleListResponseDto> responseDto = null;
+        List<Article> articleList = null;
+
+        // 태그 이름 -> 태그 아이디 가져오기
+        List<Long> tagIds = new ArrayList<>();
+        for(Tag t : tagRepository.findAllByNameIn(tags)){
+            tagIds.add(t.getId());
+        }
+
+        if(filer.equals("A")){
+            articleList = articleRepository.findByTagIdsAll(tagIds, pageable);
+        }else if(filer.equals("M")){
+            articleList = articleRepository.findByTagIdsMy(tagIds, userId, pageable);
+        }else if(filer.equals("F")){
+            List<Follow> followList = followRepository.findAllByFromId_Id(userId);
+            List<Integer> followingIds = new ArrayList<>();
+            for(Follow f: followList){
+                followingIds.add(f.getToId().getId());
+            }
+            articleList = articleRepository.findByTagIdsFollowing(tagIds, followingIds, pageable);
+        }
+
+        responseDto = articleList
+            .stream().map(x->ArticleListResponseDto.builder()
+                .id(x.getId())
+                .userId(x.getUser().getId())
+                .nickName(userRepository.nickName(userId))
+                .imgPath(x.getImgPath())
+                .createTime(x.getCreateTime())
+                .area(x.getArea())
+                .lat(x.getLat())
+                .lng(x.getLng())
+                .commentCount(commentRepository.countByArticleId(x.getId()))
+                .likeCount(likesRepository.countByArticleId(x.getId()))
+                .likeCheck(likesRepository.existsByArticleIdAndUserId(x.getId(),userId))
+                .tags(articleRepository.findById(x.getId()).get().getTags().stream()
+                    .map(Tag->TagResponseDto.builder()
+                        .tagId(Tag.getTag().getId())
+                        .tagName(Tag.getTag().getName())
+                        .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
+
+
+        // Set<Integer> articleIds = new HashSet<>();
+        //
+        // for (String tagName : tags){
+        //     List<Integer> articles = articleRepository.ArticleListTagSearchAll(tagName, pageable);
+        //     for (int id : articles){
+        //         articleIds.add(id);
+        //     }
+        // }
+
+        // for (int id : articleIds){
+        //     Article article = articleRepository.findById(id).get();
+        //     ArticleListResponseDto articleListResponseDto = ArticleListResponseDto.builder()
+        //             .id(article.getId())
+        //             .userId(userId)
+        //             .nickName(userRepository.nickName(userId))
+        //             .imgPath(article.getUser().getImgPath())
+        //             .createTime(article.getCreateTime())
+        //             .commentCount(commentRepository.countByArticleId(article.getId()))
+        //             .likeCount(likesRepository.countByArticleId(article.getId()))
+        //             .likeCheck(likesRepository.existsByArticleIdAndUserId(article.getId(),article.getUser().getId()))
+        //             .tags(articleRepository.findById(article.getId()).get().getTags().stream()
+        //                     .map(Tag->TagResponseDto.builder()
+        //                             .tagId(Tag.getTag().getId())
+        //                             .tagName(Tag.getTag().getName())
+        //                             .build()).collect(Collectors.toList()))
+        //             .build();
+        //     responseDto.add(articleListResponseDto);
+        // }
+
+        return responseDto;
+    }
+
+    @Override
+    public List<ArticleAreaCntDto> numArticleArea(int userId) {
+        return articleRepository.findArticleAreaCntDtoBy(userId);
+    }
+
+    @Override
+    public List<ArticleCompactResponseDto> listArticleAreaAndUser(int userId, String area) {
+
+        List<ArticleCompactResponseDto> list = null;
+
+        list = articleRepository.findAllByUser_IdAndArea(userId, area)
+            .stream().map(x -> ArticleCompactResponseDto.builder()
+                .id(x.getId())
+                .userId(x.getUser().getId())
+                .imgPath(x.getImgPath())
+                .lat(x.getLat())
+                .lng(x.getLng())
+                .createTime(x.getCreateTime())
+                .build())
+            .collect(Collectors.toList());
+        return list;
+    }
+
+
     //    -----------------------------------------------------------------------------------
     private void TagAdd(Article article, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
         for (String tagName : tags) {
             if (!tagRepository.existsByName(tagName)) {
                 Tag tag = Tag.builder().name(tagName).build();
@@ -220,6 +406,34 @@ public class ArticleServiceImpl implements ArticleService {
                     .tag(tag)
                     .build();
             articleHasTagRepository.save(articleHasTag);
+        }
+    }
+
+    private void autoTagAdd(Article article, int userId, List<String> tags) {
+        if (tags.size() == 1 && tags.get(0).equals("")) {
+            return;
+        }
+
+        for (String tagName : tags) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                tagRepository.save(tag);
+            }
+            Tag tag = tagRepository.findByName(tagName).get();
+            ArticleHasTag articleHasTag = ArticleHasTag.builder()
+                    .article(article)
+                    .tag(tag)
+                    .build();
+            articleHasTagRepository.save(articleHasTag);
+
+            if (!userHasLandMarkRepository.existsByUserIdAndLandMarkName(userId,tagName) && landMarkRepository.existsById(tagName)){
+                UserHasLandMark userHasLandMark = UserHasLandMark.builder()
+                        .user(userRepository.findById(userId).get())
+                        .landMark(landMarkRepository.findById(tagName).get())
+                        .build();
+
+                userHasLandMarkRepository.save(userHasLandMark);
+            }
         }
     }
 

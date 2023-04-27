@@ -1,9 +1,6 @@
 package a402.FaST.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "likes")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Likes {
@@ -30,6 +28,10 @@ public class Likes {
     @ManyToOne(targetEntity = Comment.class, fetch = FetchType.LAZY)
     @JoinColumn(name="comment_id")
     private Comment comment;
+
+    @ManyToOne(targetEntity = CommentReply.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="comment_reply_id")
+    private CommentReply commentReply;
 
 
 }

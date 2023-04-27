@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-// import { callEnvironmentData } from '../utils/callEnvironmentData';
-import { IoArrowBackCircle } from 'react-icons/io5';
+import { IoArrowBackCircle } from '@react-icons/all-files/io5/IoArrowBackCircle';
 import SouthKorea from '../assets/images/south-korea.svg';
 import Kakaomap from './Kakaomap';
+import { KoreaMapProps } from '../types/ComponentPropsType';
 
-function KoreaMap() {
+function KoreaMap({
+  area,
+  cntData,
+  checkClicked,
+  clickRegion,
+  clickBack,
+  selectOption,
+  positionData,
+}: KoreaMapProps) {
   type regionsType = {
     [index: string]: string;
   };
-  interface SelectOption {
-    center: {
-      latitude: number;
-      longitude: number;
-    };
-    level: number;
-  }
   const regions: regionsType = {
     seoul: '서울',
     busan: '부산',
@@ -35,29 +36,9 @@ function KoreaMap() {
     sejong: '세종',
   };
 
-  const cntData = {
-    seoul_cnt: 4,
-    busan_cnt: 1,
-    daegu_cnt: 3,
-    incheon_cnt: 2,
-    gwangju_cnt: 1,
-    daejeon_cnt: 1,
-    ulsan_cnt: 4,
-    gyeonggi_cnt: 6,
-    gangwon_cnt: 1,
-    northChungcheong_cnt: 3,
-    southChungcheong_cnt: 4,
-    northJeolla_cnt: 5,
-    southJeolla_cnt: 1,
-    northGyeongsang_cnt: 2,
-    southGyeongsang_cnt: 4,
-    jeju_cnt: 3,
-    sejong_cnt: 6,
-  };
-
   function FillColor(cnt: number) {
     if (cnt === 0) {
-      return '#ffffff';
+      return '#dbdbdb';
     }
     if (cnt === 1) {
       return '#80ddf2';
@@ -72,190 +53,22 @@ function KoreaMap() {
       return '#77a9f2';
     }
     if (cnt === 5) {
-      return '#8d9eff';
+      return '#60a0fc';
     }
     if (cnt === 6) {
-      return '#8d72e1';
+      return '#4791fc';
     }
     if (cnt >= 7) {
-      return '#6c4ab6';
+      return '#1f7aff';
     }
   }
-
-  const seoulOptions = {
-    center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-    level: 9,
-  };
-  const busanOptions = {
-    center: new window.kakao.maps.LatLng(35.1795543, 129.0756416),
-    level: 10,
-  };
-  const daeguOptions = {
-    center: new window.kakao.maps.LatLng(35.8214354, 128.601445),
-    level: 10,
-  };
-  const incheonOptions = {
-    center: new window.kakao.maps.LatLng(37.4562557, 126.5052062),
-    level: 11,
-  };
-  const gwangjuOptions = {
-    center: new window.kakao.maps.LatLng(35.1595454, 126.8526012),
-    level: 10,
-  };
-  const daejeonOptions = {
-    center: new window.kakao.maps.LatLng(35.1595454, 126.8526012),
-    level: 10,
-  };
-  const ulsanOptions = {
-    center: new window.kakao.maps.LatLng(35.52534995, 129.22244165),
-    level: 10,
-  };
-  const gyeonggiOptions = {
-    center: new window.kakao.maps.LatLng(37.5864315, 127.0462765),
-    level: 12,
-  };
-  const gangwonOptions = {
-    center: new window.kakao.maps.LatLng(37.8304115, 128.2260705),
-    level: 12,
-  };
-  const northChungcheongOptions = {
-    center: new window.kakao.maps.LatLng(36.628503, 127.929344),
-    level: 12,
-  };
-  const southChungcheongOptions = {
-    center: new window.kakao.maps.LatLng(36.5184, 126.8),
-    level: 12,
-  };
-  const northJeollaOptions = {
-    center: new window.kakao.maps.LatLng(35.7442238, 127.1079532),
-    level: 11,
-  };
-  const southJeollaOptions = {
-    center: new window.kakao.maps.LatLng(34.8194, 126.893113),
-    level: 12,
-  };
-  const northGyeongsangOptions = {
-    center: new window.kakao.maps.LatLng(36.248647, 128.664734),
-    level: 12,
-  };
-  const southGyeongsangOptions = {
-    center: new window.kakao.maps.LatLng(35.259787, 128.664734),
-    level: 12,
-  };
-  const jejuOptions = {
-    center: new window.kakao.maps.LatLng(33.364805, 126.542671),
-    level: 12,
-  };
-  const sejongOptions = {
-    center: new window.kakao.maps.LatLng(36.5040736, 127.2494855),
-    level: 12,
-  };
-
-  // const [isModalOpened, setModalOpen] = useState(false);
-  // const [ModlaRegion, setModalRegion] = useState('');
-
-  // // 온마우스 이벤트
-  // const putMouse = (e: React.MouseEvent<SVGPathElement>) => {
-  //   const target = (e.target as Element).id;
-  //   setModalOpen(true);
-  //   setModalRegion(regions[target]);
-  // };
-
-  // // 마우스 아웃 이벤트
-  // const getOutMouse = () => {
-  //   setModalOpen(false);
-  // };
-
-  // 클릭 이벤트
-  const [selectOption, setSelectOption] = useState<SelectOption | undefined>(
-    seoulOptions
-  );
-  const [clicked, setClicked] = useState('before_click');
-
-  const clickRegion = (e: React.MouseEvent<SVGPathElement>) => {
-    const target = (e.target as Element).id;
-
-    // dispatch(setInfo("")) // loading indicator 띄우기
-    // callEnvironmentData(regions[target]).then((data: any) => {
-    //   // dispatch(setInfo(data))
-    // });
-    // navigate("/graph")s
-    if (target === 'seoul') {
-      setSelectOption(seoulOptions);
-    } else if (target === 'busan') {
-      setSelectOption(busanOptions);
-    } else if (target === 'daegu') {
-      setSelectOption(daeguOptions);
-    } else if (target === 'incheon') {
-      setSelectOption(incheonOptions);
-    } else if (target === 'gwangju') {
-      setSelectOption(gwangjuOptions);
-    } else if (target === 'daejeon') {
-      setSelectOption(daejeonOptions);
-    } else if (target === 'ulsan') {
-      setSelectOption(ulsanOptions);
-    } else if (target === 'gyeonggi') {
-      setSelectOption(gyeonggiOptions);
-    } else if (target === 'gangwon') {
-      setSelectOption(gangwonOptions);
-    } else if (target === 'northChungcheong') {
-      setSelectOption(northChungcheongOptions);
-    } else if (target === 'southChungcheong') {
-      setSelectOption(southChungcheongOptions);
-    } else if (target === 'northJeolla') {
-      setSelectOption(northJeollaOptions);
-    } else if (target === 'southJeolla') {
-      setSelectOption(southJeollaOptions);
-    } else if (target === 'northGyeongsang') {
-      setSelectOption(northGyeongsangOptions);
-    } else if (target === 'southGyeongsang') {
-      setSelectOption(southGyeongsangOptions);
-    } else if (target === 'jeju') {
-      setSelectOption(jejuOptions);
-    } else if (target === 'sejong') {
-      setSelectOption(sejongOptions);
-    }
-    console.log(target, selectOption);
-    // setTimeout(() => console.log('Initial timeout!'), 5000);
-    setClicked('after_click');
-  };
-
-  const clickBack = (e: React.MouseEvent<SVGPathElement>) => {
-    setClicked('before_click');
-  };
-  // Throttle 적용
-  const [throttle, setThrottle] = useState(false);
-
-  // 마우스 위치
-  const [mouseLocation, setMouseLocation] = useState([0, 0]);
-
-  // // 마우스 움직임 이벤트
-  // const moveMouse = (e: React.MouseEvent<SVGPathElement>) => {
-  //   if (throttle) {
-  //     return; // throttle이 true면 함수 종료
-  //   } else {
-  //     // throttle이 false면 밑에 코드들을 전부 실행
-  //     setThrottle(true); // throttle을 true로 바꾼다.
-  //     setTimeout(async () => {
-  //       // 3초 뒤에
-  //       setMouseLocation([e.pageX, e.pageY]);
-  //       setThrottle(false); // throttle을 false로 바꾼다.
-  //     }, 200);
-  //   }
-  // };
 
   return (
     <div>
       <section className="map_container">
-        {/* {isModalOpened ? (
-        <Modal ModlaRegion={ModlaRegion} mouseLocation={mouseLocation} />
-      ) : null} */}
         <svg className="svg_container" xmlns={SouthKorea} viewBox="0 0 524 631">
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.gangwon_cnt)}
             id="gangwon"
             name="Gangwon"
@@ -263,9 +76,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.gyeonggi_cnt)}
             id="gyeonggi"
             name="Gyeonggi"
@@ -273,9 +83,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.incheon_cnt)}
             id="incheon"
             name="Incheon"
@@ -283,9 +90,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.jeju_cnt)}
             id="jeju"
             name="Jeju"
@@ -293,9 +97,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.northChungcheong_cnt)}
             id="northChungcheong"
             name="North Chungcheong"
@@ -303,9 +104,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.northGyeongsang_cnt)}
             id="northGyeongsang"
             name="North Gyeongsang"
@@ -314,9 +112,6 @@ function KoreaMap() {
 
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.seoul_cnt)}
             id="seoul"
             name="Seoul"
@@ -324,9 +119,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.southChungcheong_cnt)}
             id="southChungcheong"
             name="South Chsoungcheong"
@@ -334,9 +126,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.northJeolla_cnt)}
             id="northJeolla"
             name="North Jeolla"
@@ -344,9 +133,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.southGyeongsang_cnt)}
             id="southGyeongsang"
             name="South Gyeongsang"
@@ -354,9 +140,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.southJeolla_cnt)}
             id="southJeolla"
             name="South Jeolla"
@@ -364,9 +147,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.ulsan_cnt)}
             id="ulsan"
             name="Ulsan"
@@ -374,9 +154,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.sejong_cnt)}
             id="sejong"
             name="Sejong"
@@ -384,9 +161,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.daejeon_cnt)}
             id="daejeon"
             name="Daejeon"
@@ -394,9 +168,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.daegu_cnt)}
             id="daegu"
             name="Daegu"
@@ -404,9 +175,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.gwangju_cnt)}
             id="gwangju"
             name="Gwangju"
@@ -414,9 +182,6 @@ function KoreaMap() {
           />
           <path
             onClick={clickRegion}
-            // onMouseOver={putMouse}
-            // onMouseOut={getOutMouse}
-            // onMouseMove={moveMouse}
             fill={FillColor(cntData.busan_cnt)}
             id="busan"
             name="Busan"
@@ -425,13 +190,18 @@ function KoreaMap() {
         </svg>
       </section>
       <div className="kakaomap_container">
-        <div className={clicked}>
+        <div className={checkClicked}>
           <IoArrowBackCircle
             className="map_backbtn"
             size="50"
             onClick={clickBack}
           />
-          <Kakaomap selectOption={selectOption} />
+          <span className="area-text">{area}</span>
+          <Kakaomap
+            selectOption={selectOption}
+            positionData={positionData}
+            checkClicked={checkClicked}
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,10 @@
 import React from 'react';
-import { BsPersonCircle } from 'react-icons/bs';
-import { AiOutlineCheck, AiFillCamera } from 'react-icons/ai';
+import { HiUserCircle } from '@react-icons/all-files/hi/HiUserCircle';
+import { CgProfile } from '@react-icons/all-files/cg/CgProfile';
+import { AiOutlineCamera } from '@react-icons/all-files/ai/AiOutlineCamera';
+import { AiOutlineCheck } from '@react-icons/all-files/ai/AiOutlineCheck';
 import { InputProfileProps } from '../../types/ComponentPropsType';
+import user from '../../assets/images/user.png';
 
 function InputProfile({
   imageUrl,
@@ -28,7 +31,13 @@ function InputProfile({
           </div>
         ) : (
           <div className="input-profile__content">
-            <BsPersonCircle />
+            {/* <HiUserCircle
+              style={{
+                width: '80px',
+                color: 'white',
+              }}
+            /> */}
+            <img src={user} alt="default_img" width="90" />
             <div className="input-profile__text card">프로필 사진 선택</div>
           </div>
         )}

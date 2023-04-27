@@ -1,7 +1,11 @@
-import React from 'react';
-import { RxAvatar } from 'react-icons/rx';
-import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
-
+import React, { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { BsPerson } from '@react-icons/all-files/bs/BsPerson';
+import { FcLike } from '@react-icons/all-files/fc/FcLike';
+import { FcLikePlaceholder } from '@react-icons/all-files/fc/FcLikePlaceholder';
+import { userInfo } from '../../atoms/userInfo';
+import Heart from '../Heart';
+import CommentReply from './CommentReply';
 import { CommentProps } from '../../types/ComponentPropsType';
 
 function Comment({
@@ -16,27 +20,76 @@ function Comment({
   handleVisibleRepliesClick,
   isLike,
   handleLikeClick,
+  profile,
+  handleDeleteComment,
+  openUpdateComment,
+  commentContent,
+  handleUpdateCommentOpenClick,
+  onChangeComment,
+  handleUpdateComment,
+  isLimit,
+  handleRepliesLoad,
+  handleRepliesReload,
 }: CommentProps) {
+  const [user, setUser] = useRecoilState(userInfo);
+  const [isMine, setIsMine] = useState<boolean>(false);
+  useEffect(() => {
+    if (user.id === comment.userId) {
+      setIsMine(true);
+    } else {
+      setIsMine(false);
+    }
+  }, [comment.userId, user.id]);
   return (
     <div className="comment card">
       <div className="comment__header">
         <div className="comment__profile-image">
-          <RxAvatar />
+          <img src={profile} alt="" />
         </div>
         <div className="comment__profile-nickname">{comment.nickname}</div>
         <div className="comment__reg-time">{comment.regTime}</div>
+        {isMine ? (
+          <>
+            <div
+              className="comment__update-btn"
+              onClick={handleUpdateCommentOpenClick}
+              role="presentation"
+            >
+              수정
+            </div>
+            <div
+              className="comment__delete-btn"
+              onClick={handleDeleteComment}
+              role="presentation"
+            >
+              삭제
+            </div>
+          </>
+        ) : null}
       </div>
       <div className="comment__content">
-        {comment.content}
+        {openUpdateComment ? (
+          <form className="comment__update-box" onSubmit={handleUpdateComment}>
+            <input
+              type="text"
+              defaultValue={commentContent}
+              onChange={onChangeComment}
+              className="comment__update-input"
+            />
+            <button type="submit" className="comment__update-btn card">
+              저장
+            </button>
+          </form>
+        ) : (
+          <div className="comment__text">{commentContent}</div>
+        )}
         <div className="comment__like">
-          <button
-            type="button"
-            className="comment__heart transparent-button"
-            onClick={handleLikeClick}
-          >
-            {isLike ? <FcLike /> : <FcLikePlaceholder />}
-          </button>
-          {comment.numLikes} Likes
+          <Heart
+            cardId={comment.id}
+            cntLike={comment.numLikes}
+            isLike={comment.isLike}
+            type="comment"
+          />
         </div>
       </div>
       <div className="comment__footer">
@@ -94,30 +147,23 @@ function Comment({
               }
         }
       >
-        {replies.map((item: any) => (
-          <div className="comment__reply" key={item.id}>
-            <div className="comment__reply-header">
-              <div className="comment__reply-profile">
-                <RxAvatar />
-              </div>
-              <div className="comment__reply-nickname">{item.nickname}</div>
-              <div className="comment__reply-reg-time">{item.regTime}</div>
-            </div>
-            <div className="comment__reply-content">
-              <div className="comment__reply-reply">{item.content}</div>
-              <div className="comment__reply-like">
-                <button
-                  type="button"
-                  className="comment__reply-heart transparent-button"
-                >
-                  {item.isLike ? <FcLike /> : <FcLikePlaceholder />}
-                </button>
-                <div className="comment__reply-num-likes">
-                  {item.numLikes} Likes
-                </div>
-              </div>
-            </div>
+        {isLimit ? (
+          <div className="comment__additional">모든 답글을 확인했습니다.</div>
+        ) : (
+          <div
+            className="comment__additional"
+            role="presentation"
+            onClick={handleRepliesLoad}
+          >
+            답글 불러오기
           </div>
+        )}
+        {replies.map((commentReply: any) => (
+          <CommentReply
+            commentReply={commentReply}
+            key={commentReply.id}
+            handleRepliesReload={handleRepliesReload}
+          />
         ))}
       </div>
     </div>

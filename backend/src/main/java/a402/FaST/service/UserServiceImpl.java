@@ -1,7 +1,9 @@
 package a402.FaST.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import a402.FaST.Controller.UserController;
@@ -10,6 +12,7 @@ import a402.FaST.exception.NotFoundMemberException;
 import a402.FaST.jwt.TokenProvider;
 import a402.FaST.model.dto.*;
 import a402.FaST.model.entity.*;
+import a402.FaST.repository.CommentReplyRepository;
 import a402.FaST.repository.TagHasUserRepository;
 import a402.FaST.repository.TagRepository;
 import a402.FaST.repository.UserRepository;
@@ -38,6 +41,7 @@ import javax.mail.internet.MimeMessage;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+    private final CommentReplyRepository commentReplyRepository;
     private final TagRepository tagRepository;
     private final TagHasUserRepository tagHasUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -125,6 +129,10 @@ public class UserServiceImpl implements UserService {
         if(!userRepository.existsById(id)){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
+            List<CommentReply> replyList = commentReplyRepository.findAllByUser_Id(id);
+            if(replyList != null){
+                commentReplyRepository.deleteAll(replyList);
+            }
             userRepository.deleteById(id);
             return true;
         }
@@ -143,38 +151,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto modifyUser(int id, UserModifyUserRequestDto requestDto) {
         UserResponseDto userResponseDto = null;
-        if(!userRepository.existsById(id)){
-            throw new NotFoundMemberException("없는 유저입니다.");
-        }else{
-            User user = userRepository.findById(id).get();
-            user.setNickname(requestDto.getNickname());
-            user.setImgPath(requestDto.getImgPath());
 
-            // 사용자 태그 전체 삭제
-            tagHasUserRepository.deleteAllByUser(user);
+        User user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("없는 사용자 입니다."));
 
-            // 만약 태그 테이블에 없는 태그 입력시 태그 생성
-            for (String tagName : requestDto.getTags()) {
-                if (!tagRepository.existsByName(tagName)) {
-                    Tag tag = Tag.builder().name(tagName).build();
-                    logger.info(" Tag : {}", tag.getName());
-                    tagRepository.save(tag);
-                }
-            }
 
-            // 태그 insert
-            for (String tagName : requestDto.getTags()){
-                Tag tag = tagRepository.findByName(tagName).get();
-
-                TagHasUser tagHasUser = TagHasUser.builder()
-                        .user(user)
-                        .tag(tag)
-                        .build();
-                tagHasUserRepository.save(tagHasUser);
-            }
-
-            userResponseDto = UserResponseDto.from(user);
+        if(!requestDto.getNickName().equals(user.getNickname()) && userRepository.existsByNickname(requestDto.getNickName())){
+            throw new DuplicateMemberException("이미 있는 닉네임 입니다");
         }
+        user.setNickname(requestDto.getNickName());
+        user.setImgPath(requestDto.getImgPath());
+
+
+        // 사용자 태그 전체 삭제
+        tagHasUserRepository.deleteAllByUser(user);
+
+        // 만약 태그 테이블에 없는 태그 입력시 태그 생성
+        for (String tagName : requestDto.getTags()) {
+            if (!tagRepository.existsByName(tagName)) {
+                Tag tag = Tag.builder().name(tagName).build();
+                logger.info(" Tag : {}", tag.getName());
+                tagRepository.save(tag);
+            }
+        }
+
+        // 태그 insert
+        for (String tagName : requestDto.getTags()){
+            Tag tag = tagRepository.findByName(tagName).get();
+
+            TagHasUser tagHasUser = TagHasUser.builder()
+                .user(user)
+                .tag(tag)
+                .build();
+            tagHasUserRepository.save(tagHasUser);
+        }
+
+        userResponseDto = UserResponseDto.from(user);
+
+
         return userResponseDto;
     }
 
@@ -249,6 +262,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(id).get();
             if (bCryptPasswordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+                user.setSalt(requestDto.getSalt());
                 userResponseDto = UserResponseDto.from(user);
             }else{
                 throw new Exception("비밀번호가 다릅니다");

@@ -31,11 +31,16 @@
   .map-page__header {
     width: 90%;
     margin: 0 auto;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-size: 2rem;
     line-height: 2rem;
     a {
       color: black;
+    }
+    display: flex;
+    .map-page__area-box {
+      width: 90%;
+      margin: 5px 0px 0px 5px;
     }
   }
 }
@@ -43,8 +48,3 @@
   width: 90%;
   margin: auto;
 }
-
-// .whole__map {
-//   -webkit-animation: flip-scale-down-ver 0.5s linear both;
-//   animation: flip-scale-down-ver 0.5s linear both;
-// }

@@ -25,6 +25,11 @@
   }
 }
 
+.map_container,
+.svg_container {
+  height: 400px; /* 높이를 원하는 값으로 설정하세요 */
+}
+
 .map_container {
   margin: 25px;
   .svg_container {
@@ -79,6 +84,7 @@
 .kakaomap_container {
   position: absolute;
   width: 100%;
+
   top: 0px;
   .map_backbtn {
     color: color.$color-4;
@@ -94,5 +100,11 @@
     -webkit-animation: slide-in-fwd-center 1s
       cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     animation: slide-in-fwd-center 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    .area-text {
+      position: absolute;
+      z-index: 2;
+      margin: 25px 65px;
+      font-size: 20px;
+    }
   }
 }

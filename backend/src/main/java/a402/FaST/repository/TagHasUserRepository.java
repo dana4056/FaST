@@ -16,7 +16,7 @@ public interface TagHasUserRepository extends JpaRepository<TagHasUser, TagHasUs
 
     @Modifying
     @Query("delete from TagHasUser e where e.tag.id = :tagId and e.user.id = :userId")
-    void TagDelete(@Param("tagId") int tagId, @Param("userId") int userId);
+    void TagDelete(@Param("tagId") Long tagId, @Param("userId") int userId);
 
     void deleteAllByUser(User userId);
 }

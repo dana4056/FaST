@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://j8a402.p.ssafy.io:8080',
+  baseURL: 'https://j8a402.p.ssafy.io:8080',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -30,10 +30,9 @@ async function followFrom(fromId: number) {
 }
 
 // 팔로우 목록 조회
-async function followList(id: number) {
+async function followList(userId: number) {
   try {
-    const res = await api.post<number>('/follow/search', { id });
-    // console.log(res);
+    const res = await api.get<number>('/follow/search', { params: { userId } });
     return res;
   } catch (error) {
     console.log(error);
@@ -42,9 +41,11 @@ async function followList(id: number) {
 }
 
 // Not 팔로잉 목록 조회
-async function notFollowingList(id: number) {
+async function notFollowingList(userId: number) {
   try {
-    const res = await api.post<number>('/follow/search2', { id });
+    const res = await api.get<number>('/follow/not-follow', {
+      params: { userId },
+    });
     return res;
   } catch (error) {
     console.log(error);
@@ -58,7 +59,6 @@ async function followDelete(fromId: number, toId: number) {
     const res = await api.delete<number>('/follow', {
       data: { fromId, toId },
     });
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -67,12 +67,11 @@ async function followDelete(fromId: number, toId: number) {
 }
 
 // 팔로우 추가
-async function followAdd(fromId: number, toId: number) {
+async function followAdd(fromId: number, toId: number): Promise<AxiosResponse> {
   try {
     const res = await api.post<number>('/follow', { fromId, toId });
-    console.log(res);
     return res;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return error;
   }

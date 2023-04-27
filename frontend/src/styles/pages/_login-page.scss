@@ -115,8 +115,8 @@
   }
 
   .login-page__social-button {
-    max-width: fit-content;
-    max-height: fit-content;
+    // max-width: fit-content;
+    // max-height: fit-content;
     margin: 0 5px;
     padding: 10px;
     color: white;
@@ -131,9 +131,35 @@
   }
   .login-page__social--naver {
     background-color: #2db400;
+    padding: 10px 14px;
   }
   .login-page__social--kakao {
     background-color: #f7e600;
     color: #3a1d1d;
+  }
+  .login-page__modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    border-radius: 10px;
+    background-color: white;
+    -webkit-animation: new-card-slide-in-bottom 0.7s
+      cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    animation: new-card-slide-in-bottom 0.7s
+      cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    width: 60%;
+    .login-page__modal-content {
+      padding: 10px;
+    }
+    .login-page__modal-button {
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      width: calc(100% + 2px);
+      font-size: 20px;
+      border: none;
+      background-color: color.$color-4;
+      color: white;
+      padding: 4px 0;
+    }
   }
 }

@@ -1,28 +1,163 @@
-import React, { useState, useEffect } from 'react';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../utils/firebase';
-import modifyApi from '../api/modify';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRecoilState } from 'recoil';
+import { useLocation, useParams } from 'react-router-dom';
+import { userInfo } from '../atoms/userInfo';
+import userApi from '../api/user';
 
 import MyRecordPage from '../pages/MyRecordPage';
 import { TagType } from '../types/TagType';
 
-import sample1 from '../assets/images/sample-images/sample_1.jpg';
-import sample2 from '../assets/images/sample-images/sample_2.jpg';
-import sample3 from '../assets/images/sample-images/sample_3.jpg';
 import { CardType } from '../types/CardType';
-
+import useViewModel from '../viewmodels/ArticleViewModel';
 import followApi from '../api/follow';
 
+// import sample1 from '../assets/images/sample-images/sample_1.jpg';
+
 function MyRecordContainer() {
+  const size = 10;
+  const params = useParams();
+  const location = useLocation();
+  const [user, setUser] = useRecoilState(userInfo);
+  const [userState, setUserState] = useState<any>(params.userId);
+  const [isMine, setIsMine] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isLimit, setIsLimit] = useState<boolean>(false);
+  const pageEnd = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+
   // 내 정보 조회 api
   const [userData, setUserData] = useState<any>({});
   // 내 관심 태그
   const [myTag, setMyTag] = useState<any>([]);
+  // 게시글 수
+  const [articleNum, setArticleNum] = useState<number>(0);
+
+  const [load, setLoad] = useState<boolean>(false);
+
+  const { downloadImages, getMyArticles } = useViewModel();
+
+  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([]);
+  const [cardsRight, setCardsRight] = useState<Array<CardType>>([]);
+
+  // 미리보기 이미지 url 저장 배열
+  const [imageUrl, setImageUrl] = useState<string>('');
   useEffect(() => {
+    if (userData.imgPath?.substring(0, 4) === 'http') {
+      setImageUrl(userData.imgPath);
+    } else if (userData.imgPath) {
+      const getProfileImage = async () => {
+        // const imageRef = ref(storage, userData.imgPath);
+        const ret = await downloadImages([userData.imgPath]);
+        setImageUrl(ret[0]);
+      };
+      getProfileImage();
+    }
+  }, [userData.imgPath]);
+
+  const [nickname, setNickname] = useState<string>('');
+  useEffect(() => {
+    setNickname(userData.nickname);
+  }, [userData]);
+
+  // 팔로우 수 조회
+  const [toId, setToId] = useState<number>(userState);
+  const [followerNum, setFollowerNum] = useState<number>(0);
+
+  const [fromId, setFromId] = useState<number>(userState);
+  const [followingNum, setFollowingNum] = useState<number>(0);
+
+  const getArticleData = async () => {
+    setLoading(true);
+    if (!isLimit) {
+      setIsLoaded(true);
+
+      const res: any = await getMyArticles(userState, user.id, size, offset);
+      if (res.status === 200) {
+        const cardLeftList: any = cardsLeft;
+        const cardRightList: any = cardsRight;
+        if (res.data.length > 0) {
+          await Promise.all(
+            res.data.map(async (article: any, i: number) => {
+              if (i % 2 === 0) {
+                const leftArticleTags: any = [];
+                article.tags.map((tag: any) =>
+                  leftArticleTags.push({
+                    value: tag.tagName,
+                    className: 'tag-2 tag-small',
+                  })
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardLeftList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: leftArticleTags,
+                });
+              } else {
+                const rightArticleTags: any = [];
+                await Promise.all(
+                  article.tags.map((tag: any) =>
+                    rightArticleTags.push({
+                      value: tag.tagName,
+                      className: 'tag-2 tag-small',
+                    })
+                  )
+                );
+                const imageUrls = await downloadImages(
+                  article.imgPath.split(',')
+                );
+                cardRightList.push({
+                  id: article?.id,
+                  imageUrls,
+                  nickname: article.nickname,
+                  content: '',
+                  regTime: article?.createTime,
+                  isLike: article?.likeCheck,
+                  numLikes: article?.likeCount,
+                  numComments: article?.commentCount,
+                  tags: rightArticleTags,
+                });
+              }
+            })
+          );
+          if (cardLeftList.length > 0) {
+            setCardsLeft([
+              ...cardsLeft.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
+          }
+          if (cardRightList.length > 0) {
+            setCardsRight([
+              ...cardsRight.sort((o1: any, o2: any) => o2.id - o1.id),
+            ]);
+          }
+        } else {
+          setIsLimit(true);
+        }
+      } else {
+        setIsLimit(true);
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (user.id.toString() === userState.toString()) {
+      setIsMine(true);
+    } else {
+      setIsMine(false);
+    }
+    // 프로필 박스
     const getData = async () => {
-      const myData: any = await modifyApi.getMyData(8);
+      const myData: any = await userApi.getMyData(userState);
       setUserData(myData.data);
-      setMyTag(myData.data.tags);
       const newMyTag: Array<TagType> = [];
       myData.data.tags.map((tag: any) =>
         newMyTag.push({
@@ -31,172 +166,23 @@ function MyRecordContainer() {
         })
       );
       setMyTag(newMyTag);
+
+      // 프로필 박스 - 기록수
+      const cntArticle: any = await userApi.countArticle(userState);
+      setArticleNum(cntArticle.data);
     };
     getData();
-  }, []);
-  console.log(myTag);
+  }, [userState]);
 
-  // 미리보기 이미지 url 저장 배열
-  const [imageUrl, setImageUrl] = useState<string>('');
   useEffect(() => {
-    // if (userData.imgPath.substring(0, 4) === 'http') {
-    //   setImageUrl(userData.imgPath);
-    // } else {
-    const getProfileImage = async () => {
-      const imageRef = ref(storage, userData.imgPath);
-      const ret = await getDownloadURL(imageRef);
-      setImageUrl(ret);
-    };
-    getProfileImage();
-    // }
-  }, [userData.imgPath]);
+    setUserState(params.userId);
+    setCardsLeft([]);
+    setCardsRight([]);
+    setIsLimit(false);
+    setOffset(0);
+    setLoad((prev: boolean) => !prev);
+  }, [location.pathname]);
 
-  // 검색 키워드
-  const [keyword, setKeyword] = useState<string>('');
-  // 태그를 저장할 배열
-  const [tags, setTags] = useState<Array<TagType>>([]);
-
-  const [cardsLeft, setCardsLeft] = useState<Array<CardType>>([
-    {
-      id: 3,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 4,
-      imageUrls: [sample2],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
-  const [cardsRight, setCardsRight] = useState<Array<CardType>>([
-    {
-      id: 5,
-      imageUrls: [sample3],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-    {
-      id: 6,
-      imageUrls: [sample1],
-      nickname: 'abcd1234',
-      content: '샘플1',
-      regTime: '지금',
-      isLike: false,
-      numLikes: 123,
-      numComments: 12,
-      tags: [
-        {
-          value: 'sample1',
-          className: 'tag-2 tag-small',
-        },
-        {
-          value: 'sample2',
-          className: 'tag-2 tag-small',
-        },
-      ],
-    },
-  ]);
-
-  // 검색 함수
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    // 새로고침 방지
-    event.preventDefault();
-
-    // 전에 검색하지 않은 키워드만 검색하도록 index를 찾음
-    const index = tags.findIndex((tag: TagType) => keyword === tag.value);
-
-    // 빈 문자열이 아니고 없는 키워드일 경우 검색
-    if (keyword.trim().length !== 0 && index === -1) {
-      // 배열에 추가
-      const newTags = tags;
-      newTags.push({
-        className: `tag-${Math.floor(Math.random() * 4) + 1}`,
-        value: keyword,
-      });
-
-      // 검색 api 호출은 여기 들어가면 될 듯
-
-      // 태그 길이 오름차순 정렬
-      newTags.sort((o1: TagType, o2: TagType) => {
-        return o1.value.length - o2.value.length;
-      });
-      setTags([...newTags]);
-    }
-
-    // 검색창 초기화
-    setKeyword('');
-  };
-
-  // 입력창 변화를 감지할 함수
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.currentTarget.value);
-  };
-
-  // 태그 삭제 함수
-  const handleTagDelete = (value: string) => {
-    // 해당 태그의 인덱스를 찾음
-    const index = tags.findIndex((tag: TagType) => value === tag.value);
-    if (index > -1) {
-      // 해당 인덱스의 태그 삭제
-      const newTags = tags;
-      newTags.splice(index, 1);
-
-      // 삭제했을 경우 지운 뒤의 태그들로 다시 검색
-
-      setTags([...newTags]);
-    }
-  };
-
-  // 팔로우 수 조회
-  const [toId, setToId] = useState<number>(2);
-  const [followerNum, setFollowerNum] = useState<number>(0);
-
-  const [fromId, setFromId] = useState<number>(2);
-  const [followingNum, setFollowingNum] = useState<number>(0);
   useEffect(() => {
     const getData = async () => {
       const followTo: any = await followApi.followTo(toId);
@@ -207,21 +193,43 @@ function MyRecordContainer() {
     };
 
     getData();
-  }, []);
+  }, [userState]);
+
+  useEffect(() => {
+    getArticleData();
+  }, [load]);
+
+  const loadMore = () => {
+    setOffset((prev: number) => prev + 1);
+    setLoad((prev: boolean) => !prev);
+  };
+
+  useEffect(() => {
+    if (!pageEnd.current) return;
+    const observer = new IntersectionObserver((entries: any) => {
+      if (entries[0].isIntersecting && !loading && !isLimit) {
+        loadMore();
+      }
+    });
+    observer.observe(pageEnd.current);
+    // eslint-disable-next-line consistent-return
+    return () => observer.disconnect();
+  }, [pageEnd, isLimit, loading]);
 
   return (
     <MyRecordPage
+      isMine={isMine}
+      nickname={nickname}
+      articleNum={articleNum}
       imageUrl={imageUrl}
       followerNum={followerNum}
       followingNum={followingNum}
       myTag={myTag}
-      tags={tags}
       cardsLeft={cardsLeft}
       cardsRight={cardsRight}
-      keyword={keyword}
-      handleKeywordChange={handleKeywordChange}
-      handleSearch={handleSearch}
-      handleTagDelete={handleTagDelete}
+      isLoaded={isLoaded}
+      isLimit={isLimit}
+      pageEnd={pageEnd}
     />
   );
 }

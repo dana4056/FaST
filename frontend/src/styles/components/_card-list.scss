@@ -2,8 +2,31 @@
   width: 90%;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   .card-list__column {
     width: 47.5%;
+  }
+  .card-list__footer {
+    width: 100%;
+  }
+  .card-list__page-end {
+    width: 100%;
+    height: 20px;
+    margin-top: 15px;
+    .card-list__page-end-mark-container {
+      display: flex;
+      margin: auto;
+      width: 60px;
+      .card-list__page-end-mark {
+        width: 10px;
+        height: 10px;
+        background-color: gray;
+        border-radius: 30px;
+        text-align: center;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
   }
 }

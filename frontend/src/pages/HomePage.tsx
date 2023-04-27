@@ -2,9 +2,9 @@ import React from 'react';
 
 import SearchBox from '../components/SearchBox';
 import CardList from '../components/CardList';
-import { HomePageProps } from '../types/PagePropsType';
 
 function HomePage({
+  isMine,
   tags,
   keyword,
   cardsLeft,
@@ -12,7 +12,10 @@ function HomePage({
   handleKeywordChange,
   handleSearch,
   handleTagDelete,
-}: HomePageProps) {
+  isLoaded,
+  isLimit,
+  pageEnd,
+}: any) {
   return (
     <div className="main-page">
       <SearchBox
@@ -22,7 +25,14 @@ function HomePage({
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
       />
-      <CardList cardsLeft={cardsLeft} cardsRight={cardsRight} />
+      <CardList
+        isMine={isMine}
+        cardsLeft={cardsLeft}
+        cardsRight={cardsRight}
+        isLoaded={isLoaded}
+        isLimit={isLimit}
+        pageEnd={pageEnd}
+      />
     </div>
   );
 }

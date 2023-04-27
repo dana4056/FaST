@@ -2,7 +2,9 @@
 
 .comment {
   padding: 10px;
+  margin: 0 auto;
   margin-bottom: 20px;
+  width: calc(90% - 20px);
   .comment__header {
     display: flex;
     align-items: center;
@@ -11,6 +13,13 @@
       justify-content: center;
       align-items: center;
       font-size: 36px;
+      width: 48px;
+      height: 48px;
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
     }
     .comment__profile-nickname {
       padding: 0 10px;
@@ -21,95 +30,163 @@
       color: color.$gray;
       font-size: 12px;
     }
+    .comment__update-btn {
+      margin-left: auto;
+    }
+    .comment__delete-btn {
+      margin-left: 5px;
+    }
   }
   .comment__content {
     display: flex;
-    .comment__comment {
-      width: 80%;
-    }
-    .comment__like {
-      width: 20%;
-      margin-left: auto;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      .comment__heart {
-        margin: 0 auto;
-        display: flex;
-        font-size: 28px;
-      }
-    }
-  }
-  .comment__form-reply {
-    transition: 0.2s;
-    margin: 4px;
-    border-radius: 10px;
-    border: 0.5px solid gray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    .comment__input-reply {
-      padding: 8px;
-      width: 70%;
-      border: none;
-    }
-    .comment__submit-reply {
-      background-color: color.$color-4;
-      border-radius: 10px;
-      width: 20%;
-      padding: 4px 0;
-      border: none;
-      color: white;
-    }
-  }
-  .comment__replies {
-    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-    overflow: hidden;
-    .comment__reply {
-      padding: 10px 0;
-      border-bottom: 0.5px solid color.$gray;
+    .comment__update-box {
       display: flex;
-      flex-wrap: wrap;
-      .comment__reply-header {
-        display: flex;
+      width: 85%;
+      .comment__update-input {
+        width: 80%;
+        border: 0px;
+        border-bottom: 1px solid black;
+        font-size: 17px;
+        // margin-right: 5%;
+      }
+      .comment__update-btn {
+        font-size: 17px;
+        background-color: color.$color-4;
+        // padding: 5px 9px;
+        color: white;
+        border: 0px;
         margin-left: auto;
-        width: 95%;
+      }
+    }
+    .comment__text {
+      margin-top: 5px;
+      // margin-left: 2px;
+      max-width: 85%;
+      font-size: 17px;
+      word-wrap: break-word;
+    }
+
+    .comment__like {
+      margin-left: auto;
+      .like-button-container {
+        display: flex;
+        flex-direction: column;
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+        margin: 0;
+        font-size: 12px;
+      }
+      //   text-align: center;
+      //   font-size: 14px;
+      //   font-weight: bold;
+      //   .comment__heart {
+      //     margin: 0 auto;
+      //     display: flex;
+      //     font-size: 28px;
+      //   }
+    }
+  }
+}
+.comment__form-reply {
+  transition: 0.2s;
+  margin: 4px;
+  border-radius: 10px;
+  border: 0.5px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  .comment__input-reply {
+    // padding: 8px;
+    width: 70%;
+    border: none;
+  }
+  .comment__submit-reply {
+    background-color: color.$color-4;
+    border-radius: 10px;
+    width: 20%;
+    padding: 4px 0;
+    border: none;
+    color: white;
+  }
+}
+.comment__replies {
+  transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+  overflow-y: hidden;
+  .comment__reply {
+    padding: 10px 0;
+    border-bottom: 0.5px solid color.$gray;
+    display: flex;
+    flex-wrap: wrap;
+    .comment__reply-header {
+      display: flex;
+      margin-left: auto;
+      width: 95%;
+      align-items: center;
+      .comment__reply-profile {
+        display: flex;
+        justify-content: center;
         align-items: center;
-        .comment__reply-profile {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 24px;
+        font-size: 24px;
+      }
+      .comment__reply-nickname {
+        margin: 0 10px;
+      }
+      .comment__reply-reg-time {
+        font-size: 12px;
+        color: color.$gray;
+      }
+      .comment__reply-update-btn {
+        font-size: 14px;
+        margin-left: auto;
+      }
+      .comment__reply-delete-btn {
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+    .comment__reply-content {
+      margin: 0 auto;
+      width: 95%;
+      display: flex;
+      .comment__reply-update-box {
+        margin-top: 4px;
+        width: 80%;
+        flex: none;
+        display: flex;
+        .comment__reply-update-input {
+          border: 0px;
+          width: 80%;
+          border-bottom: 1px solid black;
+          box-sizing: border-box;
+          font-size: 18px;
         }
-        .comment__reply-nickname {
-          margin: 0 10px;
-        }
-        .comment__reply-reg-time {
-          font-size: 12px;
-          color: color.$gray;
+        .comment__reply-update-btn {
+          background-color: color.$color-4;
+          color: white;
+          border: 0px;
+          margin-left: auto;
         }
       }
-      .comment__reply-content {
-        width: 95%;
+      .comment__reply-text {
+        margin-top: 4px;
+        font-size: 17px;
+        max-width: 85%;
+        word-wrap: break-word;
+      }
+
+      .comment__reply-like {
         margin-left: auto;
-        display: flex;
-        .comment__reply-reply {
-          width: 80%;
-        }
-        .comment__reply-like {
-          width: 20%;
-          .comment__reply-heart {
-            font-size: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
+        .like-button-container {
+          display: flex;
+          flex-direction: column;
+          svg {
+            width: 20px;
+            height: 20px;
           }
-          .comment__reply-num-likes {
-            font-size: 12px;
-            text-align: center;
-          }
+          font-size: 12px;
         }
       }
     }

@@ -2,9 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
 import InputProfile from '../components/SignUp/InputProfile';
-import { InputProfileProps } from '../types/ComponentPropsType';
 import { UserModifyProps } from '../types/PagePropsType';
-import SearchBox from '../components/SearchBox';
+import AddPersonalTag from '../components/AddPersonalTag';
 
 function UserModifyPage({
   tags,
@@ -14,9 +13,18 @@ function UserModifyPage({
   handleTagDelete,
   email,
   name,
+  isName,
+  nameMessage,
   imageUrl,
   handleImageChange,
   handleImageDelete,
+  handleSaveModifyData,
+  onChangeNickName,
+  goModifyPwd,
+  goLogout,
+  doWithdraw,
+  index,
+  submit,
 }: UserModifyProps) {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] =
@@ -39,12 +47,14 @@ function UserModifyPage({
       <div className="modify__container">
         <span className="modify__tag__text">내 관심태그</span>
       </div>
-      <SearchBox
+      <AddPersonalTag
         tags={tags}
         keyword={keyword}
         handleKeywordChange={handleKeywordChange}
         handleSearch={handleSearch}
         handleTagDelete={handleTagDelete}
+        index={index}
+        submit={submit}
       />
       <div className="modify__container">
         <div className="modify__email__container">
@@ -63,19 +73,27 @@ function UserModifyPage({
           className="card modify__input"
           type="text"
           defaultValue={name}
-          // onChange={onChangeNickName}
+          onChange={onChangeNickName}
         />
-        {/* {name.length > 0 && (
-        <span className={`message ${isName ? 'success' : 'error'}`}>
-        {nameMessage}
-        </span>
-      )} */}
+        {name.length > 0 && (
+          <span className={`message ${isName ? 'success' : 'error'}`}>
+            {nameMessage}
+          </span>
+        )}
       </div>
       <div className="modify__buttons">
-        <button type="button" className="modify__button modify__password">
+        <button
+          type="button"
+          onClick={goModifyPwd}
+          className="modify__button modify__password"
+        >
           비밀번호 변경하러 가기
         </button>
-        <button type="button" className="modify__button modify__save">
+        <button
+          type="button"
+          className="modify__button modify__save"
+          onClick={handleSaveModifyData}
+        >
           저장하기
         </button>
         {openLogoutModal && (
@@ -85,8 +103,12 @@ function UserModifyPage({
               <div>
                 <p>로그아웃 하시겠습니까?</p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
+              <Link to="/login">
+                <button
+                  onClick={goLogout}
+                  className="follow_delete_btn"
+                  type="button"
+                >
                   예
                 </button>
               </Link>
@@ -117,11 +139,13 @@ function UserModifyPage({
                   정말 탈퇴하시겠습니까?
                 </p>
               </div>
-              <Link to="/">
-                <button className="follow_delete_btn" type="button">
-                  예
-                </button>
-              </Link>
+              <button
+                onClick={doWithdraw}
+                className="follow_delete_btn"
+                type="button"
+              >
+                예
+              </button>
               <button
                 className="follow_delete_btn"
                 type="button"

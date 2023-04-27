@@ -56,11 +56,11 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public UserFromToFollowResponseDto getfollow(FollowSearchRequestDto requestDto) {
-        if(!userRepository.existsById(requestDto.getId())){
+    public UserFromToFollowResponseDto getfollow(int userId) {
+        if(!userRepository.existsById(userId)){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
-            User user = userRepository.findById(requestDto.getId()).get();
+            User user = userRepository.findById(userId).get();
 
             UserFromToFollowResponseDto userFromToFollowResponseDto = null;
             userFromToFollowResponseDto = UserFromToFollowResponseDto.from(user);
@@ -91,13 +91,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<UserNotFollowResponseDto> NotFollow(FollowSearchRequestDto requestDto) {
-        if(!userRepository.existsById(requestDto.getId())){
+    public List<UserNotFollowResponseDto> NotFollow(int userId) {
+        if(!userRepository.existsById(userId)){
             throw new NotFoundMemberException("없는 유저입니다.");
         }else{
             List<UserNotFollowResponseDto> userNotFollowResponseDtoList = null;
 
-            userNotFollowResponseDtoList = followRepository.SearchNotFollower(requestDto.getId(), requestDto.getId())
+            userNotFollowResponseDtoList = followRepository.SearchNotFollower(userId, userId)
                     .stream().map(x-> new UserNotFollowResponseDto(x.getId(),x.getnickName(),x.getImg_path()))
                     .collect(Collectors.toList());
             return userNotFollowResponseDtoList;

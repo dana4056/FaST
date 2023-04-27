@@ -1,9 +1,6 @@
 package a402.FaST.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @Table(name = "comment")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
@@ -25,9 +23,10 @@ public class Comment {
     private String content;
     private LocalDateTime createTime;  ;
 
-//    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//    private List<Like> likes = new ArrayList<>();
-
+    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Likes> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<CommentReply> commentReplies = new ArrayList<>();
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;

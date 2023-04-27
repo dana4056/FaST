@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입 API =>  유저 정보를 입력받아 회원가입하는 API 입니다.",
-            description = "json 형식 데이터 -> (String : email, String : password, String : nickname) " +
+            description = "json 형식 데이터 -> (String : email, String : password, String : nickname, String : salt, String : imgPath) " +
             " => 회원가입에 완료한 User 정보를 Return 해줍니다.  => 만약 이메일 중복이나 닉네임 중복이면 error 메시지 반환")
     public ResponseEntity<UserResponseDto> signup(@Valid @RequestBody UserRequestDto requestDto) {
         UserResponseDto responseDto = null;
@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping("/login")
     @Operation(summary = "로그인 API =>  아이디, 비밀번호 입력을 통해 로그인하는 API 입니다.",
-            description = "json 형식 데이터 -> (String : email, String : password)" +
+            description = "json 형식 데이터 -> (String : email, String : password) " +
             " => 로그인에 완료한 User 정보와 Token 정보를 Return 해줍니다.")
     private ResponseEntity<UserResponseDto> login(@Valid @RequestBody UserRequestDto requestDto) {
         HttpHeaders headers = new HttpHeaders();
@@ -137,7 +137,7 @@ public class UserController {
 
     @PutMapping("/{id}/modify-user")
     @Operation(summary = "유저 수정 API =>  유저 수정 API (닉네임, 프로필, 태그) 입니다.",
-            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (int : id) + (String : nick)" +
+            description = "PathVariable 형식 데이터 + json 형식 데이터 -> (String : nickName, String : imgPath, List<String> tags)" +
                     " => 검증 결과에 따라 userResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<UserResponseDto> modifyUser(@Valid @PathVariable int id, @RequestBody UserModifyUserRequestDto requestDto) throws Exception {
         UserResponseDto userResponseDto = null;
@@ -147,7 +147,7 @@ public class UserController {
 
     @PutMapping("/find-pw")
     @Operation(summary = "유저 비밀번호 찾기 API =>  유저 비밀번호 찾는 API 입니다.",
-            description = "json 형식 데이터 -> (String : email, String password, String salt)" +
+            description = "json 형식 데이터 -> (String : email, String : password, String : salt)" +
                     " => 검증 결과에 따라 userResponseDto or error 를 Return 해줍니다.")
     public ResponseEntity<UserResponseDto> modifyImg(@Valid @RequestBody UserFindPwDto requestDto) throws Exception {
         UserResponseDto userResponseDto = null;
