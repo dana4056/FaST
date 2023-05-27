@@ -66,7 +66,7 @@ NginX Docker AWS EC2 jenkins
 
 ## 5. 시스템 구성도
 
-![구성도](./images/architecture.PNG)
+![구성도](./images/architecture.png)
 
 ## 6. 와이어프레임
 
